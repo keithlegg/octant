@@ -1,0 +1,46 @@
+
+#this is a mockup of a simple config, NOT USED YET 
+
+
+####################################
+#MACHINE PROPERTIES 
+####################################
+
+# address of the parallel port 
+LP1_ADDR 0xc010
+
+# pulse timing in micro seconds 
+PULSE_DELEAY_US 10
+
+# number of steps for each stepper to make a full revolution 
+STEPS_PER_UNIT_X 100  
+STEPS_PER_UNIT_Y 100 
+STEPS_PER_UNIT_Z 100 
+
+
+####################################
+# OUTPUTS 
+####################################
+
+# PIN MAPPING - I.E. wchich pin controls which motor 
+XDIR  DB25_1 
+XSTEP DB25_2 
+YDIR  DB25_3 
+YSTEP DB25_4 
+ZDIR  DB25_5 
+ZSTEP DB25_6 
+
+# INV_XDIR DB25_7 
+# INV_YDIR DB25_8 
+# INV ZDIR DB25_9
+
+
+####################################
+# INPUTS 
+####################################
+
+X_LIMIT
+Y_LIMIT 
+Z_LIMIT 
+
+
