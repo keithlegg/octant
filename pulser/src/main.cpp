@@ -19,7 +19,7 @@
 //char* obj_filepath;  
 
 
-extern bool GLOBAL_DEBUG;
+//extern bool GLOBAL_DEBUG;
 
 
 /* 
@@ -34,7 +34,8 @@ extern int PP1_STEPS_PER_UNIT_Z;
 
 /******************************************/
 
-void run_cncplot(double f_x,
+void run_cncplot(cncglobals* cg,
+                 double f_x,
                  double f_y,
                  double f_z,
                  double s_x,
@@ -54,7 +55,7 @@ void run_cncplot(double f_x,
 
     plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
 
-    if(GLOBAL_DEBUG==true)
+    if(cg->GLOBAL_DEBUG==true)
     {
         int x=0;
         for(x=0;x<pulsetrain.size();x++)
@@ -63,7 +64,7 @@ void run_cncplot(double f_x,
         } 
     }
 
-    if(GLOBAL_DEBUG==false)
+    if(cg->GLOBAL_DEBUG==false)
     {
        //moved to IO DEBUG   
        // plot.send_pulses(pt_pulsetrain);
@@ -73,7 +74,7 @@ void run_cncplot(double f_x,
 
 
 /******************************************/
-void parse_args(int argc, char **argv)
+void parse_args(cncglobals* cg,  int argc, char **argv)
 {
     if (argc < 8){
         std::cout << "Usage: pulser X1 Y1 Z1 X2 Y2 Z2 divs \n";
@@ -94,7 +95,7 @@ void parse_args(int argc, char **argv)
     //number of divisions in X,Y,Z space
     int a7    = atoi(argv[7]);
               
-    run_cncplot( a1, a2, a3, a4, a5, a6, a7 );
+    run_cncplot( cg, a1, a2, a3, a4, a5, a6, a7 );
 
 }
 
@@ -131,7 +132,7 @@ int main(int argc, char **argv)
     cg.load_cfg_file(argv[1]);
     cg.show();
 
-    //parse_args(argc, argv); 
+    //parse_args(cg, argc, argv); 
     
     
     /*

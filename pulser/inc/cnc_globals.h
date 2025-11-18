@@ -18,6 +18,14 @@ class cncglobals
 
         ~cncglobals(){};
 
+
+        bool GLOBAL_DEBUG           = false;
+        bool DEBUG_PARAMS           = false;
+
+        bool ENABLE_LIMIT_SWITCHES  = false;
+        bool ENABLE_MOTOR_DRIVE     = false;
+
+
         //----------
         //controller hardware config 
         uint parport1_addr = 0;
@@ -29,7 +37,9 @@ class cncglobals
 
         //----------
         //machine travel size in 3D 
-        uint linear_unit = 25;
+        //std::string linear_unit = "mm"; //"mm" or "inch" 
+        char linear_unit[20] = "mm"; //"mm" or "inch" 
+
         uint x_xtntx = 25;
         uint y_xtntx = 25;
         uint z_xtntx = 25;

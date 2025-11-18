@@ -26,44 +26,6 @@ using std::vector;
 #include "cnc_globals.h"
 
 
-
-// ####################################
-// #MACHINE PROPERTIES 
-// ####################################
-
-bool GLOBAL_DEBUG           = false;
-bool DEBUG_PARAMS           = false;
-
-bool ENABLE_LIMIT_SWITCHES  = false;
-bool ENABLE_MOTOR_DRIVE     = false;
-
-
-
-
-
-
-/*
-
-
-
-/*************************************************************/
-/*
-   sceneloader.c 
-
-   Read scene.olm for a proto-dream scene format  
-
-   Copyright (C) 2019 Keith Legg - keithlegg23@gmail.com
-
-   TODO 
-       - folder loader 
-       - animation keyframes 
-   
-*/
-
-/*************************************************************/
-
-
-
 /*
 
 #include <vector>
@@ -123,56 +85,54 @@ const int MAX_TOKENS_PER_LINE = 20;
 /**********************************/
 void cncglobals::show( void )
 {
+    std::cout <<"\n\n";
     std::cout << " #### CNC GLOBALS #### " << "\n";
+
+    //capture the state of cout 
+    std::ios_base::fmtflags f( std::cout.flags() );  
+    
+    //print some neato 16 bit hex addresses 
+    std::cout << std::hex;
     std::cout << " parport1_addr : " << (*this).parport1_addr << "\n";
     std::cout << " parport2_addr : " << (*this).parport2_addr << "\n";
 
-    /*
-    std::cout
-        << std::left
-        << std::showbase
-        << std::hex
-        << std::uppercase
-        //<< std::setfill('0')
-        //<< std::setw(std::numeric_limits<decltype((*this).parport1_addr)>::digits / 4)
-        << (*this).parport1_addr
-        << std::endl;
-    */
-
-    // std::printf( "{:0<#{}X}\n", (*this).parport1_addr, std::numeric_limits<decltype( ia )>::digits / 4 );
-
+    //set it back when we are done 
+    std::cout.flags( f );
     std::cout <<"\n";
+    
+    std::cout << " ## machine params " << "\n";  
+    std::cout << " linear_unit : " << (*this).linear_unit << "\n";  
 
-    std::cout << " : " << "# machine travel size in 3D  " << "\n";  
+    std::cout << " ## machine travel size in 3D  " << "\n";  
     std::cout << " x_xtntx : " << (*this).x_xtntx<< "\n";
     std::cout << " y_xtntx : " << (*this).y_xtntx<< "\n";
     std::cout << " z_xtntx : " << (*this).z_xtntx<< "\n";
     std::cout <<"\n";
 
-    std::cout << " : " << "#waveform generation parameters " << "\n";  
+    std::cout << " ## waveform generation parameters " << "\n";  
     std::cout << " pp1_pulse_dly_us : " << (*this).pp1_pulse_dly_us << "\n";
     std::cout <<"\n";
 
-    std::cout << " : " << "# 3d pulses per linear unit " << "\n";        
+    std::cout << " ## pulses per linear unit (x,y,z)" << "\n";        
     std::cout << " pp1u_x : " << (*this).pp1u_x << "\n";
     std::cout << " pp1u_y : " << (*this).pp1u_y << "\n";
     std::cout << " pp1u_z : " << (*this).pp1u_z << "\n";
     std::cout <<"\n";
 
-    std::cout << " : " << "# pin assignments " << "\n";  
+    std::cout << " ## DB25 pin assignments " << "\n";  
     std::cout << " parprt1_dir_x  : " << (*this).parprt1_dir_x  << "\n";
     std::cout << " parprt1_step_x : " << (*this).parprt1_step_x << "\n";
     std::cout << " parprt1_dir_y  : " << (*this).parprt1_dir_y  << "\n";
     std::cout << " parprt1_step_y : " << (*this).parprt1_step_y << "\n";
     std::cout << " parprt1_dir_z  : " << (*this).parprt1_dir_z  << "\n";
     std::cout << " parprt1_step_z : " << (*this).parprt1_step_z << "\n";
-    std::cout << " parprt1_dir_a  : " << (*this).parprt1_dir_a  << "\n";
-    std::cout << " parprt1_step_a : " << (*this).parprt1_step_a << "\n";
-    std::cout <<"\n";
 
-    std::cout << " x_limit_pin : " << (*this).x_limit_pin << "\n";
-    std::cout << " y_limit_pin : " << (*this).y_limit_pin << "\n";
-    std::cout << " z_limit_pin : " << (*this).z_limit_pin << "\n";
+    // std::cout << " parprt1_dir_a  : " << (*this).parprt1_dir_a  << "\n";
+    // std::cout << " parprt1_step_a : " << (*this).parprt1_step_a << "\n";
+
+    std::cout << " x_limit_pin    : " << (*this).x_limit_pin << "\n";
+    std::cout << " y_limit_pin    : " << (*this).y_limit_pin << "\n";
+    std::cout << " z_limit_pin    : " << (*this).z_limit_pin << "\n";
     
     //std::cout << " : " << (*this). << "\n";
     //std::cout << " : " << (*this). << "\n";    
@@ -226,12 +186,12 @@ void cncglobals::load_cfg_file( char* filepath )
             //-- MACHINE HARDWARE SETUP --------------
             if (!strcmp(token[0],"PARPORT1_ADDR"))
             {        
-                //strcpy( parport1_addr, token[1]);
+                parport1_addr = atof(token[1]);
             }
             //-------------------------------------------
             if (!strcmp(token[0],"PARPORT2_ADDR"))
             {        
-                //strcpy( parport2_addr, token[1]);
+                parport2_addr = atof(token[1]);
             }
 
             //-------------------------------------------
@@ -348,10 +308,7 @@ void cncglobals::load_cfg_file( char* filepath )
                 {        
                     campos = Vector3( atof(token[1]), atof(token[2]), atof(token[3]) );
                 }
-                if (!strcmp(token[0],"light_intensity"))
-                {            
-                    lightintensity = atof(token[1]);
-                }
+
                 if (!strcmp(token[0],"vtx_color"))
                 {   
                     //std::cout << " vtx_color is " <<  atof(token[1]) << " " <<  atof(token[2]) << " " <<  atof(token[3]) << "\n";
