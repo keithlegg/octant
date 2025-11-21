@@ -183,7 +183,17 @@ return 0;
 */
 
 /**********************************/
+/**********************************/
+//string utility functions - experimental
 
+//convert char * to string type 
+
+//method 1
+// std::string foo = *t;
+
+// method 2
+// const char *s = "Hello, World!";
+// std::string str(s);
 
 std::vector<std::string> cncglobals::tokenizer( const std::string& p_pcstStr, char delim )  {
     std::vector<std::string> tokens;
@@ -194,6 +204,7 @@ std::vector<std::string> cncglobals::tokenizer( const std::string& p_pcstStr, ch
     }
     return tokens;
 } 
+
 
 int cncglobals::cvt_int( const std::string& s)
 {
@@ -227,6 +238,7 @@ int cncglobals::cvt_int( const std::string& s)
 
 }
 
+/**********************************/
 /**********************************/
 
 void cncglobals::load_cfg_file( char* filepath )
@@ -333,13 +345,47 @@ void cncglobals::load_cfg_file( char* filepath )
                             //z_xtntx = std::stof( tokenized.at(1) );   
                         }
 
-                        //-------------------------------------------
+                        //------------------------------------------------
                         //-- CONTROLLER PORT INPUTS       ----------------
 
-                        int check_for_db25 = tokenized.at(1).find('DB25_');
-                        
-                        std::cout << " DB25 " << check_for_db25 <<"\n";
+                        uint getpin = 26;
+                        bool doinvert = false;
+                        int check_for_db25 = 0; 
 
+                        if(tokenized.size()>=2)
+                        { 
+                            //if you want to iterate the tokens on the line 
+                            for (vector<std::string>::iterator t=tokenized.begin(); t!=tokenized.end(); ++t) 
+                            {
+                                
+                                //std::cout << line_ct << " TOKEN "<<*t<<std::endl;
+
+                                //you can do a direct macth if no substring  
+                                if (*t=="INVERT"){
+                                    std::cout << "INVERTY!\n";
+                                }
+
+                                std::string foo = *t;
+                                
+                                if (foo.find("DB25_") != std::string::npos)
+                                {
+                                 std::cout << "DB25_! " << foo <<"\n";
+                                }
+
+                            }
+
+
+                            //std::vector<std::string> lookpins = (*this).tokenizer(tokenized.at(1), *"_");
+                        
+                             
+                            // if (check_for_db25!= std::string::npos)
+                            // {
+                            //     if(lookpins.size()>=2)
+                            //     { 
+                            //         std::cout << "HEY DB25 " << lookpins.at(1) << "\n";
+                            //     }
+                            // } 
+                        }
 
                         if (tokenized.at(0).find("X_LIMIT")!= std::string::npos)
                         {   
@@ -402,13 +448,10 @@ void cncglobals::load_cfg_file( char* filepath )
                         //***************************************/ 
                     }//if line has at least 2 sections and not commented 
                 }// if line is not commented
-
-
-                //////
-                line_ct ++; 
-
             }
 
+            //////
+            line_ct ++; 
         }//line by line of file
 
     }//while data in file
