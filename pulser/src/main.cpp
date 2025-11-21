@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 
     cncglobals cg;
     cg.load_cfg_file(argv[1]);
-    cg.show();
+    //cg.show();
 
     //parse_args(cg, argc, argv); 
     
