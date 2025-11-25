@@ -14,12 +14,10 @@
            Matrix4X4
            Spherical/Polar coords 
 
-
        The original can be found here:
-
            https://github.com/keithlegg/gnelscript/blob/master/pygfx/math_ops.py
 
-   Copyright (C) 2019 Keith Legg - keithlegg23@gmail.com
+   Copyright (C) 2026 Keith Legg - keithlegg23@gmail.com
 
 */
 /*************************************************************/

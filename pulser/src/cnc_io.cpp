@@ -1,4 +1,13 @@
+/*************************************************************/
+/*
+    cnc_io.cpp 
+    
+    interface to a parallel port (and hopefully someday a Mesa5i25 card)
 
+    Copyright (C) 2026 Keith Legg - keithlegg23@gmail.com
+
+*/
+/*************************************************************/
 
 #include <stdio.h>
 #include <unistd.h> //sleep()

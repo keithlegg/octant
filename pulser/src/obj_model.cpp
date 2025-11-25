@@ -5,7 +5,7 @@
             Load and save 3D models from disk 
 
 
-        Copyright (C) 2019 Keith Legg  - keithlegg23@gmail.com
+        Copyright (C) 2026 Keith Legg  - keithlegg23@gmail.com
     
     */
          

@@ -1,11 +1,14 @@
+/*************************************************************/
 /*
+    cnc_globals.cpp 
+    
+    All the configuration details and machine paramenters live here, accessed globally. 
+    Also deals with the loading (saving?) of machine parameters
 
-     all the configuration details and machine paramenters live here, accessed globally 
-     also deals with the loading (saving?) of machine parameters
-
+    Copyright (C) 2026 Keith Legg - keithlegg23@gmail.com
 
 */
-
+/*************************************************************/
 
 #include <fstream>
 #include <iostream>

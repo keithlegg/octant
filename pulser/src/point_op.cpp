@@ -7,7 +7,7 @@
 
       AUTHOR: Keith Legg (keithlegg23@gmail.com)
  
-    Copyright (C) 2019 Keith Legg   
+    Copyright (C) 2026 Keith Legg   
 
 */
 

@@ -187,9 +187,7 @@ int main(int argc, char **argv)
 {  
 
     /*------------------*/
-    //startgui();
-
-    spinningCubeDemo(&argc, argv);
+    //spinningCubeDemo(&argc, argv);
 
 
     /*------------------*/

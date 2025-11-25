@@ -1,3 +1,13 @@
+/*************************************************************/
+/*
+    cnc_plot.cpp 
+    
+    Generate a series of 3D pulses from two vectors 
+
+    Copyright (C) 2026 Keith Legg - keithlegg23@gmail.com
+
+*/
+/*************************************************************/
 
 
 #include <stdio.h>
