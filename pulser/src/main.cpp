@@ -16,12 +16,11 @@
 #include "cnc_plot.h" 
 #include "gl_setup.h" 
 
-#include "demo_cube.h" 
+//#include "demo_cube.h" 
 
-//char* obj_filepath;  
+#include "confusion_36d.h" 
 
 
-//extern bool GLOBAL_DEBUG;
 
 
 /* 
@@ -185,6 +184,18 @@ void askerdemo(void)
 /******************************************/
 int main(int argc, char **argv) 
 {  
+    
+    if( argc == 2 ) {
+        obj_filepath = argv[1] ;
+
+        if( access( obj_filepath, F_OK ) != -1 ) {
+            start_gui(&argc, argv); 
+        } else {
+            printf("# file %s does not exist.\n", obj_filepath);
+            exit(0);
+        }
+    }
+
 
     /*------------------*/
     //spinningCubeDemo(&argc, argv);

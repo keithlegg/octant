@@ -1148,7 +1148,7 @@ void set_view_persp(void)
 /**************************************************/
 /**************************************************/
 
-void olmec(int *argc, char** argv){
+void start_gui(int *argc, char** argv){
  
 
 
@@ -2021,41 +2021,6 @@ static void keyPressed(unsigned char key, int x, int y)
 /**************************************************/
 /**************************************************/
 /**************************************************/
-
-
-
-
-void software_render(void){
-    /*
-    // RUN THE CPP RENDERER    
-    set_screen_square(&scr_size_x, &scr_size_y);
-    char buffer[512];
-
-    // printf("./renderthing %d %d %s %s %d %d %d %s\n", scr_size_x, scr_size_y, active_filepath, cam_matrix_filepath, 0, 0, 0, "cpp_render.bmp");
-    // snprintf(buffer, sizeof(buffer), "./renderthing %d %d %s %s %d %d %d %s", scr_size_x, scr_size_y, active_filepath, cam_matrix_filepath, 0, 0, 0, "cpp_render.bmp"); 
-    
-    // we need to export a render.olm file here 
-    char* scenefilepath = "render.olm";
-    write_scenefile(active_filepath, cam_matrix_filepath, scenefilepath );
-
-    printf("./renderthing %d %d %s %s\n", scr_size_x, scr_size_y, scenefilepath, "cpp_render.bmp");
-    snprintf(buffer, sizeof(buffer), "./renderthing %d %d %s %s", scr_size_x, scr_size_y, scenefilepath, "cpp_render.bmp");
-
-    int ret = system(buffer);
-    */
-}
-
-
-void python_render(void){
-
-    char* pycore_cmd = "scanline";    
-    char buffer[256];
-    snprintf(buffer, sizeof(buffer), "python3 pycore.py %s %s", active_filepath, pycore_cmd);
-    int ret = system(buffer);
-
-}
-
-
 
 void init_pycore(void){
     //call python from here!!

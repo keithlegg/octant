@@ -22,10 +22,6 @@ void setOrthographicProjection();
 void resetPerspectiveProjection();
 void renderBitmapString(float x, float y, void *font,const char *string);
 
-
-void software_render(void);
-void python_render(void);
-
 static void display_loop();
 static void render_loop();
 
@@ -38,7 +34,7 @@ void draw_poly_mousevent(int button, int state, int x, int y);
 void olmec_mouse_button(int button, int state, int x, int y);
 void olmec_mouse_motion(int x, int y);
 
-void olmec(int *argc, char** argv);
+void start_gui(int *argc, char** argv);
 
 
 
