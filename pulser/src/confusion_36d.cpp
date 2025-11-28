@@ -538,14 +538,23 @@ std::string cmd_buffer;
 
 static void parser_cb(unsigned char key, int x, int y)
 {
-    std::string new_buffer;
+    
+    //---
+    //std::string s(1, key);
+    //std::cout << s << std::endl;
+    //--- 
+    //std::string s{key};
+    //std::cout << s << std::endl;
+    //---      
+    //std::string s;
+    //s.push_back(key);
+    //std::cout << s << "\n";
 
-    //cmd_buffer.push_back((char) key);
-    //new_buffer = parse_cmds(*cmd_buffer);
+    //std::string new_buffer;
 
-    parse_cmds(&cmd_buffer);
+    parse_cmds(&cmd_buffer, &key);
 
-    std::cout << new_buffer << "\n";
+    //std::cout << new_buffer << "\n";
     glutPostRedisplay();
 
 };
@@ -707,11 +716,8 @@ static void render_loop()
         // persistant point buffer   
         // Not tested well! - I think it needs OpenGL4 amd up
 
-        // This is the first place in Gnolmec that required OpenGL library (not just Glut)
-
         //http://ogldev.atspace.co.uk/www/tutorial02/tutorial02.html 
         //https://stackoverflow.com/questions/28849321/how-to-draw-polygon-with-3d-points-in-modern-opengl
-        //This is the first place in the code that required OpenGL library (not just Glut)
         
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_points);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);

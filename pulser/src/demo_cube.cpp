@@ -114,7 +114,7 @@ void spinningCubeDemo(int *argc, char** argv){
     //BuildPopupMenu ();
     glutAttachMenu (GLUT_RIGHT_BUTTON);
 
-    //loadImage("textures/olmec.bmp" , imageloaded_bfr2);
+    //loadImage("textures/olmec.bmp"      , imageloaded_bfr2);
     //loadImage("textures/generated3.bmp" , imageloaded_bfr);
 
     glutMainLoop();// Start Event Processing Engine   

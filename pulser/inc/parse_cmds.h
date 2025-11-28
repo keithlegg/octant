@@ -5,9 +5,7 @@
 #include <string>
 
 
-
-void parse_cmds(std::string* );
-
+void parse_cmds(std::string *, unsigned char *);
 
 
 #endif

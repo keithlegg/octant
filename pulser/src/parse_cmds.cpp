@@ -16,13 +16,54 @@
 
 
 
-void parse_cmds(std::string *buffer )
+void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
-    buffer->push_back(*"HELLO KITTY\n");
+
+    std::string parsed;
+    std::string word;
+
+    std::istringstream iss(*buffer);
+    if (getline(iss, parsed, ' '))
+    {
+         // do some processing.
+    };
+
+    // std::stringstream ss(*buffer);
+    // int number_int;
+    // double number_double;
+    // // Extracting words separated by spaces
+    // ss >> word; // word will be "apple"
+    // ss >> word; // word will be "banana"
+
+    buffer->push_back(*pt_key);
+
+    //buffer->push_back(*"HELLO KITTY\n");
+    
+    std::cout << *buffer << "\n";
+
 };
 
 
 
+
+/*
+    std::stringstream ss(buffer);
+    std::string word;
+    int number_int;
+    double number_double;
+
+    // Extracting words separated by spaces
+    ss >> word; // word will be "apple"
+    ss >> word; // word will be "banana"
+
+    // Extracting numbers
+    ss >> number_int;    // number_int will be 123
+    ss >> number_double; // number_double will be 4.5
+
+    std::cout << "Word 1: " << word << std::endl;
+    std::cout << "Integer: " << number_int << std::endl;
+    std::cout << "Double: " << number_double << std::endl;
+*/
 
 
 /*

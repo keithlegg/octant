@@ -181,8 +181,6 @@ void obj_model::triangulate(void)
 
 void obj_model::calc_normals(void)
 {
-    //Ported from raw gnolmec function - seems to work fine 
-
     int  p_i = 0;
     vec3 tri_cntr;
 
