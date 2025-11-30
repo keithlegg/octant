@@ -1116,7 +1116,9 @@ void start_gui(int *argc, char** argv){
     cg.load_cfg_file(argv[1]);
     //load any optional 3d models needed for setup
     cg.load_objects();
+
     cg.show_obj();
+
 
     //cg.show();
 

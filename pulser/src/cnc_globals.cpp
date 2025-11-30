@@ -278,9 +278,10 @@ int cncglobals::cvt_int( const std::string& s)
 /**********************************/
 void cncglobals::show_obj(void)
 {
+    
+    //pt_model_buffer.show();
 
-
-    pt_model_buffer.show();
+    pt_model_buffer.show_geom();
 
 }
 

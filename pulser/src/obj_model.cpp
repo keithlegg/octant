@@ -37,16 +37,24 @@ using std::vector;
 int uv_cnt   = 0;  // number of UVs loaded 
  
 
-void obj_model::clearall(void)
-{
 
-    //memset(obj_model::uvs,      0, obj_model::num_pts);
-    //memset(obj_model::points,   0, obj_model::num_pts);
-    //memset(obj_model::vnormals, 0, obj_model::num_pts);
-    //memset(obj_model::vtxrgb,   0, obj_model::num_pts);
-    //memset(obj_model::fnormals, 0, obj_model::num_pts);
-    //memset(obj_model::tris,     0, obj_model::num_tris);
-    //memset(obj_model::quads,    0, obj_model::num_quads);
+/*******************************************************************/
+/*
+    Clear an object to "reset" it
+*/
+
+void obj_model::reset(void)
+{
+    //DEBUG - FIX THIS 
+    /*
+    memset((*this).uvs,      0, (*this).num_pts);
+    memset((*this).points,   0, (*this).num_pts);
+    memset((*this).vnormals, 0, (*this).num_pts);
+    memset((*this).vtxrgb,   0, (*this).num_pts);
+    memset((*this).fnormals, 0, (*this).num_pts);
+    memset((*this).tris,     0, (*this).num_tris);
+    memset((*this).quads,    0, (*this).num_quads);
+    */
 
     (*this).num_pts = 0;
     (*this).num_uvs = 0;
@@ -57,7 +65,16 @@ void obj_model::clearall(void)
     (*this).num_fnrmls = 0;
     (*this).num_vtxrgb = 0;
 
+    // obinfo->bb_min_x = 0;
+    // obinfo->bb_max_x = 0;
+    // obinfo->bb_min_y = 0;
+    // obinfo->bb_max_y = 0;
+    // obinfo->bb_min_z = 0;
+    // obinfo->bb_max_z = 0; 
+
 }
+
+
 
 
 void obj_model::show(void)
@@ -73,6 +90,51 @@ void obj_model::show(void)
     std::cout<< "# number  fac nrml  " << (*this).num_fnrmls  << "\n";
     std::cout<< "# number  vtxcolr   " << (*this).num_vtxrgb  << "\n"; 
 }
+
+
+
+void obj_model::show_geom(void)
+{
+    int i = 0;
+    std::cout << "\n";
+
+    //std::cout << "\n# point indices  ---------------- %d \n", (*this).num_pts);
+    for (i=0;i<(*this).num_pts;i++)
+    {
+        print_vec3( &(*this).points[i]) ;
+    }
+
+    // std::cout << "\n# line indices  ------------------- %d \n", (*this).num_lines);
+    for (i=0;i<(*this).num_lines;i++)
+    {
+        //printf(" %d line   %d %d  \n",i ,  (*this).lines[i].pt1 , (*this).lines[i].pt2 );
+        //print_vec3( (*this).lines[i]) ;
+    }
+
+    //std::cout << "\n# triangle indices ----------------- %d \n", (*this).num_tris);
+    for (i=0;i<(*this).num_tris;i++)
+    {
+
+        //triangle tri_buffer = from_obj->tris[i]; //start with original indices
+        //printf(" %d triangle   %d %d %d \n", i, (*this).tris[i].pt1 , (*this).tris[i].pt2, (*this).tris[i].pt3);        
+    }
+
+    //std::cout << "\n# quad indices ------------------   %d \n", (*this).num_quads);
+    for (i=0;i<(*this).num_quads;i++)
+    {
+
+        quad qbfr = (*this).quads[i]; //start with original indices
+        //printf(" %d quad   %d %d %d %d \n", i, qbfr.pt1 , qbfr.pt2, qbfr.pt3, qbfr.pt4 );        
+    }
+
+    //printf("\n# Normals   --------  \n");
+
+    //printf("\n# UVs   --------  \n");
+
+    //printf("\n# Colors   --------  \n");
+
+}
+
 
 
 void obj_model::add_triangle(vec3 pt1, vec3 pt2, vec3 pt3)
@@ -351,50 +413,6 @@ vec3 get_extents(obj_info* obinfo){
 
 
 
-void show_obj_geom(obj_model* loader)
-{
-    int i = 0;
-    printf("\n");
-
-    printf("\n# point indices  ---------------- %d \n", loader->num_pts);
-    for (i=0;i<loader->num_pts;i++)
-    {
-        printf("%d pt    ",i);
-        //DEBUG UNTESTED NEW PRINT IN C++
-        //print_vec3( &loader->points[i]) ;
-    }
-
-    printf("\n# line indices  ------------------- %d \n", loader->num_lines);
-    for (i=0;i<loader->num_lines;i++)
-    {
-        printf(" %d line   %d %d  \n",i ,  loader->lines[i].pt1 , loader->lines[i].pt2 );
-        //print_vec3( loader->lines[i]) ;
-    }
-
-    printf("\n# triangle indices ----------------- %d \n", loader->num_tris);
-    for (i=0;i<loader->num_tris;i++)
-    {
-
-        //triangle tri_buffer = from_obj->tris[i]; //start with original indices
-        printf(" %d triangle   %d %d %d \n", i, loader->tris[i].pt1 , loader->tris[i].pt2, loader->tris[i].pt3);        
-    }
-
-
-    printf("\n# quad indices ------------------   %d \n", loader->num_quads);
-    for (i=0;i<loader->num_quads;i++)
-    {
-
-        quad qbfr = loader->quads[i]; //start with original indices
-        printf(" %d quad   %d %d %d %d \n", i, qbfr.pt1 , qbfr.pt2, qbfr.pt3, qbfr.pt4 );        
-    }
-
-    //printf("\n# Normals   --------  \n");
-
-    //printf("\n# UVs   --------  \n");
-
-    //printf("\n# Colors   --------  \n");
-
-}
 
 
 
@@ -478,44 +496,6 @@ void insert_geom(obj_model* from_obj, obj_model* to_obj)
 }
 */
 
-/*******************************************************************/
-/*
-    Clear an object to "reset" it
-*/
-
-void obj_model::reset(void)
-{
-
-    // uv_cnt   = 0;  // number UVs loaded 
-
-    memset((*this).uvs,      0, (*this).num_pts);
-    memset((*this).points,   0, (*this).num_pts);
-    memset((*this).vnormals, 0, (*this).num_pts);
-    memset((*this).vtxrgb,   0, (*this).num_pts);
-    memset((*this).fnormals, 0, (*this).num_pts);
-    memset((*this).tris,     0, (*this).num_tris);
-    memset((*this).quads,    0, (*this).num_quads);
-
-    //struct vec3 vtxrgb[num_vtx];        // 3 floats - color per vertex 
-    //struct line lines[num_faces];       // 2 ints   - lines    idx
-
-    (*this).num_pts = 0;
-    (*this).num_uvs = 0;
-    (*this).num_lines = 0;
-    (*this).num_tris = 0;
-    (*this).num_quads = 0;
-    (*this).num_vnrmls = 0;
-    (*this).num_fnrmls = 0;
-    (*this).num_vtxrgb = 0;
-
-    // obinfo->bb_min_x = 0;
-    // obinfo->bb_max_x = 0;
-    // obinfo->bb_min_y = 0;
-    // obinfo->bb_max_y = 0;
-    // obinfo->bb_min_z = 0;
-    // obinfo->bb_max_z = 0; 
-
-}
 
 /*******************************************************************/
 
@@ -535,7 +515,10 @@ void obj_model::load(char *filepath)
 {
 
     //DEBUG - NOT FOR ALL CASES initialize the buffers 
-    (*this).clearall();
+    //(*this).clearall();
+    (*this).reset();
+
+
 
 
     std::cout << "##### load_objfile loading file "<< filepath << "\n";

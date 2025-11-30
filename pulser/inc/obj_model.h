@@ -134,17 +134,20 @@ class obj_model {
         struct triangle tris[num_faces];    // 3 ints   - triangle idx 
         struct quad quads[num_faces];       // 4 ints   - quad     idx 
 
+        //vec3 get_obj_centroid( void );
+
         void reset(void);
         void load( char *);
         void save( char *);
         void show(void);
         
-
-        //vec3 get_obj_centroid( void );
-        void clearall(void);
         void calc_normals(void);
         void add_triangle(vec3 pt1, vec3 pt2, vec3 pt3);
         void triangulate(void);
+        void show_geom(void);
+
+        //void get_obj_info(obj_model* loader, obj_info* obinfo);
+        //void test_loader_data( obj_model* loader);
 
 
 };
@@ -187,24 +190,7 @@ class obj_info {
 
 
 vec3 get_extents( obj_info* obinfo );
-
-
-//void gen_normals():
-
-//void insert_geom(obj_model* from_obj, obj_model* to_obj);
-
-void show(obj_model* objmodel);
 void show(obj_info* obinfo);
-void show_obj_geom(obj_model* loader);
-
-
-void get_obj_info(obj_model* loader, obj_info* obinfo);
-
-void test_loader_data( obj_model* loader);
-
-
-
-
 
 
 
