@@ -14,6 +14,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <filesystem> 
 
 #include <string>
 #include <cstring>
@@ -297,6 +298,9 @@ void cncglobals::load_objects(void)
         {
             //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
             strcpy(char_array, (*this).obj_filepaths[x].c_str()); 
+
+            std::cout << "##### DEBUG load_objfile resetting file internals \n";
+            pt_model_buffer.reset();
             pt_model_buffer.load(char_array);
         };
     };
@@ -308,6 +312,30 @@ void cncglobals::load_cfg_file( char* filepath )
     std::cout << "cncglobals loading file "<< filepath << "\n";
 
     std::ifstream cfg_filein;
+
+    //DEBUG - need to check to make sure its a file, not a directory 
+    /*
+    const std::string pathString = std::to_string(filepath);
+    const fs::path path(pathString); 
+    std::error_code ec;  
+
+    if (fs::is_directory(path, ec))
+    { 
+        // Process a directory.
+    }
+    if (ec) // Optional handling of possible errors.
+    {
+        std::cerr << "Error in is_directory: " << ec.message();
+    }
+    if (fs::is_regular_file(path, ec))
+    {
+        // Process a regular file.
+    }
+    if (ec) // Optional handling of possible errors. Usage of the same ec object works since fs functions are calling ec.clear() if no errors occur.
+    {
+        std::cerr << "Error in is_regular_file: " << ec.message();
+    }*/
+
 
     cfg_filein.open(filepath); // open a file
     if (!cfg_filein.good()){ 

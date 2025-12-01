@@ -17,9 +17,9 @@
 
 
 #include <string>
-
-
 #include <iostream>
+
+#include <cctype>
 
 #include <fstream>
 #include <vector>
@@ -510,27 +510,10 @@ std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  
 void obj_model::load(char *filepath)
 {
 
-    std::cout << "##### DEBUG load_objfile resetting file internals \n";
-    //DEBUG - NOT FOR ALL CASES initialize the buffers 
-    (*this).reset();
-
-
     std::cout << "##### load_objfile loading file "<< filepath << "\n";
     
-    int pofst = 0; //pointoffset indices to points if geom exists already 
+    int pofst = 0; //point offset indices to points if geom exists already 
     int line_ct = 0;
-
-    // std::string s;
-    // std::ifstream in(filepath);
-    // if(!in) {
-    //     std::cerr << "File not opened" << std::endl;
-    //     exit(1);
-    // }
-    // while(in >> s) 
-    // {
-
-    //std::ifstream obj_filein;
-    //obj_filein.open(filepath); // open a file
     
     std::ifstream obj_filein(filepath, std::ifstream::in);
 
@@ -539,7 +522,6 @@ void obj_model::load(char *filepath)
         exit (EXIT_FAILURE); // exit if file not found
     }
 
-    //while (!obj_filein.eof())
     while (!obj_filein.eof() && !obj_filein.fail() && !obj_filein.bad())
     {  
 
@@ -689,37 +671,49 @@ void obj_model::load(char *filepath)
                     {
                         int a = 0;
                         int fidx = 0;
-                        int pt1,pt2,pt3,pt4 = 0;;
+                        int pt1,pt2,pt3,pt4 = 0;
 
                         //walk the space delineated tokens per each line
                         for (a=0;a<tokenized.size();a++)
                         {   
-                 
-                            std::cout << " line " << line_ct << " normal " << fidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
-                            /*
-                            //only supports 2,3,4 sided polygons  
-                            if(fidx==0){
-                                pt1 = std::stoi( tokenized.at(a));
-                                if (pofst>0){ pt1 = pt1+pofst;};
-                            }
-                            if(fidx==1){
-                                pt2 = std::stoi( tokenized.at(a));
-                                if (pofst>0){ pt2 = pt2+pofst;};                                               
-                            }  
-                            if(fidx==2){
-                                pt3 = std::stoi( tokenized.at(a));
-                                if (pofst>0){ pt3 = pt3+pofst;};                         
-                            }   
-                            if(fidx==3){
-                                pt4 = std::stoi( tokenized.at(a));
-                                if (pofst>0){ pt4 = pt4+pofst;};                                               
-                            }  
-                            */
-                            //-- -- -- -- 
-                            fidx++;
+
+                            //get type  
+                            //std::cout << " FOO  " << typeid(tokenized.at(fidx)).name()  << "\n";
+
+                            if( tokenized.at(a).size())
+                            {
+                                std::cout << " line " << line_ct << " normal " << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
+                                
+                                /*    
+                                //only supports 2,3,4 sided polygons  
+                                if(fidx==0){
+                                    pt1 = std::stoi( tokenized.at(fidx));
+                                    if (pofst>0){ pt1 = pt1+pofst;};
+                                }
+                                if(fidx==1){
+                                    pt2 = std::stoi( tokenized.at(fidx));
+                                    if (pofst>0){ pt2 = pt2+pofst;};                                               
+                                }  
+                                if(fidx==2){
+                                    pt3 = std::stoi( tokenized.at(fidx));
+                                    if (pofst>0){ pt3 = pt3+pofst;};                         
+                                }   
+                                if(fidx==3){
+                                    pt4 = std::stoi( tokenized.at(fidx));
+                                    if (pofst>0){ pt4 = pt4+pofst;};                                               
+                                }  
+                                */
+                                //-- -- -- --
+                                fidx++;
+                            } 
+ 
 
                         }
+                        //remove one to account for "f" on line - stupid and I dont like it 
+                        if(fidx>1){fidx--;}
 
+                        std::cout << " final fidx "<< fidx << "\n";  
+                 
                         //-------                  
                         //if two face indices - its a line  
                         if (fidx==2)
@@ -749,11 +743,11 @@ void obj_model::load(char *filepath)
 
                         if (fidx==4)
                         {
-                            (*this).quads[(*this).num_quads].pt1 = pt1;
-                            (*this).quads[(*this).num_quads].pt2 = pt2;                          
-                            (*this).quads[(*this).num_quads].pt3 = pt3;
-                            (*this).quads[(*this).num_quads].pt4 = pt4;
-                            (*this).num_quads++;
+                            // (*this).quads[(*this).num_quads].pt1 = pt1;
+                            // (*this).quads[(*this).num_quads].pt2 = pt2;                          
+                            // (*this).quads[(*this).num_quads].pt3 = pt3;
+                            // (*this).quads[(*this).num_quads].pt4 = pt4;
+                            // (*this).num_quads++;
                         }//end quad loader 
                    
 

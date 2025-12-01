@@ -6,6 +6,8 @@
 #include <cstring>
 #include <functional>
 
+#include <unistd.h>
+
 
 
 #include "math_op.h"        // general math operations
@@ -19,9 +21,6 @@
 
 #include "confusion_36d.h" 
 
-
-//debug this is not used - get rid of it 
-#include "../inc/asker.hpp"
 
 
 
@@ -106,6 +105,7 @@ void run_cncplot(cncglobals* cg,
 
 /******************************************/
 
+/*
 void parse_args(cncglobals* cg,  int argc, char **argv)
 {
     if (argc < 8){
@@ -130,6 +130,7 @@ void parse_args(cncglobals* cg,  int argc, char **argv)
     run_cncplot( cg, a1, a2, a3, a4, a5, a6, a7 );
 
 }
+*/
 
 
 /******************************************/
@@ -138,11 +139,7 @@ void parse_args(cncglobals* cg,  int argc, char **argv)
 int main(int argc, char **argv) 
 {  
 
-    //cncglobals cg;
-    //cg.load_cfg_file(argv[1]);
-    // cg.show();
-
-
+    
     /*------------------*/    
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
@@ -159,8 +156,10 @@ int main(int argc, char **argv)
     //spinningCubeDemo(&argc, argv);
 
     /*------------------*/
-    //parse_args(cg, argc, argv); 
-    
+    // parse_args(cg, argc, argv); 
+    // if(sizeof(argv[1]) == sizeof(char *))
+    //    std::cout << "empty " << argc << "\n";
+
     /*------------------*/
     // test of limit switch reading 
     //cnc_plot plot;

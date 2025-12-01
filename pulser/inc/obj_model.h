@@ -129,15 +129,28 @@ class obj_model {
         int num_lines;
         int num_tris;
         int num_quads;    
+      
 
-        struct vec3 points[num_vtx];        // 3 floats - vertex  
-        struct vec3 vtxrgb[num_vtx];        // 3 floats - color per vertex 
-        struct vec2 uvs[num_vtx];           // 2 floats - UV coords 
-        struct vec3 vnormals[num_vtx];      // 3 floats - face normal 
-        struct vec3 fnormals[num_faces];    // 3 floats - face normal 
-        struct line lines[num_faces];       // 2 ints   - lines    idx
-        struct triangle tris[num_faces];    // 3 ints   - triangle idx 
-        struct quad quads[num_faces];       // 4 ints   - quad     idx 
+        vec3 points[num_vtx];        // 3 floats - vertex  
+        vec3 vtxrgb[num_vtx];        // 3 floats - color per vertex 
+        vec2 uvs[num_vtx];           // 2 floats - UV coords 
+        vec3 vnormals[num_vtx];      // 3 floats - face normal 
+        vec3 fnormals[num_faces];    // 3 floats - face normal 
+        line lines[num_faces];       // 2 ints   - lines    idx
+        triangle tris[num_faces];    // 3 ints   - triangle idx 
+        quad quads[num_faces];       // 4 ints   - quad     idx 
+
+        // float& operator[] (size_t i)
+        // {
+        //   switch (i) {
+        //     case 0: return x;
+        //     case 1: return y;
+        //     case 2: return z;
+        //     default: throw "something";
+        //   }
+        // }
+        // float operator[] (size_t i) const
+        // { return (*const_cast<vector3f*>(this))[i];
 
         //vec3 get_obj_centroid( void );
         vec3 get_extents(void);
