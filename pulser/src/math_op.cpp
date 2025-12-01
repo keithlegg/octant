@@ -2,21 +2,6 @@
 /*
    math_op.c
 
-       This is an attempt to port the python math library I wrote into the C language
-
-       The original library supports:
-           vector2
-           vector3
-           vector4
-           Quaternion 
-           Matrix2X2
-           Matrix3X3
-           Matrix4X4
-           Spherical/Polar coords 
-
-       The original can be found here:
-           https://github.com/keithlegg/gnelscript/blob/master/pygfx/math_ops.py
-
    Copyright (C) 2026 Keith Legg - keithlegg23@gmail.com
 
 */

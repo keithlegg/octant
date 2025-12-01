@@ -9,11 +9,8 @@
 */
 /*************************************************************/
 
-
-#include <stdio.h>
 #include <unistd.h> //sleep()
 #include <sys/io.h> //outb() ioperm()
-#include <stdlib.h>
 #include <math.h>
 #include <iomanip>
 

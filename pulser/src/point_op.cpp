@@ -1,9 +1,6 @@
 #include <iostream>
 using namespace std; 
 
-#include <stdio.h>
-
-
 #include "math.h"
 
 #include "point_op.h"
