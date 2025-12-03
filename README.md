@@ -62,10 +62,11 @@ It is all of these things (except the renderer, I ripped that out.)
 
 It is a pile of experiments that will control a CNC machine, or 3D printer, or an SMT pick and place. 
 
-It is general purpose interface from graphicsd on a screen to the physical world.
+It is general purpose interface GUI, 3D graphics on a screen to the physical world.
 
 
 
+<br>
  
 
 An amalgamation of some of my older projects:
