@@ -48,7 +48,10 @@ I had a dream of controlling CNC machines.
 
 It was almost a GCODE parser (and may be one someday)
 
-(I took a long break from 2020-2025 for a major life reset)
+
+<b>2020-2024:</b>
+I took a long break from fun stuff for a major life reset.
+
 
 <b>2025:</b>
 
