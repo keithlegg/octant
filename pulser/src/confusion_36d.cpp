@@ -107,8 +107,6 @@ extern int scr_size_x;
 extern int scr_size_y;
 extern bool scr_full_toglr;
 
-
-
 extern vector<std::string>  obj_filepaths;
 
 
@@ -118,17 +116,17 @@ bool DRAW_POLYS      = TRUE; // is this needed?
 bool draw_scene_geom = TRUE;
 
 bool draw_points_vbo = FALSE; // test of VBO 
-bool draw_points     = FALSE;   
-bool draw_lines      = FALSE;
-bool draw_normals    = FALSE;
-bool draw_quads      = FALSE;
+bool draw_points     = TRUE;   
+bool draw_lines      = TRUE;
+bool draw_normals    = TRUE;
+bool draw_quads      = TRUE;
 bool draw_triangles  = TRUE;
-bool draw_grid       = FALSE;
-bool draw_cntrgrid   = FALSE;
-bool draw_bbox       = FALSE;
+bool draw_grid       = TRUE;
+bool draw_cntrgrid   = TRUE;
+bool draw_bbox       = TRUE;
 
 bool render_text     = TRUE;
-bool show_textures   = TRUE;
+bool show_textures   = FALSE;
 
 
 int TCP_PORT = 0;
@@ -247,16 +245,15 @@ Vector3 orbt_xform_original;
 
 /***************************************/
 
-GLfloat clr_linez[] = { 0, 1., 0, 0};
-
-GLfloat emis_full[] = { 1, 1, 1, 0};
-GLfloat emis_text[] = { .8, .8, .9, 0};
+GLfloat clr_linez[]   = { 0, 1., 0, 0};
+GLfloat emis_full[]   = { 1, 1, 1, 0};
+GLfloat emis_text[]   = { .8, .8, .9, 0};
 GLfloat emis_points[] = { 0, .6, .2, 0};
-GLfloat emis_off[] = { 0, 0, 0, 0};
-GLfloat emis_lines[] = { .5, 0, .5, 0};
-GLfloat clr_yellow[] = { 1., 1., 0, 0};
-GLfloat clr_green[] = { 0, 1., 0, 0};
-GLfloat clr_blue[] = { 0, 0, 1., 0};
+GLfloat emis_off[]    = { 0, 0, 0, 0};
+GLfloat emis_lines[]  = { .5, 0, .5, 0};
+GLfloat clr_yellow[]  = { 1., 1., 0, 0};
+GLfloat clr_green[]   = { 0, 1., 0, 0};
+GLfloat clr_blue[]    = { 0, 0, 1., 0};
 
 
 
@@ -480,7 +477,6 @@ static void render_loop()
     // Clear The Screen And The Depth Buffer
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
 
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
@@ -755,30 +751,31 @@ static void render_loop()
                 int tri2 = pt_model_buffer->tris[p_i][1];
                 int tri3 = pt_model_buffer->tris[p_i][2];
 
-                //std::cout << tri1 << " " << tri2 << " " << tri3 << "\n";
-
-
                 // //use the same vertex indices to lookup RGB 
                 Vector3 rgb1 = pt_model_buffer->vtxrgb[tri1-1];
                 Vector3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
                 Vector3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
-                glColor3f(rgb1.x,rgb1.y,rgb1.z);   
-                //vec2 uv = pt_model_buffer->uvs[tri1];
-                //glTexCoord2f(uv.x, uv.y);
-                glTexCoord2f(0.5, 1.0);                
                 
+                std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
+
+                //------------------------------//
+                glColor3f(rgb1.x,rgb1.y,rgb1.z);   
+                //Vector2 uv = pt_model_buffer->uvs[tri1];
+                // glTexCoord2f(uv.x, uv.y);
+                glTexCoord2f(0.5, 1.0);                
+
                 Vector3 pt1 = pt_model_buffer->points[tri1-1];
                 glVertex3f(pt1.x, pt1.y, pt1.z);
               
                 Vector3 nrm1 = pt_model_buffer->vnormals[tri1-1];
                 glNormal3f( nrm1.x, nrm1.y, nrm1.z);
-                //printf( " %d %d %d \n",  nrm1.x, nrm1.y, nrm1.z);
+                
+                //std::cout <<  " nrm1 "<< nrm1.x << " "<< nrm1.y << " "<< nrm1.z << "\n";
 
-                //////
+                //------------------------------//
                 glColor3f(rgb2.x,rgb2.y,rgb2.z); 
-
-                Vector2 uv = pt_model_buffer->uvs[tri2];
-                glTexCoord2f(uv.x, uv.y);
+                //Vector2 uv = pt_model_buffer->uvs[tri2];
+                //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.0, 1.0); 
 
                 Vector3 pt2 = pt_model_buffer->points[tri2-1];
@@ -787,21 +784,23 @@ static void render_loop()
                 // calculated face normals 
                 Vector3 nrm2 = pt_model_buffer->vnormals[tri2-1];
                 glNormal3f( nrm2.x, nrm2.y, nrm2.z);
+                
+                //std::cout <<  " nrm2 "<< nrm2.x << " "<< nrm2.y << " "<< nrm2.z << "\n";
 
-                //////
-                //glColor3f(rgb3.x,rgb3.y,rgb3.z); 
-                // Vector2 uv = pt_model_buffer->uvs[tri3];
-                // glTexCoord2f(uv.x, uv.y);
-                // glTexCoord2f(1.0, 0.0);       
+                //------------------------------//
+                glColor3f(rgb3.x,rgb3.y,rgb3.z); 
+                //Vector2 uv = pt_model_buffer->uvs[tri3];
+                //glTexCoord2f(uv.x, uv.y);
+                glTexCoord2f(1.0, 0.0);       
 
-                //Vector3 pt3 = pt_model_buffer->points[tri3-1];
-                //glVertex3f(pt3.x, pt3.y, pt3.z);
+                Vector3 pt3 = pt_model_buffer->points[tri3-1];
+                glVertex3f(pt3.x, pt3.y, pt3.z);
 
                 // calculated face normals
-                //Vector3 nrm3 = pt_model_buffer->vnormals[tri3-1];
-                //glNormal3f( nrm3.x, nrm3.y, nrm3.z);
-               
-
+                Vector3 nrm3 = pt_model_buffer->vnormals[tri3-1];
+                glNormal3f( nrm3.x, nrm3.y, nrm3.z);
+                
+                //std::cout <<  " nrm3 "<< nrm3.x << " "<< nrm3.y << " "<< nrm3.z << "\n";
             }
 
         glEnd(); 
@@ -860,10 +859,9 @@ static void render_loop()
 
         for (p_i=0;p_i<num_drawvec3;p_i++)
         {   
-            /*
+             
             Vector3 dv  = scene_drawvec3[p_i];
             Vector3 rgb = scene_drawvecclr[p_i];            
-            //print_vec3(dv);
 
             glBegin(GL_LINES);
                 glColor3f(rgb.x,rgb.y,rgb.z);
@@ -873,7 +871,7 @@ static void render_loop()
                 glVertex3f(dv.x, dv.y, dv.z);
         
             glEnd();
-            */
+             
         }
         
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);

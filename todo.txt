@@ -1,13 +1,22 @@
 
 
+#model_loader
+    - blows up with arbitrary whitespace in obj file 
+    - normals untested 
+    - UVs untested 
+    - quads unstested
+    - triangles appear to be out of index 
+
+
+    - triangulate
+
+
+
 
 -build 3D models of tools 
 
 
 
-#model_loader
-    - get triangles, quads working
-    - triangulate
 
 
 #general architecture  

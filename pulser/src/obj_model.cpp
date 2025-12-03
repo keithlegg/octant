@@ -528,7 +528,7 @@ void obj_model::load(char *filepath)
                         for (a=0;a<tokenized.size();a++)
                         {   
                  
-                            //std::cout << " line " << line_ct << " vertex " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            std::cout << " line " << line_ct << " vtxpass " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
                           
                             if(vidx==1){
                                 xc = std::stof(tokenized.at(a));
@@ -562,16 +562,16 @@ void obj_model::load(char *filepath)
                         //std::cout << "VIDX IS "<< vidx <<"\n"; 
 
                         //if two points its a 2D coord ( not a standard obj file )  
-                        if (vidx==3){
+                        if (vidx==2){
                             std::cout << "2D point detected!\n"; 
                         }
                         
                         //if three points its a proper vertex 
-                        if (vidx>=2)
+                        if (vidx>=3)
                         {
                             Vector3 vpt = Vector3( xc, yc, zc  );
                             
-                            //std::cout << "v3 "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
+                            std::cout << "vtx 3d "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
 
                             points[num_pts] = vpt;
                             num_pts = num_pts+1;
@@ -604,7 +604,7 @@ void obj_model::load(char *filepath)
                         for (a=0;a<tokenized.size();a++)
                         {   
                  
-                            //std::cout << " line " << line_ct << " normal " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            std::cout << " line " << line_ct << " nrmlpass " << nidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
                             
                             if(nidx==0){
                                 xc = std::stof(tokenized.at(a));

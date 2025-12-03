@@ -2,9 +2,9 @@
 #number of verticies 3
 #number of faces     1
 
-v 0 4 0 1 1 0   0
-v -4 0  0 1 0   0  
-v 6 0 0  0 1 1   0
+v 0 4 0 1 1 0 0
+v -4 0 0 1 0 0  
+v 6 0 0 0 1 1 0
 
 
 f 1 2 3
