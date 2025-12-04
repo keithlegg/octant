@@ -756,7 +756,7 @@ static void render_loop()
                 Vector3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
                 Vector3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
                 
-                std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
+                //std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
 
                 //------------------------------//
                 glColor3f(rgb1.x,rgb1.y,rgb1.z);   
