@@ -8,6 +8,8 @@
 #include "Matrices.h"
 //#include "math_op.h"
 
+//this is required - follows the same inheritance as old python tools 
+#include "point_op.h"
 
 //#define MAX_NUM_VERTICES 1000
 //#define MAX_NUM_FACES 1000
@@ -39,7 +41,7 @@ typedef struct quad{
 */
 
 
-class obj_model {
+class obj_model: public polygon_ops {
     public:
         obj_model()
         {
@@ -75,6 +77,7 @@ class obj_model {
         
         //Vector3 centroid( void );
         Vector3 extents(void);
+        Vector3 get_triface_normal(int);
 
         // --- 
         Vector3 points[MAX_NUM_VERTICES];      // vertices of model    
@@ -98,7 +101,7 @@ class obj_model {
         // class members to deal with this as a contained object 
 
         // Matrix3 m33;
-        // Matrix4 m44;
+        Matrix4 m44;
         // 
         // void translate(void);
         // void rotate(void);
@@ -113,15 +116,40 @@ class obj_model {
         void show(void);
         void show_geom(void);
 
+        void load_m44(char* filename);
+
+        //
+        /*
+        void make_line(double scale); 
+        void make_triangle(double scale); 
+        void make_circle(int divs, double scale);
+        
+        void make_square(double scale);  
+        void make_cube(double scale);
+        */ 
+        // 
+
         void calc_normals(void);
         void triangulate(void);
-        void insert(std::vector<int>& input);
-        void add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3);
-        void add_triangle(int vid1, int vid2, int vid3);
+        void insert(std::vector<int>& );
+    
+        void add_triangle(Vector3, Vector3, Vector3 );
+        void add_triangle(int, int, int );
+        void append_tri(Vector3, Vector3, Vector3, int, int, int );
 
+
+        void vec3_as_pt_geom(Vector3, double);
+        void vec3_as_pt_geom(Vector3, Vector3, double );
+
+        void between_2vecs_as_line(Vector3, Vector3 );        
+        void between_2vecs_as_line(Vector3, Vector3, Vector3 );
+
+        void vec3_as_geom_atpos( Vector3, Vector3, Vector3 );
+        void vec3_as_geom_atpos( Vector3, Vector3 );
+        void vec3_as_geom(Vector3);
 
         //void get_obj_info(obj_model* loader, obj_info* obinfo);
-        void sample_data( obj_model* loader);
+        void sample_data( obj_model*);
 
 
 };
