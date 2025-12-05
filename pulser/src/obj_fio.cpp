@@ -1,6 +1,6 @@
 /*****************************************************************************/
 /* 
-    obj_model.cpp
+    obj_fio.cpp
     
         Load and save 3D models from disk 
 
@@ -48,617 +48,34 @@
 using std::vector;
 
 #include <sstream>
+
 #include "obj_model.h"
+#include "obj_fio.h"
 
  
 
 extern obj_model* pt_model_buffer;
 
 
-/*******************************************************************/
-/*
-    Clear an object to "reset" it
-*/
-
-void obj_model::reset(void)
-{
-    //DEBUG - FIX THIS 
-    
-    // memset(uvs,      0, num_pts);
-    // memset(points,   0, num_pts);
-    // memset(vnormals, 0, num_pts);
-    // memset(vtxrgb,   0, num_pts);
-    // memset(fnormals, 0, num_pts);
-    // memset(tris,     0, num_tris);
-    // memset(quads,    0, num_quads);
-    
-
-    num_pts = 0;
-    num_uvs = 0;
-    num_lines = 0;
-    num_tris = 0;
-    num_quads = 0;
-    num_vnrmls = 0;
-    num_fnrmls = 0;
-    num_vtxrgb = 0;
-
-}
-
-
-
-
-void obj_model::show(void)
-{
-    std::cout<< "#-----------------------#\n";
-    std::cout<< "#---- objmodel show ----#\n";
-    std::cout<< "# number  points    " << num_pts     << "\n";
-    std::cout<< "# number  lines     " << num_lines   << "\n";
-    std::cout<< "# number  triangles " << num_tris    << "\n";
-    std::cout<< "# number  quads     " << num_quads   << "\n";
-    std::cout<< "# number  UVs       " << num_uvs     << "\n";
-    std::cout<< "# number  vtx nrml  " << num_vnrmls  << "\n";
-    std::cout<< "# number  fac nrml  " << num_fnrmls  << "\n";
-    std::cout<< "# number  vtxcolr   " << num_vtxrgb  << "\n"; 
-}
-
-
-
-void obj_model::show_geom(void)
-{
-    int i = 0;
-    std::cout << "\n";
-
-    //std::cout << "\n# point indices  ---------------- %d \n", (*this).num_pts);
-    for (i=0;i<num_pts;i++)
-    {
-        std::cout << " pt idx "<< i  << " is :";
-        //std::cout << points[i].x << " " << points[i].y << " "<< points[i].z << "\n";
-    }
-
-    // std::cout << "\n# line indices  ------------------- %d \n", (*this).num_lines);
-    for (i=0;i<num_lines;i++)
-    {
-        std::cout << " line idx "<< i  << " is :";
-        std::cout << lines[i][0] << " " << lines[i][1] << "\n";  
-    }
-
-    //std::cout << "\n# triangle indices ----------------- %d \n", (*this).num_tris);
-    for (i=0;i<num_tris;i++)
-    {
-        std::cout << " tri idx "<< i  << " is :";
-        std::cout << tris[i][0] << " " << tris[i][1] << tris[i][2] << "\n";
-
-    }
-
-    //std::cout << "\n# quad indices ------------------   %d \n", (*this).num_quads);
-    for (i=0;i<num_quads;i++)
-    {
-        std::cout << " quad idx "<< i  << " is :";
-        std::cout << quads[i][0] << " " << quads[i][1] << " "<< quads[i][2] << " "<< quads[i][3] << "\n";
-
-    }
-
-    //printf("\n# Normals   --------  \n");
-
-    //printf("\n# UVs   --------  \n");
-
-    //printf("\n# Colors   --------  \n");
-
-}
-
-
-
-/**********************************************************/
-// UNTESTED add a new triangle using 3 vector3 
-void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
-{
-    vector<int> newtri;
-
-    points[num_pts] = pt1;
-    newtri.push_back(num_pts+1);
-    num_pts++;
-    
-    points[num_pts] = pt2;
-    newtri.push_back(num_pts+1);
-    num_pts++;
-    
-    points[num_pts] = pt3;
-    newtri.push_back(num_pts+1);
-    num_pts++;
-
-    tris[ num_tris ] = newtri;  
-    num_tris++;
-
-}
-
-/**********************************************************/
-// add a new triangle using Face Indices to existing vertices
-void obj_model::add_triangle(int vid1, int vid2, int vid3)
-{
-
-    // debug - use fac_tmp instead? 
-    vector<int> newtri;
-    newtri.push_back(vid1);
-    newtri.push_back(vid2);
-    newtri.push_back(vid3);
-
-    tris[ num_tris ] = newtri;  // 3 sided 
-    num_tris++;
-
-}
+const int MAX_CHARS_PER_LINE = 512;
+const int MAX_TOKENS_PER_LINE = 20;
+const char* const DELIMITER = " ";
 
 
 
 /**********************************************/
-// add a new triangle AND new points 
-void obj_model::append_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3, int vid1, int vid2, int vid3)
-{
 
-    num_pts++;
-    points[num_pts] = pt1 ;
-    num_pts++;
-    points[num_pts] = pt2 ;
-    num_pts++;
-    points[num_pts] = pt3 ;    
-    //--------------------
-    vector<int> newtri;
-    newtri.push_back(vid1);
-    newtri.push_back(vid2);
-    newtri.push_back(vid3);
-
-    tris[ num_tris ] = newtri;  // 3 sided 
-    num_tris++;
-}
-
-/**********************************************/
-// add renderable line segment between two vectors  
-void obj_model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2)  
-{
-
-    vector<int> newline;
-
-    points[num_pts] = pt1;
-    newline.push_back(num_pts+1);
-    num_pts++;
-    
-    points[num_pts] = pt2;
-    newline.push_back(num_pts+1);
-    num_pts++;
-
-    lines[ num_lines ] = newline;  
-    num_lines++;
-    
-
-}
-
-// UNTESTED - same but with RGB added 
-void obj_model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2, Vector3 color)  
-{
-
-    vector<int> newline;
-
-    points[num_pts] = pt1;
-    vtxrgb[num_pts] = color; num_vtxrgb++;
-
-    newline.push_back(num_pts+1);
-    num_pts++;
-    
-    //--- 
-
-    points[num_pts] = pt2;
-    vtxrgb[num_pts] = color; num_vtxrgb++;
-
-    newline.push_back(num_pts+1);
-    num_pts++;
-
-    lines[ num_lines ] = newline;  
-    num_lines++;
-    
-
-}
-
-/**********************************************/
-/*
-    add vector as a line segment, 
-    but position it off origin at a position
-*/
-
-void obj_model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos)
-{
-
-    vector<int> newline;
-
-    points[num_pts] = atpos;
-    newline.push_back(num_pts+1);
-    num_pts++;
-    
-    points[num_pts] = atpos+pt1;
-    newline.push_back(num_pts+1);
-    num_pts++;
-
-    lines[ num_lines ] = newline;  
-    num_lines++;
-
-}
-
-//UNTESTED 
-void obj_model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos, Vector3 color)
-{
-
-    vector<int> newline;
-
-    points[num_pts] = atpos;
-    vtxrgb[num_pts] = color;num_vtxrgb++; 
-    newline.push_back(num_pts+1);
-    num_pts++;
-    
-    points[num_pts] = atpos+pt1;
-    vtxrgb[num_pts] = color; num_vtxrgb++;    
-    newline.push_back(num_pts+1);
-    num_pts++;
-
-    lines[ num_lines ] = newline;  
-    num_lines++;
-
-}
-
-/**********************************************/
-// UNTESTED add vector as a line segment  
-void obj_model::vec3_as_geom(Vector3 pt1)
-{
-
-    vector<int> newline;
-
-    points[num_pts] = Vector3(0,0,0);
-    newline.push_back(num_pts+1);
-    num_pts++;
-    
-    points[num_pts] = pt1;
-    newline.push_back(num_pts+1);
-    num_pts++;
-
-    lines[ num_lines ] = newline;  
-    num_lines++;
-    
-
-}
-
-/**********************************************/
-// UNTESTED add vector as a line segment  
-void obj_model::vec3_as_pt_geom(Vector3 pt1, double siz)
-{
-
-    between_2vecs_as_line(pt1, pt1-Vector3( siz, 0, 0) );
-    between_2vecs_as_line(pt1, pt1+Vector3( siz, 0, 0) );
-    
-    between_2vecs_as_line(pt1, pt1-Vector3( 0, siz, 0) );
-    between_2vecs_as_line(pt1, pt1+Vector3( 0, siz, 0) );
-
-    between_2vecs_as_line(pt1, pt1-Vector3( 0, 0, siz) );
-    between_2vecs_as_line(pt1, pt1+Vector3( 0, 0, siz) );
-
-}
-
-void obj_model::vec3_as_pt_geom(Vector3 pt1, Vector3 color, double siz)
-{
-
-    between_2vecs_as_line(pt1, pt1-Vector3( siz, 0, 0), color );
-    between_2vecs_as_line(pt1, pt1+Vector3( siz, 0, 0), color );
-    
-    between_2vecs_as_line(pt1, pt1-Vector3( 0, siz, 0), color );
-    between_2vecs_as_line(pt1, pt1+Vector3( 0, siz, 0), color );
-
-    between_2vecs_as_line(pt1, pt1-Vector3( 0, 0, siz), color );
-    between_2vecs_as_line(pt1, pt1+Vector3( 0, 0, siz), color );
-
-}
-
-
-
-
-/**********************************************/
-
-Vector3 obj_model::get_triface_normal(int fid)
-{
-    
-    Vector3 fac_normal;
-    
-    std::vector<int> tri_face;
-
-    if (num_tris>0){
-        tri_face = tris[fid];
-    } 
-
-    if (tri_face.size()==3)
-    {
-        Vector3 pt1 = points[tri_face[0]];
-        Vector3 pt2 = points[tri_face[1]];
-        Vector3 pt3 = points[tri_face[2]];
-      
-        fac_normal = three_vec3_to_normal( pt1, pt2, pt3, true);
-        //std::cout << "pt1 idx "<< tri_face[0] << " is " << pt1 << "\n";
-        //std::cout << "normal is " << fac_normal << "\n";
+std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  {
+    std::vector<std::string> tokens;
+    std::stringstream   mySstream( p_pcstStr );
+    std::string         temp;
+    while( getline( mySstream, temp, delim ) ) {
+        tokens.push_back( temp );
     }
-
-    return fac_normal;
-
-}
-
-
-
-/**********************************************/
-/*
-
-
-    void obj_model::triangulate(void)
-    {
-        reset_buffers();
-
-        //cout << "begin triangulate \n";
-       
-        int i,j = 0;
-
-        // bfr_faces[MAX_NUM_FACES];  // faces of work area 
-        // bfr_pts[MAX_NUM_VERTICES]; // vertices of work area
-        // i vtx_cnt;
-        // i fac_cnt;
-        // <> vtx_tmp;
-        // <> fac_tmp;  
-
-        if (num_quads>0)
-        {
-            // walk the faces, assume there are ALWAYS 4 indices (quad) 
-            for (int i=0; i<num_quads; i++) 
-            {
-                //cout << quads[i][0]-1 <<" "<< quads[i][1]-1 <<" "<< quads[i][2]-1 << "\n";
-      
-                add_tri(quads[i][0],quads[i][1],quads[i][2]);
-                add_tri(quads[i][2],quads[i][3],quads[i][0]);           
-            }
-        }
-
-       // cout << "end triangulate \n";
-    }
-
-*/
-
-
-
-// UNTESTED  NOT WORKING YET 
-//     turn a single 4 sided polygon into two 3 sided 
-//     
-//     +--+              +--+ 
-//     |  |              | /|  
-//     |  |   Becomes    |/ |  
-//     +--+              +--+  
-
-void obj_model::triangulate(void)
-{
-
-    int  p_i = 0;
-    Vector3 tri_cntr;
-
-    //debug - clear any loaded normals 
-    //pt_model_buffer->num_fnrmls = 0;
-
-    printf("#number of quads %d\n", num_quads );
-
-    //calc normals for quads 
-    for (p_i=0;p_i<num_quads;p_i++)
-    {   
-           
-        // fetch the pts for a triangle
-        Vector3 p1 = points[quads[p_i][0]-1];
-        Vector3 p2 = points[quads[p_i][1]-1];
-        Vector3 p3 = points[quads[p_i][2]-1];
-
-        // // calculate the face normal  
-        // Vector3 a = sub(p1,p2);
-        // Vector3 b = sub(p1,p3);
-        // Vector3 n = normalize(cross(a,b));
-        // pt_model_buffer->fnormals[pt_model_buffer->num_fnrmls]=n;
-        // pt_model_buffer->num_fnrmls++;
-
-    }
-
-}
-
-
-/**********************************************/
-
-void obj_model::calc_normals(void)
-{
-    int  p_i = 0;
-    Vector3 tri_cntr;
-
-    //debug - clear any loaded normals 
-    num_fnrmls = 0;
-
-    //calc normals for quads 
-    for (p_i=0;p_i<num_quads;p_i++)
-    {   
-            
-        // fetch the pts for a triangle
-        Vector3 p1 = points[quads[p_i][0]-1];
-        Vector3 p2 = points[quads[p_i][1]-1];
-        Vector3 p3 = points[quads[p_i][2]-1];
-
-        // calculate the face normal  
-        Vector3 a = p1.operator-(p2);
-        Vector3 b = p1.operator-(p3);
-        Vector3 n = a.cross(b).normalize();
-
-        fnormals[num_fnrmls]=n;
-        num_fnrmls++;
-
-
-    }
-
-    // calc normals for triangles 
-    for (p_i=0;p_i<obj_model::num_tris;p_i++)
-    {   
-            
-        // fetch the pts for a triangle
-        Vector3 p1 = points[tris[p_i][0]-1];
-        Vector3 p2 = points[tris[p_i][1]-1];
-        Vector3 p3 = points[tris[p_i][2]-1];
-
-        // calculate the face normal  
-        Vector3 a = p1.operator-(p2);
-        Vector3 b = p1.operator-(p3);
-        Vector3 n = a.cross(b).normalize();
-
-        fnormals[obj_model::num_fnrmls]=n;
-        num_fnrmls++;
-    }
-
-    // broken experiment to put face normals in vertex normals
-    // only do so if nothing was loaded from the model 
-    // DEBUG - its wrong !
-    if (obj_model::num_vnrmls==0)
-    {
-        for (p_i=0;p_i<obj_model::num_tris;p_i++)
-        {    
-            // fetch the pts for a triangle
-            Vector3 p1 = points[tris[p_i][0]-1];
-            Vector3 p2 = points[tris[p_i][1]-1];
-            Vector3 p3 = points[tris[p_i][2]-1];
-
-            // calculate the face normal  
-            Vector3 a = p1.operator-(p2);
-            Vector3 b = p1.operator-(p3);
-            Vector3 n = a.cross(b).normalize();
-            vnormals[tris[p_i][0]-1]= n;
-            vnormals[tris[p_i][1]-1]= n;
-            vnormals[tris[p_i][2]-1]= n;      
-            num_vnrmls++;
-            num_vnrmls++;
-            num_vnrmls++;
-    
-        }
-
-    }
-
-}
-
-
-/**********************************************/
-/*
-    DEBUG - NOT DONE -  Print out info from an object info struct
-
-    debug - add axis option for 2D, otherwise return 3D
-
-*/
-
-Vector3 obj_model::extents(void)
-{
-
-    float bb_min_x;
-    float bb_max_x;
-    
-    float bb_min_y;
-    float bb_max_y;
-
-    float bb_min_z;
-    float bb_max_z;
-}
-
-
-
-
-
-
-
-
-
-/**********************************************/
-/*
-    NOT WORKING YET 
-
-       append one object into another 
-     - points, triangles, quads, UVs, Normals
-     - TODO add filter for only transferring some components 
-*/
-/*
-void insert_geom(obj_model* from_obj, obj_model* to_obj)
-{
-
-    int x = 0;
-
-    int pt_idx    = 0;
-    int tri_idx   = 0;
-    int quad_idx  = 0;
-    int line_idx  = 0;
-
-    //printf("## ##  %d %d \n", from_obj->num_pts, from_obj->num_tris);
-
-    //points
-    for (x=0;x<from_obj->num_pts;x++)
-    {
-        to_obj->points[pt_idx] = from_obj->points[x];
-        pt_idx++; 
-    }
-
-    //triangles
-    for (x=0;x<from_obj->num_tris;x++)
-    {
-        triangle tri_buffer = from_obj->tris[x]; //start with original indices
-
-        printf("\n #tri1 %d %d %d \n", from_obj->tris[x].pt1 , from_obj->tris[x].pt2, from_obj->tris[x].pt3);        
-
-        tri_buffer.pt1 = tri_buffer.pt1 +pt_idx;  //shift index in new geom
-        tri_buffer.pt2 = tri_buffer.pt2 +pt_idx;  //shift index in new geom
-        tri_buffer.pt3 = tri_buffer.pt3 +pt_idx;  //shift index in new geom
-
-        printf("   #tri2 %d %d %d \n", tri_buffer.pt1 , tri_buffer.pt2, tri_buffer.pt3);
-        
-        to_obj->tris[tri_idx] = tri_buffer;
-        
-
-        tri_idx++; 
-    }
-
-    //quads 
-    for (x=0;x<from_obj->num_quads;x++)
-    {
-        to_obj->quads[quad_idx] = from_obj->quads[x];
-        quad_idx++; 
-    }
-
-    //lines
-    for (x=0;x<from_obj->num_lines;x++)
-    {
-        to_obj->lines[line_idx] = from_obj->lines[x];
-        line_idx++; 
-    }
-
-    //normals 
-
-    //UVs 
-
-
-    to_obj->num_pts = pt_idx;
-    //to_obj->num_uvs = 0;
-    to_obj->num_lines = line_idx;
-    to_obj->num_tris = tri_idx;
-    to_obj->num_quads = quad_idx;  
-   
-
-    //printf("# %d %d \n", to_obj->num_pts, to_obj->num_tris);
-
-}
-*/
-
-//DEBUG - prototype function not used yet 
-void obj_model::insert(std::vector<int>& input)
-{
-    //EMPTY 
-}
-
-
+    return tokens;
+} 
 
 /*******************************************************************/
-/*
 void obj_model::load(char *filepath)
 {
 
@@ -931,22 +348,19 @@ void obj_model::load(char *filepath)
 
     // ---------------------------------------------
     //DEBUG INFO - PHASE THIS OUT 
-    
-    // std::cout << "vertices loaded   "<< num_pts    << "\n";
-    // std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
-    // std::cout << "lines loaded      "<< num_lines  << "\n";
-    // std::cout << "triangles loaded  "<< num_tris   << "\n";
-    // std::cout << "quads loaded      "<< num_quads  << "\n";  
-     
+    /*
+    std::cout << "vertices loaded   "<< num_pts    << "\n";
+    std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
+    std::cout << "lines loaded      "<< num_lines  << "\n";
+    std::cout << "triangles loaded  "<< num_tris   << "\n";
+    std::cout << "quads loaded      "<< num_quads  << "\n";  
+    */ 
 
 }
-
-/*
 
 /**********************************************/
 //save geometry in memory to an OBJ file on disk 
 
-/*
 void obj_model::save( char *filepath)
 {
     std::ofstream myfile;
@@ -985,7 +399,24 @@ void obj_model::save( char *filepath)
     int xx = 0;
 
     //----------------------
- 
+
+    /*
+    // export array of N sided faces
+    if (nsided_count>0)
+    {
+        for (xx=0; xx<nsided_count; xx++)
+        {
+            myfile << "f ";
+            for (ff=0; ff < faces[xx].size();ff++)
+            {
+                myfile << faces[xx][ff] << " "; 
+            }
+            myfile << "\n";
+        }
+    }*/
+
+    // -----------------------
+
     // export array of lines
     if(num_lines>0)
     {
@@ -1042,32 +473,6 @@ void obj_model::save( char *filepath)
 
 }
 
-*/
-
-/**********************************************/
-
-void sample_data( obj_model* loader){
-
-    loader->uvs[0]    = Vector2(  0.0 , 0.0         );  
-    loader->points[0] = Vector3( -1.0 , -1.0,  1.0  );
-    loader->uvs[1]    = Vector2( 1.0  , 0.0         );  
-    loader->points[1] = Vector3( 1.0 , -1.0,  1.0   );
-    loader->uvs[2]    = Vector2( 1.0, 1.0           );  
-    loader->points[2] = Vector3( 1.0,  1.0,  1.0    );
-
-    // Back Face
-    loader->uvs[3]     = Vector2( 1.0, 0.0           );  
-    loader->points[3]  = Vector3( -1.0, -1.0, -1.0   );
-    loader->uvs[4]     = Vector2( 1.0, 1.0           );  
-    loader->points[4]  = Vector3( -1.0,  1.0, -1.0   );
-    loader->uvs[5]     = Vector2( 0.0, 1.0           );  
-    loader->points[5]  = Vector3( 1.0,  1.0, -1.0    );
-
-    //  uvs     // UV coords 
-    //  points  // 3 floats  
-    //  faces   // triangles only 
-                    
-}
 
 
 
@@ -1076,7 +481,6 @@ void sample_data( obj_model* loader){
    load a 4X4 matrix from disk 
    used as a projection matrix for render geometry 
 */
-/*
 void obj_model::load_m44(char* filename)
 {
     
@@ -1128,4 +532,173 @@ void obj_model::load_m44(char* filename)
     }
 
 }
+
+
+////
+
+/*
+//sample 3d object - may not be the "proper" way to do it 
+void model::prim_cube(double scale){
+
+    // vertices
+    obj_pts[0].set(-scale, -scale,  scale);
+    obj_pts[1].set(-scale, -scale, -scale);
+    obj_pts[2].set( scale, -scale, -scale);
+    obj_pts[3].set( scale, -scale,  scale);
+    obj_pts[4].set(-scale,  scale,  scale);
+    obj_pts[5].set(-scale,  scale, -scale);
+    obj_pts[6].set( scale,  scale, -scale);
+    obj_pts[7].set( scale,  scale,  scale);
+       
+    //fac_tmp = {1,2,3,4};
+    //faces[0] = fac_tmp;
+
+    // faces - NOT zero indexed
+    // faces[0] = {1,2,3,4};
+    // faces[1] = {1,2,6,5};
+    // faces[2] = {2,3,7,6};
+    // faces[3] = {3,7,8,4};
+    // faces[4] = {4,8,5,1};
+    // faces[5] = {5,6,7,8};
+
+    ///    
+    faces[0] = {1,2,3,4};
+    faces[1] = {1,2,6,5};
+    faces[2] = {2,3,7,6};
+    faces[3] = {3,7,8,4};
+    faces[4] = {4,8,5,1};
+    faces[5] = {5,6,7,8};
+
+    quad_count = 6;
+
+    model::vertex_count = 8;
+}
+
+////
+//sample 3d object - may not be the "proper" way to do it
+ void model::prim_circle(int divs, double scale)
+ {
+
+    double a = 0;
+    int vcnt = 0;
+    int step = 360/divs;
+    
+    std::cout << "step is " << step << endl ;
+
+    fac_tmp.clear();
+
+    for (a=0;a<360;a=a+step)
+    {
+        //std::cout << "a is " << a << endl ;
+        
+        //x axis 
+        //obj_pts[vcnt].set(0,  sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale );
+
+        //y axis 
+        //obj_pts[vcnt].set( sin(deg_to_rad(a))*scale, 0, cos(deg_to_rad(a))*scale ); 
+
+        //z axis 
+        obj_pts[vcnt].set( sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale, 0 ); 
+        vcnt++;
+    } 
+
+    // std::cout << faceindices[0] << faceindices[5];
+
+    int i = 0; 
+ 
+    for (int i=0; i<vcnt; i++) 
+    {
+        //fac_tmp.clear();
+        fac_tmp.push_back(i+1);  
+    }
+
+
+    faces[0] = fac_tmp;
+    nsided_count = 1;
+
+    model::vertex_count = vcnt;
+ }     
+
+////
+ //sample 3d object - may not be the "proper" way to do it
+ void model::prim_square(double scale)
+ {
+    fac_tmp.clear();
+
+    // vertices - (3d vectors)
+    
+    // obj_pts[vcnt].set( sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale, 0 ); 
+
+    obj_pts[0].set(-scale, 1,  scale);
+    obj_pts[1].set( scale, 1,  scale);
+    obj_pts[2].set( scale, 1, -scale);
+    obj_pts[3].set(-scale, 1, -scale);
+
+    // face indices are NOT zero indexed 
+    
+    // faces[0] = {1,2,3,4};
+    // face_count = 1;
+
+    quads[0] = {1,2,3,4};
+    quad_count = 1;
+
+    vertex_count =4;
+ }    
+
+
+////
+ //sample 3d object - may not be the "proper" way to do it
+ void model::prim_tri(double scale)
+ {
+    fac_tmp.clear();
+
+    // vertices - (3d vectors)
+    
+    // obj_pts[vcnt].set( sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale, 0 ); 
+
+
+    // //X axis 
+    // obj_pts[0].set( 0, -scale ,  0     );
+    // obj_pts[1].set( 0, 0      ,  scale );
+    // obj_pts[2].set( 0, scale  ,  0     );
+
+    // Y axis 
+    // obj_pts[0].set( -scale ,0 ,  0     );
+    // obj_pts[1].set( 0      ,0 ,  scale );
+    // obj_pts[2].set( scale  ,0 ,  0     );
+
+    // // // Z axis 
+    obj_pts[0].set( -scale ,  0    , 0 );
+    obj_pts[1].set( 0      ,  scale, 0 );
+    obj_pts[2].set( scale  ,  0    , 0 );
+    
+    // faces[0] = {1,2,3};
+    // face_count = 1;
+    
+    vertex_count = 3;
+    //add_tri(1,2,3);
+    //add_tri(2,1,3);
+
+ }    
+
+
+
+///
+ //sample 3d object - may not be the "proper" way to do it
+ void model::prim_line(double scale)
+ {
+    // vertices - (3d vectors)
+    obj_pts[0].set(-scale, 0,  -scale);
+    obj_pts[1].set( scale, 0,  scale);
+
+    faces[0] = {1,2}; //notice this is only a 2 point poly (line)
+
+    line_count = 1;
+
+    model::vertex_count =4;
+ }     
+
+
+
 */
+
