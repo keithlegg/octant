@@ -68,7 +68,7 @@ bool draw_points     = TRUE;
 bool draw_lines      = TRUE;
 bool draw_normals    = TRUE;
 bool draw_quads      = TRUE;
-bool draw_triangles  = TRUE;
+bool draw_triangles  = FALSE;
 bool draw_grid       = TRUE;
 bool draw_cntrgrid   = TRUE;
 bool draw_bbox       = TRUE;
@@ -349,20 +349,20 @@ void toggle_polygon_draw(){
 //DEBUG TRIGGERS THE "OLD SEGFAULT "
 void warnings(void)
 {   
-    /*
+    
     // let us know if there is a discernable problem 
-    printf("\n\n\n\n###########################################\n");
+    std::cout << "\n\n\n\n###########################################\n";
 
     if(!draw_lines || !pt_model_buffer->num_lines){
-        printf("#warn - no lines or disabled.     \n");
+        std::cout << "#warn - no lines or disabled.     \n";
     }
 
     if(!draw_triangles || !pt_model_buffer->num_tris){
-        printf("#warn - no triangles or disabled. \n");
+        std::cout << "#warn - no triangles or disabled. \n";
     }
 
     if(!draw_quads || !pt_model_buffer->num_quads){ ; }    
-    */
+   
 }
 
 /***************************************/

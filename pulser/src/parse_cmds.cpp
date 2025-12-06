@@ -46,7 +46,8 @@
 #include "octant.h"
 
 
-   
+int cursor = 0;
+
 
 /***************************************/
 /***************************************/
@@ -54,29 +55,55 @@
 
 void parse_cmd_text(std::string *buffer)
 {
-    std::cout << " hello parser \n" << *buffer <<"\n";
+    //std::vector<std::string>  tokenized = tokenizer(buffer, *" ");
+    //if(tokenized.size()>0)
+
+    // Vector of string to save tokens
+    vector <std::string> tokens;
+    
+    // stringstream class check1
+    std::stringstream check1(*buffer);
+    
+    std::string intermediate;
+    
+    // Tokenizing w.r.t. space ' '
+    while(getline(check1, intermediate, ' '))
+    {
+        tokens.push_back(intermediate);
+    }
+    
+    std::string first;
+    std::string second;
+
+    // Printing the token vector
+    for(int i = 0; i < tokens.size(); i++)
+    {
+        if(i==0){ 
+            first = tokens[i];
+        }
+
+        if(i==1){ 
+            second = tokens[i];
+        }
+
+    }
+    
+    std::cout << "first:" << first << " second:" << second << '\n';
+
+    //std::cout << " hello parser \n" << *buffer <<"\n";
 
 }
 
-int cursor = 0;
 
+
+/***************************************/
 void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
     int i = static_cast<int>(*pt_key);
-    //std::cout << " int val " << i << std::endl;
-
-    //std::vector<std::string>  tokenized = tokenizer(buffer, *" ");
-    //if(tokenized.size()>0)
+    
+    std::cout << " key val " << i << std::endl;
     
 
-    
-
-    //-----
-    //all except backspace key
-    if(i!=8)
-    {
-        cursor = buffer->size();
-    }
 
     //-----
     //backspace key
@@ -87,8 +114,6 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
             cursor--;
             buffer->erase(cursor, buffer->size());
         }
-
-
     }
 
     //-----
@@ -109,20 +134,17 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     //esc key
     if(i==27)
     {
-        key_cb(i);      
+        key_cb(i); 
+
     }  
 
     //-----
+    //ignore backspace here
     if(i!=8)
-    {    
-        //output results
+    {   
+        cursor = buffer->size(); 
         buffer->push_back(*pt_key);
     }
-
-    //std::cout << *buffer << "\n";
-    //std::cout << *pt_key << "\n";
-
-
 
 };
 
