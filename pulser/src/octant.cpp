@@ -68,7 +68,7 @@ bool draw_points     = TRUE;
 bool draw_lines      = TRUE;
 bool draw_normals    = TRUE;
 bool draw_quads      = TRUE;
-bool draw_triangles  = FALSE;
+bool draw_triangles  = TRUE;
 bool draw_grid       = TRUE;
 bool draw_cntrgrid   = TRUE;
 bool draw_bbox       = TRUE;
@@ -118,6 +118,9 @@ float obj_len_x, obj_len_y, obj_len_z = 0;
 /***************************************/
 // data containers 
 
+
+//RGB can be stored as GL float3 - DEBUG 
+
 RGBType line_color;
 RGBType *pt_linecolor = &line_color;
 
@@ -129,6 +132,11 @@ RGBType *pt_gridcolor = &grid_color;
 
 RGBType grid_color2;
 RGBType *pt_gridcolor2 = &grid_color2;
+
+
+
+
+Vector3 quil_pos = Vector3(1,1,1);
 
 
 
@@ -549,16 +557,7 @@ static void render_loop()
     /******************************************/
     /******************************************/
 
-    RGBType quill_clr;
-    RGBType* pt_quill_clr = &quill_clr;
-
-    pt_quill_clr->r = 255;
-    pt_quill_clr->g = 255;
-    pt_quill_clr->b = 255;
-
-    //void draw_locator( Vector3* pos, RGBType *pt_loccolor, float locsize)
-    Vector3 pos = Vector3(1,1,1);
-    draw_locator(&pos, pt_quill_clr, 2.0 );
+    draw_locator(&quil_pos, .5);
 
     /******************************************/
     graticulate(&draw_grid, &draw_cntrgrid, pt_gridcolor, pt_gridcolor2);
@@ -1537,6 +1536,8 @@ void setlight0(void){
 void key_cb(unsigned int key) 
 {
 
+
+    //------
     if (key == 83) //shift s key - open socket  
     { 
         printf("opening socket on port %i \n", TCP_PORT); 

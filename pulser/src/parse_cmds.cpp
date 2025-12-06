@@ -47,7 +47,12 @@
 #include "octant.h"
 
 
+//idx of text that invisible "cursor" sits on
 int cursor = 0;
+
+//position of extruder/quill/etc
+extern Vector3 quil_pos;
+
 
 
 /***************************************/
@@ -83,6 +88,9 @@ void parse_cmd_text(std::string *buffer)
         if(i==5){ a6 = tokens[i]; }    
         if(i==6){ a7 = tokens[i]; }         
     }
+
+
+
     //--------------
     if (a1=="tog")
     {
@@ -90,7 +98,7 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //--------------
-    if (a1=="st")
+    if (a1=="ot")
     {
         v11 = std::stof(a2);
         v12 = std::stof(a3);
@@ -100,8 +108,8 @@ void parse_cmd_text(std::string *buffer)
         v22 = std::stof(a6);
         v23 = std::stof(a7);   
 
-        std::cout << v11 <<"  "<< v12 <<"  "<< v13 <<"  "
-                  << v21 <<"  "<< v22 <<"  "<< v23 <<'\n';
+        //std::cout << v11 <<"  "<< v12 <<"  "<< v13 <<"  "
+        //          << v21 <<"  "<< v22 <<"  "<< v23 <<'\n';
 
     }
 
@@ -111,7 +119,11 @@ void parse_cmd_text(std::string *buffer)
         v11 = std::stof(a2);
         v12 = std::stof(a3);
         v13 = std::stof(a4);
-        std::cout << v11 <<"  "<< v12 <<"  "<< v13  <<'\n';
+        //std::cout << v11 <<"  "<< v12 <<"  "<< v13  <<'\n';
+
+        quil_pos.x = v11;
+        quil_pos.y = v12;
+        quil_pos.z = v13;   
 
     }
 
