@@ -50,6 +50,19 @@ using namespace std;
 #include <iostream>
 
 
+
+#define DEG_TO_RAD 0.0174532925
+#define RAD_TO_DEG 57.29577951
+
+double deg_to_rad ( double deg){
+   return deg * DEG_TO_RAD;
+}
+
+double rad_to_deg ( double rad){
+   return rad * RAD_TO_DEG;
+}
+
+
 /**********************************************/
 int polygon_ops::getnum_verts(void){
     // NOT USED YET 

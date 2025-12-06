@@ -68,7 +68,7 @@ class obj_model: public polygon_ops {
             num_quads   = 0; 
             num_vtxrgb  = 0;  
             
-            load_as_lines= false;
+            load_as_lines = false;
 
         };
 
@@ -85,7 +85,7 @@ class obj_model: public polygon_ops {
         int num_tris;
         int num_quads;    
 
-        // --- 
+        //------
         std::vector<double> vtx_tmp;
         std::vector<int>    fac_tmp;  
         
@@ -116,7 +116,7 @@ class obj_model: public polygon_ops {
 
         // Matrix3 m33;
         Matrix4 m44;
-        // 
+ 
         // void translate(void);
         // void rotate(void);
         // void scale(void);
@@ -124,25 +124,29 @@ class obj_model: public polygon_ops {
         //----------------
 
         void reset(void);
-        
-        void load( char *);
-        void save( char *);
         void show(void);
         void show_geom(void);
+        
+        //void get_obj_info(obj_model* loader, obj_info* obinfo);
 
+        //---
+        //file IO operations 
         void load_m44(char* filename);
+        //void save_m44(char* filename);
+        void load( char *);
+        void save( char *);
 
-        //
-        /*
+        //------
+        //prim geometry functions 
+        
+        void sample_data(void);
         void make_line(double scale); 
         void make_triangle(double scale); 
         void make_circle(int divs, double scale);
-        
         void make_square(double scale);  
         void make_cube(double scale);
-        */ 
-        // 
 
+        //------
         void calc_normals(void);
         void triangulate(void);
         void insert(std::vector<int>& );
@@ -151,19 +155,18 @@ class obj_model: public polygon_ops {
         void add_triangle(int, int, int );
         void append_tri(Vector3, Vector3, Vector3, int, int, int );
 
+        //these look like they should be moved to pointgen, etc 
+        void between_2vecs_as_line(Vector3, Vector3 );        
+        void between_2vecs_as_line(Vector3, Vector3, Vector3 );
 
         void vec3_as_pt_geom(Vector3, double);
         void vec3_as_pt_geom(Vector3, Vector3, double );
-
-        void between_2vecs_as_line(Vector3, Vector3 );        
-        void between_2vecs_as_line(Vector3, Vector3, Vector3 );
 
         void vec3_as_geom_atpos( Vector3, Vector3, Vector3 );
         void vec3_as_geom_atpos( Vector3, Vector3 );
         void vec3_as_geom(Vector3);
 
-        //void get_obj_info(obj_model* loader, obj_info* obinfo);
-        void sample_data( obj_model*);
+
 
 
 };

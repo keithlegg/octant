@@ -50,7 +50,11 @@
 using std::vector;
 
 #include <sstream>
+
+#include "point_op.h"
 #include "obj_model.h"
+
+
 
  
 
@@ -66,7 +70,7 @@ extern obj_model* pt_model_buffer;
 
 
 /**********************************************************/
-// UNTESTED add a new triangle using 3 vector3 
+// UNTESTED add a new 3D triangle using 3 vector3 
 void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
 {
     vector<int> newtri;
@@ -89,7 +93,7 @@ void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
 }
 
 /**********************************************************/
-// add a new triangle using Face Indices to existing vertices
+// add a new triangle INDEX ONLY -using existing vertices
 void obj_model::add_triangle(int vid1, int vid2, int vid3)
 {
 
@@ -580,26 +584,193 @@ void obj_model::insert(std::vector<int>& input)
 
 /**********************************************/
 
-void sample_data( obj_model* loader){
+void obj_model::sample_data(void)
+{
 
-    loader->uvs[0]    = Vector2(  0.0 , 0.0         );  
-    loader->points[0] = Vector3( -1.0 , -1.0,  1.0  );
-    loader->uvs[1]    = Vector2( 1.0  , 0.0         );  
-    loader->points[1] = Vector3( 1.0 , -1.0,  1.0   );
-    loader->uvs[2]    = Vector2( 1.0, 1.0           );  
-    loader->points[2] = Vector3( 1.0,  1.0,  1.0    );
+    uvs[0]    = Vector2(  0.0 , 0.0         );  
+    points[0] = Vector3( -1.0 , -1.0,  1.0  );
+    uvs[1]    = Vector2( 1.0  , 0.0         );  
+    points[1] = Vector3( 1.0 , -1.0,  1.0   );
+    uvs[2]    = Vector2( 1.0, 1.0           );  
+    points[2] = Vector3( 1.0,  1.0,  1.0    );
 
     // Back Face
-    loader->uvs[3]     = Vector2( 1.0, 0.0           );  
-    loader->points[3]  = Vector3( -1.0, -1.0, -1.0   );
-    loader->uvs[4]     = Vector2( 1.0, 1.0           );  
-    loader->points[4]  = Vector3( -1.0,  1.0, -1.0   );
-    loader->uvs[5]     = Vector2( 0.0, 1.0           );  
-    loader->points[5]  = Vector3( 1.0,  1.0, -1.0    );
+    uvs[3]     = Vector2( 1.0, 0.0           );  
+    points[3]  = Vector3( -1.0, -1.0, -1.0   );
+    uvs[4]     = Vector2( 1.0, 1.0           );  
+    points[4]  = Vector3( -1.0,  1.0, -1.0   );
+    uvs[5]     = Vector2( 0.0, 1.0           );  
+    points[5]  = Vector3( 1.0,  1.0, -1.0    );
 
     //  uvs     // UV coords 
     //  points  // 3 floats  
     //  faces   // triangles only 
                     
 }
+
+
+
+
+
+
+/**********************************************************/
+
+//sample 3d object - may not be the "proper" way to do it 
+void obj_model::make_cube(double scale)
+{
+
+    // vertices
+    points[0].set(-scale, -scale,  scale);
+    points[1].set(-scale, -scale, -scale);
+    points[2].set( scale, -scale, -scale);
+    points[3].set( scale, -scale,  scale);
+    points[4].set(-scale,  scale,  scale);
+    points[5].set(-scale,  scale, -scale);
+    points[6].set( scale,  scale, -scale);
+    points[7].set( scale,  scale,  scale);
+       
+    //fac_tmp = {1,2,3,4};
+    //faces[0] = fac_tmp;
+
+    // faces - NOT zero indexed
+    // faces[0] = {1,2,3,4};
+    // faces[1] = {1,2,6,5};
+    // faces[2] = {2,3,7,6};
+    // faces[3] = {3,7,8,4};
+    // faces[4] = {4,8,5,1};
+    // faces[5] = {5,6,7,8};
+
+    /********************/    
+    faces[0] = {1,2,3,4};
+    faces[1] = {1,2,6,5};
+    faces[2] = {2,3,7,6};
+    faces[3] = {3,7,8,4};
+    faces[4] = {4,8,5,1};
+    faces[5] = {5,6,7,8};
+
+    num_quads = 6;
+    num_pts = 8;
+}
+
+/**********************************************************/
+
+  
+//sample 3d object - may not be the "proper" way to do it
+ void obj_model::make_circle(int divs, double scale)
+ {
+
+    double a = 0;
+    int vcnt = 0;
+    int step = 360/divs;
+    
+    std::cout << "step is " << step << "\n" ;
+
+    fac_tmp.clear();
+
+    for (a=0;a<360;a=a+step)
+    {
+        //cout << "a is " << a << endl ;
+        
+        //x axis 
+        //points[vcnt].set(0,  sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale );
+        //y axis 
+        //points[vcnt].set( sin(deg_to_rad(a))*scale, 0, cos(deg_to_rad(a))*scale ); 
+        //z axis 
+        points[vcnt].set( sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale, 0 ); 
+        vcnt++;
+    } 
+
+    // cout << faceindices[0] << faceindices[5];
+
+    int i = 0; 
+ 
+    for (int i=0; i<vcnt; i++) 
+    {
+        //fac_tmp.clear();
+        fac_tmp.push_back(i+1);  
+    }
+
+    faces[0] = fac_tmp;
+
+    num_pts = vcnt;
+ }     
+ 
+
+/**********************************************************/
+
+ 
+//sample 3d object - may not be the "proper" way to do it
+void obj_model::make_square(double scale)
+{
+    fac_tmp.clear();
+
+    points[0].set(-scale, 1,  scale);
+    points[1].set( scale, 1,  scale);
+    points[2].set( scale, 1, -scale);
+    points[3].set(-scale, 1, -scale);
+
+    // face indices are NOT zero indexed 
+    quads[0] = {1,2,3,4};
+    num_quads++;
+    num_pts = 4;
+}    
+
+ 
+
+/**********************************************************/
+ 
+ //DEBUG - NOT DONE AT ALL 
+ //sample 3d object - may not be the "proper" way to do it
+ void obj_model::make_triangle(double scale)
+ {
+    fac_tmp.clear();
+
+    // vertices - (3d vectors)
+    
+    // obj_pts[vcnt].set( sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale, 0 ); 
+
+
+    // //X axis 
+    // obj_pts[0].set( 0, -scale ,  0     );
+    // obj_pts[1].set( 0, 0      ,  scale );
+    // obj_pts[2].set( 0, scale  ,  0     );
+
+    // Y axis 
+    // obj_pts[0].set( -scale ,0 ,  0     );
+    // obj_pts[1].set( 0      ,0 ,  scale );
+    // obj_pts[2].set( scale  ,0 ,  0     );
+
+    // Z axis 
+    points[0].set( -scale ,  0    , 0 );
+    points[1].set( 0      ,  scale, 0 );
+    points[2].set( scale  ,  0    , 0 );
+    
+    // faces[0] = {1,2,3};
+    // face_count = 1;
+
+    add_triangle(1,2,3);
+
+ }    
+
+ 
+
+
+/**********************************************************/
+ 
+//DEBUG - THIS IS NOT 3D - taken from renderer 
+//sample 3d object - may not be the "proper" way to do it
+void obj_model::make_line(double scale)
+{
+    // vertices - (3d vectors)
+    points[0].set(-scale, 0,  -scale);
+    points[1].set( scale, 0,  scale);
+    
+    faces[0] = {1,2}; //notice this is only a 2 point poly (line)
+    
+    num_lines = 1;
+    num_pts   = 4;
+}     
+ 
+
+
 

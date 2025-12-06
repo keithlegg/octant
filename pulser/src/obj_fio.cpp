@@ -614,7 +614,6 @@ void model::prim_cube(double scale){
 
 
     faces[0] = fac_tmp;
-    nsided_count = 1;
 
     model::vertex_count = vcnt;
  }     

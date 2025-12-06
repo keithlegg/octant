@@ -82,7 +82,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     //backspace key
     if(i==8)
     {
-        if (buffer->size()>0)
+        if (buffer->size()>0 && cursor>0)
         {
             cursor--;
             buffer->erase(cursor, buffer->size());
@@ -113,8 +113,11 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     }  
 
     //-----
-    //output results
-    buffer->push_back(*pt_key);
+    if(i!=8)
+    {    
+        //output results
+        buffer->push_back(*pt_key);
+    }
 
     //std::cout << *buffer << "\n";
     //std::cout << *pt_key << "\n";
