@@ -55,18 +55,14 @@ int cursor = 0;
 
 void parse_cmd_text(std::string *buffer)
 {
-    //std::vector<std::string>  tokenized = tokenizer(buffer, *" ");
-    //if(tokenized.size()>0)
 
     // Vector of string to save tokens
     vector <std::string> tokens;
-    
-    // stringstream class check1
+    vector <std::string> subtokens;
+
+    //--------------
     std::stringstream check1(*buffer);
-    
     std::string intermediate;
-    
-    // Tokenizing w.r.t. space ' '
     while(getline(check1, intermediate, ' '))
     {
         tokens.push_back(intermediate);
@@ -87,7 +83,30 @@ void parse_cmd_text(std::string *buffer)
         }
 
     }
-    
+    //--------------
+    if (first=="tog")
+    {
+        key_cb(71); 
+    }
+
+    //--------------
+    //parse the second token (you cant use spaces - duh)
+    std::stringstream check2(second);
+    std::string intermediate2;    
+    while(getline(check2, intermediate2, '_'))
+    {
+        subtokens.push_back(intermediate2);
+    }
+
+    // Printing the token vector
+    for(int i = 0; i < subtokens.size(); i++)
+    {
+        std::cout << subtokens[i] << "\n";
+ 
+
+    }
+
+    //--------
     std::cout << "first:" << first << " second:" << second << '\n';
 
     //std::cout << " hello parser \n" << *buffer <<"\n";
@@ -101,10 +120,8 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
     int i = static_cast<int>(*pt_key);
     
-    std::cout << " key val " << i << std::endl;
+    std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
     
-
-
     //-----
     //backspace key
     if(i==8)
@@ -125,22 +142,21 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
         //std::cout << "command to parse \n" << *buffer << "\n";
 
         parse_cmd_text(buffer);
-
         buffer->clear();
+        cursor=0;
         //std::cout << "ENTER PRESSED\n";        
     }    
 
     //-----
-    //esc key
+    //esc  
     if(i==27)
     {
         key_cb(i); 
-
     }  
 
     //-----
-    //ignore backspace here
-    if(i!=8)
+    //ignore backspace and enter
+    if(i!=8 && i!=13)
     {   
         cursor = buffer->size(); 
         buffer->push_back(*pt_key);
