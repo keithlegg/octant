@@ -395,7 +395,9 @@ static void parser_cb(unsigned char key, int x, int y)
 int q_i, p_i, f_i = 0;
 
 
-
+char cs[100];
+char s[100];
+        
 
 static void render_loop()
 {
@@ -429,7 +431,6 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_text);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
 
-        char s[100];
         glColor3d(1.0, 1.0, 1.0);
         setOrthographicProjection();
         //glPushMatrix();
@@ -450,18 +451,22 @@ static void render_loop()
       
         //--
         //X Y Z - QUILL/HEAD POSITION  
-        char cs[100];
-        sprintf(cs, "head position  X:%.2f Y:%.2f Z:%.2f", qpos.x, qpos.y, qpos.z );
-        glColor3f(1.0f, 1.0f, 1.0f);  //text color 
-        renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-50  ,(void *)font, cs );
+
+        glColor3d(0, 1.0, 1.0);        
+        sprintf(cs, "X:%.2f Y:%.2f Z:%.2f", qpos.x, qpos.y, qpos.z );
+        //glColor3f(1.0f, 1.0f, 1.0f);  //text color 
+        renderBitmapString( ((int)(scr_size_x/2)-100), 50  ,(void *)font, cs );
 
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
-        //renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-20  ,(void *)font, s );
+        //renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-20  ,(void *)font, s );
         //---
-        //sprintf(s, "camera position : %f %f %f", cam_posx, cam_posy, cam_posz);
-        //renderBitmapString( ((int)scr_size_x/2)-150 , scr_size_y-10  ,(void *)font, s );
+        glColor3d(1.0, 1.0, 1.0);
+        sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
+        renderBitmapString( ((int)(scr_size_x/2)-250), 20  ,(void *)fontsm, s );
         //-----------------------------
+        //set color back
+        glColor3d(1.0, 1.0, 1.0);
 
         //glPopMatrix();
         resetPerspectiveProjection();
