@@ -1,9 +1,15 @@
 /*****************************************************************************/
 /* 
-    obj_geom.cpp
     
+    obj_geom.cpp
         obj_model - geometry functions  
 
+    "obj_model" is defined in a single header but split among 3 cpp files
+    
+    the files are:
+        obj_model - container for top level attributes, etc
+        obj_geom  - (this file) the core of geometry processing 
+        obj_fio   - file in/out operations like load, save etc 
 
 
     MIT License

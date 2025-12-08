@@ -108,6 +108,13 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //--------------
+    //relative transform (from current xyz)
+    if (a1=="clear")
+    {
+        clear_scn_geom();
+    }
+
+    //--------------
     //absolute transform (in space)
     if (a1=="at")
     {
@@ -121,13 +128,6 @@ void parse_cmd_text(std::string *buffer)
 
         Vector3 rgb = Vector3(0,1.0,1.0);
         add_vec_scndrw(&qpos, &rgb);
-    }
-
-    //--------------
-    //relative transform (from current xyz)
-    if (a1=="clear")
-    {
-        clear_scn_geom();
     }
 
     //--------------
@@ -234,7 +234,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
     int i = static_cast<int>(*pt_key);
     
-    //need a way to capute stuck keys - DEBUG - stew on it for a while
+    //need a way to capture stuck keys - DEBUG - stew on it for a while
     //if(i==last_cmd)
     //{
     //    std::cout << "stop holding down the key, moron!! "<< "\n";

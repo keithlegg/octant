@@ -5,7 +5,7 @@ import os
 
 simplest possible CNC control written in pure pyhton. 
 
-code is derived from gnelscript.math_ops library - Keith Legg 2018-2025
+code is derived from chopper.math_ops library - Keith Legg 2018-2025
 
 """
 

@@ -1,8 +1,19 @@
 /*****************************************************************************/
 /* 
+
     obj_fio.cpp
-    
+        
         Load and save 3D models from disk 
+    
+
+    "obj_model" is defined in a single header but split among 3 cpp files
+    
+    the files are:
+        obj_model - container for top level attributes, etc
+        obj_geom  - the core of geometry processing 
+        obj_fio   - (this file) file in/out operations like load, save etc 
+
+
 
     MIT License
 

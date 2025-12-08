@@ -69,7 +69,7 @@ extern int on_click;
 extern int clk_x_coord;
 extern int clk_y_coord;
 
-float moveSpeed      = 2.1f;
+float mouse_orbit_speed      = 2.1f;
 
 
 /***********/
@@ -143,30 +143,7 @@ GLfloat vertices[100];
 /***************************************/
 // data containers 
 
-
-
 Vector3 qpos = Vector3(0, 0, 0);
-
-
-
-
-
-/***************************************/
-// camera properties 
-
-
-// static GLfloat g_fViewDistance = 3 * VIEWING_DISTANCE_MIN;
-// static int g_yClick = 0;
-// float total_orbitx;
-
-
-
-//----- 
-
-
-
-
-//----- 
 
 double light_intensity;
 
@@ -187,28 +164,15 @@ int line_clr_g;
 int line_clr_b; 
 
 
-
-
-
-/***************************************/
-
-
-//RGB can be stored as GL float3 - DEBUG 
-
+//debug - consider not using this old data type and use 3 ints in a vector?
 RGBType line_color;
 RGBType *pt_linecolor = &line_color;
-
-// RGBType line_color2;
-// RGBType *pt_linecolor2 = &line_color2;
 
 RGBType grid_color;
 RGBType *pt_gridcolor = &grid_color;
 
 RGBType grid_color2;
 RGBType *pt_gridcolor2 = &grid_color2;
-
-
-
 
 GLfloat clr_linez[]   = { 0, 1., 0, 0};
 GLfloat emis_full[]   = { 1, 1, 1, 0};
@@ -537,9 +501,9 @@ static void render_loop()
 
         default:   
             // cheapo perspective navigation  
-            cam_posx = -sin( orbit_x * moveSpeed )     * orbit_dist    ;
+            cam_posx = -sin( orbit_x * mouse_orbit_speed )     * orbit_dist    ;
             cam_posy =      -orbit_y                   * (orbit_dist/2);
-            cam_posz =  cos( orbit_x * moveSpeed )     * orbit_dist    ;
+            cam_posz =  cos( orbit_x * mouse_orbit_speed )     * orbit_dist    ;
 
             //for now use gluLookAt for all view modes -  
             gluLookAt( cam_posx, cam_posy , cam_posz,  // look from camera XYZ
@@ -1161,92 +1125,6 @@ void start_gui(int *argc, char** argv){
 
 
 
-/*************************************************
-/**************************************************/
-
-
-    //var wheelie = Input.GetAxis("Mouse ScrollWheel");
-        
-    // if (wheelie < 0) // back
-    // {
-    //     var currentZoomSpeed = 100f;
-    //     transform.Translate(Vector3.forward * (wheelie * currentZoomSpeed));
-    // }
-    // if (wheelie > 0) // back
-    // {
-    //      var currentZoomSpeed = 100f;
-    //      transform.Translate(Vector3.forward * (wheelie * currentZoomSpeed));
-    // }
-
-    /*
-    //Input.GetAxis("Mouse ScrollWheel") < 0) // back
-    if( Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.LeftAlt) ){
-
-      // Distance between camera and orbitVector. We'll need this in a few places
-      var distanceToOrbit = Vector3.Distance(transform.position, orbitVector.transform.position);
-    
-        //RMB - ZOOM
-        if (Input.GetMouseButton(1)) {
-            
-            // Refine the rotateSpeed based on distance to orbitVector
-            var currentZoomSpeed = Mathf.Clamp(zoomSpeed * (distanceToOrbit / 50), 0.1f, 2.0f);
-            
-            // Move the camera in/out
-            transform.Translate(Vector3.forward * (x * currentZoomSpeed));
-            
-            // If about to collide with the orbitVector, repulse the orbitVector slightly to keep it in front of us
-            if (Vector3.Distance(transform.position, orbitVector.transform.position) < 3) {
-                orbitVector.transform.Translate(Vector3.forward, transform);
-            }
-
-        
-        //LMB - PIVOT
-        } else if (Input.GetMouseButton(0)) {
-            
-            // Refine the rotateSpeed based on distance to orbitVector
-            var currentRotateSpeed = Mathf.Clamp(rotateSpeed * (distanceToOrbit / 50), 1.0f, rotateSpeed);
-            
-            
-            // Temporarily parent the camera to orbitVector and rotate orbitVector as desired
-            transform.parent = orbitVector.transform;
-            orbitVector.transform.Rotate(Vector3.right * (y * currentRotateSpeed));
-            orbitVector.transform.Rotate(Vector3.up * (x * currentRotateSpeed), Space.World);
-            transform.parent = null;
-                    
-        //MMB - PAN
-        else if (Input.GetMouseButton(2)) {
-            
-            // Calculate move speed
-            var translateX = Vector3.right * (x * moveSpeed) * -1;
-            var translateY = Vector3.up * (y * moveSpeed) * -1;
-            
-            // Move the camera
-            transform.Translate(translateX);
-            transform.Translate(translateY);
-            
-            // Move the orbitVector with the same values, along the camera's axes. In effect causing it to behave as if temporarily parented.
-            orbitVector.transform.Translate(translateX, transform);
-            orbitVector.transform.Translate(translateY, transform);
-        }
-    */        
-
-// Use this for initialization
-void olmecnav_start (void ) {
-    // Create a transform (which will be the lookAt target and global orbit vector)
-    
-    //     capsuleObj = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-    //     capsuleObj.transform.position = Vector3.zero;
-
-    // Snap the camera to align with the grid in set starting position (otherwise everything gets a bit wonky)
-   
-    // transform.position = startpos;  
-    // transform.LookAt(capsuleObj.transform.position, Vector3.up);
-    // capsuleObj.renderer.enabled = false; //hide the capsule object     
-
-    //     ///
-    //     orbt_xform_original = capsuleObj.transform.position;
-    //     orbt_rot_original   = capsuleObj.transform.rotation;
-}
 
 
 /**************************************************/

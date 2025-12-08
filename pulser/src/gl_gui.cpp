@@ -85,15 +85,38 @@ extern int scr_size_y;
 
 /********************************************/
 
+// Use this for initialization
+void olmecnav_start (void ) {
+    // Create a transform (which will be the lookAt target and global orbit vector)
+    
+    //     capsuleObj = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+    //     capsuleObj.transform.position = Vector3.zero;
+
+    // Snap the camera to align with the grid in set starting position (otherwise everything gets a bit wonky)
+   
+    // transform.position = startpos;  
+    // transform.LookAt(capsuleObj.transform.position, Vector3.up);
+    // capsuleObj.renderer.enabled = false; //hide the capsule object     
+
+    //     ///
+    //     orbt_xform_original = capsuleObj.transform.position;
+    //     orbt_rot_original   = capsuleObj.transform.rotation;
+}
+
+
+
+/********************************************/
+
 void octant_mouse_button(int button, int state, int x, int y)
 {
 
     mouseX = x;
     mouseY = y;
 
+    //-----------
     //left click 
     if (button == GLUT_LEFT_BUTTON)
-      {
+    {
         if(state == GLUT_DOWN)
         {
             mouseLeftDown = true;
@@ -106,33 +129,33 @@ void octant_mouse_button(int button, int state, int x, int y)
         else if(state == GLUT_UP)
             mouseLeftDown = false;
 
-      }
+    }
 
-      // middle click
-      if ((button == 3) || (button == 4)) // It's a wheel event
-      {
-           // Disregard redundant GLUT_UP events
-           if (state == GLUT_UP) return; 
+    //-----------
+    // middle click
+    if ((button == 3) || (button == 4)) // It's a wheel event
+    {
+        // Disregard redundant GLUT_UP events
+        if (state == GLUT_UP) return; 
 
-           if (button == 3){
-               //if (orbit_dist < -1.5){
-               orbit_dist+=.1;  
-               //printf("# orbit dist %f \n", orbit_dist );                                 
-               //}
-  
-           }
-           if (button == 4){
-               //if (orbit_dist>0){ 
-                   orbit_dist-=.1; 
-               //}
-           }
-      }else{  // normal button event
-           if (state == GLUT_DOWN){
-               // printf("olmec middle click\n");  
-           }
-      }
+        if (button == 3){
+            //if (orbit_dist < -1.5){
+            orbit_dist+=.1;  
+            //printf("# orbit dist %f \n", orbit_dist );                                 
+            //}
+        }
+        if (button == 4){
+            //if (orbit_dist>0){ 
+                orbit_dist-=.1; 
+            //}
+        }
+    }else{  // normal button event
+        if (state == GLUT_DOWN){
+            // printf("olmec middle click\n");  
+        }
+    }
 
-
+    //-----------
     //Right click
     if (button == GLUT_RIGHT_BUTTON)
       {
@@ -308,4 +331,80 @@ void draw_poly_mousevent(int button, int state, int x, int y){
    }
 }
 */
+
+
+
+
+/*************************************************
+/**************************************************/
+
+
+    //var wheelie = Input.GetAxis("Mouse ScrollWheel");
+        
+    // if (wheelie < 0) // back
+    // {
+    //     var currentZoomSpeed = 100f;
+    //     transform.Translate(Vector3.forward * (wheelie * currentZoomSpeed));
+    // }
+    // if (wheelie > 0) // back
+    // {
+    //      var currentZoomSpeed = 100f;
+    //      transform.Translate(Vector3.forward * (wheelie * currentZoomSpeed));
+    // }
+
+    /*
+    //Input.GetAxis("Mouse ScrollWheel") < 0) // back
+    if( Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.LeftAlt) ){
+
+      // Distance between camera and orbitVector. We'll need this in a few places
+      var distanceToOrbit = Vector3.Distance(transform.position, orbitVector.transform.position);
+    
+        //RMB - ZOOM
+        if (Input.GetMouseButton(1)) {
+            
+            // Refine the rotateSpeed based on distance to orbitVector
+            var currentZoomSpeed = Mathf.Clamp(zoomSpeed * (distanceToOrbit / 50), 0.1f, 2.0f);
+            
+            // Move the camera in/out
+            transform.Translate(Vector3.forward * (x * currentZoomSpeed));
+            
+            // If about to collide with the orbitVector, repulse the orbitVector slightly to keep it in front of us
+            if (Vector3.Distance(transform.position, orbitVector.transform.position) < 3) {
+                orbitVector.transform.Translate(Vector3.forward, transform);
+            }
+
+        
+        //LMB - PIVOT
+        } else if (Input.GetMouseButton(0)) {
+            
+            // Refine the rotateSpeed based on distance to orbitVector
+            var currentRotateSpeed = Mathf.Clamp(rotateSpeed * (distanceToOrbit / 50), 1.0f, rotateSpeed);
+            
+            
+            // Temporarily parent the camera to orbitVector and rotate orbitVector as desired
+            transform.parent = orbitVector.transform;
+            orbitVector.transform.Rotate(Vector3.right * (y * currentRotateSpeed));
+            orbitVector.transform.Rotate(Vector3.up * (x * currentRotateSpeed), Space.World);
+            transform.parent = null;
+                    
+        //MMB - PAN
+        else if (Input.GetMouseButton(2)) {
+            
+            // Calculate move speed
+            var translateX = Vector3.right * (x * mouse_orbit_speed) * -1;
+            var translateY = Vector3.up * (y * mouse_orbit_speed) * -1;
+            
+            // Move the camera
+            transform.Translate(translateX);
+            transform.Translate(translateY);
+            
+            // Move the orbitVector with the same values, along the camera's axes. In effect causing it to behave as if temporarily parented.
+            orbitVector.transform.Translate(translateX, transform);
+            orbitVector.transform.Translate(translateY, transform);
+        }
+    */        
+
+
+
+
 

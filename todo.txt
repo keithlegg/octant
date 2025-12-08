@@ -12,6 +12,9 @@
     - quads unstested
     - triangles appear to be out of index 
     - triangulate
+    
+- simple clickable buttons on screen 
+- animation - requires some notion of "time"
 
 
 - wire up CLI command parser 
@@ -74,8 +77,8 @@
           r    -  load scene 0 ONLY AFTER CLEARING OR IT BLOWS UP!
     shift r    - Reset/ clear scene 
 
-          p    - run python via gnelscript 
-          o    - load PYCORE.obj (output from gnelscript) 
+          p    - run python via chopper 
+          o    - load PYCORE.obj (output from chopper) 
     shift p    - run python render (fixed custom py command) 
 
 
