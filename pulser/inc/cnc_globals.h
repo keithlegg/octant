@@ -10,6 +10,10 @@
    for a CNC /3D printer/Pick and Place, etc
 */
 
+
+void exit_program(void);
+
+
 class cncglobals
 {
 

@@ -44,7 +44,6 @@ GLuint texture[3]; // storage for one texture
 
 
 
-
 /******************************************/
 //command line tool to generate XYZ pulses from 2 vectors 
 

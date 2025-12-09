@@ -65,22 +65,38 @@ using std::vector;
 
 char strbuffer[100][100];
 
+
 std::vector<Vector3> scene_drawvec3;
 std::vector<Vector3> scene_drawvecclr;
-int num_drawvec3 = 0;
-
-
 std::vector<Vector3> scene_drawpoints;
 std::vector<Vector3> scene_drawpointsclr;
-std::vector<Vector3>* pt_scene_drawpoints = &scene_drawpoints;
 
+//experiments is heap VS stack. idk 
+// std::vector<Vector3>* scene_drawvec3      = new std::vector<Vector3>;
+// std::vector<Vector3>* scene_drawvecclr    = new std::vector<Vector3>;
+// std::vector<Vector3>* scene_drawpoints    = new std::vector<Vector3>;
+// std::vector<Vector3>* scene_drawpointsclr = new std::vector<Vector3>;
+
+
+std::vector<Vector3>* pt_scene_drawpoints = &scene_drawpoints;
+obj_model* pt_model_buffer  = new obj_model;
+
+int num_drawvec3 = 0;
 int num_drawpoints = 0;
 
 const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 20;
 
 
-obj_model* pt_model_buffer  = new obj_model;
+
+
+
+void exit_program(void)
+{
+    //delete pt_model_buffer;
+    //delete pt_scene_drawpoints;
+
+}
 
 
 

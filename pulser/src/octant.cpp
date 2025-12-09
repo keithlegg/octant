@@ -1309,6 +1309,7 @@ void key_cb(unsigned int key)
     if (key == 27) 
     { 
         glutDestroyWindow(window_id); 
+        exit_program();
         exit(0);                   
     }
 
