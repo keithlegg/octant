@@ -85,6 +85,8 @@ void polygon_ops::reset(void){;}
 /***************************************/
 int polygon_ops::numpts(void){
     // NOT USED YET 
+    std::cout << "numpts NOT DONE\n";
+    return 0;
 }
 
 
@@ -297,8 +299,6 @@ void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
     int const x2 = pt2[0];
     int const y2 = pt2[1];
 
-    int const foobar = 100;
-
     short xy_idx     = 0;
     int delta_x(x2 - x1);
 
@@ -459,10 +459,13 @@ double polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 /***************************************/
 
 // XYZ centroid of all loaded geom 
+//DEBUG NOT DONE
 Vector3 polygon_ops::centroid(void)
 {
-
+    std::cout << "CENTROID NOT DONE\n";
+    return Vector3(0,0,0);
 }
+
 
 // XYZ centroid of a triangle 
 Vector3 polygon_ops::centroid(Vector3 p1, Vector3 p2, Vector3 p3)

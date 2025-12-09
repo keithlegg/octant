@@ -163,7 +163,7 @@ class filesender_t {
     char m_buf[BUFSIZE];     current chunk of file 
     int m_buf_len;           bytes in buffer 
     int m_buf_used;          bytes used so far; <= m_buf_len 
-    enum { IDLE, SENDING } m_state; /* what we're doing 
+    enum { IDLE, SENDING } m_state; // what we're doing 
 
 public:
     filesender() {

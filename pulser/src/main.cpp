@@ -46,7 +46,7 @@ GLuint texture[3]; // storage for one texture
 
 /******************************************/
 //command line tool to generate XYZ pulses from 2 vectors 
-
+/*
 void run_cncplot(cncglobals* cg,
                  double f_x,
                  double f_y,
@@ -88,6 +88,7 @@ void run_cncplot(cncglobals* cg,
 
 }
 
+*/
 
 /******************************************/
 
@@ -124,15 +125,6 @@ void parse_args(cncglobals* cg,  int argc, char **argv)
  
 int main(int argc, char **argv) 
 {  
-    
-    /*
-    cncglobals cg;
-    cg.load_cfg_file(argv[1]);
-    //load any optional 3d models needed for setup
-    cg.load_objects();
-    //cg.show_obj();
-    //cg.show();
-    */
 
     /*------------------*/
     //spinningCubeDemo(&argc, argv);

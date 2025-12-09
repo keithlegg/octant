@@ -36,10 +36,14 @@ ifeq ($(UNAME), Linux)
 	#SHOW ME ALL THE WARNINGS 
 	#LFLAGS = -Wall -lglut -lGL -lGLU 
 
+    #PRODUCTION VERSION 
+	#LFLAGS = -lglut -lGL -lGLU 
+
 	#NO WARNINGS 
-	#LFLAGS =  -w -lglut -lGL -lGLU 
+	LFLAGS = -w -lglut -lGL -lGLU 
 	
-	LFLAGS = -g -w -lglut -lGL -lGLU 
+	#BUILD GDB DEBUGGING SYMBOLS  
+	#LFLAGS = -g -w -lglut -lGL -lGLU 
 
 
 endif

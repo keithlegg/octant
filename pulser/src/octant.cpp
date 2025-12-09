@@ -28,22 +28,17 @@
 #include <vector>
 #include <string>
 #include <cmath>
-  
 
-
-
+#include "timer.h"
 #include "gl_setup.h"
 #include "point_op.h"
 #include "obj_model.h"
 #include "cnc_globals.h"
+#include "cnc_plot.h"
+
 #include "parse_cmds.h"
-
-
-#include "timer.h"
-
 #include "gl_gui.h"
 #include "octant.h"
-
 
 //#include "socket.h"
 
@@ -151,6 +146,7 @@ char active_filepath[300];
 int num_pts_drw = 0;
 GLfloat vertices[100];
 
+
 /***************************************/
 // data containers 
 
@@ -193,7 +189,7 @@ extern GLfloat emis_text[];
 extern GLfloat emis_points[];
 extern GLfloat emis_off[];
 extern GLfloat emis_teal[];
-//extern GLfloat emis_red[]; //DEBUG WTF - confilct? where?
+// extern GLfloat emis_red[]; //DEBUG WTF - confilct? where?
 extern GLfloat emis_green[];
 extern GLfloat emis_blue[];
 extern GLfloat emis_lines[];
@@ -226,7 +222,7 @@ void set_colors(void){
 
 
 /***************************************/
-void timer_reset(void)
+void timer_init(void)
 {
     mtime.stop();
 
@@ -236,6 +232,8 @@ void timer_reset(void)
 /***************************************/
 void update_clk(void)
 {
+    //symtime
+
     mtime.stop();
 
 }
@@ -406,6 +404,43 @@ static void parser_cb(unsigned char key, int x, int y)
 /***************************************/
 /***************************************/
 
+//send_pulses
+
+void run_send_pulses(cncglobals* cg,
+                 double f_x,
+                 double f_y,
+                 double f_z,
+                 double s_x,
+                 double s_y,
+                 double s_z,
+                 int divs)  
+{
+    cnc_plot plot;
+    
+    vector<Vector3> pulsetrain;
+    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
+
+    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
+
+    if(cg->GLOBAL_DEBUG==true)
+    {
+        int x=0;
+        for(x=0;x<pulsetrain.size();x++)
+        {
+            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
+        } 
+    }
+
+    if(cg->GLOBAL_DEBUG==false)
+    {
+       // plot.send_pulses(pt_pulsetrain);
+    }
+
+    delete pt_pulsetrain;
+ }   
 
 
 int q_i, p_i, f_i = 0;
@@ -414,9 +449,12 @@ int q_i, p_i, f_i = 0;
 char cs[100];
 char s[100];
 
+bool run_pulses = false;
 
 static void render_loop()
 {
+    run_pulses = mtime.running;
+
     // Clear The Screen And The Depth Buffer
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -424,17 +462,22 @@ static void render_loop()
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
-    
     //------------ 
-    // first attempt at animation
-    //glTranslatef( sin(mtime.getElapsedTime()), 0, 0);
-    //std::cout << mtime.getElapsedTime() << "\n";
-    if(mtime.running==true)
+    if(run_pulses)
     {
+
+        //DEBUG
+        //we need to pre calculate all the pulses, then use the pointer to progress to update position
+
+        //run_send_pulses()  
+        //position = symtime * 
+
+        //glTranslatef( sin(mtime.getElapsedTime()), 0, 0);
+        //std::cout << mtime.getElapsedTime() << "\n";        
+
         qpos.x = sin(mtime.getElapsedTime());
         qpos.y = cos(mtime.getElapsedTime());
     }
-
     //------------ 
 
     if (render_text)
@@ -457,7 +500,8 @@ static void render_loop()
         
         //-----------------------------
         // render text in window 
-        void *fontsm = GLUT_BITMAP_8_BY_13;     
+
+        //void *fontsm = GLUT_BITMAP_8_BY_13;     
         void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
 
         glutKeyboardFunc(parser_cb);
@@ -480,9 +524,12 @@ static void render_loop()
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
         //renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-20  ,(void *)font, s );
         
+        
+        //-----------------------------------------
+
         //DEBUG USING THE TIMER AS INDICATOR OF MACHINE RUNNING 
         //PROBABLY NOT WHAT YOU WANT - CONSIDER THREADS AND A MORE COMPLEX SEMAPHORE 
-        if(!mtime.running)
+        if(!run_pulses)
         {
             glColor3d(1.0, 0, 0);
             renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
@@ -492,6 +539,8 @@ static void render_loop()
             glColor3d(0.0, 1.0, 0);
             renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
         }
+
+        //-----------------------------------------
 
         //---
         // glColor3d(1.0, 1.0, 1.0);
@@ -834,7 +883,7 @@ static void render_loop()
 
     Vector3 sv  = Vector3();
     Vector3 ev  = Vector3();
-    Vector3 rgb = Vector3();  
+    // Vector3 rgb = Vector3();  
 
     if (DRAW_GEOM)
     {
@@ -857,6 +906,7 @@ static void render_loop()
                 ev  = scene_drawvec3[p_i];
                 //rgb = scene_drawvecclr[p_i];            
             }
+
             glBegin(GL_LINES);
                 glColor3f(1.,0,0); //hack for now
                 //glColor3f(rgb.x,rgb.y,rgb.z);
@@ -1107,11 +1157,15 @@ void start_gui(int *argc, char** argv){
     set_colors();
 
 
-    timer_reset();
+    timer_init();
     //mtime.start();
 
     //------------
+
     //load CNC cfg (including paths to .obj files) 
+    
+    //cncglobals new cg;
+
     cncglobals cg;
     cg.load_cfg_file(argv[1]);
     //load any optional 3d models needed for setup
@@ -1204,7 +1258,7 @@ void start_gui(int *argc, char** argv){
 
     glutMainLoop();// Start Event Processing Engine   
    
-
+    //DEBUG - polymorphic class type ‘obj_model’ which has non-virtual destructor might cause undefined behavior
     delete pt_model_buffer;
 
 

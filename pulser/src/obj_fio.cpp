@@ -540,8 +540,6 @@ void obj_model::load_m44(char* filename)
         if (line_ct==3){
             m44[12]=atof(token[0]); m44[13]=atof(token[1]); m44[14]=atof(token[2]); m44[15]=atof(token[3]);
         }
-        
-        delete token;
 
         line_ct ++; 
     }

@@ -2,6 +2,8 @@
 #define CONFUSION36D_H
 
 
+
+#include "cnc_globals.h"
 #include "gl_setup.h"
 
 
@@ -11,18 +13,18 @@
 //void grab_projection_matrix(Matrix4 *pt_mpm );
 void grab_camera_matrix( Matrix4 *pt_mmm );
 
-void timer_reset(void);
+void timer_init(void);
+//void timer_reset(void)
 
 void set_view_ortho(void);
 void setOrthographicProjection();
 void resetPerspectiveProjection();
 void renderBitmapString(float, float, void *, const char *);
 
-static void render_loop();
-static void ReSizeGLScene(int, int);
-
 void key_cb(unsigned int key);
-static void parser_cb(unsigned char key, int x, int y);
+
+void run_send_pulses(cncglobals*, double, double, double,
+                                  double, double, double, int);  
 
 
 void start_gui(int *argc, char** argv);

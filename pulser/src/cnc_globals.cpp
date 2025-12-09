@@ -93,7 +93,7 @@ const int MAX_TOKENS_PER_LINE = 20;
 
 void exit_program(void)
 {
-    //delete pt_model_buffer;
+    delete pt_model_buffer;
     //delete pt_scene_drawpoints;
 
 }
@@ -299,8 +299,6 @@ void cncglobals::load_cfg_file( char* filepath )
     int line_ct = 0;
     while (!cfg_filein.eof())
     {   
-        //26 is a sign the pin is unassigned (only 0-24 on the plug) 
-        uint parsepin = 26;
 
         std::string line;
         while (std::getline(cfg_filein, line)) 

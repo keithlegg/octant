@@ -108,7 +108,9 @@ void cnc_parport::test_port(cncglobals* cg)
     
     }
 
-    unsigned char send_byte = 0x00;
+    // unsigned char send_byte = 0x00;
+    unsigned int send_byte = 0;
+
     int a=0;int b=0;
 
     outb(0x00,cg->parport1_addr); 
@@ -213,12 +215,20 @@ void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
     db25 pin #8 - INV Y pulse   -  address 0x40  -  bitshift (1<<6)
 
 
+    Args:
+
+        pt_progress    - update a float from 0-1 on how far we are in the pulsetrain
+        cncglobals     - pointer to globals 
+        pt_pulsetrain  - pointer to the data to send (XYZ array of 1s and 0s with the first element indicating direction)
+
 
 */
 
-void cnc_parport::send_pulses(cncglobals* cg, vector<Vector3>* pt_pulsetrain)
+void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, vector<Vector3>* pt_pulsetrain)
 {
-    unsigned char send_byte = 0x00;
+    //unsigned char send_byte = 0x00;
+    unsigned int send_byte = 0;
+
     int send_it = 1; 
 
     std::cout << "# we have pulses! count: " << pt_pulsetrain->size() << "\n";
@@ -296,11 +306,16 @@ void cnc_parport::send_pulses(cncglobals* cg, vector<Vector3>* pt_pulsetrain)
 
     //**************************//
     int x=0;
+    
 
     //the first element is reserved for direction data 
     //we intentionally skip it starting at index 1 
     for(x=1;x<pt_pulsetrain->size();x++)
     {
+
+        //update the progress so we can display it in the GUI 
+        *pt_progress = (int) pt_pulsetrain->size()/x;
+
 
         if(send_it==0)
         {

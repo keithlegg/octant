@@ -378,9 +378,9 @@ void obj_model::triangulate(void)
     {   
            
         // fetch the pts for a triangle
-        Vector3 p1 = points[quads[p_i][0]-1];
-        Vector3 p2 = points[quads[p_i][1]-1];
-        Vector3 p3 = points[quads[p_i][2]-1];
+        // Vector3 p1 = points[quads[p_i][0]-1];
+        // Vector3 p2 = points[quads[p_i][1]-1];
+        // Vector3 p3 = points[quads[p_i][2]-1];
 
         // // calculate the face normal  
         // Vector3 a = sub(p1,p2);
@@ -479,13 +479,14 @@ void obj_model::calc_normals(void)
 
 */
 
+/*
 Vector3 obj_model::calc_extents(void)
 {
     //set up the containers to store data 
     //iterate all point geom - storing highest and lowest for each axis 
-
+    
 }
-
+*/
 
 
 
@@ -681,8 +682,6 @@ void obj_model::make_cube(double scale)
 
     // cout << faceindices[0] << faceindices[5];
 
-    int i = 0; 
- 
     for (int i=0; i<vcnt; i++) 
     {
         //fac_tmp.clear();

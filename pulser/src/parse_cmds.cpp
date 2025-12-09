@@ -64,8 +64,8 @@ extern timer mtime;
 
 void stop_machine(void)
 {
-        mtime.stop();
-        //std::cout << "ESTOP ACTIVATED.\n";
+    mtime.stop();
+    //std::cout << "ESTOP ACTIVATED.\n";
 }
 
 
@@ -112,9 +112,6 @@ void parse_cmd_text(std::string *buffer)
         stop_machine(); 
     }
 
-
-
-
     //--------------
     //toggle grid
     if (a1=="tog")
@@ -139,13 +136,15 @@ void parse_cmd_text(std::string *buffer)
 
 
     //--------------
+    /*
     //reload cfg file 
     if (a1=="load")
     {
         //DEBUG
-        std::cout << "NOT WORKY YET\n";
+        std::cout << "load NOT WORKY YET\n";
     }
-
+    */
+    
     //--------------
     //absolute transform (in space)
     if (a1=="at")
@@ -168,21 +167,33 @@ void parse_cmd_text(std::string *buffer)
     {
         Vector3 rgb = Vector3(0,1.0,1.0);
        
-        v11 = std::stof(a2);
-        v12 = std::stof(a3);
+        //learning about try -> catch.  
+        try {
+                v11 = std::stof(a2);
+                v12 = std::stof(a3);
+
+                //sample the qpos 
+                //Vector3 old = qpos;
+                //old = qpos.operator-(old);
+
+                //I AM SHIFTING THE AXIS TO Z UP HERE
+                //set new qpos
+                qpos.x = v11;
+                qpos.y = 0;  
+                qpos.z = v12;
+
+            //store the difference between them
+            add_vecrgb_scndrw(&qpos, &rgb);
+
+        } catch (const std::invalid_argument& e) {  
+            //std::cerr << "Error: " << e.what() << std::endl; // Handling the error
+        } catch (...) { // Catch-all for any other unexpected exceptions
+            std::cerr << "RT command bad input " << std::endl;
+        }   
+
+
         
-        //sample the qpos 
-        //Vector3 old = qpos;
-        //old = qpos.operator-(old);
 
-        //I AM SHIFTING THE AXIS TO Z UP HERE
-        //set new qpos
-        qpos.x = v11;
-        qpos.y = 0;  
-        qpos.z = v12;
-
-        //store the difference between them
-        add_vecrgb_scndrw(&qpos, &rgb);
     }
 
     //--------------
@@ -226,6 +237,7 @@ void parse_cmd_text(std::string *buffer)
         if(a2=="solid")   {key_cb(53);}                 
 
     }
+
     //--------------
     if (a1=="run"||a1=="start")
     {
