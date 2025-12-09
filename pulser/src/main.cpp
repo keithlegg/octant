@@ -84,6 +84,9 @@ void run_cncplot(cncglobals* cg,
        // plot.send_pulses(pt_pulsetrain);
     }
 
+    delete pt_pulsetrain;
+    
+
 }
 
 

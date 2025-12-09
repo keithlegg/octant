@@ -80,7 +80,7 @@ const int MAX_CHARS_PER_LINE = 512;
 const int MAX_TOKENS_PER_LINE = 20;
 
 
-obj_model* pt_model_buffer  = new(obj_model);
+obj_model* pt_model_buffer  = new obj_model;
 
 
 
@@ -406,7 +406,8 @@ void cncglobals::load_cfg_file( char* filepath )
                         {   
 
                             float c1,c2,c3;
-
+                            //DEBUG - file loader counts blank spaces - need to fix
+                            //if things are not spaced exactly right wont work with extras 
                             try {
                                 c1 = std::stof(tokenized.at(1));
                                 c2 = std::stof(tokenized.at(2));

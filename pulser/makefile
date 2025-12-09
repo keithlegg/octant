@@ -37,8 +37,10 @@ ifeq ($(UNAME), Linux)
 	#LFLAGS = -Wall -lglut -lGL -lGLU 
 
 	#NO WARNINGS 
-	#LFLAGS = -g -w -lglut -lGL -lGLU 
-	LFLAGS =  -w -lglut -lGL -lGLU 
+	#LFLAGS =  -w -lglut -lGL -lGLU 
+	
+	LFLAGS = -g -w -lglut -lGL -lGLU 
+
 
 endif
 

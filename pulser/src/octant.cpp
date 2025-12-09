@@ -991,6 +991,7 @@ void animate(){
     render_loop();
 }
 
+
 /***************************************/
 
 static void reshape_window(int width, int height)
@@ -1203,6 +1204,9 @@ void start_gui(int *argc, char** argv){
 
     glutMainLoop();// Start Event Processing Engine   
    
+
+    delete pt_model_buffer;
+
 
 }
 

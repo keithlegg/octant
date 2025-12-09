@@ -94,7 +94,7 @@ void obj_model::load(char *filepath)
 
     std::cout << "## load_objfile loading file "<< filepath << "\n";
     
-    int pofst = 0; //DEBUG point offset indices to points if geom exists already 
+    int pofst   = 0; //DEBUG point offset indices to points if geom exists already 
     int line_ct = 0;
     
     std::ifstream obj_filein(filepath, std::ifstream::in);
@@ -540,6 +540,8 @@ void obj_model::load_m44(char* filename)
         if (line_ct==3){
             m44[12]=atof(token[0]); m44[13]=atof(token[1]); m44[14]=atof(token[2]); m44[15]=atof(token[3]);
         }
+        
+        delete token;
 
         line_ct ++; 
     }
