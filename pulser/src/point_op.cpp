@@ -92,11 +92,11 @@ int polygon_ops::numpts(void){
 
 
 /***************************************/
-/*
-void point_ops::lerp_along3d(std::vector<Vector3>* output,
-                                 Vector3 fpos, 
-                                 Vector3 spos, 
-                                 float dist )
+ 
+void point_ops::lerp_along( Vector3* output,
+                            Vector3 fpos, 
+                            Vector3 spos, 
+                            float dist )
 {
  
     Vector3 npos;
@@ -104,7 +104,7 @@ void point_ops::lerp_along3d(std::vector<Vector3>* output,
     //X
     if(fpos.x-spos.x!=0)
     {
-        npos.x =  spos.x+(((fpos.x-spos.x)/(num+1))*(n+1));
+        npos.x =  spos.x+fpos.x-spos.x*dist;
     }else{
         npos.x=0;
     }
@@ -112,7 +112,7 @@ void point_ops::lerp_along3d(std::vector<Vector3>* output,
     //Y
     if (fpos.y-spos.y!=0)
     { 
-        npos.y =  spos.y+(((fpos.y-spos.y)/(num+1))*(n+1)); 
+        npos.y =  spos.y+(fpos.y-spos.y)*dist; 
     }else{
         npos.y=0;
     }
@@ -120,18 +120,19 @@ void point_ops::lerp_along3d(std::vector<Vector3>* output,
     //Z
     if (fpos.z-spos.z!=0)
     { 
-        npos.z =  spos.z+(((fpos.z-spos.z)/(num+1))*(n+1));
+        npos.z =  spos.z+(fpos.z-spos.z)*dist;
     }else{
         npos.z=0;            
     }
 
     //cout << n << " "<< npos.x <<" "<<npos.y<<" "<< npos.z<<"\n";
 
-    output->push_back( npos );
-    //output->insert( npos );
+     *output = npos;
+    //output->push_back( npos );
+    //return npos 
 };
 
-*/
+ 
 
 
 /***************************************/

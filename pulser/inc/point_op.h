@@ -40,6 +40,11 @@ class point_ops
 
     ~point_ops(){};
 
+    void lerp_along( Vector3* output,
+                            Vector3 fpos, 
+                            Vector3 spos, 
+                            float dist );
+
 
     void locate_pt_along3d(std::vector<Vector3>*,
                            Vector3, 

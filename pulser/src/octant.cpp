@@ -141,6 +141,8 @@ extern int num_drawvec3;
 /***************************************/
 //display cache of 3D path vectors 
 cnc_plot plot;
+    
+extern point_ops PG;
 
 /***************************************/
 //display 3D points and color 
@@ -391,8 +393,6 @@ void reset_view(void){
 void test_bezier( Vector3 start, Vector3 ctrl1, Vector3 ctrl2, Vector3 end)
 {
 
-    point_ops PG;
-
     vector<Vector3> * ptDrawvec = &scene_drawvec3;
     vector<Vector3> * ptDrawClr = &scene_drawvecclr;
     int * ptnum_drawvec3 = &num_drawvec3;
@@ -587,11 +587,23 @@ static void render_loop()
         std::cout << mtime.getElapsedTime() << "\n";
 
         //<< " "<< npos.x <<" "<<npos.y<<" "<< npos.z<<"\n";
-         
+        
+        //  void lerp_along( Vector3* output,
+        //                 Vector3 fpos, 
+        //                 Vector3 spos, 
+        //                 float dist );
+
+        Vector3 locpos = Vector3(0,0,0);
+
         for (int dpi=0; dpi<plot.pathcache_vecs.size();dpi++)
         {   
-            draw_locator( &plot.pathcache_vecs[dpi], .3);
-            //std::cout << disp_pathcache[dpi].x << " "<< disp_pathcache[dpi].y << " "<< disp_pathcache[dpi].z << "\n";
+
+            //draw_locator( &plot.pathcache_vecs[dpi], .3);
+
+            PG.lerp_along(&locpos, Vector3(0,0,0), plot.pathcache_vecs[dpi], mtime.getElapsedTime());
+            draw_locator( &locpos, .3);
+
+ 
 
         } 
                
