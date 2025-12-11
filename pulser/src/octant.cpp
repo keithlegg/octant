@@ -79,6 +79,61 @@
 /***************************************/
 cncglobals cg;
 
+
+
+/***************************************/
+//display 3D lines and color
+extern vector<Vector3> scene_drawvec3;
+extern vector<Vector3> scene_drawvecclr;
+
+
+/***************************************/
+//motion control related 
+
+cnc_plot motionplot;
+cnc_plot* pt_motionplot = &motionplot;
+
+extern point_ops PG;
+
+//position of head 
+Vector3 qpos = Vector3(0, 0, 0);
+
+
+//loaded parametrs from cfg 
+extern float retract_height;
+extern float work_height;
+    
+
+
+
+/***************************************/
+//experimental TCP port 
+
+int TCP_PORT;
+
+
+/***************************************/
+//Timer related 
+
+timer mtime = timer();
+
+bool run_pulses = false;
+
+extern double trav_dist  ;
+extern double num_vecs   ;
+extern double trav_speed ; //linear unit per sec 
+
+/***************************************/
+// data to pulse out to IO hardware
+//vector<Vector3> pulsetrain;
+//vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+
+
+/***************************************/
+//I think this was from a test of the VBO 
+int num_pts_drw = 0;
+GLfloat vertices[100];
+
 /***************************************/
 //Mouse related
 extern bool view_ismoving  ;
@@ -120,16 +175,13 @@ bool draw_triangles  = true;
 bool render_text     = true;
 
 
-//DEBUG - figure this crap out 
+//DEBUG - figure the VBO crap out 
 bool draw_points     = true;  
 bool draw_points_vbo = false; // test of VBO  - DEBUG it explodes 
 //bool draw_bbox       = true;
 
 
-/***************************************/
-//experimental TCP port 
 
-int TCP_PORT;
 
 /***************************************/
 // Window related 
@@ -140,21 +192,6 @@ extern int scr_size_x;
 extern int scr_size_y;
 extern bool scr_full_toglr;
 
-/***************************************/
-//Timer related 
-
-timer mtime = timer();
-
-bool run_pulses = false;
-
-extern double trav_dist  ;
-extern double num_vecs   ;
-extern double trav_speed ; //linear unit per sec 
-
-/***************************************/
-// data to pulse out to IO hardware
-//vector<Vector3> pulsetrain;
-//vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
 
 /***************************************/
@@ -162,17 +199,7 @@ extern double trav_speed ; //linear unit per sec
 extern char* obj_filepath;
 extern vector<std::string>  obj_filepaths;
 
-/***************************************/
-//display 3D lines and color
-extern vector<Vector3> scene_drawvec3;
-extern vector<Vector3> scene_drawvecclr;
 
-
-/***************************************/
-//display cache of 3D path vectors 
-cnc_plot plot;
-    
-extern point_ops PG;
 
 /***************************************/
 //display 3D points and color 
@@ -185,16 +212,13 @@ extern GLuint texture[3];
 
 char active_filepath[300];
 
-/***************************************/
-//I think this was from a test of the VBO 
-int num_pts_drw = 0;
-GLfloat vertices[100];
+
 
 
 /***************************************/
 // data containers 
 
-Vector3 qpos = Vector3(0, 0, 0);
+
 
 double light_intensity;
 
@@ -468,7 +492,7 @@ void run_send_pulses(cncglobals* cg,
     vector<Vector3> pulsetrain;
     vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
-    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
+    motionplot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
 
     if(cg->GLOBAL_DEBUG==true)
     {
@@ -480,7 +504,7 @@ void run_send_pulses(cncglobals* cg,
 
     if(cg->GLOBAL_DEBUG==false)
     {
-       // plot.send_pulses(pt_pulsetrain);
+       // motionplot.send_pulses(pt_pulsetrain);
     }
 
  }   
@@ -543,7 +567,7 @@ int q_i, p_i, f_i = 0;
 char cs[100];
 char s[100];
 
-int vecidx = 1;
+int pathidx = 1;
 
 static void render_loop()
 {
@@ -569,26 +593,29 @@ static void render_loop()
         if (localsimtime>=1.0)
         {
 
-            if (vecidx<plot.pathcache_vecs.size())
+            if (pathidx<motionplot.pathcache_vecs.size())
             {
-                vecidx++;                    
+                pathidx++;                    
                 mtime.reset_sim();
             }
-            if (vecidx>=plot.pathcache_vecs.size())
+            if (pathidx>=motionplot.pathcache_vecs.size())
             {
 
                 mtime.stop();
                 mtime.reset_sim();
                 run_pulses=false;
-                vecidx = 1;
+                pathidx = 1;
             }
-
         }
+
         //std::cout << localsimtime << "\n";
         
-        if (vecidx<=plot.pathcache_vecs.size()&&run_pulses)
+        if (pathidx<=motionplot.pathcache_vecs.size()&&run_pulses)
         {
-            PG.lerp_along(&qpos, plot.pathcache_vecs[vecidx-1], plot.pathcache_vecs[vecidx], localsimtime);
+            //DEBUG - get the length of the vector/spatial divs to calc proper speed 
+            //vectormag   motionplot.pathcache_vecs[pathidx]
+
+            PG.lerp_along(&qpos, motionplot.pathcache_vecs[pathidx-1], motionplot.pathcache_vecs[pathidx], localsimtime);
             glColor3d(1, .4, 1);
             draw_locator(&qpos, .5);
         }
@@ -1300,7 +1327,7 @@ void start_gui(int *argc, char** argv){
 
     // -----------
     // we have vectors in display - calcluate the head path from them   
-    plot.calc_precache(&scene_drawvec3, 10);
+    motionplot.calc_precache(&scene_drawvec3, 10);
     
     //------------
     

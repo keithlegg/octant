@@ -12,10 +12,23 @@ using std::vector;
 class cnc_plot
 {
     public:
-        cnc_plot(){};
+        cnc_plot()
+        {
+            running = false;
+        };
+        
         ~cnc_plot(){};
 
-    void rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed);
+
+    static void stop(void);
+    static void run(void);
+
+    //void rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed);
+
+    void rapid_move(float rh, float wh, 
+                    Vector3 from, Vector3 to, 
+                    double speed);
+
 
     void calc_precache( vector<Vector3>* pt_drawvecs, int numdivs);
 
@@ -27,7 +40,13 @@ class cnc_plot
     
     //-----
     
+    bool running;
+
+    vector<Vector3> rapidmove_vecs;    
+    vector<Vector3> program_vecs; 
+
     vector<Vector3> pathcache_vecs;
+
     double trav_dist  ;
     double num_vecs   ;
     double trav_speed ; //linear unit per sec 

@@ -57,6 +57,9 @@
 #include <vector>
 
 #include "Vectors.h"
+
+#include "timer.h"
+
 #include "point_op.h"
 #include "cnc_plot.h"
 
@@ -64,10 +67,12 @@
 point_ops PG;
 
 
-extern float retract_height;
-extern float work_height;
+// extern float retract_height;
+// extern float work_height;
+// extern Vector3 qpos;
 
-//extern Vector3 qpos;
+
+extern timer mtime;
 
 /******************************************/
 
@@ -78,34 +83,46 @@ extern float work_height;
 
 /******************************************/
 
-/*
-void cnc_plot::reset_precache(num_drawvec3)
+void cnc_plot::stop(void)
 {
-    
+    running=false;
+    mtime.stop();
 
-    for (p_i=1;p_i<num_drawvec3;p_i++)
-    {   
-        Vector3 sv  = scene_drawvec3[p_i];
-        Vector3 ev  = scene_drawvec3[p_i+1];
-        calc_precache(pt_pathcache, sv, ev, num_drawvec3);
-    }
 }
-*/
+
+void cnc_plot::run(void)
+{
+    //swap path buffers and set "running" semaphore 
+
+    if (rapidmove_vecs.size())
+    { 
+        std::cout << "yes we have rapidmove_vecs \n";
+    }
+
+    if (program_vecs.size())
+    { 
+        std::cout << "yes we have program_vecs \n";
+    }    
+
+
+    running = true;
+    mtime.start();
+}
+ 
 
 /******************************************/
-
-// void point_ops::lerp_along( Vector3* output,
-//                             Vector3 fpos, 
-//                             Vector3 spos, 
-//                             float dist )
-
-void cnc_plot::rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed)
+void cnc_plot::rapid_move(float rh, float wh, 
+                          Vector3 from, Vector3 to, 
+                          double speed)
 {
 
-    //Vector3 up_vec   = Vector3(from.x, retract_height, from.z);
+    Vector3 up_vec   = Vector3(from.x, rh, from.z);
     Vector3 trav_vec = from.operator-(to);
-    //Vector3 dwne_vec = Vector3(to.x  , work_height, to.z);        
+    Vector3 dwn_vec  = Vector3(to.x  , wh, to.z);        
 
+    //output->push_back(up_vec);
+    //output->push_back(trav_vec);
+    //output->push_back(dwn_vec);
 
 }
 
@@ -120,9 +137,12 @@ void cnc_plot::calc_precache( vector<Vector3>* pt_drawvecs, int numdivs)
     for (int i=1;i<pt_drawvecs->size();i++)
     {   
         Vector3 sv  = pt_drawvecs->at(i);
-        //Vector3 ev  = pt_drawvecs->at(i+1);
-        pathcache_vecs.push_back(sv);
-        //calc_precache(pt_pathcache, sv, ev, 10);
+         
+        program_vecs.push_back(sv);
+
+        //pathcache_vecs.push_back(sv);
+
+ 
     } 
 
 }

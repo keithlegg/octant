@@ -42,12 +42,12 @@
 #include <cmath>
 #include <unistd.h>  
 
-#include "timer.h"
+
 
 #include "parse_cmds.h"
 #include "gl_setup.h"
 
-//#include "obj_model.h"
+#include "cnc_plot.h"
 
 #include "octant.h"
 
@@ -56,17 +56,20 @@
 int cursor = 0;
 
 //position of extruder/quill/etc
+
 extern Vector3 qpos;
 
+extern cnc_plot* pt_motionplot;
+
 extern cncglobals cg;
-extern timer mtime;
+
 extern obj_model* pt_model_buffer;
 
 
 
 void stop_machine(void)
 {
-    mtime.stop();
+    pt_motionplot->stop;
     //std::cout << "ESTOP ACTIVATED.\n";
     //mtime.reset_sim();
 
@@ -267,7 +270,7 @@ void parse_cmd_text(std::string *buffer)
     //--------------
     if (a1=="run"||a1=="start")
     {
-        mtime.start();
+
         //std::cout << "ESTOP DISABLED.\n";
     }
 
