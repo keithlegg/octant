@@ -2,19 +2,19 @@
 /*
     cnc_plot.cpp 
     
+    General motion control and path plotting.
     Generate a series of 3D pulses from two vectors 
  
 
 
     calc_3d_pulses -  takes two points and runs gen_pules for each axis 
  
-
     gen_pules
         translates a scalar and divs into a valid pulsetrain to send to IO 
         run for each axis-  X,Y,Z
         Args  *pt_pulsetrain, int size, int num
 
-    /////////////////////////////
+    //----------------------------------------//
 
     MIT License
 
@@ -64,6 +64,11 @@
 point_ops PG;
 
 
+extern float retract_height;
+extern float work_height;
+
+//extern Vector3 qpos;
+
 /******************************************/
 
 // vector<Vector3> disp_pathcache;
@@ -87,6 +92,22 @@ void cnc_plot::reset_precache(num_drawvec3)
 }
 */
 
+/******************************************/
+
+// void point_ops::lerp_along( Vector3* output,
+//                             Vector3 fpos, 
+//                             Vector3 spos, 
+//                             float dist )
+
+void cnc_plot::rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed)
+{
+
+    //Vector3 up_vec   = Vector3(from.x, retract_height, from.z);
+    Vector3 trav_vec = from.operator-(to);
+    //Vector3 dwne_vec = Vector3(to.x  , work_height, to.z);        
+
+
+}
 
 
 /******************************************/
@@ -103,21 +124,6 @@ void cnc_plot::calc_precache( vector<Vector3>* pt_drawvecs, int numdivs)
         pathcache_vecs.push_back(sv);
         //calc_precache(pt_pathcache, sv, ev, 10);
     } 
-
-    // void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
-    //                               Vector3 fr_pt, 
-    //                               Vector3 to_pt,
-    //                               int numdivs)\
-
-    //length of vector/abs num - locate_along()
-    //tmpvec = Vector3();most
-    
-    //PG.locate_pt_along3d( ,  to_pt, fr_pt, numdivs);
-    
-    // void point_ops::locate_pt_along3d(std::vector<Vector3>* output,
-    //                              Vector3 fpos, 
-    //                              Vector3 spos, 
-    //                              int num)
 
 }
 
@@ -199,22 +205,8 @@ void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
     std::sort(std::begin(tmp), std::end(tmp)  );
     //std::cout << "after: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
     int most = tmp[2];
-      
 
-    //----
-    // would be a good place to cache the calculated divs ???
-    //length of vector/abs num - locate_along()
-    //tmpvec = Vector3();most
-    //PG.locate_pt_along3d(disp_pathcache, to_pt, fr_pt, num_pul_x);
-    // void point_ops::locate_pt_along3d(std::vector<Vector3>* output,
-    //                              Vector3 fpos, 
-    //                              Vector3 spos, 
-    //                              int num)
-    //disp_pathcache.push_back(tmpvec);
-
-    //---
-
-    ////////////////////////////////////              
+    //--------------------------------------//             
     if (debug)
     {            
         std::cout << "#   most   " << most << " "<< numdivs << " " <<"\n";  
@@ -252,7 +244,6 @@ void cnc_plot::gen_pules(vector<int>* pt_pulsetrain, int size, int num)
     if(num>size)
     {
         std::cout << "# gen_pules: size arg may not exceed number \n";
-
         exit(1);
     }
 

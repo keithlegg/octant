@@ -15,6 +15,8 @@ class cnc_plot
         cnc_plot(){};
         ~cnc_plot(){};
 
+    void rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed);
+
     void calc_precache( vector<Vector3>* pt_drawvecs, int numdivs);
 
     void gen_pules(std::vector<int>*, int, int);
