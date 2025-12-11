@@ -270,6 +270,7 @@ void parse_cmd_text(std::string *buffer)
     //--------------
     if (a1=="run"||a1=="start")
     {
+        pt_motionplot->update_cache();
         pt_motionplot->run();
         //std::cout << "ESTOP DISABLED.\n";
     }

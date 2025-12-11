@@ -16,7 +16,8 @@ class cnc_plot
         {
             running  = false;
             finished = true;
-            quill_pos = Vector3(0,0,0);
+            quill_pos  = Vector3(0,0,0);
+            prg_origin = Vector3(0,0,0);
         };
         
         ~cnc_plot(){};
@@ -27,12 +28,13 @@ class cnc_plot
 
     //void rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed);
 
-    void rapid_move(float rh, float wh, 
-                    Vector3 from, Vector3 to, 
-                    double speed);
+    // void rapid_move(float rh, float wh, 
+    //                 Vector3 from, Vector3 to, 
+    //                 double speed);
 
-
-    void calc_precache( vector<Vector3>* pt_drawvecs, int numdivs);
+    void rapid_move(void);
+    void update_cache(void);
+    void precache( vector<Vector3>* pt_drawvecs, int numdivs);
 
     void gen_pules(std::vector<int>*, int, int);
     void calc_3d_pulses(std::vector<Vector3>*,
@@ -41,7 +43,10 @@ class cnc_plot
                         int);
     
     //-----
+    Vector3 quill_pos;
+    Vector3 prg_origin;
 
+    //-----    
     bool running;
     bool finished;
 
@@ -50,11 +55,10 @@ class cnc_plot
     double num_vecs   ;
     double trav_speed ; //linear unit per sec 
 
-    Vector3 quill_pos;
     double retract_height;
     double work_height;
 
-
+    //-----
     vector<Vector3> rapidmove_vecs;    
     vector<Vector3> program_vecs; 
 

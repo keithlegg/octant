@@ -90,18 +90,10 @@ extern vector<Vector3> scene_drawvecclr;
 /***************************************/
 //motion control related 
 
-cnc_plot motionplot;
-cnc_plot* pt_motionplot = &motionplot;
-
 extern point_ops PG;
 
-
-
-//loaded parametrs from cfg 
-// extern float retract_height;
-// extern float work_height;
-
-    
+cnc_plot motionplot;
+cnc_plot* pt_motionplot = &motionplot;
 
 
 
@@ -113,14 +105,9 @@ int TCP_PORT;
 
 /***************************************/
 //Timer related 
-
 timer mtime = timer();
 
 bool run_pulses = false;
-
-extern double trav_dist  ;
-extern double num_vecs   ;
-extern double trav_speed ; //linear unit per sec 
 
 /***************************************/
 // data to pulse out to IO hardware
@@ -594,10 +581,12 @@ static void render_loop()
         if (localsimtime>=1.0)
         {
 
-            //iterate the statck of vectors to process
+            //iterate the stack of vectors to process
             if (pathidx<motionplot.pathcache_vecs.size())
             {
-                pathidx++;                    
+                pathidx++;        
+                // start the clock over for the next vector segment 
+                // 0.0 - 1.0 is the range            
                 mtime.reset_sim();
             }
 
@@ -608,6 +597,10 @@ static void render_loop()
                 motionplot.stop();
                 motionplot.finished = true;
                 pathidx = 1;
+
+                motionplot.rapid_move();
+                motionplot.update_cache();
+
             }
         }
 
@@ -1333,7 +1326,7 @@ void start_gui(int *argc, char** argv){
 
     // -----------
     // we have vectors in display - calcluate the head path from them   
-    motionplot.calc_precache(&scene_drawvec3, 10);
+    motionplot.precache(&scene_drawvec3, 10);
     
     //------------
     

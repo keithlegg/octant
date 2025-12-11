@@ -112,20 +112,46 @@ AB.insert( AB.end(), B.begin(), B.end() );
 void cnc_plot::run(void)
 {
     //swap path buffers and set "running" semaphore 
-    
-    bool has_rapid   = false;
-    bool has_prg     = false;
+
+    //std::cout << "cnc_plot running  "<< running  <<"\n";
+    //std::cout << "cnc_plot finished "<< finished <<"\n";
 
 
-    std::cout << "running  "<< running  <<"\n";
-    std::cout << "finished "<< finished <<"\n";
+    if(running==false && finished==true)
+    {
+        mtime.start();
+        running = true;
+        finished = false;
+    }
 
+}
+ 
+
+/******************************************/
+
+//DEBUG THIS IS WRONG - IT ONLY RESETS BACK TO ORIGIN 
+void cnc_plot::rapid_move(void)
+{
+
+    Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
+    Vector3 trav_vec = quill_pos.operator-(prg_origin);
+    Vector3 dwn_vec  = Vector3(prg_origin.x  , work_height, prg_origin.z);        
+
+    rapidmove_vecs.push_back(up_vec);
+    rapidmove_vecs.push_back(trav_vec);
+    rapidmove_vecs.push_back(dwn_vec);
+
+}
+ 
+
+/******************************************/
+void cnc_plot::update_cache(void)
+{
     if(finished==true && running==false)
     {
 
         if (rapidmove_vecs.size())
         { 
-
             std::cout << "DEBUG - ADDING rapid vecs \n";            
             for (int v=0;v<program_vecs.size();v++)
             {
@@ -146,49 +172,18 @@ void cnc_plot::run(void)
         }    
     }
 
-    if(running==false)
-    {
-        mtime.start();
-        running = true;
-        finished = false;
-    }
-
-}
- 
-
-/******************************************/
-void cnc_plot::rapid_move(float rh, float wh, 
-                          Vector3 from, Vector3 to, 
-                          double speed)
-{
-
-    Vector3 up_vec   = Vector3(from.x, rh, from.z);
-    Vector3 trav_vec = from.operator-(to);
-    Vector3 dwn_vec  = Vector3(to.x  , wh, to.z);        
-
-    //output->push_back(up_vec);
-    //output->push_back(trav_vec);
-    //output->push_back(dwn_vec);
-
 }
 
 
 /******************************************/
-
-void cnc_plot::calc_precache( vector<Vector3>* pt_drawvecs, int numdivs)
+void cnc_plot::precache( vector<Vector3>* pt_drawvecs, int numdivs)
 {
-
     //precache path vectors here 
     //DEBUG move to reset_cache() or whatever its called
     for (int i=1;i<pt_drawvecs->size();i++)
     {   
         Vector3 sv  = pt_drawvecs->at(i);
-         
         program_vecs.push_back(sv);
-
-        //pathcache_vecs.push_back(sv);
-
- 
     } 
 
 }
