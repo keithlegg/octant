@@ -137,6 +137,15 @@ void cnc_plot::rapid_move(void)
     Vector3 trav_vec = quill_pos.operator-(prg_origin);
     Vector3 dwn_vec  = Vector3(prg_origin.x  , work_height, prg_origin.z);        
 
+    // DEBUG - look into proper way to combine vectors 
+    // https://stackoverflow.com/questions/3177241/what-is-the-best-way-to-concatenate-two-vectors
+    
+    // AB.reserve( A.size() + B.size() ); // preallocate memory
+    // AB.insert( AB.end(), A.begin(), A.end() );
+    // AB.insert( AB.end(), B.begin(), B.end() );
+
+    rapidmove_vecs.reserve( sizeof(up_vec) *3 ); // preallocate memory
+
     rapidmove_vecs.push_back(up_vec);
     rapidmove_vecs.push_back(trav_vec);
     rapidmove_vecs.push_back(dwn_vec);
@@ -150,10 +159,12 @@ void cnc_plot::update_cache(void)
     if(finished==true && running==false)
     {
 
+        pathcache_vecs.clear();
+
         if (rapidmove_vecs.size())
         { 
             std::cout << "DEBUG - ADDING rapid vecs \n";            
-            for (int v=0;v<program_vecs.size();v++)
+            for (int v=0;v<rapidmove_vecs.size();v++)
             {
                 pathcache_vecs.push_back( rapidmove_vecs.at(v) );
             }
@@ -161,7 +172,6 @@ void cnc_plot::update_cache(void)
 
         if (program_vecs.size())
         { 
-            pathcache_vecs.clear();
 
             std::cout << "DEBUG - ADDING prog vecs \n";            
             for (int v=0;v<program_vecs.size();v++)

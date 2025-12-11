@@ -18,6 +18,10 @@ class cnc_plot
             finished = true;
             quill_pos  = Vector3(0,0,0);
             prg_origin = Vector3(0,0,0);
+
+            //vec1.reserve(30);  // Allocate space for 30 items, but vec1 is still empty.
+            //vec2.resize(30);  // Allocate space for 30 items, and vec2 now contains 30 items.
+
         };
         
         ~cnc_plot(){};
@@ -61,8 +65,9 @@ class cnc_plot
     //-----
     vector<Vector3> rapidmove_vecs;    
     vector<Vector3> program_vecs; 
-
     vector<Vector3> pathcache_vecs;
+
+
 
 
 
