@@ -20,8 +20,8 @@ class cnc_plot
         ~cnc_plot(){};
 
 
-    static void stop(void);
-    static void run(void);
+    void stop(void);
+    void run(void);
 
     //void rapid_move(Vector3* output, Vector3 from, Vector3 to, double speed);
 

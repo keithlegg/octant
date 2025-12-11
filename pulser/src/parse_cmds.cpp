@@ -69,7 +69,7 @@ extern obj_model* pt_model_buffer;
 
 void stop_machine(void)
 {
-    pt_motionplot->stop;
+    pt_motionplot->stop();
     //std::cout << "ESTOP ACTIVATED.\n";
     //mtime.reset_sim();
 
@@ -270,7 +270,7 @@ void parse_cmd_text(std::string *buffer)
     //--------------
     if (a1=="run"||a1=="start")
     {
-
+        pt_motionplot->run();
         //std::cout << "ESTOP DISABLED.\n";
     }
 
