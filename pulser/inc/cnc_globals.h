@@ -50,6 +50,9 @@ class cncglobals
         //machine travel size in 3D 
         std::string linear_unit = "mm"; //"mm" or "inch" 
 
+        float retract_height = 4;
+        float work_height    = 1;
+
         float x_xtntx = 25;
         float y_xtntx = 25;
         float z_xtntx = 25;

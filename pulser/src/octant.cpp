@@ -43,11 +43,11 @@
 //#include "socket.h"
 
 
-
-
-
 #define LEN(arr) ( (int) (sizeof (arr) / sizeof (arr)[0]) ) 
 
+
+/***************************************/
+cncglobals cg;
 
 /***************************************/
 //Mouse related
@@ -549,7 +549,6 @@ static void render_loop()
 
                 mtime.stop();
                 mtime.reset_sim();
-                qpos = Vector3(0,0,0);
                 run_pulses=false;
                 vecidx = 1;
             }
@@ -560,9 +559,15 @@ static void render_loop()
         if (vecidx<=plot.pathcache_vecs.size()&&run_pulses)
         {
             PG.lerp_along(&qpos, plot.pathcache_vecs[vecidx-1], plot.pathcache_vecs[vecidx], localsimtime);
-            glColor3d(.7, .7, .7);
+            glColor3d(1, .4, 1);
             draw_locator(&qpos, .5);
         }
+
+    }
+    if(!run_pulses)
+    {
+        glColor3d(.7, .7, .7);
+        draw_locator(&qpos, .5);        
     }
 
     //------------ 
@@ -1254,7 +1259,7 @@ void start_gui(int *argc, char** argv){
     
     //cncglobals new cg;
 
-    cncglobals cg;
+
     //setup filepaths and paths to cut 
     cg.load_cfg_file(argv[1]);
     //load the 3d models 

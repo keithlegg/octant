@@ -58,6 +58,7 @@ int cursor = 0;
 //position of extruder/quill/etc
 extern Vector3 qpos;
 
+extern cncglobals cg;
 extern timer mtime;
 extern obj_model* pt_model_buffer;
 
@@ -123,14 +124,17 @@ void parse_cmd_text(std::string *buffer)
         stop_machine(); 
     }
 
+    //peek at internals 
+    if (a1=="showcfg")
+    { 
+        cg.show_params();
+ 
+    }
 
-    //toggle grid
+    //peek at internals 
     if (a1=="show")
     { 
-        std::cout << "showw\n"; 
-        
         pt_model_buffer->show();
-
         pt_model_buffer->show_geom();
     }
 

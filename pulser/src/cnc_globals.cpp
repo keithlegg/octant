@@ -119,9 +119,13 @@ void cncglobals::show_params( void )
     //std::cout << " linear_unit : " << (*this).linear_unit << "\n";  
 
     std::cout << " ## machine travel size in 3D  " << "\n";  
-    std::cout << " x_xtntx : " << (*this).x_xtntx<< "\n";
-    std::cout << " y_xtntx : " << (*this).y_xtntx<< "\n";
-    std::cout << " z_xtntx : " << (*this).z_xtntx<< "\n";
+    
+    std::cout << " retract height : " << (*this).retract_height<< "\n";
+    std::cout << " work height    : " << (*this).work_height   << "\n";
+
+    std::cout << " x_xtntx        : " << (*this).x_xtntx<< "\n";
+    std::cout << " y_xtntx        : " << (*this).y_xtntx<< "\n";
+    std::cout << " z_xtntx        : " << (*this).z_xtntx<< "\n";
     std::cout <<"\n";
 
     std::cout << " ## waveform generation parameters " << "\n";  
@@ -331,6 +335,16 @@ void cncglobals::load_cfg_file( char* filepath )
                             std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
                             buffer = tokenized.at(1);
                              std::cout << "DEBUG parsing LINEAR_UNIT " << linear_unit << "\n";
+                        }
+
+                        //***************************************/ 
+                        if (tokenized.at(0).find("RETRACT_HEIGHT") != std::string::npos )                            
+                        {  
+                            std::string buffer;
+                            std::cout << "DEBUG parsing RETRACT_HEIGHT " << tokenized.at(1) << "\n";
+ 
+                            retract_height = std::stof( tokenized.at(1) );  
+  
                         }
 
 
