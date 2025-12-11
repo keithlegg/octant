@@ -107,7 +107,15 @@ void parse_cmd_text(std::string *buffer)
         if(i==5){ a6 = tokens[i]; }    
         if(i==6){ a7 = tokens[i]; }         
     }
-    
+
+    //toggle grid
+    if (a1=="help")
+    {   
+        std::string helpstr = "no one will save you.\n";
+        buffer = &helpstr;
+        std::cout << "no one will save you.\n"; 
+    }    
+
     //--------------
     //toggle grid
     if (a1=="stop")
@@ -356,7 +364,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     if(i!=8 && i!=13 && i!=96)
     {   
         cursor = buffer->size(); 
-        buffer->push_back(*pt_key);
+        buffer->push_back(*pt_key);//DEBUG - why did I do this?
     }
 
 };

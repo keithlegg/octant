@@ -513,6 +513,7 @@ int q_i, p_i, f_i = 0;
 char cs[100];
 char s[100];
 
+int vecidx = 1;
 
 static void render_loop()
 {
@@ -533,47 +534,36 @@ static void render_loop()
     if(run_pulses)
     {
         //std::cout << mtime.getElapsedTime() << "\n";
-
-        
-        //Vector3 headpos = Vector3(0,0,0);
-        /*
-        for (int dpi=1; dpi<plot.pathcache_vecs.size();dpi++)
-        { 
-            for (int t=0; t<10;t++)
-            {
-                PG.lerp_along(&headpos, plot.pathcache_vecs[dpi-1], plot.pathcache_vecs[dpi], (float)1/t);
-                draw_locator( &headpos, .3);
-            }
-        }*/
-        
-        if (mtime.getElapsedTime()>0&&mtime.getElapsedTime()<1)
-        {
-            PG.lerp_along(&qpos, plot.pathcache_vecs[1], plot.pathcache_vecs[0], mtime.getElapsedTime());
-            //draw_locator( &headpos, .3);
-        }
-
-
-        //we need to know the total count of the pulses, use progress to step through and stop timer running when done 
-        //we need to know the speed of the travel and divide by the distance of the path 
-      
-        //run_send_pulses()  
-        //position = symtime * 
-
-        // trav_dist  ;
-        // num_vecs   ;
-        // trav_speed ; //linear unit per sec 
-
-        //glTranslatef( sin(mtime.getElapsedTime()), 0, 0);
-        //qpos.x = ( (trav_dist/num_vecs)* (mtime.getElapsedTime()/trav_speed) )  ;
-
  
+        double localsimtime = mtime.get_elapsed_simtime();
+        if (localsimtime>=1.0)
+        {
+            std::cout << "WE B OVER" << "\n";
+
+            if (vecidx<plot.pathcache_vecs.size())
+            {
+                vecidx++;                    
+                mtime.reset_sim();
+            }
+            if (vecidx>=plot.pathcache_vecs.size())
+            {
+                mtime.stop();
+                qpos = Vector3(0,0,0);
+                run_pulses=false;
+            }
+
+        }
+        //std::cout << localsimtime << "\n";
         
-        // qpos.x = sin(mtime.getElapsedTime());
-        // qpos.y = cos(mtime.getElapsedTime());
+        if (vecidx<=plot.pathcache_vecs.size())
+        {
+            PG.lerp_along(&qpos, plot.pathcache_vecs[vecidx-1], plot.pathcache_vecs[vecidx], localsimtime);
+        }
     }
+
     //------------ 
 
-    //I clearly dont get the whoe view matrix thing - moved out of text render
+    //I clearly dont get the whole view matrix thing - moved out of text render
     //this is directly related and need to do homework
     setOrthographicProjection();
     glLoadIdentity();
@@ -642,7 +632,7 @@ static void render_loop()
         //-----------------------------
 
     }
-    //I clearly dont get the whoe view matrix thing - moved out of text render
+    //I clearly dont get the whole view matrix thing - moved out of text render
     //this is directly related to text render and I need to do homework
     //glPopMatrix();
     resetPerspectiveProjection();

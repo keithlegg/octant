@@ -45,10 +45,15 @@ class timer
 
         void   start();                             // start timer
         void   stop();                              // stop the timer
+
         double getElapsedTime();                    // get elapsed time in second
         double getElapsedTimeInSec();               // get elapsed time in second (same as getElapsedTime)
         double getElapsedTimeInMilliSec();          // get elapsed time in milli-second
         double getElapsedTimeInMicroSec();          // get elapsed time in micro-second
+
+        double get_elapsed_simtime_ms();
+        double get_elapsed_simtime_sec();
+        double get_elapsed_simtime();
 
         //keith added these
         void reset_sim(void);

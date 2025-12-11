@@ -116,41 +116,39 @@ void point_ops::lerp_along( Vector3* output,
                             float dist )
 {
  
-    Vector3 npos;
+    Vector3 npos = Vector3(0,0,0);
 
     //X
     if(fpos.x-spos.x!=0)
     {
-        //npos.x =  (spos.x+(fpos.x-spos.x))*dist;
         npos.x =  spos.x+(((fpos.x-spos.x))*(-dist+1));
 
     }else{
-        npos.x=0;
+        //npos.x=0;
+        npos.x =  spos.x+(((fpos.x-spos.x))*(dist+1));        
     }
 
     //Y
     if (fpos.y-spos.y!=0)
     { 
-        //npos.y =  (spos.y+(fpos.y-spos.y))*dist; 
         npos.y =  spos.y+(((fpos.y-spos.y))*(-dist+1));         
     }else{
-        npos.y=0;
+        //npos.y=0;
+        npos.y =  spos.y+(((fpos.y-spos.y))*(dist+1));        
     }
 
     //Z
     if (fpos.z-spos.z!=0)
     { 
-        //npos.z =  (spos.z+(fpos.z-spos.z))*dist;
         npos.z =  spos.z+(((fpos.z-spos.z))*(-dist+1));        
     }else{
-        npos.z=0;            
+        npos.z =  spos.z+(((fpos.z-spos.z))*(dist+1));                     
     }
 
     //cout << n << " "<< npos.x <<" "<<npos.y<<" "<< npos.z<<"\n";
 
      *output = npos;
-    //output->push_back( npos );
-    //return npos 
+
 };
 
 
