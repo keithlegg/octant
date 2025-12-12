@@ -48,6 +48,7 @@
 #include "gl_setup.h"
 
 #include "cnc_plot.h"
+#include "pylink.h"
 
 #include "octant.h"
 
@@ -119,6 +120,13 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "paths, geom, obj                          \n";
 
     }    
+
+    //toggle grid
+    if (a1=="python")
+    {
+        python_render();    
+    }
+
 
     //--------------
     //toggle grid

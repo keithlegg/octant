@@ -200,9 +200,6 @@ extern vector<Vector3>* pt_scene_drawpoints;
 extern obj_model* pt_model_buffer;
 extern GLuint texture[3];
 
-char active_filepath[300];
-
-
 
 
 /***************************************/

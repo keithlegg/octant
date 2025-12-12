@@ -34,6 +34,8 @@ class cncglobals
         std::vector<std::string> obj_vecpaths;
         std::vector<std::string> obj_filepaths;
 
+        std::string active_filepath;
+
         //----------
         //controller hardware config 
         uint parport1_addr = 0;

@@ -39,30 +39,26 @@
 
 /*****************************************************************************/
 
+#include <iostream>
 
-
-
-
-
-
-
-#include <unistd.h> 
-#include <stdio.h> 
 #include <sys/socket.h> 
-#include <stdlib.h> 
 #include <netinet/in.h> 
+#include <unistd.h> 
 #include <string.h> 
+
+
+/*
+#include <stdlib.h> 
 #include <time.h> 
-
-
 #include <sys/types.h> 
 #include <netinet/in.h>
-
- 
-
 #include <errno.h> 
 #include <sys/wait.h> 
-#include <fcntl.h> /* Added for the nonblocking socket */
+#include <fcntl.h> // Added for the nonblocking socket 
+*/
+
+
+#include "cnc_globals.h"
 
 #define BACKLOG 10     /* how many pending connections queue will hold */
 
@@ -70,25 +66,33 @@
 extern int TCP_PORT; 
 extern bool draw_grid;
 
+extern cncglobals cg;
+
+
 
 /*********************************************************/
 /*********************************************************/
 
 
-/*
-void python_render(void){
+void python_render(void)
+{
 
     char* pycore_cmd = "scanline";    
     char buffer[256];
-    snprintf(buffer, sizeof(buffer), "python3 pycore.py %s %s", active_filepath, pycore_cmd);
+
+    //snprintf(buffer, sizeof(buffer), "python3 pycore.py %s %s", cg.active_filepath, pycore_cmd);
+    snprintf(buffer, sizeof(buffer), "ls -l");
+
     int ret = system(buffer);
 
 }
-*/
+ 
+
 
 
 /*********************************************************/
 /*********************************************************/
+
 
 
 /*
@@ -114,7 +118,10 @@ Server:
     Go to step 6.
 */
 
+
 /*********************************************************/
+/*********************************************************/
+
 
 /*
 //http://www.cs.tau.ac.il/~eddiea/samples/Non-Blocking/tcp-nonblocking-server.c.html
@@ -381,7 +388,8 @@ void sockettest3(void)
 }
 
 
-
+/*********************************************************/
+/*********************************************************/
 
 /*
 void sockettest(void) 
@@ -444,9 +452,10 @@ void sockettest(void)
 
 } 
 
+/*********************************************************/
+/*********************************************************/
 
-
-
+/*
 //https://www.thegeekstuff.com/2011/12/c-socket-programming/
 void sockettest2(void) 
 { 

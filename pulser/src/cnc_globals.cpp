@@ -251,9 +251,15 @@ void cncglobals::load_objects(void)
             strcpy(char_array, obj_filepaths[x].c_str()); 
             pt_model_buffer->load(char_array);
             pt_model_buffer->calc_normals();
+            
+            //store the name of the file we are working on 
+            //this is so python can work on it 
+            active_filepath = obj_filepaths[x];
         };
     };
 }
+
+
 
 /*******************************************************/
 void cncglobals::load_cfg_file( char* filepath )
