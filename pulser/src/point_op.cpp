@@ -110,6 +110,9 @@ int polygon_ops::numpts(void){
 */
 
 
+//DEBUG - this seems to be running backwards
+//0 is end of line instead of start, etc 
+
 void point_ops::lerp_along( Vector3* output,
                             Vector3 fpos, 
                             Vector3 spos, 

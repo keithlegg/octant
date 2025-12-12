@@ -1326,7 +1326,7 @@ void start_gui(int *argc, char** argv){
 
     // -----------
     // we have vectors in display - calcluate the head path from them   
-    motionplot.precache(&scene_drawvec3, 10);
+    motionplot.loadpath(&scene_drawvec3, 10);
     
     //------------
     

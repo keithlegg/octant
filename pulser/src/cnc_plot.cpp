@@ -128,27 +128,22 @@ void cnc_plot::run(void)
  
 
 /******************************************/
-
-//DEBUG THIS IS WRONG - IT ONLY RESETS BACK TO ORIGIN 
 void cnc_plot::rapid_move(void)
 {
+
+    rapidmove_vecs.clear();
 
     Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
     Vector3 trav_vec = quill_pos.operator-(prg_origin);
     Vector3 dwn_vec  = Vector3(prg_origin.x  , work_height, prg_origin.z);        
 
-    // DEBUG - look into proper way to combine vectors 
-    // https://stackoverflow.com/questions/3177241/what-is-the-best-way-to-concatenate-two-vectors
-    
-    // AB.reserve( A.size() + B.size() ); // preallocate memory
-    // AB.insert( AB.end(), A.begin(), A.end() );
-    // AB.insert( AB.end(), B.begin(), B.end() );
 
-    rapidmove_vecs.reserve( sizeof(up_vec) *3 ); // preallocate memory
 
-    rapidmove_vecs.push_back(up_vec);
+    rapidmove_vecs.push_back(up_vec );
     rapidmove_vecs.push_back(trav_vec);
-    rapidmove_vecs.push_back(dwn_vec);
+    //rapidmove_vecs.push_back(dwn_vec);
+    //rapidmove_vecs.push_back(prg_origin);
+
 
 }
  
@@ -186,15 +181,22 @@ void cnc_plot::update_cache(void)
 
 
 /******************************************/
-void cnc_plot::precache( vector<Vector3>* pt_drawvecs, int numdivs)
+void cnc_plot::loadpath( vector<Vector3>* pt_drawvecs, int numdivs)
 {
     //precache path vectors here 
     //DEBUG move to reset_cache() or whatever its called
     for (int i=1;i<pt_drawvecs->size();i++)
     {   
+        //debug - should add a class method to get first and last vec 
+        if(i==0){prg_origin =pt_drawvecs->at(i);}
+        if(i==pt_drawvecs->size()-1){prg_end =pt_drawvecs->at(i);}
+
         Vector3 sv  = pt_drawvecs->at(i);
         program_vecs.push_back(sv);
     } 
+    
+
+
 
 }
 
