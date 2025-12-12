@@ -545,7 +545,7 @@ void obj_model::load_m44(char* filename)
 
 /*
 //sample 3d object - may not be the "proper" way to do it 
-void model::prim_cube(double scale){
+void model::prim_cube(float scale){
 
     // vertices
     obj_pts[0].set(-scale, -scale,  scale);
@@ -583,10 +583,10 @@ void model::prim_cube(double scale){
 
 ////
 //sample 3d object - may not be the "proper" way to do it
- void model::prim_circle(int divs, double scale)
+ void model::prim_circle(int divs, float scale)
  {
 
-    double a = 0;
+    float a = 0;
     int vcnt = 0;
     int step = 360/divs;
     
@@ -627,7 +627,7 @@ void model::prim_cube(double scale){
 
 ////
  //sample 3d object - may not be the "proper" way to do it
- void model::prim_square(double scale)
+ void model::prim_square(float scale)
  {
     fac_tmp.clear();
 
@@ -654,7 +654,7 @@ void model::prim_cube(double scale){
 
 ////
  //sample 3d object - may not be the "proper" way to do it
- void model::prim_tri(double scale)
+ void model::prim_tri(float scale)
  {
     fac_tmp.clear();
 
@@ -691,7 +691,7 @@ void model::prim_cube(double scale){
 
 ///
  //sample 3d object - may not be the "proper" way to do it
- void model::prim_line(double scale)
+ void model::prim_line(float scale)
  {
     // vertices - (3d vectors)
     obj_pts[0].set(-scale, 0,  -scale);

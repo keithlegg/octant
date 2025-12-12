@@ -23,8 +23,8 @@ void renderBitmapString(float, float, void *, const char *);
 
 void key_cb(unsigned int key);
 
-void run_send_pulses(cncglobals*, double, double, double,
-                                  double, double, double, int);  
+void run_send_pulses(cncglobals*, float, float, float,
+                                  float, float, float, int);  
 
 
 void start_gui(int *argc, char** argv);

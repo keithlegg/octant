@@ -55,11 +55,11 @@ using namespace std;
 #define RAD_TO_DEG 57.29577951
 
 
-double deg_to_rad ( double deg){
+float deg_to_rad ( float deg){
    return deg * DEG_TO_RAD;
 }
 
-double rad_to_deg ( double rad){
+float rad_to_deg ( float rad){
    return rad * RAD_TO_DEG;
 }
 
@@ -228,8 +228,8 @@ void point_ops::cubic_bezier(std::vector<Vector3>* output,
                         )
 {
        
-        double x,y,z,t,tt,ttt,u,uu,uuu = 0;
-        double i;
+        float x,y,z,t,tt,ttt,u,uu,uuu = 0;
+        float i;
  
         Vector3 color = Vector3(1.0,0.0,0.0);
 
@@ -522,11 +522,11 @@ Vector3 polygon_ops::triangle_pt_vec3(Vector3 p1, Vector3 p2, Vector3 p3,
 
 /***************************************/
 // Z axis only centroid 
-double polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
+float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 {
-    double z1 = p1.z;
-    double z2 = p2.z;
-    double z3 = p3.z;
+    float z1 = p1.z;
+    float z2 = p2.z;
+    float z3 = p3.z;
     return (z1+z2+z3)/3;
 }
 

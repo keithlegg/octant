@@ -58,14 +58,14 @@ void parse_args(cncglobals* cg,  int argc, char **argv)
     }
 
     //start point (vector)
-    double a1 = atof(argv[1]);
-    double a2 = atof(argv[2]);
-    double a3 = atof(argv[3]);
+    float a1 = atof(argv[1]);
+    float a2 = atof(argv[2]);
+    float a3 = atof(argv[3]);
 
     //end point (vector)
-    double a4 = atof(argv[4]);
-    double a5 = atof(argv[5]);
-    double a6 = atof(argv[6]);
+    float a4 = atof(argv[4]);
+    float a5 = atof(argv[5]);
+    float a6 = atof(argv[6]);
 
     //number of divisions in X,Y,Z space
     int a7    = atoi(argv[7]);

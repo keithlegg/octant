@@ -254,7 +254,7 @@ void obj_model::vec3_as_geom(Vector3 pt1)
 
 /**********************************************/
 // UNTESTED add vector as a line segment  
-void obj_model::vec3_as_pt_geom(Vector3 pt1, double siz)
+void obj_model::vec3_as_pt_geom(Vector3 pt1, float siz)
 {
 
     between_2vecs_as_line(pt1, pt1-Vector3( siz, 0, 0) );
@@ -269,7 +269,7 @@ void obj_model::vec3_as_pt_geom(Vector3 pt1, double siz)
 }
 
 /**********************************************/
-void obj_model::vec3_as_pt_geom(Vector3 pt1, Vector3 color, double siz)
+void obj_model::vec3_as_pt_geom(Vector3 pt1, Vector3 color, float siz)
 {
 
     between_2vecs_as_line(pt1, pt1-Vector3( siz, 0, 0), color );
@@ -616,7 +616,7 @@ void obj_model::sample_data(void)
 /**********************************************************/
 
 //sample 3d object - may not be the "proper" way to do it 
-void obj_model::make_cube(double scale)
+void obj_model::make_cube(float scale)
 {
 
     // vertices
@@ -656,10 +656,10 @@ void obj_model::make_cube(double scale)
 
   
 //sample 3d object - may not be the "proper" way to do it
- void obj_model::make_circle(int divs, double scale)
+ void obj_model::make_circle(int divs, float scale)
  {
 
-    double a = 0;
+    float a = 0;
     int vcnt = 0;
     int step = 360/divs;
     
@@ -698,7 +698,7 @@ void obj_model::make_cube(double scale)
 
  
 //sample 3d object - may not be the "proper" way to do it
-void obj_model::make_square(double scale)
+void obj_model::make_square(float scale)
 {
     fac_tmp.clear();
 
@@ -719,7 +719,7 @@ void obj_model::make_square(double scale)
  
  //DEBUG - NOT DONE AT ALL 
  //sample 3d object - may not be the "proper" way to do it
- void obj_model::make_triangle(double scale)
+ void obj_model::make_triangle(float scale)
  {
     fac_tmp.clear();
 
@@ -757,7 +757,7 @@ void obj_model::make_square(double scale)
  
 //DEBUG - THIS IS NOT 3D - taken from renderer 
 //sample 3d object - may not be the "proper" way to do it
-void obj_model::make_line(double scale)
+void obj_model::make_line(float scale)
 {
     // vertices - (3d vectors)
     points[0].set(-scale, 0,  -scale);

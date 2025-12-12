@@ -86,9 +86,9 @@ void test_BMP(void)
 /*
  //RGB color struct
  struct pixelrgb {
-     double r;
-     double g;
-     double b;
+     float r;
+     float g;
+     float b;
  };
 */
 
@@ -201,7 +201,7 @@ void framebuffer::savebmp (const char *filename, int w, int h, int dpi, framebuf
     std::memset(img,0,3*w*h);
 
     int x,y = 0;
-    double r,g,b = 0;
+    float r,g,b = 0;
 
     for(int i=0; i<w; i++)
     {
@@ -290,7 +290,7 @@ void framebuffer::savebmp (const char *filename, int w, int h, int dpi, framebuf
     int filesize = 54 +s;
 
 
-    double factor = 39.375;
+    float factor = 39.375;
     int m = static_cast<int>(factor);
 
     int ppm = dpi*m;
@@ -335,9 +335,9 @@ void framebuffer::savebmp (const char *filename, int w, int h, int dpi, framebuf
     {
         framebuffer::RGBType rgb = data[i];
 
-        double red   = (data[i].b)*255;
-        double green = (data[i].g)*255;
-        double blue  = (data[i].r)*255;
+        float red   = (data[i].b)*255;
+        float green = (data[i].g)*255;
+        float blue  = (data[i].r)*255;
         
         //uint8_t red   = (data[i].b)*255;
         //uint8_t green = (data[i].g)*255;
@@ -432,12 +432,12 @@ void framebuffer::draw_circle ( int x_orig, int y_orig, int dia, RGBType pcol){
 /********************************************/
 
 // degree to radian 
-double framebuffer::deg_to_rad ( double deg){
+float framebuffer::deg_to_rad (float deg){
     return deg * DEG_TO_RAD;
 }
 
 // radian to degree
-double framebuffer::rad_to_deg ( double rad){
+float framebuffer::rad_to_deg (float rad){
     return rad * RAD_TO_DEG;
 }
 

@@ -22,8 +22,8 @@ class framebuffer {
      int center_y; //center of screen
      int n;        //number of pixels
 
-     double DEG_TO_RAD;
-     double RAD_TO_DEG;
+     float DEG_TO_RAD;
+     float RAD_TO_DEG;
 
    
    //RGB color struct
@@ -59,8 +59,8 @@ class framebuffer {
    void draw_circle ( int x_orig, int y_orig, int dia);
    void draw_circle ( int x_orig, int y_orig, int dia, RGBType pcol);
 
-   double deg_to_rad ( double deg);
-   double rad_to_deg ( double rad);
+   float deg_to_rad ( float deg);
+   float rad_to_deg ( float rad);
 
    void draw_line(int x1, int y1, int const x2, int const y2);
    void draw_line(int x1, int y1, int const x2, int const y2, RGBType pcol);

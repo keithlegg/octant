@@ -53,12 +53,12 @@ class cnc_plot
         bool finished;
 
         //motion buffers
-        double trav_dist  ;
-        double num_vecs   ;
-        double trav_speed ; //linear unit per sec 
+        float trav_dist  ;
+        float num_vecs   ;
+        float trav_speed ; //linear unit per sec 
 
-        double retract_height;
-        double work_height;
+        float retract_height;
+        float work_height;
 
         //-----
         vector<Vector3> rapidmove_vecs;    

@@ -103,8 +103,8 @@ class obj_model: public polygon_ops {
 
         //------
         //buffers to be used as tmp storage 
-        std::vector<double> vtx_tmp;
-        std::vector<int>    fac_tmp;  
+        std::vector<float> vtx_tmp;
+        std::vector<int>   fac_tmp;  
         
         //Vector3 calc_centroid( void );
         Vector3 calc_extents(void);
@@ -157,11 +157,11 @@ class obj_model: public polygon_ops {
         //prim geometry functions 
         
         void sample_data(void);
-        void make_line(double scale); 
-        void make_triangle(double scale); 
-        void make_circle(int divs, double scale);
-        void make_square(double scale);  
-        void make_cube(double scale);
+        void make_line(float scale); 
+        void make_triangle(float scale); 
+        void make_circle(int divs, float scale);
+        void make_square(float scale);  
+        void make_cube(float scale);
 
         //------
         void calc_normals(void);
@@ -176,8 +176,8 @@ class obj_model: public polygon_ops {
         void between_2vecs_as_line(Vector3, Vector3 );        
         void between_2vecs_as_line(Vector3, Vector3, Vector3 );
 
-        void vec3_as_pt_geom(Vector3, double);
-        void vec3_as_pt_geom(Vector3, Vector3, double );
+        void vec3_as_pt_geom(Vector3, float);
+        void vec3_as_pt_geom(Vector3, Vector3, float );
 
         void vec3_as_geom_atpos( Vector3, Vector3, Vector3 );
         void vec3_as_geom_atpos( Vector3, Vector3 );

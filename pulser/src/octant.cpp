@@ -467,12 +467,12 @@ static void parser_cb(unsigned char key, int x, int y)
 
 
 void run_send_pulses(cncglobals* cg,
-                 double f_x,
-                 double f_y,
-                 double f_z,
-                 double s_x,
-                 double s_y,
-                 double s_z,
+                 float f_x,
+                 float f_y,
+                 float f_z,
+                 float s_x,
+                 float s_y,
+                 float s_z,
                  int divs)  
 {
 
@@ -505,12 +505,12 @@ void run_send_pulses(cncglobals* cg,
 //command line tool to generate XYZ pulses from 2 vectors 
 /*
 void run_cncplot(cncglobals* cg,
-                 double f_x,
-                 double f_y,
-                 double f_z,
-                 double s_x,
-                 double s_y,
-                 double s_z,
+                 float f_x,
+                 float f_y,
+                 float f_z,
+                 float s_x,
+                 float s_y,
+                 float s_z,
                  int divs)  
 {
 
@@ -602,8 +602,7 @@ static void render_loop()
                 motionplot.finished = true;
                 pathidx = 1;
 
-                //motionplot.rapid_move();
-                //motionplot.update_cache();
+                motionplot.update_cache();
 
             }
         }
@@ -622,16 +621,16 @@ static void render_loop()
                 PG.lerp_along(&motionplot.quill_pos, 
                                motionplot.pathcache_vecs[pathidx], 
                                motionplot.pathcache_vecs[pathidx+1], 
-                               localsimtime);
+                               (float) localsimtime);
             }            
 
             glColor3d(1, .4, 1);
             draw_locator(&motionplot.quill_pos, .5);
         }
 
-    }
-    
-    //draw locator when Idle 
+    }//end prog running  
+
+    //draw locator when idle 
     if(!run_pulses)
     {
         glColor3d(.7, .7, .7);

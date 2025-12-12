@@ -19,7 +19,7 @@ struct pt2d {
 /***************************************/
 
 
-double deg_to_rad ( double);
+float deg_to_rad (float);
 
 
 /***************************************/
@@ -142,7 +142,7 @@ class polygon_ops : public point_ops
     void centroid(Vector3*, Vector3, Vector3, Vector3);
 
     Vector3 triangle_pt_vec3(Vector3, Vector3, Vector3, Vector3);
-    double triangle_mean_z(Vector3, Vector3, Vector3);
+    float triangle_mean_z(Vector3, Vector3, Vector3);
     
     Vector3 three_vec3_to_normal( Vector3, Vector3, Vector3, bool);
 

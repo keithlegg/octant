@@ -92,13 +92,13 @@ void cnc_plot::show_vecs(vector<Vector3>* pt_vec)
 /******************************************/
 void cnc_plot::show(void)
 {
-    std::cout << "\n "<< rapidmove_vecs.size() <<"rapid vecs \n";
+    std::cout << "\n #"<< rapidmove_vecs.size() <<" rapid vecs \n";
     show_vecs(&rapidmove_vecs);
 
-    std::cout << program_vecs.size() <<"program vecs \n";    
+    std::cout << " #" << program_vecs.size() <<" program vecs \n";    
     show_vecs(&program_vecs);
 
-    std::cout << pathcache_vecs.size() <<"path vecs \n";    
+    std::cout << " #" << pathcache_vecs.size() <<" path vecs \n";    
     show_vecs(&pathcache_vecs);    
 
 }
@@ -147,10 +147,10 @@ void cnc_plot::rapid_move(void)
 
     Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
     Vector3 trav_vec = quill_pos.operator-(prg_origin);
-    Vector3 dwn_vec  = Vector3(prg_origin.x  , work_height, prg_origin.z);        
+    Vector3 dwn_vec  = Vector3(prg_origin.x, work_height, prg_origin.z);        
 
-    rapidmove_vecs.push_back(up_vec );
-    rapidmove_vecs.push_back(trav_vec);
+    //rapidmove_vecs.push_back(up_vec );
+    //rapidmove_vecs.push_back(trav_vec);
     //rapidmove_vecs.push_back(dwn_vec);
     //rapidmove_vecs.push_back(prg_origin);
 
@@ -177,6 +177,8 @@ void cnc_plot::rapid_move(void)
 void cnc_plot::update_cache(void)
 {
     pathcache_vecs.clear();
+    
+    rapid_move();
 
     if(finished==true && running==false)
     {
@@ -217,7 +219,7 @@ void cnc_plot::update_cache(void)
     program_vecs   = the actual path that will be cut 
 
 
-    pathcache_vecs = cached vectors loaded from a file represeting a path we want to cut
+    program_vecs = cached vectors loaded from a file represeting a path we want to cut
                      these are seperate from the actual path we will cut so we can build 
                      more complex paths dynamically. 
     rapidmove_vecs = a path to move the head up, over, and back down 
@@ -226,7 +228,7 @@ void cnc_plot::update_cache(void)
 
 void cnc_plot::loadpath( vector<Vector3>* pt_drawvecs, int numdivs)
 {
-    for (int i=1;i<pt_drawvecs->size();i++)
+    for (int i=0;i<pt_drawvecs->size();i++)
     {   
         //debug - should add a class method to get first and last vec 
         if(i==0)
@@ -240,9 +242,7 @@ void cnc_plot::loadpath( vector<Vector3>* pt_drawvecs, int numdivs)
         if(i==pt_drawvecs->size()-1){prg_end = pt_drawvecs->at(i);}
 
         Vector3 sv  = pt_drawvecs->at(i);
-        
-        pathcache_vecs.push_back(sv);
-        //program_vecs.push_back(sv);        
+        program_vecs.push_back(sv);
         
     } 
     
@@ -285,14 +285,14 @@ void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
     Vector3 between   = fr_pt.operator-(to_pt); //new vector lib 
     
     //calc the length of the path vector
-    double mag     = between.length();
+    float mag     = between.length();
     
     int xp=0;int yp=0;int zp=0;
 
     //calculate 3 scalars for the absolute change on each axis  
-    double delta_x = fr_pt.x-to_pt.x;
-    double delta_y = fr_pt.y-to_pt.y;
-    double delta_z = fr_pt.z-to_pt.z;
+    float delta_x = fr_pt.x-to_pt.x;
+    float delta_y = fr_pt.y-to_pt.y;
+    float delta_z = fr_pt.z-to_pt.z;
 
 
     //2 is a magic number to (all other data is 1 )
@@ -376,8 +376,8 @@ void cnc_plot::gen_pules(vector<int>* pt_pulsetrain, int size, int num)
         exit(1);
     }
 
-    double div = (double)size/(double)num;
-    double gran = div/num;
+    float div = size/num;
+    float gran = div/num;
 
     int a;  
 
@@ -414,7 +414,7 @@ void cnc_plot::gen_pules(vector<int>* pt_pulsetrain, int size, int num)
     {
         for(a=0;a<size;a++)
         {
-            double chunk = fmod(a,div);
+            float chunk = fmod(a,div);
             if( chunk < 1)
             {
                 pt_pulsetrain->push_back(1);
@@ -476,17 +476,17 @@ void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
 
     //set up variables to do vector-y stuff
     Vector3 between   = sub(fr_pt, to_pt);
-    double mag     = length(between);
-    double gran    = 0;  //granularity 
-    double thresh  = 0;  //threshold 
+    float mag     = length(between);
+    float gran    = 0;  //granularity 
+    float thresh  = 0;  //threshold 
     //std::cout << mag <<"\n";
     
     int xp=0;int yp=0;int zp=0;
 
     //calculate the absolute change for each axis  
-    double delta_x = fr_pt.x-to_pt.x;
-    double delta_y = fr_pt.y-to_pt.y;
-    double delta_z = fr_pt.z-to_pt.z;
+    float delta_x = fr_pt.x-to_pt.x;
+    float delta_y = fr_pt.y-to_pt.y;
+    float delta_z = fr_pt.z-to_pt.z;
 
     //calc the direction of the vector 
     if (to_pt.x>fr_pt.x){
