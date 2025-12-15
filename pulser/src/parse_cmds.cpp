@@ -63,6 +63,7 @@ int cursor = 0;
 
 //position of extruder/quill/etc
 extern cncglobals cg;
+
 extern cnc_plot* pt_motionplot;
 extern obj_model* pt_model_buffer;
 

@@ -267,24 +267,13 @@ void cnc_plot::loadpath( vector<Vector3>* pt_drawvecs, int numdivs)
 
 
 
-
-
-/******************************************/
-
-
-    
-
 /******************************************/
 /*
     calc_3d_pulses - translates a 3D vector into 6 electrical signals (step/dir * 3)
-
-   
-    pt_pulsetrain = pointer to the pulsetrain, a stream of 1s and 0s to send to the parport 
    
 */
 
-void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
-                              Vector3 fr_pt, 
+void cnc_plot::calc_3d_pulses(Vector3 fr_pt, 
                               Vector3 to_pt,
                               int numdivs)
 {
@@ -336,7 +325,7 @@ void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
     
     //first element of pulse train stores the direction 
     //pt_pulsetrain->push_back(newvec3(xp,yp,zp));
-    pt_pulsetrain->push_back(Vector3(xp,yp,zp));
+    pulsetrain.push_back(Vector3(xp,yp,zp));
 
     //use the amount of change times the spatial divisions to get the pulses 
     //DEBUG - we may want to use the mag of the 3d vector in here                  
@@ -377,8 +366,8 @@ void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
     int a=0;
     for(a=0;a<most;a++)
     {
-        pt_pulsetrain->push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
-        pt_pulsetrain->push_back(Vector3(0,0,0));
+        pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+        pulsetrain.push_back(Vector3(0,0,0));
     }
     
 

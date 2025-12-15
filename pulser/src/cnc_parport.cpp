@@ -47,14 +47,10 @@
 //#include "math_op.h"
 //#include "point_op.h"
 
+#include "cnc_parport.h"
 
 #include "cnc_globals.h"
 #include "cnc_plot.h"
-#include "cnc_parport.h"
-
-// extern cnc_plot* pt_motionplot;
-// extern obj_model* pt_model_buffer;
-
 
 
 /***************************************/
@@ -244,7 +240,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
 
     int send_it = 1; 
 
-    std::cout << "# we have pulses! count: " << pt_plot->pt_pulsetrain->size() << "\n";
+    std::cout << "# we have pulses! count: " << pt_plot->pulsetrain.size() << "\n";
 
     if(send_it==1)
     {
@@ -256,7 +252,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
     }
 
     //**************************//
-    Vector3 dirpulses = pt_plot->pt_pulsetrain->at(0);
+    Vector3 dirpulses = pt_plot->pulsetrain.at(0);
     
     Vector3 limit_switches;
 
@@ -323,18 +319,18 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
 
     //the first element is reserved for direction data 
     //we intentionally skip it starting at index 1 
-    for(x=1;x<pt_plot->pt_pulsetrain->size();x++)
+    for(x=1;x<pt_plot->pulsetrain.size();x++)
     {
 
         //update the progress so we can display it in the GUI 
-        *pt_progress = (int) pt_plot->pt_pulsetrain->size()/x;
+        *pt_progress = (int) pt_plot->pulsetrain.size()/x;
 
 
         if(send_it==0)
         {
-            std::cout<< pt_plot->pt_pulsetrain->at(x).x<<" " 
-                     << pt_plot->pt_pulsetrain->at(x).y<<" " 
-                     << pt_plot->pt_pulsetrain->at(x).z <<"\n";
+            std::cout<< pt_plot->pulsetrain.at(x).x<<" " 
+                     << pt_plot->pulsetrain.at(x).y<<" " 
+                     << pt_plot->pulsetrain.at(x).z <<"\n";
         }
 
         if(send_it==1)
@@ -349,7 +345,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
             else
             {
                 //X channel 
-                if(pt_plot->pt_pulsetrain->at(x).x==1){
+                if(pt_plot->pulsetrain.at(x).x==1){
                     send_byte = send_byte |= (1 << 0);
                     outb(send_byte, cg->parport1_addr); 
                 }else{
@@ -358,7 +354,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
                 }
                     
                 //Y channel
-                if(pt_plot->pt_pulsetrain->at(x).y==1){
+                if(pt_plot->pulsetrain.at(x).y==1){
                     send_byte = send_byte |= (1 << 2);
                     outb(send_byte, cg->parport1_addr);    
 
@@ -377,7 +373,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
 
                   
                 //standard Z channel
-                if(pt_plot->pt_pulsetrain->at(x).z==1){
+                if(pt_plot->pulsetrain.at(x).z==1){
                     send_byte = send_byte |= (1 << 4);
                     outb(send_byte, cg->parport1_addr);   
                 }else{

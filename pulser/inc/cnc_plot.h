@@ -40,8 +40,7 @@ class cnc_plot
         void loadpath( vector<Vector3>* pt_drawvecs, int numdivs);
 
         void gen_pules(std::vector<int>*, int, int);
-        void calc_3d_pulses(std::vector<Vector3>*,
-                            Vector3, 
+        void calc_3d_pulses(Vector3, 
                             Vector3,
                             int);
         
@@ -75,7 +74,7 @@ class cnc_plot
         //-----
         //data for the actual pulsing out the parport 
         vector<Vector3> pulsetrain;
-        vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+        //vector<Vector3>* pt_pulsetrain = &pulsetrain; 
 
         //cache of toolpath component vectors 
         vector<Vector3> rapidmove_vecs;    

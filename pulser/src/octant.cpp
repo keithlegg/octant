@@ -577,13 +577,13 @@ static void render_loop()
 
         localsimtime = mtime.get_elapsed_simtime() * motionplot.timediv;
 
-        std::cout << "loacl simtime is " << localsimtime << "\n";
+        //std::cout << "local simtime is " << localsimtime << "\n";
 
         //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
         if (localsimtime>=1.0)
         {
         
-            std::cout << "running index " << motionplot.pidx           << "\n";
+            //std::cout << "running index " << motionplot.pidx           << "\n";
 
             //iterate the stack of vectors to process
             if (motionplot.pidx<motionplot.toolpath_vecs.size())
@@ -631,7 +631,7 @@ static void render_loop()
                                (float) localsimtime);
 
   
-                //plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
+                //motionplot.calc_3d_pulses(s_p, e_p, 10);
                  
 
             }            
