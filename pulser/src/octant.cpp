@@ -159,7 +159,7 @@ bool toglr_flatshaded = true; //DEBUG
 // single view prefs - use for debugging 
 
 bool draw_lines      = true;
-bool draw_normals    = true;
+bool draw_normals    = false;
 bool draw_quads      = false;
 bool draw_triangles  = true;
 bool render_text     = true;
@@ -167,7 +167,8 @@ bool render_text     = true;
 
 //DEBUG - figure the VBO crap out 
 bool draw_points     = true;  
-bool draw_points_vbo = false; // test of VBO  - DEBUG it explodes 
+bool draw_points_vbo = false; 
+
 //bool draw_bbox       = true;
 
 
@@ -206,16 +207,15 @@ extern GLuint texture[3];
 // data containers 
 
 
+float light_posx = 0; 
+float light_posy = 2;
+float light_posz = 0;
 
-double light_intensity;
 
 float gridsquares = 10;
 float gridsize = 5;
 float gnomonsize = 1;
 
-float light_posx = 0; 
-float light_posy = 3.14;
-float light_posz = 0;
 
 int surfce_clr_r; //read from setup.olm 
 int surfce_clr_g; 
@@ -456,94 +456,6 @@ static void parser_cb(unsigned char key, int x, int y)
 /***************************************/
 /***************************************/
 
-//send_pulses
-
-
-/*
-void run_send_pulses(cncglobals* cg,
-                 float f_x,
-                 float f_y,
-                 float f_z,
-                 float s_x,
-                 float s_y,
-                 float s_z,
-                 int divs)  
-{
-
-    Vector3 s_p = Vector3(f_x , f_y ,f_z );
-    Vector3 e_p = Vector3(s_x , s_y ,s_z );
-
-    vector<Vector3> pulsetrain;
-    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
-
-    motionplot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
-
-    if(cg->GLOBAL_DEBUG==true)
-    {
-        for(int x=0;x<pulsetrain.size();x++)
-        {
-            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
-        } 
-    }
-
-    if(cg->GLOBAL_DEBUG==false)
-    {
-       // motionplot.send_pulses(pt_pulsetrain);
-    }
-
- }   
-*/
-
-
-/******************************************/
-//command line tool to generate XYZ pulses from 2 vectors 
-/*
-
-RELIC FROM THE OLDER TOOL - THIS WILL GO AWAY 
-
-void run_cncplot(cncglobals* cg,
-                 float f_x,
-                 float f_y,
-                 float f_z,
-                 float s_x,
-                 float s_y,
-                 float s_z,
-                 int divs)  
-{
-
-
-    cnc_plot plot;
-    
-    vector<Vector3> pulsetrain;
-    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
-
-    Vector3 s_p = Vector3(f_x , f_y ,f_z );
-    Vector3 e_p = Vector3(s_x , s_y ,s_z );
-
-    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
-
-    if(cg->GLOBAL_DEBUG==true)
-    {
-        int x=0;
-        for(x=0;x<pulsetrain.size();x++)
-        {
-            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
-        } 
-    }
-
-    if(cg->GLOBAL_DEBUG==false)
-    {
-       //moved to IO DEBUG   
-       // plot.send_pulses(pt_pulsetrain);
-    }
-
-    delete pt_pulsetrain;
-    
-
-}
-
-*/
-
 
 
 /***************************************/
@@ -558,11 +470,16 @@ double localsimtime;
 static void render_loop()
 {
 
+
+
     // Clear The Screen And The Depth Buffer
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    //set light position 
     GLfloat lightpos[] = { light_posx, light_posy, light_posz, 0}; // homogeneous coordinates
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+
     glutKeyboardFunc(parser_cb);
 
     //------------ 
@@ -664,7 +581,10 @@ static void render_loop()
     {
         if(on_click)
         {
-            std::cout << " click! "<< clk_x_coord << " "<< clk_x_coord << "\n";
+            //active but does not do anything 
+            //maybe look at camera pos and rot and draw a vector for intersection with triangle?
+             
+            //std::cout << " click! "<< clk_x_coord << " "<< clk_x_coord << "\n";
             on_click=0;
         }
 
@@ -845,11 +765,20 @@ static void render_loop()
     if(draw_triangles)
     {
         //glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
+        //glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
+        //glBindTexture(GL_TEXTURE_2D, texture[2]);   // choose the texture to use.
 
-        //glColor3f( pt_linecolor->r, pt_linecolor->g, pt_linecolor->b); 
-        glBindTexture(GL_TEXTURE_2D, texture[2]);   // choose the texture to use.
-        
+        GLfloat ke[] = { 0.1, 0.15, 0.05, 1.0 };
+        GLfloat ka[] = { 0.1, 0.15, 0.1, 1.0 };
+        GLfloat kd[] = { 0.3, 0.3, 0.2, 1.0 };
+        GLfloat ks[] = { 0.2, 0.2, 0.2, 1.0 };
+        GLfloat ns[] = { 50.0 };
+        glMaterialfv(GL_FRONT, GL_EMISSION, ke);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, ka);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, kd);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, ks);
+        glMaterialfv(GL_FRONT, GL_SHININESS, ns);
+
         if (toglr_flatshaded){
             glColor3f(1.,1.,1.);
         }
@@ -866,11 +795,13 @@ static void render_loop()
                 int tri2 = pt_model_buffer->tris[p_i][1];
                 int tri3 = pt_model_buffer->tris[p_i][2];
 
-                // //use the same vertex indices to lookup RGB 
+                // use the same vertex indices to lookup RGB 
                 Vector3 rgb1 = pt_model_buffer->vtxrgb[tri1-1];
                 Vector3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
                 Vector3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
                 
+
+
                 //std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
 
                 //------------------------------//
@@ -883,9 +814,8 @@ static void render_loop()
                 glVertex3f(pt1.x, pt1.y, pt1.z);
               
                 Vector3 nrm1 = pt_model_buffer->vnormals[tri1-1];
-                glNormal3f( nrm1.x, nrm1.y, nrm1.z);
-                
-                //std::cout <<  " nrm1 "<< nrm1.x << " "<< nrm1.y << " "<< nrm1.z << "\n";
+                //glNormal3f( nrm1.x, nrm1.y, nrm1.z);
+                //std::cout <<  " vtxnrm1 "<< nrm1.x << " "<< nrm1.y << " "<< nrm1.z << "\n";
 
                 //------------------------------//
                 glColor3f(rgb2.x,rgb2.y,rgb2.z); 
@@ -898,9 +828,8 @@ static void render_loop()
 
                 // calculated face normals 
                 Vector3 nrm2 = pt_model_buffer->vnormals[tri2-1];
-                glNormal3f( nrm2.x, nrm2.y, nrm2.z);
-                
-                //std::cout <<  " nrm2 "<< nrm2.x << " "<< nrm2.y << " "<< nrm2.z << "\n";
+                //glNormal3f( nrm2.x, nrm2.y, nrm2.z);
+                //std::cout <<  " vtxnrm2 "<< nrm2.x << " "<< nrm2.y << " "<< nrm2.z << "\n";
 
                 //------------------------------//
                 glColor3f(rgb3.x,rgb3.y,rgb3.z); 
@@ -913,9 +842,8 @@ static void render_loop()
 
                 // calculated face normals
                 Vector3 nrm3 = pt_model_buffer->vnormals[tri3-1];
-                glNormal3f( nrm3.x, nrm3.y, nrm3.z);
-                
-                //std::cout <<  " nrm3 "<< nrm3.x << " "<< nrm3.y << " "<< nrm3.z << "\n";
+                //glNormal3f( nrm3.x, nrm3.y, nrm3.z);
+                //std::cout <<  " vtxnrm3 "<< nrm3.x << " "<< nrm3.y << " "<< nrm3.z << "\n";
             }
 
         glEnd(); 
@@ -1235,108 +1163,49 @@ void start_gui(int *argc, char** argv){
 /**************************************************/
 /**************************************************/
 
-
-/*
-  GLfloat light0_diffuse[] = {1.0, 1.0, 1.0, 1.0};
-    // Plane wave coming from +z infinity. 
-    GLfloat light0_position[] = {0.0, 0.0, 1.0, 0.0};
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glShadeModel(GL_SMOOTH);
-    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glColorMaterial(GL_FRONT, GL_DIFFUSE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_NORMALIZE);
-*/    
-
-
-void setlight0(void)
-{
-    // FROM - https://www.khronos.org/opengl/wiki/How_lighting_works#glMaterial_and_glLight 
-    // FROM - https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLight.xml
-    // FROM - https://www.cse.msu.edu/~cse872/tutorial3.html
-
-
-    /* 
-        GL_AMBIENT, GL_DIFFUSE, GL_SPECULAR, GL_POSITION, GL_SPOT_CUTOFF, GL_SPOT_DIRECTION, 
-        GL_SPOT_EXPONENT, GL_CONSTANT_ATTENUATION, GL_LINEAR_ATTENUATION,  GL_QUADRATIC_ATTENUATION 
-    */
-
-     
-    //GLfloat lightpos[] = {1, light_posx, light_posy, light_posz}; // homogeneous coordinates
-    //GLfloat lightpos[] = {0, 1, 0, 0}; // homogeneous coordinates
-    // glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-
-
-    // Set GL_LIGHT_0's Ambient color to 0,0,0,1
-    GLfloat lightamb[] = {0., 0., 0., 1. };
-    glLightfv(GL_LIGHT0, GL_AMBIENT, lightamb);
-
-    // Set GL_LIGHT_0's Diffuse color to 1,1,1,1
-    GLfloat lightdif[] = {1., 1., 1., 1. };
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdif);
-
-    // Set GL_LIGHT_0's Specular color to 1,1,1,1
-    GLfloat lightspec[] = {1., 1., 1., 1. };
-    glLightfv(GL_LIGHT0, GL_SPECULAR, lightspec);
-
-
-    // Set the glLightModel global ambient to 0.2,0.2,0.2,1 (this is the default).
-    // Don't set any other glLight or glLightModel options - just let them default.
-
-    // Enable GL_LIGHTING and GL_LIGHT_0.
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-
-    // Enable GL_COLOR_MATERIAL and set glColorMaterial to GL_AMBIENT_AND_DIFFUSE. 
-    // This means that glMaterial will control the polygon's specular and emission colours 
-    // and the ambient and diffuse will both be set using glColor.
-    
-    // glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
-    // glEnable(GL_COLOR_MATERIAL);  
-
-    // Set the glMaterial Specular colour to 1,1,1,1
-    // GLfloat matspec[] = {1.f, 1.f, 1.f, 1.f};
-    // glMaterialfv(GL_FRONT, GL_SPECULAR, matspec);
-
-    // GLfloat matemis[] = {1.f, 0.f, 0.f, 0.f};
-    // glMaterialfv(GL_FRONT, GL_EMISSION, matemis);
-
-    // Set the glMaterial Emission colour to 0,0,0,1
-    // Set the glColor to whatever colour you want each polygon to basically appear to be. 
-    // That sets the Ambient and Diffuse to the same value - which is what you generally want.
-    
-    glEnable(GL_NORMALIZE);
-
-
-    //  // GLfloat matdiff[] = {1.f, 1.f, 1.f, 1.f};
-    //  // glMaterialfv(GL_FRONT, GL_DIFFUSE, matdiff);
-     
-
-    /*
-    GLfloat light0_position[] = {0.0, 0.0, 1.0, 0.0};
-    GLfloat light0_diffuse[] = {0.0, 1.0, 1.0, 0.0};
-
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glShadeModel(GL_SMOOTH);
-    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glColorMaterial(GL_FRONT, GL_DIFFUSE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_NORMALIZE);
-    */
-
-}
-
-
-
 //define keyboard events 
 void key_cb(unsigned int key) 
 {
+
+
+    if (key == 52) //4 - display as wire 
+    { 
+        glDisable(GL_TEXTURE_2D);        
+        glDisable(GL_LIGHTING);
+        glPolygonMode (GL_FRONT_AND_BACK,  GL_LINE);
+
+    }
+
+    if (key == 53) //5 - display as solid, no texture  
+    { 
+
+        //glDisable(GL_TEXTURE_2D);        
+        //glDisable(GL_LIGHTING);
+        //glShadeModel(GL_SMOOTH);              
+        //glDisable(GL_TEXTURE_2D);
+        //glDisable(GL_COLOR_MATERIAL);
+        // glDisable(GL_LIGHT0);
+        // glDisable(GL_LIGHT1);
+        //------------------------
+                        
+        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+        setlight0();        
+    }
+    
+    if (key == 54) //6 - display as solid, with texture 
+    { 
+        glEnable(GL_TEXTURE_2D);
+        setlight0();
+    }
+
+
+    if (key == 55) // 7
+    { 
+        glEnable(GL_LIGHTING);
+        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+
 
     /*
 
@@ -1438,50 +1307,6 @@ void key_cb(unsigned int key)
         set_view_ortho();        
     }
 
-    if (key == 52) //4 - display as wire 
-    { 
-        glDisable(GL_TEXTURE_2D);        
-        glDisable(GL_LIGHTING);
-        glPolygonMode (GL_FRONT_AND_BACK,  GL_LINE);
-
-    }
-
-    if (key == 53) //5 - display as solid, no texture  
-    { 
-
-        setlight0();
-
-        // glShadeModel(GL_SMOOTH);              
-        // glDisable(GL_TEXTURE_2D);
-
-        //------------------------
-
-        //glDisable(GL_COLOR_MATERIAL);
-
-        // glDisable(GL_LIGHT0);
-        // glDisable(GL_LIGHT1);
-        // glDisable(GL_LIGHT2);
-        // glDisable(GL_LIGHT3);
-        // glDisable(GL_LIGHT4);
-           
-        //------------------------
-                        
-        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-        setlight0();        
-    }
-    
-    if (key == 54) //6 - display as solid, with texture 
-    { 
-        glEnable(GL_TEXTURE_2D);
-        setlight0();
-    }
-
-
-    if (key == 55) // 7
-    { 
-        glEnable(GL_LIGHTING);
-        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-    }
 
     //------
 
@@ -1546,7 +1371,7 @@ void key_cb(unsigned int key)
             draw_normals = false;
         }else{
             draw_normals = true;
-            pt_model_buffer->calc_normals();
+            //pt_model_buffer->calc_normals();
 
         }
         //std::cout << "draw normals " << draw_normals << "\n"; 
@@ -1697,4 +1522,101 @@ void init_pycore(void){
         //glDrawArrays(GL_LINES, 0, 2);
         glDisableVertexAttribArray(0);
 */
+
+
+/////////////////////////////
+
+/*
+
+
+//send_pulses
+
+
+/*
+void run_send_pulses(cncglobals* cg,
+                 float f_x,
+                 float f_y,
+                 float f_z,
+                 float s_x,
+                 float s_y,
+                 float s_z,
+                 int divs)  
+{
+
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
+
+    vector<Vector3> pulsetrain;
+    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+
+    motionplot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
+
+    if(cg->GLOBAL_DEBUG==true)
+    {
+        for(int x=0;x<pulsetrain.size();x++)
+        {
+            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
+        } 
+    }
+
+    if(cg->GLOBAL_DEBUG==false)
+    {
+       // motionplot.send_pulses(pt_pulsetrain);
+    }
+
+ }   
+*/
+
+
+/******************************************/
+//command line tool to generate XYZ pulses from 2 vectors 
+/*
+
+RELIC FROM THE OLDER TOOL - THIS WILL GO AWAY 
+
+void run_cncplot(cncglobals* cg,
+                 float f_x,
+                 float f_y,
+                 float f_z,
+                 float s_x,
+                 float s_y,
+                 float s_z,
+                 int divs)  
+{
+
+
+    cnc_plot plot;
+    
+    vector<Vector3> pulsetrain;
+    vector<Vector3>* pt_pulsetrain = &pulsetrain; 
+
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
+
+    plot.calc_3d_pulses(pt_pulsetrain, s_p, e_p, divs);
+
+    if(cg->GLOBAL_DEBUG==true)
+    {
+        int x=0;
+        for(x=0;x<pulsetrain.size();x++)
+        {
+            std::cout<<pulsetrain[x].x  <<" "<<pulsetrain[x].y  <<" "<<pulsetrain[x].z   << "\n";        
+        } 
+    }
+
+    if(cg->GLOBAL_DEBUG==false)
+    {
+       //moved to IO DEBUG   
+       // plot.send_pulses(pt_pulsetrain);
+    }
+
+    delete pt_pulsetrain;
+    
+
+}
+
+*/
+
+
+
 

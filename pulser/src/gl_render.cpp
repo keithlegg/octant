@@ -29,6 +29,115 @@ int line_clr_b;
 int num_pts_drw;
 
 
+
+
+
+/*
+  GLfloat light0_diffuse[] = {1.0, 1.0, 1.0, 1.0};
+    // Plane wave coming from +z infinity. 
+    GLfloat light0_position[] = {0.0, 0.0, 1.0, 0.0};
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glShadeModel(GL_SMOOTH);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_NORMALIZE);
+*/    
+
+
+void setlight0(void)
+{
+    // FROM - https://www.khronos.org/opengl/wiki/How_lighting_works#glMaterial_and_glLight 
+    // FROM - https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLight.xml
+    // FROM - https://www.cse.msu.edu/~cse872/tutorial3.html
+
+
+    /* 
+        GL_AMBIENT, GL_DIFFUSE, GL_SPECULAR, GL_POSITION, GL_SPOT_CUTOFF, GL_SPOT_DIRECTION, 
+        GL_SPOT_EXPONENT, GL_CONSTANT_ATTENUATION, GL_LINEAR_ATTENUATION,  GL_QUADRATIC_ATTENUATION 
+    */
+     
+    // //GLfloat lightpos[] = {1, light_posx, light_posy, light_posz}; // homogeneous coordinates
+    // //GLfloat lightpos[] = {0, 0, 0, 1}; // homogeneous coordinates
+    // //glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+    // // Set GL_LIGHT_0's Ambient color to 0,0,0,1
+    // GLfloat lightamb[] = {0., 0., 0., 1. };
+    // glLightfv(GL_LIGHT0, GL_AMBIENT, lightamb);
+    // // Set GL_LIGHT_0's Diffuse color to 1,1,1,1
+    // GLfloat lightdif[] = {10, 1., 1., 1. };
+    // glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdif);
+    // // Set GL_LIGHT_0's Specular color to 1,1,1,1
+    // GLfloat lightspec[] = {1., 1., 1., 1. };
+    // glLightfv(GL_LIGHT0, GL_SPECULAR, lightspec);
+
+    GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    //GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+
+    // Set the glLightModel global ambient to 0.2,0.2,0.2,1 (this is the default).
+    // Don't set any other glLight or glLightModel options - just let them default.
+
+    // Enable GL_LIGHTING and GL_LIGHT_0.
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    // Enable GL_COLOR_MATERIAL and set glColorMaterial to GL_AMBIENT_AND_DIFFUSE. 
+    // This means that glMaterial will control the polygon's specular and emission colours 
+    // and the ambient and diffuse will both be set using glColor.
+    
+    // glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
+    // glEnable(GL_COLOR_MATERIAL);  
+
+    // Set the glMaterial Specular colour to 1,1,1,1
+    // GLfloat matspec[] = {1.f, 1.f, 1.f, 1.f};
+    // glMaterialfv(GL_FRONT, GL_SPECULAR, matspec);
+
+    // GLfloat matemis[] = {1.f, 0.f, 0.f, 0.f};
+    // glMaterialfv(GL_FRONT, GL_EMISSION, matemis);
+
+    // Set the glMaterial Emission colour to 0,0,0,1
+    // Set the glColor to whatever colour you want each polygon to basically appear to be. 
+    // That sets the Ambient and Diffuse to the same value - which is what you generally want.
+    
+    //glEnable(GL_NORMALIZE);
+
+
+    //  // GLfloat matdiff[] = {1.f, 1.f, 1.f, 1.f};
+    //  // glMaterialfv(GL_FRONT, GL_DIFFUSE, matdiff);
+     
+
+    /*
+    GLfloat light0_position[] = {0.0, 0.0, 1.0, 0.0};
+    GLfloat light0_diffuse[] = {0.0, 1.0, 1.0, 0.0};
+
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glShadeModel(GL_SMOOTH);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_NORMALIZE);
+    */
+
+}
+
+
+
+
+
+
+/***************************************/
 void render_normals(obj_model* pt_model_buffer)
 {
 
@@ -62,8 +171,7 @@ void render_normals(obj_model* pt_model_buffer)
 
 }
 
-
-
+/***************************************/
 
 void render_quads(obj_model* pt_model_buffer)
 {
@@ -128,10 +236,14 @@ void render_quads(obj_model* pt_model_buffer)
 
 void render_vbo(obj_model* pt_model_buffer)
 {
+
+
+    // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/#vertex-normals
+
     // persistant point buffer   
     // Not tested well! - I think it needs OpenGL4 amd up
 
-    //http://ogldev.atspace.co.uk/www/tutorial02/tutorial02.html 
+    //https://ogldev.org/www/tutorial02/tutorial02.html
     //https://stackoverflow.com/questions/28849321/how-to-draw-polygon-with-3d-points-in-modern-opengl
     
     glMaterialfv(GL_FRONT, GL_EMISSION, emis_points);
@@ -162,7 +274,7 @@ void render_vbo(obj_model* pt_model_buffer)
     glEnableVertexAttribArray(0);
     
     //DEBUG COMMENTED OUT
-    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     // pass information about how vertex array is composed
     glVertexAttribPointer(0, // same as in glEnableVertexAttribArray(0)

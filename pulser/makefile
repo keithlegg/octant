@@ -18,10 +18,10 @@ UNAME := $(shell uname)
 # compiling flags  
 
 #all the warnings (for final compiling)
-CFLAGS   = -I$(INCDIR) -Wall 
+#CFLAGS   = -I$(INCDIR) -Wall 
 
 #for just making this damn thing run 
-#CFLAGS   = -I$(INCDIR) -w -fcompare-debug-second    
+CFLAGS   = -I$(INCDIR) -w -fcompare-debug-second    
 
 
 LINKER   = g++

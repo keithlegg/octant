@@ -443,7 +443,13 @@ void obj_model::calc_normals(void)
     }
 
     //----------
-     
+    
+    //https://stackoverflow.com/questions/23048271/difference-between-glnormal3f-and-glnormalpointer
+    // Vec3d normal = Vec3d.vectorProduct(
+    //         Vec3d.sub(tri.getB(), tri.getA()),
+    //         Vec3d.sub(tri.getC(), tri.getA())); //calculating normalvector
+    // glNormal3d(normal.x, normal.y, normal.z);
+
     // broken experiment to put face normals in vertex normals
     // only do so if nothing was loaded from the model 
     // DEBUG - its wrong !
@@ -457,13 +463,17 @@ void obj_model::calc_normals(void)
             Vector3 p3 = points[tris[p_i][2]-1];
 
             // calculate the face normal  
-            Vector3 a = p1.operator-(p2);
+            Vector3 a = p2.operator-(p1);
             Vector3 b = p1.operator-(p3);
-            Vector3 n = a.cross(b); 
+            Vector3 n = b.cross(a).normalize();; 
                        
             vnormals[tris[p_i][0]-1]= n;
             vnormals[tris[p_i][1]-1]= n;
             vnormals[tris[p_i][2]-1]= n; 
+            
+            //vnormals[tris[p_i][0]-1]= Vector3(1,0,0);
+            //vnormals[tris[p_i][1]-1]= Vector3(1,0,0);
+            //vnormals[tris[p_i][2]-1]= Vector3(1,0,0); 
 
             num_vnrmls++;
             num_vnrmls++;
@@ -471,6 +481,7 @@ void obj_model::calc_normals(void)
     
         }
     }   
+
 
 }
 

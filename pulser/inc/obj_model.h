@@ -25,11 +25,9 @@
 //this is required - follows the same inheritance as old python tools 
 #include "point_op.h"
 
-//#define MAX_NUM_VERTICES 1000
-//#define MAX_NUM_FACES 1000
 
-#define MAX_NUM_VERTICES 10000
-#define MAX_NUM_FACES 10000
+#define MAX_NUM_VERTICES 100000
+#define MAX_NUM_FACES 100000
 
 /*
 // index/indices for a line object 

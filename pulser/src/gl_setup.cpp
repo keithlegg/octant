@@ -323,13 +323,16 @@ void InitGL(int Width, int Height)
         
     glEnable(GL_TEXTURE_2D);                  // Enable Texture Mapping
     glClearColor(0.15f, 0.15f, 0.25f, 0.0f);  // Clear The Background Color To Blue 
+    
     glClearDepth(1.0);                        // Enables Clearing Of The Depth Buffer
     glDepthFunc(GL_LESS);                     // The Type Of Depth Test To Do
     glEnable(GL_DEPTH_TEST);                  // Enables Depth Testing
+    
     glShadeModel(GL_SMOOTH);                  // Enables Smooth Color Shading
     
 
     glMatrixMode(GL_PROJECTION);
+    
     glLoadIdentity();                     
     gluPerspective(45.0f,(GLfloat)Width/(GLfloat)Height,0.1f,100.0f);   // Calculate The Aspect Ratio Of The Window
     

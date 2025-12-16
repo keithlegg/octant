@@ -239,13 +239,15 @@ void obj_model::load(char *filepath)
                             }
                         }
 
+                        
                         if (nidx==3)
                         {
+                            //DEBUG THIS IS SUSPICIOUS   
                             Vector3 vn = Vector3( xc, yc, zc  );
                             vnormals[num_vnrmls] = vn;
                             num_vnrmls++;
 
-                        }     
+                        }    
                     
                     }//end vertex normal loader 
                     
@@ -266,30 +268,90 @@ void obj_model::load(char *filepath)
 
                             if( tokenized.at(a).size())
                             {
-                                //std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
-                                
+                                std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
+                                  
                                 //only supports 2,3,4 sided polygons  
                                 if(fidx==0){
-                                    pt1 = std::stoi( tokenized.at(a));
-                                    if (pofst>0){ pt1 = pt1+pofst;};
-                                    
+                                    //deal with "/" delineated files
+                                    if ( tokenized.at(a).find("/") != std::string::npos )
+                                    { 
+                                        std::vector<std::string>  sl1 = tokenizer(tokenized.at(a), *"/");
+                                        //we need to know how many slashes .. ugh 
+                                        if(!sl1.at(0).empty()){
+                                            std::cout <<"SL11!" << sl1.at(0) << "\n"; 
+                                            pt1 = std::stoi( sl1.at(0) );                                           
+                                        }
+                                        if(!sl1.at(1).empty()){
+                                            std::cout <<"SL12!" << sl1.at(1) << "\n";                                            
+                                        }
+                                        if(!sl1.at(2).empty()){
+                                            std::cout <<"SL13!" << sl1.at(2) << "\n";                                            
+                                        }                                        
+
+                                    }else{
+                                        pt1 = std::stoi( tokenized.at(a));
+                                        if (pofst>0){ pt1 = pt1+pofst;};                                            
+                                    }
                                 }
+
                                 if(fidx==1){
-                                    pt2 = std::stoi( tokenized.at(a));
-                                    if (pofst>0){ pt2 = pt2+pofst;};   
-                                                                                       
+                                    //deal with "/" delineated files                                        
+                                    if ( tokenized.at(a).find("/") != std::string::npos )
+                                    {
+                                        std::vector<std::string>  sl2 = tokenizer(tokenized.at(a), *"/");
+                                        //we need to know how many slashes .. ugh 
+                                        if(!sl2.at(0).empty()){
+                                            pt2 = std::stoi( sl2.at(0) ); 
+                                            std::cout <<"SL20!" << sl2.at(0) << "\n";                                                                                       
+                                        }
+                                        if(!sl2.at(1).empty()){
+                                            std::cout <<"SL21!" << sl2.at(1) << "\n"; 
+                                        }
+                                        if(!sl2.at(2).empty()){
+                                            std::cout <<"SL22!" << sl2.at(2) << "\n"; 
+                                        }  
+                                    }else{                                         
+                                        pt2 = std::stoi( tokenized.at(a));
+                                        if (pofst>0){ pt2 = pt2+pofst;};   
+                                    }                                             
                                 }  
+
                                 if(fidx==2){
-                                    pt3 = std::stoi( tokenized.at(a));
-                                    if (pofst>0){ pt3 = pt3+pofst;};                        
-                                  
+                                    //deal with "/" delineated files                                        
+                                    if ( tokenized.at(a).find("/") != std::string::npos )
+                                    {
+                                        std::vector<std::string>  sl3 = tokenizer(tokenized.at(a), *"/");
+                                        //we need to know how many slashes .. ugh 
+                                        if(!sl3.at(0).empty()){
+                                            std::cout <<"SL31!" << sl3.at(0) << "\n"; 
+                                            pt3 = std::stoi( sl3.at(0) );                                           
+                                        }
+                                        if(!sl3.at(1).empty()){
+                                            std::cout <<"SL32!" << sl3.at(1) << "\n";                                            
+                                        }
+                                        if(!sl3.at(2).empty()){
+                                            std::cout <<"SL33!" << sl3.at(2) << "\n";                                            
+                                        }   
+                                    }
+                                    else{                                        
+                                        pt3 = std::stoi( tokenized.at(a));
+                                        if (pofst>0){ pt3 = pt3+pofst;};                        
+                                    }
                                 }   
+
                                 if(fidx==3){
-                                    pt4 = std::stoi( tokenized.at(a));
-                                    if (pofst>0){ pt4 = pt4+pofst;};                                               
+                                    //deal with "/" delineated files                                        
+                                    if ( tokenized.at(a).find("/") != std::string::npos )
+                                    {
+                                        std::cout << "we have slash 3\n";  
+                                    }else{                                        
+                                        pt4 = std::stoi( tokenized.at(a));
+                                        if (pofst>0){ pt4 = pt4+pofst;};                                               
+                                    }
                                 }  
+                             
                             fidx++; 
-                            } 
+                            }//space delineated line 
  
 
                         }
@@ -303,7 +365,8 @@ void obj_model::load(char *filepath)
                             //DEBUG THIS IS BLOWING UP                             
                             // lines[num_lines][0] = pt1;
                             // lines[num_lines][1] = pt2;                          
-                            num_lines++;                    
+                            //num_lines++;                    
+                            
                         }//end line loader
 
                         //-------
@@ -343,7 +406,7 @@ void obj_model::load(char *filepath)
                             // quads[num_quads][1] = pt2;                          
                             // quads[num_quads][2] = pt3;
                             // quads[num_quads][3] = pt4;
-                            num_quads++;
+                            //num_quads++;
 
 
                         }//end quad loader 
