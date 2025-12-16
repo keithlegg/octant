@@ -195,13 +195,14 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //--------------
-    //toggle grid
+    // gle grid
     if (a1=="tog")
     {
+        if(a2=="tris"){key_cb(100);};
         if(a2=="grid"){key_cb(103);};
         if(a2=="gnomon"){key_cb(71);};
         if(a2=="normals"){key_cb(110);};
-        
+    
     }
 
 

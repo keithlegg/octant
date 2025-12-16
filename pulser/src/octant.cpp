@@ -469,9 +469,6 @@ double localsimtime;
 
 static void render_loop()
 {
-
-
-
     // Clear The Screen And The Depth Buffer
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -811,7 +808,7 @@ static void render_loop()
                 //std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
 
                 //------------------------------//
-                //glColor3f(rgb1.x,rgb1.y,rgb1.z); 
+                glColor3f(rgb1.x,rgb1.y,rgb1.z); 
                 //Vector2 uv = pt_model_buffer->uvs[tri1];
                 // glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.5, 1.0);                
@@ -824,7 +821,7 @@ static void render_loop()
                 glVertex3f(pt1.x, pt1.y, pt1.z);
 
                 //------------------------------//
-                //glColor3f(rgb2.x,rgb2.y,rgb2.z); 
+                glColor3f(rgb2.x,rgb2.y,rgb2.z); 
                 //Vector2 uv = pt_model_buffer->uvs[tri2];
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.0, 1.0); 
@@ -838,7 +835,7 @@ static void render_loop()
                 glVertex3f(pt2.x, pt2.y, pt2.z);
 
                 //------------------------------//
-                //glColor3f(rgb3.x,rgb3.y,rgb3.z); 
+                glColor3f(rgb3.x,rgb3.y,rgb3.z); 
                 //Vector2 uv = pt_model_buffer->uvs[tri3];
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(1.0, 0.0);       

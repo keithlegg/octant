@@ -117,7 +117,14 @@ void glutm44_to_m44( Matrix4* pt_m44, GLfloat m44_glfloat[16] ){
 
 void draw_locator( Vector3* pos, float locsize)
 {
-    glMaterialfv(GL_FRONT, GL_EMISSION, emis_full );
+
+    glBindTexture(GL_TEXTURE_2D, texture[0]);    
+
+    float id = 0;
+
+    // glMaterialfv(GL_FRONT, GL_EMISSION, emis_green);
+    // glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
+    // glColor3f(.4,.4,.4);
     //glColor3f(rgb->r,rgb->g,rgb->b);    
     
     float hl = locsize/2; //halfline

@@ -8,7 +8,7 @@ THIS IS VERY MUCH A WORK IN PROGRESS. Not ready to run any machines yet. Soon, h
 ![alt text](https://github.com/keithlegg/octant_cnc/blob/main/images/screen.jpg) 
 
 
-To Quote the Linuxcnc people:
+
 <br>
 ## DISCLAIMER
   
@@ -16,6 +16,8 @@ To Quote the Linuxcnc people:
 
 ```
   
+To Quote the Linuxcnc people:
+
 Ｔｈｅ ａｕｔｈｏｒｓ ｏｆ ｔｈｉｓ ｓｏｆｔｗａｒｅ ａｃｃｅｐｔ
 ａｂｓｏｌｕｔｅｌｙ ｎｏ ｌｉａｂｉｌｉｔｙ ｆｏｒ ａｎｙ
 ｈａｒｍ　ｏｒ ｌｏｓｓ ｒｅｓｕｌｔｉｎｇ ｆｒｏｍ ｉｔｓ ｕｓｅ．

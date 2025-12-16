@@ -453,7 +453,7 @@ void obj_model::calc_normals(void)
     // broken experiment to put face normals in vertex normals
     // only do so if nothing was loaded from the model 
     // DEBUG - its wrong !
-    /*
+     
     if (obj_model::num_vnrmls==0)
     {
         for (p_i=0;p_i<obj_model::num_tris;p_i++)
@@ -468,21 +468,25 @@ void obj_model::calc_normals(void)
             Vector3 b = p1.operator-(p3);
             Vector3 n = b.cross(a).normalize();; 
                        
-            vnormals[tris[p_i][0]-1]= n;
-            vnormals[tris[p_i][1]-1]= n;
-            vnormals[tris[p_i][2]-1]= n; 
-            
-            //vnormals[tris[p_i][0]-1]= Vector3(1,0,0);
-            //vnormals[tris[p_i][1]-1]= Vector3(1,0,0);
-            //vnormals[tris[p_i][2]-1]= Vector3(1,0,0); 
+            //fill the vn lookup data
+             vnormals[tris[p_i][0]-1]= n;
+             vnormals[tris[p_i][1]-1]= n;
+             vnormals[tris[p_i][2]-1]= n; 
+             num_vnrmls++;
+             num_vnrmls++;
+             num_vnrmls++;
 
-            num_vnrmls++;
-            num_vnrmls++;
-            num_vnrmls++;
+            //doesnt crash, doesnt work 
+            // //set the idx of the lookup
+            // std::vector<int> vnlup;
+            // vnlup.push_back(num_vnrmls-2);
+            // vnlup.push_back(num_vnrmls-1);
+            // vnlup.push_back(num_vnrmls);                
+            // vnids[p_i] = vnlup;
+
     
         }
-    }  */ 
-
+    }   
 
 }
 
