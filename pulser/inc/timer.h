@@ -28,12 +28,15 @@ class timer
 {
     public:
         
-        timer(){
+        timer()
+        {
             startCount.tv_sec = startCount.tv_usec = 0;
             endCount.tv_sec = endCount.tv_usec = 0;
 
             startTimeInMicroSec = 0;
             endTimeInMicroSec = 0;
+    
+            sim_time_us = 0;
 
             running = false;
             stopped = 0;//yes this is a contradiction to running = false, roill with it 
@@ -56,11 +59,11 @@ class timer
         double get_elapsed_simtime();
 
         //keith added these
-        void reset_sim(void);
+        void step_sim(void);
 
         bool    running; // public property 
-        double sim_time_us = 0; //us == microsecond 
-        double time_offset = 0;
+        double sim_time_us; //us == microsecond 
+        //double time_offset = 0;
 
 
         

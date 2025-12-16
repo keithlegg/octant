@@ -7,16 +7,21 @@
 
 #include "timer.h"
 
-
-
 double trav_speed ; //linear unit per sec 
 
 
-void timer::reset_sim(void)
+/***************************************/
+//void timer::reset_sim(void)
+
+
+/***************************************/
+//step/reset gets called once every "tick" between 0-1 
+void timer::step_sim(void)
 {
-    sim_time_us=0;
+    sim_time_us = 0;
 }
 
+/***************************************/
 void timer::start()
 {
     stopped = 0; // reset stop flag
@@ -26,8 +31,10 @@ void timer::start()
 }
 
 
+/***************************************/
+//void timer::pause()
 
-
+/***************************************/
 void timer::stop()
 {
     stopped = 1; // set timer stopped flag
@@ -38,8 +45,7 @@ void timer::stop()
 }
 
 
-
-
+/***************************************/
 double timer::getElapsedTimeInMicroSec()
 {
 
@@ -56,12 +62,14 @@ double timer::getElapsedTimeInMicroSec()
     return endTimeInMicroSec - startTimeInMicroSec;
 }
 
- 
+/***************************************/ 
 double timer::get_elapsed_simtime_ms()
 {
     this->getElapsedTimeInMicroSec();
     return this->sim_time_us * 0.001;
 }
+
+/***************************************/
 double timer::get_elapsed_simtime_sec()
 {
     this->getElapsedTimeInMicroSec();
@@ -69,23 +77,25 @@ double timer::get_elapsed_simtime_sec()
 }
 
 
-
+/***************************************/
 double timer::getElapsedTimeInMilliSec()
 {
     return this->getElapsedTimeInMicroSec() * 0.001;
 }
+
+/***************************************/
 double timer::getElapsedTimeInSec()
 {
     return this->getElapsedTimeInMicroSec() * 0.000001;
 }
 
-
-
+/***************************************/
 double timer::get_elapsed_simtime()
 {
     return this->get_elapsed_simtime_sec();
 }
 
+/***************************************/
 double timer::getElapsedTime()
 {
     return this->getElapsedTimeInSec();

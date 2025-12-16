@@ -93,6 +93,8 @@ cncglobals cg;
 extern vector<Vector3> linebuffer1;
 extern vector<Vector3> linebuffer1_rgb;
 
+extern vector<Vector3> linebuffer2;
+extern vector<Vector3> linebuffer2_rgb;
 
 /***************************************/
 //motion control related 
@@ -488,17 +490,19 @@ static void render_loop()
     {
         
         //std::cout << mtime.getElapsedTime() << "\n";
-        //std::cout << localsimtime           << "\n";
+        std::cout << "local simtime is " << localsimtime << "\n";
+        std::cout << " pidx "<< motionplot.pidx          << "\n";
+
+        //----
 
         localsimtime = mtime.get_elapsed_simtime() * motionplot.timediv;
-
-        //std::cout << "local simtime is " << localsimtime << "\n";
 
         //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
         if (localsimtime>=1.0)
         {
-        
-            //std::cout << "running index " << motionplot.pidx           << "\n";
+
+            std::cout << "-----------------------------------\n";        
+            std::cout << "running index " << motionplot.pidx        << "\n";
 
             //iterate the stack of vectors to process
             if (motionplot.pidx<motionplot.toolpath_vecs.size())
@@ -506,51 +510,59 @@ static void render_loop()
                 motionplot.pidx++;        
                 // start the (sim) clock over at the end of each vector segment 
                 // 0.0 - 1.0 is the range - which feeds the 3D `lerp           
-                mtime.reset_sim();
+                mtime.step_sim();
             }
 
             //program finished here
             if (motionplot.pidx>=motionplot.toolpath_vecs.size()-1)
             {
 
+
                 mtime.running = false;
                 motionplot.stop();
                 motionplot.finished = true;
-                motionplot.pidx = 1;
-                
+
                 //update rebuilds the stack of vectors to process
                 //this is for rapid move, etc 
+                motionplot.pidx = 0;
+                
                 motionplot.update_cache();
 
             }
         }
         
-        //the main loop where we upodate display and pulse the ports.
-        if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1&&mtime.running)
+        //----------------- 
+        //the main loop where we update display and pulse the ports.
+        if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1 && mtime.running)
         {
+
             //DEBUG - get the length of the vector/spatial divs to calc proper speed 
             //vectormag   motionplot.toolpath_vecs[motionplot.pidx]
+            Vector3 s_p;
+            Vector3 e_p;  
+
+
+            s_p = motionplot.toolpath_vecs[motionplot.pidx];
+            e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
+ 
+
             
-            if(motionplot.pidx==0){
-                //do nothing: A single point, a line does not make. 
-            }
-            if(motionplot.pidx>0)
-            {
-                 
-                Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
-                Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];
-
-                PG.lerp_along(&motionplot.quill_pos, 
-                               s_p, 
-                               e_p, 
-                               (float) localsimtime);
+            std::cout << "$$$$$$$$$$$$$$$$$$$$\n";
+            std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
+            std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
 
 
-                //DEBUG floating point error  
-                //motionplot.calc_3d_pulses(s_p, e_p, 10);
+            PG.lerp_along(&motionplot.quill_pos, 
+                           s_p, 
+                           e_p, 
+                           (float) localsimtime);
+
+
+            //DEBUG floating point error  
+            //motionplot.calc_3d_pulses(s_p, e_p, 10);
                  
 
-            }            
+                        
 
             glColor3d(1, .4, 1);
             draw_locator(&motionplot.quill_pos, .5);
@@ -900,7 +912,8 @@ static void render_loop()
     
     Vector3 sv  = Vector3();
     Vector3 ev  = Vector3();
-    // Vector3 rgb = Vector3();  
+
+    // draw linebuffer1  
     if (DRAW_GEOM)
     {
 
@@ -945,7 +958,44 @@ static void render_loop()
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
 
     }
-    
+
+
+    //-----------------------
+    //draw linebuffer2
+    if (DRAW_GEOM)
+    {
+
+        glBindTexture(GL_TEXTURE_2D, texture[2]);
+        glMaterialfv(GL_FRONT, GL_EMISSION, emis_full);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
+        
+        //intentionally start at 1 - skip the first point 
+        //we need at least two points to indicate a line 
+        for (unsigned int p_i=1;p_i<linebuffer2.size();p_i++)
+        {   
+            if(p_i>=1){ 
+                sv  = linebuffer2[p_i-1];
+                ev  = linebuffer2[p_i];
+                //rgb = linebuffer1_rgb[p_i];            
+            }
+
+            glBegin(GL_LINES);
+                glColor3f(.7,.7,.7); //hack for now
+                //glColor3f(rgb.x,rgb.y,rgb.z);
+                glVertex3f(sv.x, sv.y, sv.z);
+                
+                glColor3f(.7,.7,.7); //hack for now
+                //glColor3f(rgb.x,rgb.y,rgb.z);
+                glVertex3f(ev.x, ev.y, ev.z);
+            glEnd();
+             
+        }
+        
+        glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
+
+    }
+
     //-----------------------
 
     // glPopMatrix();

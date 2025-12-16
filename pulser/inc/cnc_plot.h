@@ -14,8 +14,8 @@ class cnc_plot
     public:
         cnc_plot()
         {
-            timediv    = 8.0;
-            pidx       = 1;
+            timediv    = 1.0;
+            pidx       = 0;
             running    = false;
             finished   = true;
             

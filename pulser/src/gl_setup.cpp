@@ -48,6 +48,9 @@ extern float gnomonsize;
 extern vector<Vector3> linebuffer1; 
 extern vector<Vector3> linebuffer1_rgb; 
 
+extern vector<Vector3> linebuffer2; 
+extern vector<Vector3> linebuffer2_rgb; 
+
 extern GLuint texture[3];
 
 
@@ -415,19 +418,34 @@ void dump_points_GLfloat( GLfloat* verts, vector<Vector3>* pt_vecarray, int nump
 
 
 
+
+
 /******************************************/
 void clear_scn_geom( void)
 {
+
     linebuffer1.clear();
     linebuffer1_rgb.clear();
+
+    linebuffer2.clear();
+    linebuffer2_rgb.clear();
+
 }
 
 /******************************************/
-void add_vec_scndrw( Vector3* insert)
+void add_vec_lbuf1( Vector3* insert)
 {   
     Vector3 r = Vector3(1,1,1);
     linebuffer1.push_back(*insert);
     linebuffer1_rgb.push_back(r);
+}
+ 
+
+void add_vec_lbuf2( Vector3* insert)
+{   
+    Vector3 r = Vector3(1,1,1);
+    linebuffer2.push_back(*insert);
+    linebuffer2_rgb.push_back(r);
 }
  
 

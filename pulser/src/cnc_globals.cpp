@@ -68,6 +68,12 @@ char strbuffer[100][100];
 
 std::vector<Vector3> linebuffer1;
 std::vector<Vector3> linebuffer1_rgb;
+//linebuffer1.reserve(10000);
+
+std::vector<Vector3> linebuffer2;
+std::vector<Vector3> linebuffer2_rgb;
+//linebuffer2.reserve(10000);
+
 
 std::vector<Vector3> scene_drawpoints;
 std::vector<Vector3> scene_drawpointsclr;
@@ -75,8 +81,6 @@ std::vector<Vector3> scene_drawpointsclr;
 
 //std::vector<Vector3> linebuffer1;
 //std::vector<Vector3> linebuffer1_rgb;
-
-
 
 //experiments is heap VS stack. idk 
 // std::vector<Vector3>* linebuffer1         = new std::vector<Vector3>;
@@ -376,7 +380,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                 c3 = std::stof(tokenized.at(3));
                                 
                                 Vector3 v = Vector3(c1,c2,c3); 
-                                add_vec_scndrw(&v);
+                                add_vec_lbuf1(&v);
 
                             } catch (const std::invalid_argument& e) {  
                                 //std::cerr << "Error: " << e.what() << std::endl; // Handling the error
