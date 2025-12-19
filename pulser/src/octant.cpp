@@ -943,19 +943,25 @@ static void render_loop()
 
 
         //----
-       
+        //Specifies the primitive or primitives that will be created from vertices presented between glBegin and the subsequent glEnd. 
+        //Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON. 
+
         //NEW CODE - USED INDEXED LOOKUP 
+        /*
         for (unsigned int p_i=0;p_i<pt_motionplot->num_plys;p_i++)
         {   
 
             for (unsigned int ii=1;ii<pt_motionplot->tp_idxs[p_i].size();ii++)
             {
                 glBegin(GL_LINES);
-                    sv  = pt_motionplot->program_vecs[ii-1];
-                    ev  = pt_motionplot->program_vecs[ii];
+                    unsigned int si= pt_motionplot->tp_idxs[p_i][ii-1];
+                    unsigned int ei= pt_motionplot->tp_idxs[p_i][ii];
+                    
+                    sv  = pt_motionplot->program_vecs[si];
+                    ev  = pt_motionplot->program_vecs[ei];
                     //rgb = linebuffer1_rgb[p_i];            
                 
-                    glColor3f(1.,0,0); //hack for now
+                    glColor3f(0,1.,0); //hack for now
                     glVertex3f(sv.x, sv.y, sv.z);
                     
                     glColor3f(1.,0,0); //hack for now
@@ -964,8 +970,41 @@ static void render_loop()
                 glEnd();
             }
            
-        } 
-        
+        } */
+     
+
+        //std::cout << "foo " << pt_motionplot->tp_idxs[0].size() << "\n";
+
+        //////////////////////////////////////////////////////////
+       
+        int test = 1;
+
+        if (pt_motionplot->tp_idxs[0].size()>1)
+        {
+            for (unsigned int ii=1;ii<pt_motionplot->tp_idxs[test].size();ii++)
+            {
+                glBegin(GL_LINES);
+                    unsigned int si= pt_motionplot->tp_idxs[test][ii-1];
+                    unsigned int ei= pt_motionplot->tp_idxs[test][ii];
+
+                    sv  = pt_motionplot->program_vecs[si];
+                    ev  = pt_motionplot->program_vecs[ei];
+      
+                
+                    glColor3f(0,1.,0); //hack for now
+                    glVertex3f(sv.x, sv.y, sv.z);
+                    
+                    glColor3f(1.,0,0); //hack for now
+                    glVertex3f(ev.x, ev.y, ev.z);
+
+                glEnd();
+            }
+        }  
+         
+        //////////////////////////////////////////////////////////
+
+
+
         //----       
         
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
@@ -1135,21 +1174,16 @@ void start_gui(int *argc, char** argv){
 
     //setup filepaths and paths to cut 
     cg.load_cfg_file(argv[1]);
-    cg.copy_file_vecs_display(); //copy from file vec buffer to display buffer
 
     //load the 3d models 
     cg.load_objects();
 
-
-    //cg.show_obj();
-    
-    //cg.show();
-
-    // -----------
     // we have vectors in display - calcluate the head path from them   
-    motionplot.loadpath(&linebuffer1, 10);
+    motionplot.loadpath(&linebuffer1);
     motionplot.retract_height = cg.retract_height;
     motionplot.work_height    = cg.work_height;
+
+
 
     //------------
     

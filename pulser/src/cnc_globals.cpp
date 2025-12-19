@@ -113,7 +113,8 @@ void exit_program(void)
 
 /*******************************************************/
 
-//the data is loaded into cnc_plot - copy it to display buffer to render
+/*
+//the data is loaded in file buffer - copy it to display buffer to render
 void cncglobals::copy_file_vecs_display(void)
 {
     
@@ -122,10 +123,10 @@ void cncglobals::copy_file_vecs_display(void)
     {   
         add_vec_lbuf1(&pt_motionplot->loaded_file_vecs.at(p)); 
     }
-    
+
     //pt_motionplot->add_prg_vec(&v);
 }
-
+*/
 
 /*******************************************************/
 void cncglobals::show_params( void )
@@ -385,16 +386,18 @@ void cncglobals::load_cfg_file( char* filepath )
                             //std::cout << "#ADDED OBJ " << (*this).num_loaded_obj << " "<< obj_filepaths.at((*this).num_loaded_obj) << "\n";
                         }
 
-                        //----- 
+                        /**************************************/ 
                         //keep track of the polygon index - open a new poly  
                         if (tokenized.at(0).find("op_polygon")!= std::string::npos)
                         {
                             if(active_polygon_load==true){
                                 std::cout << "load_cfg_file - error - polygon load already open \n";
-                            }else{                            
+                            }else{   
+                                std::cout << "load_cfg_file - debug - opening new polygon load \n";                         
                                 active_polygon_load=true;
                             };
                         } 
+                        //-----                         
                         //keep track of the polygon index - close a new poly  
                         if (tokenized.at(0).find("end_polygon")!= std::string::npos)
                         {   
@@ -402,14 +405,19 @@ void cncglobals::load_cfg_file( char* filepath )
                                 std::cout << "load_cfg_file - error - polygon load already closed. \n";
                             }else{
                                 active_polygon_load=false;
-                                
-                                std::cout << "load_cfg_file - adding new polygon  "<<ply_count<<"\n";                            
-                                // build an idx lup for each loaded polygon 
-                                pt_motionplot->newply_contiguous_idx(ply_count,local_vec_idx);
-                                
-                                ply_count++;
-                                local_vec_idx=0;
+                             
+                                if(local_vec_idx==0)
+                                {
+                                    std::cout << "load_cfg_file - NO DATA TO LOAD - SKIPPING " <<"\n"; 
+                                }else{                          
+                                    std::cout << "load_cfg_file - adding new polygon  " << ply_count <<"\n"; 
+                                    // build an idx lup for each loaded polygon 
+                                    pt_motionplot->add_new_polygon(ply_count, local_vec_idx);
+                                    
+                                    ply_count++;
+                                    local_vec_idx=0;
 
+                                }//if data to load 
                             };
                         } 
                         
@@ -430,7 +438,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                     c3 = std::stof(tokenized.at(3));
                                     
                                     Vector3 v = Vector3(c1,c2,c3); 
-                                    //std::cout << "adding polygon ct "<< ply_count << " vec idx " << local_vec_idx << "\n"; 
+                                    std::cout << "adding polygon ct "<< ply_count << " vec idx " << local_vec_idx << "\n"; 
 
                                     pt_motionplot->add_file_vec(&v);
                                     local_vec_idx++;
@@ -442,6 +450,8 @@ void cncglobals::load_cfg_file( char* filepath )
                                 }                            
                             }//load a 3D vector 
                         }//active polygon load 
+                        /**************************************/ 
+
 
                         //** MACHINE HARDWARE SETUP ************//
                         if (tokenized.at(0).find("LINEAR_UNIT") != std::string::npos )                            

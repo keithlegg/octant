@@ -99,9 +99,10 @@ void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 /******************************************/
 void cnc_plot::show(void)
 {
-    std::cout << "\n #"<< rapidmove_vecs.size() <<" rapid vecs \n";
-    std::cout << " #" << program_vecs.size() <<" program vecs \n";    
-    std::cout << " #" << toolpath_vecs.size() <<" path vecs \n";    
+    std::cout << "\n #"<< rapidmove_vecs.size()  <<" rapid vecs \n";
+    std::cout << " #"  << program_vecs.size()     <<" program vecs \n";    
+    std::cout << " #"  << toolpath_vecs.size()    <<" path vecs \n";    
+    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs \n";   
 }
 
 /******************************************/
@@ -113,6 +114,33 @@ void cnc_plot::showpthids(void)
     }
 
 }
+
+
+void cnc_plot::showply(unsigned int pidx)
+{
+    std::cout << "------------------------\n";
+      
+    if(pidx>num_plys || pidx<=0)
+    {
+        std::cout << " # error polygon index out of range \n";
+    }
+
+    if(pidx>=0 && pidx<=num_plys)
+    {
+
+        for(unsigned int x=0;x<tp_idxs[pidx].size();x++)
+        {
+
+            unsigned int id = tp_idxs[pidx].at(x);
+            
+            Vector3 v =  program_vecs[id];
+            std::cout << "vec "<< x << "  " <<v.x <<" "<< v.y << " "<<v.z << "\n";
+
+        }
+    }
+
+}
+
 
 /******************************************/
 void cnc_plot::showgeom(void)
@@ -178,38 +206,59 @@ void cnc_plot::run(void)
 */
 void cnc_plot::rapid_move(void)
 {
-    rapidmove_vecs.clear();
-    linebuffer2.clear();
-
-    Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
-    Vector3 hover_e  = Vector3(prg_origin.x, retract_height, prg_origin.z);
-     
-    rapidmove_vecs.push_back(quill_pos );
-    rapidmove_vecs.push_back(up_vec );
-    rapidmove_vecs.push_back(hover_e);
-    rapidmove_vecs.push_back(prg_origin);
     
-    //now we have them, add to the buffer to draw them 
-    add_vec_lbuf2(&quill_pos);
-    add_vec_lbuf2(&up_vec);
-    add_vec_lbuf2(&hover_e);
-    add_vec_lbuf2(&prg_origin);
+    if(program_vecs.size()>0)
+    {
+        rapidmove_vecs.clear();
+        linebuffer2.clear();
+
+        Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
+        Vector3 hover_e  = Vector3(prg_origin.x, retract_height, prg_origin.z);
+         
+        rapidmove_vecs.push_back(quill_pos );
+        rapidmove_vecs.push_back(up_vec );
+        rapidmove_vecs.push_back(hover_e);
+        rapidmove_vecs.push_back(prg_origin);
+        
+        //now we have them, add to the buffer to draw them 
+        add_vec_lbuf2(&quill_pos);
+        add_vec_lbuf2(&up_vec);
+        add_vec_lbuf2(&hover_e);
+        add_vec_lbuf2(&prg_origin);
+    }
 }
 
  
 /******************************************/
-//the idea is to add an entry for a new polygon in the index table
-//because the polygon is CCW/CW contigous, all we need is to know how many ids to add
-void cnc_plot::newply_contiguous_idx(int numply, int numids)
+/*
+    add a new polygon to program and display buffer 
+    move from temp file buffer and clear file buffer for next incoming polygon 
+    because the polygon is CCW/CW contigous, all we need is to know how many ids to add
+*/
+
+void cnc_plot::add_new_polygon(int numply, int numids)
 {
-    std::cout << "add ply cont called # "<< numids << "\n";
+    std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
 
     //dynamically add more indices 
-    //we can cheat since the ids are contiguous. sequential, etc
-    for (unsigned int i = 0;i<numids;i++)
+    //we just iterate a sequence of ids up to N verteces
+    for (unsigned int i=0;i<numids;i++)
     {   
         tp_idxs[numply].push_back(i);
     }
+
+    //the data is loaded in file buffer - copy it to program buffer with index 
+ 
+    // //std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
+    for (unsigned int p=0;p<loaded_file_vecs.size();p++)
+    {   
+        add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+
+        //ADD to program_vecs also!! DEBUG 
+    }
+
+    loaded_file_vecs.clear();
+
     num_plys++;
 
 }
@@ -279,19 +328,9 @@ void cnc_plot::update_cache(void)
 /******************************************/
 /*
     The first thing called when the vectors are loaded from disk
-    Esentially loads the vectors from the disk, copies them into 
-
-    toolpath_vecs   = the actual path that will be cut 
-
-    program_vecs = cached vectors loaded from a file represeting a path we want to cut
-                     these are seperate from the actual path we will cut so we can build 
-                     more complex paths dynamically. 
-
-    rapidmove_vecs = a path to move the head up, over, and back down 
-
 */
 
-void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs, int numdivs)
+void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs)
 {
     for (int i=0;i<pt_drawvecs->size();i++)
     {   

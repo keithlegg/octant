@@ -127,11 +127,15 @@ void parse_cmd_text(std::string *buffer)
     //toggle grid
     if (a1=="help")
     {   
-        std::cout << "------------------------------------------\n";
-        std::cout << "dm : display mode                         \n";
-        std::cout << "    solid, wire, persp, otop, oside, etc  \n";
-        std::cout << "show                                      \n";
+        std::cout << "------------------------------------------         \n";
+        std::cout << "dm : display mode                                  \n";
+        std::cout << "    solid, wire, persp, otop, oside, etc           \n";
+        
+        std::cout << "show                                               \n";
         std::cout << "    obj, path, pathids, pathgeom, objgeom          \n";
+
+        std::cout << "lup                                                \n";
+        std::cout << "    pathid (int),                                  \n";
 
     }    
 
@@ -193,6 +197,18 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //peek at internals 
+    if (a1=="lup")
+    { 
+        if(a2=="pathid")
+        {
+            if(a3!="")
+            {
+                std::cout << "WE HAVE IDS :"<<a3<<":\n";
+            }
+        }
+    }
+
+    //peek at internals 
     if (a1=="show")
     { 
         if(a2=="path")
@@ -222,6 +238,15 @@ void parse_cmd_text(std::string *buffer)
         { 
             pt_motionplot->showpthids();
         }
+
+        if(a2=="ply")
+        { 
+            if(a3!="")
+            {
+                unsigned int pidx = std::stoi(a3);
+                pt_motionplot->showply(pidx); 
+            }
+        }        
 
     }
 
@@ -347,26 +372,15 @@ void parse_cmd_text(std::string *buffer)
         run_machine();
     }
 
-    //--------------
-    /*
-    //parse the second token (you cant use spaces - duh)
-    std::stringstream check2(second);
-    std::string intermediate2;    
-    while(getline(check2, intermediate2, '_'))
-    {
-        subtokens.push_back(intermediate2);
-    }
-    // Printing the token vector
-    for(int i = 0; i < subtokens.size(); i++)
-    {
-        std::cout << subtokens[i] << "\n";
-    }
-    */
-    //--------
-    
-    //std::cout << "first:" << a1 << " second:" << a2 << '\n';
 
-}
+
+    //--------------
+    //clear for next transaction
+    a1,a2,a3,a4,a5,a6,a7 = "";
+    //--------------
+
+}//end 
+
 
 
 

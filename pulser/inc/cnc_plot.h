@@ -35,6 +35,7 @@ class cnc_plot
         void show(void);
         void showgeom(void);
         void showpthids(void);
+        void showply(unsigned int pidx);
 
         void pause(void);
         void stop(void);
@@ -42,13 +43,13 @@ class cnc_plot
         
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
-        
-        void newply_contiguous_idx(int numply, int numids);
+
+        void add_new_polygon(int numply, int numids);
         
 
         void rapid_move(void);
         void update_cache(void);
-        void loadpath( std::vector<Vector3>* pt_drawvecs, int numdivs);
+        void loadpath( std::vector<Vector3>* pt_drawvecs);
 
         void gen_pules(std::vector<int>*, int, int);
         void calc_3d_pulses(Vector3, 
@@ -101,7 +102,7 @@ class cnc_plot
         //original vectors loaded from disk  
         //keep these seeprate from the dynamically built paths 
         std::vector<Vector3> loaded_file_vecs;
-        std::vector<int> tp_idxs[MAX_NUM_PLY];
+        std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
 
     private:
         void show_vecs(std::vector<Vector3> * pt_vec);
