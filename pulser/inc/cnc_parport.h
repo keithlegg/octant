@@ -52,15 +52,22 @@ class cnc_parport
          cnc_parport(){};
         ~cnc_parport(){};
 
-    void test_port(cncglobals*);
+    void test_port_output(cncglobals*);
 
     void aux_on(cncglobals*, unsigned int);
     void aux_off(cncglobals*, unsigned int);
 
-    void test_inputs(cncglobals* cg, unsigned char* data);
+    void test_inputs(cncglobals* cg, 
+                     unsigned char* data);
 
-    // /void send_pulses(cncglobals*, vector<Vector3>*);
-    void send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot);
+    void decode_quadrature(cncglobals* cg, 
+                           unsigned char* data,
+                           unsigned char* a_sigmask,
+                           unsigned char* b_sigmask);
+
+    void send_pulses(float* pt_progress, 
+                     cncglobals* cg, 
+                     cnc_plot* pt_plot);
 
     void read_limits(cncglobals*, Vector3*);
 

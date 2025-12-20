@@ -469,7 +469,10 @@ static void parser_cb(unsigned char key, int x, int y)
 char cs[100];
 char s[100];
 
+//test of quadrature input 
 unsigned char portdata;
+unsigned char am;
+unsigned char bm;
 
 
 double localsimtime;
@@ -612,9 +615,19 @@ static void render_loop()
         if (tog_testport)
         {
              
-            
+            //get the byte from IO
             parport.test_inputs(&cg, &portdata);
-            
+
+            //unsigned char am = 0xff;
+            //unsigned char bm = 0xff;
+            //parport.decode_quadrature(&cg, &portdata, &am, &bm);
+           
+
+            // parport.decode_quadrature(cncglobals* cg, 
+            //                           unsigned char* data,
+            //                           unsigned char* a_sigmask,
+            //                           unsigned char* b_sigmask);
+
             glColor3d(0, 1.0, 0);        
             sprintf(cs, ""BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(portdata)  );
             renderBitmapString( ((int)(scr_size_x/2)-50), 75  ,(void *)GLUT_BITMAP_HELVETICA_18, cs );

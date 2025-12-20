@@ -62,47 +62,16 @@ extern bool tog_testport;
 //int pulse_del = 1000;
 
 
-//void cnc_parport::decode_quadrature ( 
+ 
 
-
-
-
-
-/***************************************/
-void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
+void cnc_parport::decode_quadrature(cncglobals* cg, 
+                                    unsigned char* data,
+                                    unsigned char* a_sigmask,
+                                    unsigned char* b_sigmask)
 {
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
+    //portdata
 
-    unsigned char data_read;
-    data_read = inb(cg->parport1_addr);
-    data_read = data_read |= (1 << pin);
-    outb(data_read, cg->parport1_addr);            
-
-
-}
-
-
-
-/***************************************/
-void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
-{
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
-
-    unsigned char data_read;
-    data_read = inb(cg->parport1_addr);
-    data_read = data_read &= ~(1 << pin);
-    outb(data_read, cg->parport1_addr);    
-
-}
-
+} 
 
 
 /***************************************/
@@ -147,13 +116,53 @@ void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
 }
 
 
+
+/***************************************/
+void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
+{
+    if(ioperm(cg->parport1_addr,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+    
+    }
+
+    unsigned char data_read;
+    data_read = inb(cg->parport1_addr);
+    data_read = data_read |= (1 << pin);
+    outb(data_read, cg->parport1_addr);            
+
+
+}
+
+
+
+/***************************************/
+void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
+{
+    if(ioperm(cg->parport1_addr,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+    
+    }
+
+    unsigned char data_read;
+    data_read = inb(cg->parport1_addr);
+    data_read = data_read &= ~(1 << pin);
+    outb(data_read, cg->parport1_addr);    
+
+}
+
+
+
+
+
 /***************************************/
 
 //extern bool tog_testport - is a bool to read inputs
 //test_port here is a function to flash the pins 
 //yes its confusing 
 
-void cnc_parport::test_port(cncglobals* cg)
+void cnc_parport::test_port_output(cncglobals* cg)
 {
     if(ioperm(cg->parport1_addr,1,1))
     { 
