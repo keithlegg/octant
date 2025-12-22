@@ -398,6 +398,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
     bool enable_limits = false; 
 
     std::cout << "# we have pulses! count: " << pt_plot->pulsetrain.size() << "\n";
+    std::cout << "# parport address is :   " << cg->parport1_addr << "\n";
 
     if(enable_send==1)
     {

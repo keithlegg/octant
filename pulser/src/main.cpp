@@ -21,7 +21,8 @@ char* obj_filepath;
 
 /***************************************/
  
-void run_cncplot(double f_x,
+void run_cncplot(char * cfgfile, 
+                 double f_x,
                  double f_y,
                  double f_z,
                  double s_x,
@@ -36,6 +37,8 @@ void run_cncplot(double f_x,
     cnc_parport pport;
     cncglobals cg;
     
+    cg.load_cfg_file(cfgfile); 
+
     float dummy = 0;
 
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
@@ -75,19 +78,19 @@ void parse_args(int argc, char **argv)
     }
 
     //start point (vector)
-    double a1 = atof(argv[1]);
-    double a2 = atof(argv[2]);
-    double a3 = atof(argv[3]);
+    double a1 = atof(argv[2]);
+    double a2 = atof(argv[3]);
+    double a3 = atof(argv[4]);
 
     //end point (vector)
-    double a4 = atof(argv[4]);
-    double a5 = atof(argv[5]);
-    double a6 = atof(argv[6]);
+    double a4 = atof(argv[5]);
+    double a5 = atof(argv[6]);
+    double a6 = atof(argv[7]);
 
     //number of divisions in X,Y,Z space
     int a7    = atoi(argv[7]);
               
-    run_cncplot( a1, a2, a3, a4, a5, a6, a7 );
+    run_cncplot( argv[1], a1, a2, a3, a4, a5, a6, a7 );
 
 }
 
