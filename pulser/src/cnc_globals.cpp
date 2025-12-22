@@ -56,8 +56,10 @@
 #include "cnc_parport.h"
 
 #include "cnc_globals.h"
-#include "gl_setup.h"
 
+//GUI RELATED 
+//#include "gl_setup.h"
+//GUI RELATED 
 
 extern cnc_plot* pt_motionplot;
 
@@ -65,14 +67,9 @@ extern cnc_plot* pt_motionplot;
 char strbuffer[100][100];
 
 
-//toolpath vectors
-std::vector<Vector3> linebuffer1;
-std::vector<Vector3> linebuffer1_rgb;
-//linebuffer1.reserve(10000);
 
-//rapid move vectors
-std::vector<Vector3> linebuffer2;
-std::vector<Vector3> linebuffer2_rgb;
+
+//linebuffer1.reserve(10000);
 //linebuffer2.reserve(10000);
 
 //

@@ -46,22 +46,6 @@
 #include "octant.h"
 
 
-/*
-float zoomSpeed    = 1.2f;
-float rotateSpeed  = 4.0f;
-Vector3 startpos = newvec3(0.0, 130.0, 60.0);
-
-m33 capsuleObj; //represents a Unity/Maya Transform node 
-quaternion orbt_rot_original;
-Vector3 orbt_xform_original;
-*/
-
-
-
-
-
-
-
 extern int scr_size_x;
 extern int scr_size_y;
 extern int window_id;
@@ -69,13 +53,8 @@ extern int window_id;
 //DEBUG - seriously conisider a better name for this!
 extern GLuint texture[3];
 
-
 extern cncglobals cg;
 extern cnc_plot* pt_motionplot;
-// cnc_plot motionplot;
-// cnc_plot* pt_motionplot = &motionplot;
-//cnc_parport parport;
-//cnc_parport* pt_parport;
 
 extern std::vector<Vector3> linebuffer1; 
 extern std::vector<Vector3> linebuffer1_rgb; 
@@ -104,6 +83,7 @@ void start_gui(int *argc, char** argv){
 
     //setup filepaths and paths to cut 
     cg.load_cfg_file(argv[1]);
+
 
     //load the 3d models 
     cg.load_objects();

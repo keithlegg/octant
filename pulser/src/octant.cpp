@@ -60,23 +60,24 @@
 #include <cmath>
 
 #include "timer.h"
-#include "gl_setup.h"
 #include "point_op.h"
 
 #include "obj_model.h"
 
 #include "cnc_globals.h"
 #include "cnc_plot.h"
-
-#include "parse_cmds.h"
-#include "gl_gui.h"
-#include "gl_render.h"
 #include "cnc_parport.h"
 
 #include "octant.h"
 
 //#include "socket.h"
 
+//GUI RELATED 
+// #include "gl_setup.h"
+// #include "gl_gui.h"
+// #include "gl_render.h"
+// #include "parse_cmds.h"
+//GUI RELATED 
 
 #define LEN(arr) ( (int) (sizeof (arr) / sizeof (arr)[0]) ) 
 
@@ -88,13 +89,6 @@ cncglobals cg;
 cnc_parport parport;
 cnc_parport* pt_parport;
 
-
-/***************************************/
-//display 3D lines and color
-extern std::vector<Vector3> linebuffer1;
-extern std::vector<Vector3> linebuffer1_rgb;
-extern std::vector<Vector3> linebuffer2;
-extern std::vector<Vector3> linebuffer2_rgb;
 
 /***************************************/
 //motion control related 

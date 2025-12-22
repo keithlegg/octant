@@ -45,28 +45,20 @@
 #include <netinet/in.h> 
 #include <unistd.h> 
 #include <string.h> 
-
-
-/*
-#include <stdlib.h> 
-#include <time.h> 
-#include <sys/types.h> 
-#include <netinet/in.h>
-#include <errno.h> 
-#include <sys/wait.h> 
-#include <fcntl.h> // Added for the nonblocking socket 
-*/
-
-
 #include "cnc_globals.h"
+
 
 #define BACKLOG 10     /* how many pending connections queue will hold */
 
 
-extern int TCP_PORT; 
-extern bool tog_grid;
-
 extern cncglobals cg;
+
+extern int TCP_PORT; 
+
+
+//extern bool tog_grid;
+
+
 
 
 
@@ -374,12 +366,12 @@ void sockettest3(void)
 
              if (strncmp(subbuff, "1", 1) == 0)
              {
-                tog_grid = true;
+                //tog_grid = true;
                 printf("vpfgrd_ 1 command received!! %s\n ", buffer);            
              }
              if (strncmp(subbuff, "0", 1) == 0)
              {
-                tog_grid = false;
+                //tog_grid = false;
                 printf("vpfgrd_ 0 command received!! %s\n ", buffer);            
              }
              stayopen = false; 

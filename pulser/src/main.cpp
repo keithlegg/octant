@@ -10,9 +10,15 @@
 #include "cnc_plot.h" 
 #include "cnc_parport.h" 
 
-#include "gl_setup.h" 
 #include "octant.h" 
 
+
+
+//GUI RELATED 
+//#include "gl_setup.h"
+#include "gl_gui.h"
+
+//GUI RELATED 
 
 
 
@@ -116,6 +122,7 @@ int main(int argc, char **argv)
 
     /*------------------*/  
     
+     
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -126,7 +133,7 @@ int main(int argc, char **argv)
             exit(0);
         }
     }
-
+    
 
     /*------------------*/
     /*

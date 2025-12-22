@@ -7,7 +7,8 @@
 
 
 
-
+void key_cb(unsigned int key);
+ 
 void setlight0(void);
 
 void reset_view(void);

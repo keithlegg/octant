@@ -54,6 +54,16 @@ extern std::vector<Vector3> linebuffer2_rgb;
 extern GLuint texture[3];
 
 
+
+
+//toolpath vectors
+std::vector<Vector3> linebuffer1;
+std::vector<Vector3> linebuffer1_rgb;
+//rapid move vectors
+std::vector<Vector3> linebuffer2;
+std::vector<Vector3> linebuffer2_rgb;
+
+
 //debug - consider not using this old data type and use 3 ints in a vector?
 RGBType line_color;
 RGBType *pt_linecolor = &line_color;

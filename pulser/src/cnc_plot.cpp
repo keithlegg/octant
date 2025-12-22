@@ -61,9 +61,12 @@
 #include "cnc_globals.h"
 #include "cnc_parport.h"
 #include "timer.h"
-#include "gl_setup.h"
 #include "point_op.h"
 #include "cnc_plot.h"
+
+//GUI RELATED 
+//#include "gl_setup.h"
+//GUI RELATED 
 
 
 #define HEX(x) setw(2) << setfill('0') << hex << (int)( x )
@@ -73,17 +76,8 @@ point_ops PG;
 extern cnc_plot* pt_motionplot;
 extern cnc_parport* pt_parport;
 
-
-
-
-
 extern timer mtime;
 
-extern std::vector<Vector3> linebuffer1; 
-extern std::vector<Vector3> linebuffer1_rgb; 
-
-extern std::vector<Vector3> linebuffer2; 
-extern std::vector<Vector3> linebuffer2_rgb; 
 
 
 
@@ -254,44 +248,7 @@ void cnc_plot::run(void)
     }
 
 }
- 
 
-/******************************************/
-/*
-    dynamically generate a tool path that lifts the head, 
-    traverses and drops back down
-*/
-// void cnc_plot::rapid_move(void)
-// {
-//     //tp_idxs[numply].push_back( (reindex+i) );
-// }
-
-/*
-
-void cnc_plot::old_rapid_move(void)
-{
-    
-    if(program_vecs.size()>0)
-    {
-        rapidmove_vecs.clear();
-        linebuffer2.clear();
-
-        Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
-        Vector3 hover_e  = Vector3(prg_origin.x, retract_height, prg_origin.z);
-         
-        rapidmove_vecs.push_back(quill_pos );
-        rapidmove_vecs.push_back(up_vec );
-        rapidmove_vecs.push_back(hover_e);
-        rapidmove_vecs.push_back(prg_origin);
-        
-        //now we have them, add to the buffer to draw them 
-        add_vec_lbuf2(&quill_pos);
-        add_vec_lbuf2(&up_vec);
-        add_vec_lbuf2(&hover_e);
-        add_vec_lbuf2(&prg_origin);
-    }
-}
-*/
 
 
 /******************************************/
@@ -313,7 +270,8 @@ void cnc_plot::update_cache(void)
         //clear the old data out 
         toolpath_vecs.clear();
         rapidmove_vecs.clear();
-        linebuffer2.clear();
+        
+        //linebuffer2.clear();
 
         //---- 
 
@@ -324,7 +282,7 @@ void cnc_plot::update_cache(void)
             //move head up at current quill pos
             //Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
             
-            add_vec_lbuf2(&quill_pos);
+            //add_vec_lbuf2(&quill_pos);
             toolpath_vecs.push_back(quill_pos);
 
             //add_vec_lbuf2(&up_vec);
@@ -336,10 +294,10 @@ void cnc_plot::update_cache(void)
                 Vector3 this_st = program_vecs[tp_idxs[pl][0]];
                 Vector3 hover = Vector3(this_st.x, retract_height, this_st.z);
 
-                add_vec_lbuf2(&hover);
+                //add_vec_lbuf2(&hover);
                 toolpath_vecs.push_back(hover);
                 
-                add_vec_lbuf2(&this_st);
+                //add_vec_lbuf2(&this_st);
                 toolpath_vecs.push_back(this_st);
 
                 //---
@@ -390,8 +348,9 @@ void cnc_plot::add_new_polygon(int numply, int numids)
     {
         reindex = numply; 
     }else{
-        reindex = linebuffer1.size(); 
+        reindex = program_vecs.size(); 
     }
+
     std::cout << "add ply reindex "<< reindex << "\n";
 
 
@@ -407,7 +366,8 @@ void cnc_plot::add_new_polygon(int numply, int numids)
     // //std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
     for (unsigned int p=0;p<loaded_file_vecs.size();p++)
     {   
-        add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+        //DEBUG DISABLED GUI RELATED 
+        //add_vec_lbuf1(&loaded_file_vecs.at(p)); 
 
         //ADD to program_vecs also!! DEBUG 
     }

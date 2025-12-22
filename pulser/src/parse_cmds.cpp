@@ -59,16 +59,17 @@
 #include <cmath>
 #include <unistd.h>  
 
-
 #include "cnc_parport.h"
-
-#include "parse_cmds.h"
-#include "gl_setup.h"
-
 #include "cnc_plot.h"
 #include "pylink.h"
-
 #include "octant.h"
+
+//GUI LAYER 
+#include "parse_cmds.h"
+#include "gl_setup.h"
+#include "gl_render.h"
+
+
 
 
 //idx of text that invisible "cursor" sits on
