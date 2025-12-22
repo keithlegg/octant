@@ -137,17 +137,18 @@ void parse_cmd_text(std::string *buffer)
     {   
         std::cout << "------------------------------------------        \n";
         std::cout << "dm : display mode                                 \n";
-        std::cout << "    solid, wire, persp, otop, oside, etc          \n";
-        
+        std::cout << "  wire, persp, otop, oside, etc                   \n";
+        std::cout << "                                                  \n";
         std::cout << "show                                              \n";
         std::cout << "  obj      - stats about loaded 3d object         \n";
         std::cout << "  path     - stats about toolpath                 \n";
         std::cout << "  pathids  -                                      \n";
         std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
         std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
- 
+        std::cout << "                                                  \n"; 
         std::cout << "lup (look up by ID)                               \n";
-        std::cout << "    pathid (int),                                 \n";
+        std::cout << "   pathid (int),                                  \n";
+        std::cout << "------------------------------------------        \n";
 
     }    
     

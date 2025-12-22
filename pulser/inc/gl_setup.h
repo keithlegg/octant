@@ -57,6 +57,7 @@ struct directional_light
 #endif
 
 
+void set_colors(void);
 
 void draw_locator( Vector3* pos, float locsize);
 

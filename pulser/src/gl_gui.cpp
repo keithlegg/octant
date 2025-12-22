@@ -35,8 +35,15 @@
 
 #include <iostream>
 
- 
+
+#include "cnc_globals.h"
+#include "cnc_plot.h"
+
 #include "gl_gui.h"
+#include "gl_setup.h"
+#include "gl_render.h"
+
+#include "octant.h"
 
 
 /*
@@ -49,193 +56,131 @@ quaternion orbt_rot_original;
 Vector3 orbt_xform_original;
 */
 
-int VIEW_MODE = -1; 
-
-float orbit_x;         
-float orbit_y;   
-float orbit_dist = 5.0; // Z zoom 
-
-float cam_posx = 0; // camera location
-float cam_posy = 0;
-float cam_posz = 0;
 
 
-float coefficient = 0.005f;  
 
 
-//semaphore mouse click 
-int on_click;
 
-//mouse single click
-int clk_x_coord;
-int clk_y_coord;
-
-//mouse drag
-int mouseX = 0;
-int mouseY = 0;
-
-
-bool view_ismoving  = false;
-bool mouseLeftDown  = false;
-bool mouseRightDown = false;
 
 extern int scr_size_x;
 extern int scr_size_y;
+extern int window_id;
+
+//DEBUG - seriously conisider a better name for this!
+extern GLuint texture[3];
+
+
+extern cncglobals cg;
+extern cnc_plot* pt_motionplot;
+// cnc_plot motionplot;
+// cnc_plot* pt_motionplot = &motionplot;
+//cnc_parport parport;
+//cnc_parport* pt_parport;
+
+extern std::vector<Vector3> linebuffer1; 
+extern std::vector<Vector3> linebuffer1_rgb; 
+
+extern std::vector<Vector3> linebuffer2; 
+extern std::vector<Vector3> linebuffer2_rgb; 
+
+
+
 
 
 /********************************************/
+void start_gui(int *argc, char** argv){
 
-//DEBUG unused
-// Use this for initialization
-void olmecnav_start (void ) {
-    // Create a transform (which will be the lookAt target and global orbit vector)
+    glutInit(argc, argv);  
+
+    //shader_test();
+    set_colors();
+
+    timer_init();
+    //mtime.start();
+
+    //------------
+
+    //load CNC cfg (including paths to .obj files) 
+
+    //setup filepaths and paths to cut 
+    cg.load_cfg_file(argv[1]);
+
+    //load the 3d models 
+    cg.load_objects();
+
+    // we have vectors in display - calcluate the head path from them   
+    pt_motionplot->loadpath(&linebuffer1);
+    pt_motionplot->retract_height = cg.retract_height;
+    pt_motionplot->work_height    = cg.work_height;
+
+
+
+    //------------
     
-    //     capsuleObj = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-    //     capsuleObj.transform.position = Vector3.zero;
+    //warnings();
+         
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
+    glutInitWindowSize(scr_size_x, scr_size_y);  //window size
+    glutInitWindowPosition(0, 0);  
+    
+    window_id = glutCreateWindow("CNC_Pulser v.a0001"); //create an opengl window 
+ 
+    /////////////////////////////////////////////////
+    reset_view();
 
-    // Snap the camera to align with the grid in set starting position (otherwise everything gets a bit wonky)
+    // Register GL callbacks       
+    glutDisplayFunc(&render_loop); 
+    glutIdleFunc(&animate);
+    glutReshapeFunc(&reshape_window);  // register window resize callback 
+
+    InitGL(scr_size_x, scr_size_y); // Initialize window. 
+
+    glutMouseFunc (octant_mouse_button);
+    glutMotionFunc (octant_mouse_motion);
+
+    //---
+
+    // experimental draw polygon 
+    //glutMouseFunc (draw_poly_mousevent);
+
+    //loadImage("textures/generated2.bmp" , imageloaded_bfr);
+    //loadImage("textures/generated2.bmp" , imageloaded_bfr2);
+    
+    ///////////
+    // create and apply 2D texture   
+    glGenTextures(4, &texture[0]);            //create 3 textures
+
+    //general line color 
+    glBindTexture(GL_TEXTURE_2D, texture[1]);  
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR ); // scale linearly when image bigger than texture
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR ); // scale linearly when image smalled than texture
+    //glTexImage2D(GL_TEXTURE_2D, 0, 3, imageloaded_bfr2->sizeX, imageloaded_bfr2->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, imageloaded_bfr2->data);
+
+    //polygon color 
+    glBindTexture(GL_TEXTURE_2D, texture[2]);  
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR ); // scale linearly when image bigger than texture
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR ); // scale linearly when image smalled than texture
+    //glTexImage2D(GL_TEXTURE_2D, 0, 3, imageloaded_bfr->sizeX, imageloaded_bfr->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, imageloaded_bfr2->data);
+
+
+    //polygon color 2
+    glBindTexture(GL_TEXTURE_2D, texture[3]);  
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR ); // scale linearly when image bigger than texture
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR ); // scale linearly when image smalled than texture
+    //glTexImage2D(GL_TEXTURE_2D, 0, 3, imageloaded_bfr->sizeX, imageloaded_bfr->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, imageloaded_bfr->data);
+
+    glutMainLoop();// Start Event Processing Engine   
    
-    // transform.position = startpos;  
-    // transform.LookAt(capsuleObj.transform.position, Vector3.up);
-    // capsuleObj.renderer.enabled = false; //hide the capsule object     
-
-    //     ///
-    //     orbt_xform_original = capsuleObj.transform.position;
-    //     orbt_rot_original   = capsuleObj.transform.rotation;
-}
-
-
-
-/********************************************/
-
-void octant_mouse_button(int button, int state, int x, int y)
-{
-
-    mouseX = x;
-    mouseY = y;
-
-    //-----------
-    //left click 
-    if (button == GLUT_LEFT_BUTTON)
-    {
-        if(state == GLUT_DOWN)
-        {
-            mouseLeftDown = true;
-             
-            on_click = true; //semaphore mouse click
-            clk_x_coord = x; //capture single click
-            clk_y_coord = y; //capture single click 
-
-        }
-        else if(state == GLUT_UP)
-            mouseLeftDown = false;
-
-    }
-
-    //-----------
-    // middle click
-    if ((button == 3) || (button == 4)) // It's a wheel event
-    {
-        // Disregard redundant GLUT_UP events
-        if (state == GLUT_UP) return; 
-
-        if (button == 3){
-            //if (orbit_dist < -1.5){
-            orbit_dist+=.1;  
-            //printf("# orbit dist %f \n", orbit_dist );                                 
-            //}
-        }
-        if (button == 4){
-            //if (orbit_dist>0){ 
-                orbit_dist-=.1; 
-            //}
-        }
-
-        //std::cout << " zomming " << orbit_dist << "\n";
-
-    }else{  // normal button event
-        if (state == GLUT_DOWN){
-            // printf("olmec middle click\n");  
-        }
-    }
-
-    //-----------
-    //Right click
-    if (button == GLUT_RIGHT_BUTTON)
-      {
-        
-        if(state == GLUT_DOWN)
-        {
-            mouseRightDown = true;
-        }
-        else if(state == GLUT_UP)
-            mouseRightDown = false;
-
-      }
+    //DEBUG - polymorphic class type ‘obj_model’ which has non-virtual destructor might cause undefined behavior
+    //delete pt_model_buffer;
 
 }
 
-/********************************************/
-
-void octant_mouse_motion(int x, int y)
-{
-    // take offset from center of screen to get "X,Y delta"
-    float center_y = (float)scr_size_y/2;
-    float center_x = (float)scr_size_x/2;
 
 
-    if(mouseLeftDown)
-    { 
 
-        switch (VIEW_MODE) 
-        { 
 
-            // orthographic side  (key 2)
-            case 1: 
-                view_ismoving = true;
-                cam_posz = -(center_x-x) * coefficient; 
-                cam_posy = -(center_y-y) * coefficient; 
-            break; 
-        
-            // orthographic top   (key shift 2)
-            case 2:  
-                view_ismoving = true;
-                cam_posx = (center_x-x) * coefficient; 
-                cam_posz = (center_y-y) * coefficient;  
-            break; 
-        
-            // orthographic front  (key 3)
-            case 3:  
-                view_ismoving = true;
-                cam_posx = (center_x-x)  * coefficient; 
-                cam_posy = -(center_y-y) * coefficient; 
-            break; 
-        
 
-            default:  
-                    view_ismoving = true;
-                    
-                    orbit_x += (x-mouseX) * coefficient; 
-                    orbit_y += (y-mouseY) * coefficient; 
-                    mouseX = x;
-                    mouseY = y;
-                    //printf("# mouse motion %d %d %f %f \n", x,y, orbit_x, orbit_y );
-            break;
-        }
-    }
-
-    if(mouseRightDown)
-    {
-        orbit_dist -= (y - mouseY) * 0.02f;
-        mouseY = y;
-    }
-
-    /**************/
-   
-
-     
-
-}
 
 
 

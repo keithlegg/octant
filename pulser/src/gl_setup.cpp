@@ -54,6 +54,17 @@ extern std::vector<Vector3> linebuffer2_rgb;
 extern GLuint texture[3];
 
 
+//debug - consider not using this old data type and use 3 ints in a vector?
+RGBType line_color;
+RGBType *pt_linecolor = &line_color;
+
+RGBType grid_color;
+RGBType *pt_gridcolor = &grid_color;
+
+RGBType grid_color2;
+RGBType *pt_gridcolor2 = &grid_color2;
+
+
 
 
 GLfloat clr_linez[]   = { 0 , 1. ,  0, 0};
@@ -73,6 +84,33 @@ GLfloat clr_blue[]    = { 0 , 0  , 1., 0};
 
 // quaternion frank = quaternion_identity();
 
+
+
+
+/***************************************/
+
+void set_colors(void)
+{
+    //peripheral grid color  
+    pt_gridcolor->r = 1;
+    pt_gridcolor->g = 105;
+    pt_gridcolor->b = 5;
+
+    //centergrid gnomon color  
+    pt_gridcolor2->r = 200;
+    pt_gridcolor2->g = 200;
+    pt_gridcolor2->b = 200;
+
+    // geom color  
+    pt_linecolor->r = 100;
+    pt_linecolor->g = 100;
+    pt_linecolor->b = 100;
+
+    // line color 
+    // pt_linecolor2->r = 0;
+    // pt_linecolor2->g = 100;
+    // pt_linecolor2->b = 0;
+}
 
 
 /******************************************/

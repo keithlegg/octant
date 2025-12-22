@@ -42,9 +42,59 @@ for such compliance.
 <br>
 
 
-More to come soon. Please dont cut your fingers off with a sharp spinny thing. 
+
+Overall structure 
+
+framebuffer.cpp 
+   - relic from the past - load and save images
+
+Vectors.h
+   - math library (in header, will expand in the future) 
+
+Matrices.cpp 
+   - Math library (will expand in the future)
+
+point_op.cpp 
+   - geometry library 
+
+timer.cpp 
+    - keeps track of time, drive anytghing that changes 
+
+pylink.cpp 
+    - unused - will be a bridge to python and external tools 
+
+obj_model.h - links to 3 seperate cpp files
+    - obj_fio.cpp 
+        - loads and saves data from disk   
+    - obj_geom.cpp 
+        - structure of 3d model geometry 
+    - obj_model.cpp 
+        - structure of 3d model - everything else, utility, etc     
 
 
+cnc_globals.cpp 
+    - loads and saves configuration files, stores parameters of machine 
+cnc_io.cpp 
+    - placeholder for futuer IO interfaces like Mesa 5i25, etc 
+      for now there is only a parallel port 
+cnc_parport.cpp 
+    - interfaces to the parallel port(s)
+
+cnc_plot.cpp 
+    - calculates motion and stores machine parameters
+
+
+gl_gui.cpp 
+gl_render.cpp 
+gl_setup.cpp
+parse_cmds.cpp 
+
+  
+octant.cpp 
+    - top level program - can be run with or without GL gui 
+
+main.cpp 
+    - entry point for the program 
 
 
 

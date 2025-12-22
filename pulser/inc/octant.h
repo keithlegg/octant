@@ -8,18 +8,11 @@
 
 
 
-//void tweak_matrix( void );
-
-//void grab_projection_matrix(Matrix4 *pt_mpm );
-void grab_camera_matrix( Matrix4 *pt_mmm );
 
 void timer_init(void);
 //void timer_reset(void)
 
-void set_view_ortho(void);
-void setOrthographicProjection();
-void resetPerspectiveProjection();
-void renderBitmapString(float, float, void *, const char *);
+
 
 void key_cb(unsigned int key);
 
