@@ -44,12 +44,17 @@ void run_cncplot(char * cfgfile,
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
+    // std::cout << "## s vec " <<s_p.x <<" "<< s_p.y <<" "<< s_p.z <<  " \n";
+    // std::cout << "## e vec " <<e_p.x <<" "<< e_p.y <<" "<< e_p.z <<  " \n";
+    // std::cout << "## divs " << divs <<  " \n";
+
     plot.calc_3d_pulses(s_p, e_p, divs);
 
     if(DEBUG==true)
     {
-        int x=0;
-        for(x=0;x<plot.pulsetrain.size();x++)
+        std::cout << "## run_cncplot debug mode \n";
+ 
+        for(unsigned int x=0;x<plot.pulsetrain.size();x++)
         {
             std::cout<<plot.pulsetrain[x].x  <<" "
                      <<plot.pulsetrain[x].y  <<" "
@@ -88,7 +93,7 @@ void parse_args(int argc, char **argv)
     double a6 = atof(argv[7]);
 
     //number of divisions in X,Y,Z space
-    int a7    = atoi(argv[7]);
+    int a7    = atoi(argv[8]);
               
     run_cncplot( argv[1], a1, a2, a3, a4, a5, a6, a7 );
 

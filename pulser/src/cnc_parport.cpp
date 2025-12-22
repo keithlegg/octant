@@ -394,7 +394,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
     //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
-    bool enable_send   = true; 
+    bool enable_send   = false; 
     bool enable_limits = false; 
 
     std::cout << "# we have pulses! count: " << pt_plot->pulsetrain.size() << "\n";
@@ -417,7 +417,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
 
     if(enable_send==0)
     {
-        std::cout <<"# debug - direction "<< dirpulses.x<<" " << dirpulses.y<<" " << dirpulses.z <<"\n";
+        std::cout <<"# debug - send_pulses dir "<< dirpulses.x<<" " << dirpulses.y<<" " << dirpulses.z <<"\n";
     }
 
     if(enable_send==1)
@@ -484,12 +484,12 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
         *pt_progress = (int) pt_plot->pulsetrain.size()/x;
 
 
-        if(enable_send==0)
-        {
-            std::cout<< pt_plot->pulsetrain.at(x).x<<" " 
-                     << pt_plot->pulsetrain.at(x).y<<" " 
-                     << pt_plot->pulsetrain.at(x).z <<"\n";
-        }
+        //if(enable_send==0)
+        //{
+            std::cout << pt_plot->pulsetrain.at(x).x<<" " 
+                      << pt_plot->pulsetrain.at(x).y<<" " 
+                      << pt_plot->pulsetrain.at(x).z <<"\n";
+        //}
 
         if(enable_send==1)
         {

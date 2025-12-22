@@ -463,7 +463,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
                               int numdivs)
 {
 
-    bool debug = true;
+    //std::cout << " numdivs "
+
+    bool debug = false;
 
     point_ops PG;
 
@@ -487,6 +489,12 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     float delta_y = fr_pt.y-to_pt.y;
     float delta_z = fr_pt.z-to_pt.z;
 
+    if (debug)
+    {
+        std::cout << " calc_3d_pulses: delta x "<< delta_x <<   
+                                           " y "<< delta_y << 
+                                           " z "<< delta_z << "\n";
+    }
 
     //2 is a magic number to (all other data is 1 )
     //calc the direction of the vector 
@@ -519,7 +527,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     int num_pul_z = pp_luz*abs(delta_z); 
 
     if (debug)
+    {
         std::cout << "# calc_3d_pulses num pulses " << num_pul_x <<" "<<num_pul_y<<" "<<num_pul_z <<"\n";
+    }
 
     // get the absolute highest number of pulses (on any axis) to calculate 
     int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
@@ -574,21 +584,22 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
 
     float div;    
     
+    /*
     //DEBUG - just put this here to solve floating point crash 
     if(size!=0 && num !=0){ 
         div = size/num;
     }else{
         div =1;
-    }
+    }*/
 
 
-    int a;  
+  
 
     //if num==zero, pad data with all zeros instead of doing nothing 
     //we want the output to be the same size
     if(num==0)
     {
-        for(a=0;a<size;a++)
+        for(unsigned int a=0;a<size;a++)
         {
             pt_pulsetrain->push_back(0);            
         }
@@ -597,7 +608,7 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
     //if only 1 pulse, do something special, put the pulse right in the middle of output 
     if(num==1)
     {
-        for(a=0;a<size;a++)
+        for(unsigned int a=0;a<size;a++)
         {
 
             if( a == size/2)
@@ -615,7 +626,7 @@ void cnc_plot::gen_pules(std::vector<int>* pt_pulsetrain, int size, int num)
     // I did a true 3D solution (commented out at bottom) but this is way faster and works as far as I can tell
     if(num>1) 
     {
-        for(a=0;a<size;a++)
+        for(unsigned int a=0;a<size;a++)
         {
             float chunk = fmod(a,div);
             if( chunk < 1)
