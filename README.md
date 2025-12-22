@@ -1,7 +1,10 @@
 
-# Octant CNC 
+# Octant - Multi axis motion control   
 
-THIS IS VERY MUCH A WORK IN PROGRESS. Not ready to run any machines yet. Soon, hopefully.
+
+THIS IS VERY MUCH A WORK IN PROGRESS!!
+
+Not ready to run any machines yet. 
 
 
 From Reddit:
@@ -42,8 +45,9 @@ for such compliance.
 <br>
 
 
-
+---------
 Overall structure 
+
 
 Vectors.h
    - math library (in header, will expand in the future) 
@@ -60,20 +64,20 @@ timer.cpp
 pylink.cpp 
    - unused - will be a bridge to python and external tools 
 
-obj_model.h - links to 3 seperate cpp files
+obj_model.h - consists of 3 seperate C files
    - obj_fio.cpp 
-   - loads and saves data from disk   
+         loads and saves data from disk   
    - obj_geom.cpp 
-     structure of 3d model geometry 
+         structure of 3d model geometry 
    - obj_model.cpp 
-     structure of 3d model - everything else, utility, etc     
+         structure of 3d model - everything else, utility, etc     
 
 cnc_globals.cpp 
    - loads and saves configuration files, stores parameters of machine 
 
 cnc_io.cpp 
    - placeholder for futuer IO interfaces like Mesa 5i25, etc 
-      for now there is only a parallel port 
+     for now there is only a parallel port 
 
 cnc_parport.cpp 
    - interfaces to the parallel port(s)
@@ -87,21 +91,24 @@ octant.cpp
 main.cpp 
    - entry point for the program 
 
-
--------------
 -------------
 OPTIONAL GUI LAYER 
  
 framebuffer.cpp / BMP.h 
    - relic from the past - load and save images
 
+
 gl_gui.cpp 
+   -
 
 gl_setup.cpp
+   -
 
 gl_render.cpp
+   -
 
 parse_cmds.cpp
+   -
 
 
 
