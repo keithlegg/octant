@@ -62,14 +62,19 @@ pylink.cpp
    -
    (unused, future ) bridge to python and external tools 
 
+
 obj_model.h - consists of 3 seperate C files
    -
-   obj_fio.cpp 
-   - loads and saves data from disk   
-   obj_geom.cpp 
-   - structure of 3d model geometry 
-   obj_model.cpp 
-   - structure of 3d model - everything else, utility, etc     
+obj_fio.cpp 
+   -
+   loads and saves data from disk   
+obj_geom.cpp 
+   -
+   structure of 3d model geometry 
+obj_model.cpp 
+   -
+   structure of 3d model - everything else, utility, etc     
+
 
 cnc_globals.cpp
    -
