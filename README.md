@@ -56,19 +56,24 @@ point_op.cpp
 
 timer.cpp 
    -
-   - keeps track of time, drive anytghing that changes 
+   - keeps track of time, drive anything that changes 
 
 pylink.cpp 
    -
-   - unused - will be a bridge to python and external tools 
+   (unused, future ) bridge to python and external tools 
 
 obj_model.h - consists of 3 seperate C files
    -
-   obj_fio.cpp 
-   - loads and saves data from disk   
-   obj_geom.cpp 
+obj_fio.cpp 
+   - 
+   -loads and saves data from disk   
+
+obj_geom.cpp 
+   - 
    - structure of 3d model geometry 
-   obj_model.cpp 
+    
+obj_model.cpp 
+   -
    - structure of 3d model - everything else, utility, etc     
 
 cnc_globals.cpp
