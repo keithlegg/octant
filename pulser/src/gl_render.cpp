@@ -912,11 +912,12 @@ void parser_cb(unsigned char key, int x, int y)
 
 
 /***************************************/
+//placeholder for future feature we havent invented yet
+float dummy = 0;
 
 void render_loop(void)
 {
     // Clear The Screen And The Depth Buffer
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     //set light position 
@@ -951,6 +952,26 @@ void render_loop(void)
             //iterate the stack of vectors to process
             if (motionplot.pidx<motionplot.toolpath_vecs.size())
             {
+                //---------------------
+                std::cout << "running vector "<< motionplot.pidx << "\n";
+                Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
+                Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1]; 
+
+                std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
+                std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
+                //-----------------------
+                // first test of pulsing from GUI 
+                
+                //DEBUG - get the length of the vector/spatial divs to calc proper speed 
+                //vectormag   motionplot.toolpath_vecs[motionplot.pidx]
+                
+                // unsigned int divs = 10;
+                // pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
+                // //data should now be updated and ready in pt_motionplot->pulsetrain 
+                // //pt_motionplot->pulsetrain ;
+                // parport.send_pulses(&dummy, &cg, pt_motionplot);
+
+                //---------------------
                 motionplot.pidx++;        
                 // start the (sim) clock over at the end of each vector segment 
                 // 0.0 - 1.0 is the range - which feeds the 3D `lerp           
@@ -960,8 +981,6 @@ void render_loop(void)
             //program finished here
             if (motionplot.pidx>=motionplot.toolpath_vecs.size()-1)
             {
-
-
                 mtime.running = false;
                 motionplot.stop();
                 motionplot.finished = true;
@@ -982,22 +1001,8 @@ void render_loop(void)
             Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
             Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
 
-               
-            std::cout << "running vector "<< motionplot.pidx << "\n";
-            std::cout << "start "<< s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
-            std::cout << "end   "<< e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";                       
-            
-
-            //DEBUG - get the length of the vector/spatial divs to calc proper speed 
-            //vectormag   motionplot.toolpath_vecs[motionplot.pidx]
-
-            //pt_motionplot->calc_3d_pulses(s_p, e_p, divs);
-
-            // // //number of divisions in X,Y,Z space
-            // pt_motionplot->run_send_pulses( &cg, 
-            //                                 s_p.x, s_p.y, s_p.z, 
-            //                                 e_p.x, e_p.y, e_p.z,
-            //                                 10 );
+        
+            //-----------------------
 
 
             PG.lerp_along(&motionplot.quill_pos, 

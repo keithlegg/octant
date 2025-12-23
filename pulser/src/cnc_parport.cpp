@@ -394,7 +394,7 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
     //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
-    bool debug = true;
+    bool debug         = false;
     bool enable_send   = true; 
     bool enable_limits = false; 
 

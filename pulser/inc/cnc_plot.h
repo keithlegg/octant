@@ -64,7 +64,7 @@ class cnc_plot
         
         void calc_3d_pulses(Vector3, 
                             Vector3,
-                            int);
+                            unsigned int);
 
         void run_send_pulses(cncglobals* pt_cg,
                              float f_x, float f_y, float f_z,

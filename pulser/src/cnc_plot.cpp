@@ -445,10 +445,10 @@ void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs)
 
 void cnc_plot::calc_3d_pulses(Vector3 fr_pt, 
                               Vector3 to_pt,
-                              int numdivs)
+                              unsigned int numdivs)
 {
 
-    //std::cout << " numdivs "
+    pulsetrain.clear();
 
     bool debug = false;
 
@@ -456,9 +456,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     //set the pulses per linear unit (spatial unit divions) - X,Y,Z unit prescaler 
     //for now use one number for all 3 - we will add the others in later
-    int pp_lux      = numdivs;
-    int pp_luy      = numdivs;
-    int pp_luz      = numdivs;
+    unsigned int pp_lux      = numdivs;
+    unsigned int pp_luy      = numdivs;
+    unsigned int pp_luz      = numdivs;
 
     //calc a new 3D vector betwen the two points in 3D
     //Vector3 between   = sub(fr_pt, to_pt);     //old vector lib 
@@ -507,9 +507,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     //use the amount of change times the spatial divisions to get the pulses 
     //DEBUG - we may want to use the mag of the 3d vector in here                  
-    int num_pul_x = pp_lux*abs(delta_x);
-    int num_pul_y = pp_luy*abs(delta_y);
-    int num_pul_z = pp_luz*abs(delta_z); 
+    unsigned int num_pul_x = pp_lux*abs(delta_x);
+    unsigned int num_pul_y = pp_luy*abs(delta_y);
+    unsigned int num_pul_z = pp_luz*abs(delta_z); 
 
     if (debug)
     {
@@ -517,11 +517,11 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     }
 
     // get the absolute highest number of pulses (on any axis) to calculate 
-    int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
+    unsigned int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
     //std::cout << "before: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
     std::sort(std::begin(tmp), std::end(tmp)  );
     //std::cout << "after: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
-    int most = tmp[2];
+    unsigned int most = tmp[2];
 
     //--------------------------------------//             
     if (debug)
