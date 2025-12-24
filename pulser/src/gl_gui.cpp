@@ -85,7 +85,6 @@ void start_gui(int *argc, char** argv){
     //setup filepaths and paths to cut 
     cg.load_cfg_file(argv[1]);
 
-
     //load the 3d models 
     cg.load_objects();
 
