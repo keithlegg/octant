@@ -2,7 +2,7 @@
 #define CONFUSION36D_H
 
 
-#include "cnc_globals.h"
+#include "globals.h"
 
 
 

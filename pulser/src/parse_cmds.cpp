@@ -59,8 +59,8 @@
 #include <cmath>
 #include <unistd.h>  
 
-#include "cnc_parport.h"
-#include "cnc_plot.h"
+#include "parport.h"
+#include "plot.h"
 #include "pylink.h"
 #include "octant.h"
 

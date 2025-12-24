@@ -5,10 +5,10 @@
 #include <unistd.h>
 
 #include "point_op.h"         
-#include "cnc_globals.h"
 
-#include "cnc_plot.h" 
-#include "cnc_parport.h" 
+#include "globals.h"
+#include "plot.h" 
+#include "parport.h" 
 
 #include "octant.h" 
 

@@ -36,8 +36,8 @@
 #include <iostream>
 
 
-#include "cnc_globals.h"
-#include "cnc_plot.h"
+#include "globals.h"
+#include "plot.h"
 
 #include "gl_gui.h"
 #include "gl_setup.h"

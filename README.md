@@ -75,20 +75,20 @@ obj_model.cpp
    (obj_model.h) structure of 3d model - everything else, utility, etc     
 
 
-cnc_globals.cpp
+globals.cpp
    -
    - loads and saves configuration files, stores parameters of machine 
 
-cnc_io.cpp 
+io.cpp 
    -
    - placeholder for futuer IO interfaces like Mesa 5i25, etc 
      for now there is only a parallel port 
 
-cnc_parport.cpp 
+parport.cpp 
    -
    - interfaces to the parallel port(s)
 
-cnc_plot.cpp 
+plot.cpp 
    -
    - calculates motion and stores machine parameters
   

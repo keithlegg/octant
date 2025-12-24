@@ -45,7 +45,7 @@
 #include <netinet/in.h> 
 #include <unistd.h> 
 #include <string.h> 
-#include "cnc_globals.h"
+#include "globals.h"
 
 
 #define BACKLOG 10     /* how many pending connections queue will hold */
