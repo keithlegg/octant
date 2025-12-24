@@ -70,7 +70,7 @@ void run_cncplot(char * cfgfile,
 
     if(DEBUG==false)
     {
-        pport->send_pulses(&dummy, &cg, plot);
+        pport->freerun_pulses(&dummy, &cg, plot);
     }
 
     delete pport; 

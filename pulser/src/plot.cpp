@@ -70,6 +70,9 @@
 
 point_ops PG;
 
+extern cnc_parport parport;
+extern cncglobals cg;
+
 
 //Timer related 
 timer mtime = timer();
@@ -115,21 +118,16 @@ void cnc_plot::add_file_vec(Vector3* nv)
 
 
 /******************************************/
+/*
+//DEBUG - LEGACY, NOT USED 
 void cnc_plot::run_send_pulses(cncglobals* pt_cg,
                      float f_x, float f_y, float f_z,
                      float s_x, float s_y, float s_z,
                      int divs)  
 {
-    
-    //dummy progress
-    float prog = .0;
-
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
-    
-    
     calc_3d_pulses(s_p, e_p, divs);
-    
      
     if(pt_cg->GLOBAL_DEBUG==true)
     {
@@ -141,19 +139,13 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
         } 
     }//if debug
 
-
     if(pt_cg->GLOBAL_DEBUG==false)
     {
         std::cout << "PULSING DISABLED FOR NOW \n";
-
-
         // void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* (*this) )
-
     }//no debug, run it!
-     
-
  }   
-
+*/
 
 /******************************************/
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
@@ -306,12 +298,12 @@ void cnc_plot::update(void)
                 double scale = (double)pulsetrain.size()/1;
                 double dstep = scale * localsimtime;
                 int istep =(int)dstep; 
-                 
-                Vector3 now = pulsetrain[istep];
-
-                //std::cout << "run pulses       " << localsimtime      << "\n";
-                std::cout << "pulsing " << now.x <<" "<<now.y<<" "<<now.z << "\n";
+                //Vector3 now = pulsetrain[istep];
+                //std::cout << "#vidx:"<< pidx << " tim:" << localsimtime<<" data:"<< now.x <<" "<<now.y<<" "<<now.z << "\n";
  
+                parport.send_pulses(&istep, &cg, (this) );
+
+
             }
 
             //interpolate xyz posiiton over time 

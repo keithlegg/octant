@@ -83,9 +83,9 @@
 
 
 /***************************************/
-cncglobals cg;
-//cncglobals new cg;
+//SINGLETONS 
 
+cncglobals cg;
 cnc_parport parport;
 cnc_parport* pt_parport;
 

@@ -164,47 +164,6 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 } 
 
 
-/***************************************/
-void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
-{
-
-    if(ioperm(cg->parport1_addr+1,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-        //std::cout << "# Couldn't open parallel port \n";
-
-    }
-
-    unsigned char pin_10_mask = 0b11000000;
-    unsigned char pin_12_mask = 0b10100000;
-    unsigned char pin_13_mask = 0b00010000;
-
-    unsigned char data_read;
-    *data = inb(cg->parport1_addr+1); 
-    
-    //printf("Data read from parallel port: 0x%x\n", data_read);
-    /*
-    //X
-    if ((data_read & pin_10_mask)==pin_10_mask)
-    {
-        std::cout << "X limit triggered (p10) \n";  
-    };
-
-    //Z
-    if ((data_read & pin_12_mask)==pin_12_mask)
-    {
-        std::cout << "Z limit triggered (p12) \n";  
-    };
-
-    //Y 
-    if ((data_read & pin_13_mask)==pin_13_mask)
-    {
-        std::cout << "Y limit triggered (p13) \n";  
-    };*/
-
-
-}
-
 
 
 /***************************************/
@@ -252,42 +211,6 @@ void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
 
 
 
-/***************************************/
-/*
-    test that port is working 
-*/
-
-void cnc_parport::test_port_output(cncglobals* cg)
-{
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
-
-    // unsigned char send_byte = 0x00;
-    unsigned int send_byte = 0;
-
-    int a=0;int b=0;
-
-    outb(0x00,cg->parport1_addr); 
-    //for(b=0;b<4;b++)
-    //{
-        send_byte = 0x01;
-        for(a<0;a<8;a++)
-        {
-            outb(send_byte,cg->parport1_addr);
-            usleep(500000); 
-                       
-            outb(0x00,cg->parport1_addr); 
-            usleep(500000); 
-            send_byte = send_byte << 1;
-            std::cout <<"bit "<< a <<" value: "<< HEX(send_byte) <<"\n";
-
-        }
-    //}
-
-}
 
 
 
@@ -353,6 +276,218 @@ void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
 
 }
 
+
+
+/***************************************/
+/*
+    take the output of calc_3d_pulses() and send the signals to the parallel port 
+    
+    The first elemtent of the array denotes direction pulses
+    
+    DEBUG - need to add a file configurable pin assignment 
+
+
+    OLD DB25 PINOUT (using the CNC4PC/LinuxCNC board as my "default")
+
+    db25 pin #2 - X pulse  -  address 0x01  -  bitshift (1<<0) 
+    db25 pin #3 - X dir    -  address 0x02  -  bitshift (1<<1)
+    db25 pin #4 - Y pulse  -  address 0x04  -  bitshift (1<<2)
+    db25 pin #5 - Y dir    -  address 0x08  -  bitshift (1<<3)
+    db25 pin #6 - Z pulse  -  address 0x10  -  bitshift (1<<4)
+    db25 pin #7 - Z dir    -  address 0x20  -  bitshift (1<<5)
+
+
+    #optional pulses
+    db25 pin #8 - INV Y pulse   -  address 0x40  -  bitshift (1<<6)
+
+
+    Args:
+
+        pt_simtime     - 0.0 - 1.0 progress heartbeat  
+        cncglobals     - pointer to globals 
+        pt_pulsetrain  - pointer to the data to send (XYZ array of 1s and 0s with the first element indicating direction)
+
+*/
+
+void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plot )
+{
+    //unsigned char send_byte = 0x00;
+    unsigned int send_byte = 0;
+
+    bool debug         = false;
+    bool enable_send   = true; 
+    bool enable_limits = false; 
+
+    if (debug)
+    {
+        std::cout << "# we have pulses! count: " << pt_plot->pulsetrain.size() << "\n";
+        std::cout << "# parport address is :   " << cg->parport1_addr          << "\n";
+        std::cout << "# delay us           :   " << cg->pp1_pulse_dly_us       << "\n";
+    }
+
+    if(enable_send==1)
+    {
+        if(ioperm(cg->parport1_addr,1,1))
+        { 
+            fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+        }
+        if(debug)
+        {
+            std::cout << "# transmitting pulses to LPT port \n";
+        }
+    }
+
+    //**************************//
+    Vector3 dirpulses = pt_plot->pulsetrain.at(0);
+    
+    Vector3 limit_switches = Vector3(0,0,0);
+
+
+    if(enable_send==0)
+    {
+        std::cout <<"# debug - send_pulses dir "<< dirpulses.x<<" " << dirpulses.y<<" " << dirpulses.z <<"\n";
+    }
+
+    if(enable_send==1)
+    {   
+        //x direction high 
+        if (dirpulses.x>1){
+            //outb(0x02, cg->parport1_addr);
+            send_byte = send_byte |= (1 << 1);
+            outb(send_byte, cg->parport1_addr);            
+        }else{
+             //outb(0x00, cg->parport1_addr);  
+            send_byte = send_byte &= ~(1 << 1);
+            outb(send_byte, cg->parport1_addr);               
+        }
+
+        /*****/
+
+        //y direction high 
+        if (dirpulses.y>1){
+            send_byte = send_byte |= (1 << 3);
+            outb(send_byte, cg->parport1_addr);  
+            
+            //!! THIS IS EXTRA FOR A GANTRY MACHINE INVERTED Z AXIS
+            //send_byte = send_byte &= ~(1 << 5);   
+            //outb(send_byte, cg->parport1_addr); 
+
+        }else{
+            //y direction low         
+            send_byte = send_byte &= ~(1 << 3);
+            outb(send_byte, cg->parport1_addr);   
+
+            //!! THIS IS EXTRA FOR A GANTRY MACHINE INVERTED Z AXIS
+            //send_byte = send_byte |= (1 << 5);
+            //outb(send_byte, cg->parport1_addr);                          
+
+        }
+
+
+        /*****/
+        //THIS IS A STANDARD 3D SETUP USING Z AXIS
+
+        //z direction high 
+        if (dirpulses.z>1){
+            send_byte = send_byte |= (1 << 5);
+            outb(send_byte, cg->parport1_addr);               
+        }else{
+            send_byte = send_byte &= ~(1 << 5);   
+            outb(send_byte, cg->parport1_addr);                   
+        }
+
+    }//end send pulses 
+
+
+    //**************************//
+
+
+    //the first element is reserved for direction data 
+    //we intentionally skip it starting at index 1 
+    //for(x=1;x<pt_plot->pulsetrain.size();x++)
+    
+    int x = *pt_pulseidx;
+
+    {
+
+        //if(enable_send==0)
+        //{
+            std::cout << pt_plot->pulsetrain.at(x).x<<" " 
+                      << pt_plot->pulsetrain.at(x).y<<" " 
+                      << pt_plot->pulsetrain.at(x).z <<"\n";
+        //}
+
+        if(enable_send==1)
+        {
+            
+            // watch the limit switches - if triggered, switch off motors NOW!
+            if(enable_limits)
+            {
+                read_limits(cg, &limit_switches);
+            }
+
+            //if limits are good (or disabled) - run it 
+            if(limit_switches.x==1 || limit_switches.y==1 || limit_switches.z==1){
+                std::cout << "machine has crashed. Condolences. pulsing aborted. ";
+            }
+            else
+            {
+                //X channel 
+                if(pt_plot->pulsetrain.at(x).x==1){
+                    send_byte = send_byte |= (1 << 0);
+                    outb(send_byte, cg->parport1_addr); 
+                }else{
+                    send_byte = send_byte &= ~ (1 << 0);
+                    outb(send_byte, cg->parport1_addr);  
+                }
+                    
+                //Y channel
+                if(pt_plot->pulsetrain.at(x).y==1){
+                    send_byte = send_byte |= (1 << 2);
+                    outb(send_byte, cg->parport1_addr);    
+
+                    //!! THIS IS ALSO RUNNING Z AXIS (INVERTED DIR) FOR A GANTRY 
+                    //send_byte = send_byte |= (1 << 4);
+                    //outb(send_byte, cg->parport1_addr);    
+
+                }else{
+                    send_byte = send_byte &= ~(1 << 2);
+                    outb(send_byte, cg->parport1_addr);           
+
+                    //!! THIS IS ALSO RUNNING Z AXIS (INVERTED DIR) FOR A GANTRY 
+                    //send_byte = send_byte &= ~(1 << 4);
+                    //outb(send_byte, cg->parport1_addr);                    
+                }
+
+                  
+                //standard Z channel
+                if(pt_plot->pulsetrain.at(x).z==1){
+                    send_byte = send_byte |= (1 << 4);
+                    outb(send_byte, cg->parport1_addr);   
+                }else{
+                    send_byte = send_byte &= ~(1 << 4);
+                    outb(send_byte, cg->parport1_addr);                 
+                }
+            
+
+            }
+
+            usleep(cg->pp1_pulse_dly_us); 
+        }
+
+    }
+
+    if(enable_send ==1 && debug)
+    {
+        std::cout << "finished transmitting pulses.\n";
+    }
+
+
+}
+
+
+
+
 /***************************************/
 /*
     take the output of calc_3d_pulses() and send the signals to the parallel port 
@@ -383,12 +518,11 @@ void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
         pt_pulsetrain  - pointer to the data to send (XYZ array of 1s and 0s with the first element indicating direction)
 
 
-
-    DEBUG progress is not tested yet 
+    DEBUG progress is not used yet  - may never be 
 
 */
 
-void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
+void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
 {
     //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
@@ -570,6 +704,87 @@ void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_p
 
 
 /***************************************/
+/***************************************/
 
 
+
+
+
+/***************************************/
+/*
+    test that port is working 
+*/
+
+void cnc_parport::test_port_output(cncglobals* cg)
+{
+    if(ioperm(cg->parport1_addr,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+    
+    }
+
+    // unsigned char send_byte = 0x00;
+    unsigned int send_byte = 0;
+
+    int a=0;int b=0;
+
+    outb(0x00,cg->parport1_addr); 
+    //for(b=0;b<4;b++)
+    //{
+        send_byte = 0x01;
+        for(a<0;a<8;a++)
+        {
+            outb(send_byte,cg->parport1_addr);
+            usleep(500000); 
+                       
+            outb(0x00,cg->parport1_addr); 
+            usleep(500000); 
+            send_byte = send_byte << 1;
+            std::cout <<"bit "<< a <<" value: "<< HEX(send_byte) <<"\n";
+
+        }
+    //}
+
+}
+
+/***************************************/
+void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
+{
+
+    if(ioperm(cg->parport1_addr+1,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+        //std::cout << "# Couldn't open parallel port \n";
+
+    }
+
+    unsigned char pin_10_mask = 0b11000000;
+    unsigned char pin_12_mask = 0b10100000;
+    unsigned char pin_13_mask = 0b00010000;
+
+    unsigned char data_read;
+    *data = inb(cg->parport1_addr+1); 
+    
+    //printf("Data read from parallel port: 0x%x\n", data_read);
+    /*
+    //X
+    if ((data_read & pin_10_mask)==pin_10_mask)
+    {
+        std::cout << "X limit triggered (p10) \n";  
+    };
+
+    //Z
+    if ((data_read & pin_12_mask)==pin_12_mask)
+    {
+        std::cout << "Z limit triggered (p12) \n";  
+    };
+
+    //Y 
+    if ((data_read & pin_13_mask)==pin_13_mask)
+    {
+        std::cout << "Y limit triggered (p13) \n";  
+    };*/
+
+
+}
 
