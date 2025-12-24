@@ -934,43 +934,33 @@ void render_loop(void)
     if(pt_mtime->tm_running)
     {
 
-        std::cout << "-----------------------------------\n";        
-        std::cout << " renderloop tm_running "  << "\n";
-        
+        //I tried to make this sepereate from the GUI but then we need threads. Sigh. 
+        //this seems like a goof compromise
+        pt_motionplot->update();
+
+        //std::cout << "-----------------------------------\n";        
+        //std::cout << " renderloop tm_running "  << "\n";
         //std::cout << pt_mtime->getElapsedTimeInSec();
 
-
         //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
-        if (motionplot.localsimtime>=1.0)
-        {
-
-
-
-            //iterate the stack of vectors to process
-            //if (motionplot.pidx<motionplot.toolpath_vecs.size())
+        //if (motionplot.localsimtime>=1.0)
  
-
-            //program finished here
-            //if (motionplot.pidx>=motionplot.toolpath_vecs.size()-1)
- 
-        }
-        
         //----------------- 
-        /*
+         
         //the main loop where we update display and pulse the ports.
-        if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1 && mtime.tm_running)
-        {
-            Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
-            Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
+        //if (motionplot.pidx<=motionplot.toolpath_vecs.size()-1 && pt_mtime->tm_running)
+       
+        Vector3 s_p = motionplot.toolpath_vecs[motionplot.pidx];
+        Vector3 e_p = motionplot.toolpath_vecs[motionplot.pidx+1];  
 
-            PG.lerp_along(&motionplot.quill_pos, 
-                           s_p, 
-                           e_p, 
-                           (float) localsimtime);
+        PG.lerp_along(&motionplot.quill_pos, 
+                       s_p, 
+                       e_p, 
+                       (float) motionplot.localsimtime);
 
-            glColor3d(1, .4, 1);
-            draw_locator(&motionplot.quill_pos, .5);
-        }*/
+        glColor3d(1, .4, 1);
+        draw_locator(&motionplot.quill_pos, .5);
+        
 
     }//end program cycle running  
     

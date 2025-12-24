@@ -158,10 +158,6 @@ void cnc_plot::run_send_pulses(cncglobals* pt_cg,
  }   
 
 
-
-
-
-
 /******************************************/
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 {
@@ -253,10 +249,110 @@ void cnc_plot::stop(void)
     }
 
     finished = true;
+    std::cout << " toolpath plot stopped \n";
 }
 
 
 /******************************************/
+//ideally this all happens in this class
+//the problem is the while(running) loop locks up the GUI
+//until I learn threads, just cnc_plot::run() and cnc_plot::update() from render_loop 
+
+void cnc_plot::run(void)
+{
+    //this is for cases where we are paused but still running  
+    if(running==true && finished==false)
+    {
+        mtime.start();
+    }
+
+    //this is a fresh run from the beginning 
+    if(running==false && finished==true)
+    {
+        mtime.reset_sim(); //0-1 time only
+        mtime.start();
+        running  = true;
+        finished = false;
+    }
+
+}
+
+
+void cnc_plot::update(void)
+{
+    if (mtime.tm_running)
+    {
+        //localsimtime = mtime.get_elapsed_simtime() * timediv;
+        localsimtime = mtime.get_elapsed_simtime();        
+
+        //std::cout << "--------------------------\n";
+        //std::cout << "cnc_plot -> local simtime " << localsimtime <<"\n";
+        // std::cout << "real time " << mtime.getElapsedTimeInSec() << "\n";
+
+        //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
+        if (localsimtime>=1.0)
+        {
+             
+            //std::cout << "-----------------------------------\n";        
+            //std::cout << "running index " << pidx        << "\n";
+
+            //iterate the stack of vectors to process
+            if (pidx<toolpath_vecs.size())
+            {
+                pidx++;        
+
+                // start the (sim) clock over at the end of each vector segment 
+                // 0.0 - 1.0 is the range - which feeds the 3D `lerp  
+                mtime.reset_sim();
+                localsimtime=0;
+            }
+            //program finished here
+            else if (pidx>=toolpath_vecs.size()-1)
+            {
+                stop();
+
+                //std::cout << "-----------------------------------\n";        
+                //std::cout << "mtime stopped  "  << "\n";
+                pidx = 0;
+                //update_toolpaths();
+
+            }
+           
+        }
+        //-----------------
+        std::cout<< localsimtime << "\n";
+
+        //----------------- 
+        //the main loop where we update display and pulse the ports.
+        if (pidx<=toolpath_vecs.size()-1 && mtime.tm_running)
+        {
+            Vector3 s_p = toolpath_vecs[pidx];
+            Vector3 e_p = toolpath_vecs[pidx+1];  
+
+            PG.lerp_along(&quill_pos, 
+                           s_p, 
+                           e_p, 
+                           (float) localsimtime);
+        }
+
+    }//end program cycle running  
+}
+
+/******************************************/
+/*
+    //   when this runs, it locks up the GUI 
+    //   We have some serious choices to make now. 
+    //
+    //   Threads? Use render loop to drive it?
+    //
+    //   The real nighmare of speeds and feeds becomes very apparent. 
+    //   LinuxCNC is a marvel of engineering and this program will never pretend to be that.
+    //   For my simple stuff, it may not matter though. 
+    
+
+    // I think I will keep this and let the GUI update it 
+
+
 void cnc_plot::run(void)
 {
     //this is for cases where we are paused but still running  
@@ -317,7 +413,7 @@ void cnc_plot::run(void)
         }
         //-----------------
         std::cout<< localsimtime << "\n";
-        
+
         //----------------- 
         //the main loop where we update display and pulse the ports.
         if (pidx<=toolpath_vecs.size()-1 && mtime.tm_running)
@@ -336,7 +432,7 @@ void cnc_plot::run(void)
 
 
 }
-
+*/
 
 
 /******************************************/

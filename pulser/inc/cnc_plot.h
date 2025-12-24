@@ -49,8 +49,10 @@ class cnc_plot
 
         void pause(void);
         void stop(void);
-        void run(void);
         
+        void run(void);
+        void update(void);
+
         void timer_init(void);
         //void timer_reset(void)
 
