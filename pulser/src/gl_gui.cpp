@@ -104,7 +104,7 @@ void start_gui(int *argc, char** argv){
     glutInitWindowSize(scr_size_x, scr_size_y);  //window size
     glutInitWindowPosition(0, 0);  
     
-    window_id = glutCreateWindow("CNC_Pulser v.a0001"); //create an opengl window 
+    window_id = glutCreateWindow("Octant 2026"); //create an opengl window 
  
     /////////////////////////////////////////////////
     reset_view();
