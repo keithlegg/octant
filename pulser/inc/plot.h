@@ -9,12 +9,26 @@
 #define MAX_NUM_PLY 100000
 
 
+//----------------------------//
 //gen_pulses() intentionally left out of class
 //historicaly it processed pulsetrain data not stored in object itself 
 void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
 
 //old experimental version that used true 3D data to build pulsetrain 
 //void gen_3d_pules(std::vector<Vector3>*, int, int);
+
+//----------------------------//
+
+//old version which we removed from class and brought back to life
+//this is so we can precache each section of pulsetrain without the hassle of 
+//dealing with internal object.pulsetrain data container 
+
+void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
+                              Vector3 fr_pt, 
+                              Vector3 to_pt,
+                              int numdivs);
+
+
 
 /********************/
 
@@ -54,6 +68,7 @@ class cnc_plot
         
         void run_sim(void);
         void update_sim(void);
+        void precache_sim(void);
 
         void timer_init(void);
         //void timer_reset(void)

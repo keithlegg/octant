@@ -89,10 +89,6 @@ void cnc_plot::timer_init(void)
 }
 
 
-
-
-
-
 /******************************************/
 /*
 
@@ -255,6 +251,39 @@ void cnc_plot::stop(void)
     std::cout << " toolpath plot stopped \n";
 }
 
+
+/******************************************/
+//walk each vector in the toolpath 
+//calc the pulsetrain, store the index at start of each 
+//cache the step and direction data to speed up the running "simulation"
+
+void cnc_plot::precache_sim(void)
+{
+    pulsetrain.clear();
+    //pt_idxs.clear();
+
+    std::cout << " NOT DONE DEBUG - precache "<<toolpath_vecs.size()<<"\n";
+
+    //----------------- 
+    //iterate all coords and run calc_3d_pulses for them
+    for (unsigned int pc=0;pc<toolpath_vecs.size()-1;pc++)
+    {
+        //set up the vector to process 
+        Vector3 s_p = toolpath_vecs[pc];
+        Vector3 e_p = toolpath_vecs[pc+1];  
+        
+        std::cout << s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
+        std::cout << e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";
+
+        //void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
+        //                      Vector3 fr_pt, 
+        //                      Vector3 to_pt,
+        //                      int numdivs)
+
+
+    }
+
+}
 
 /******************************************/
 //ideally this all happens in this class
@@ -647,11 +676,8 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     std::vector<int> calcpt_x;
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
-                   
-    /////
-    // just calc the pulses using a ratio of length to divs. 
-    // I experimented with a true 3D method below but this seems to work fine (?)                       
- 
+    
+    // calc the pulses using a ratio of length to divs. 
     gen_pulses(&calcpt_x, most, num_pul_x);  
     gen_pulses(&calcpt_y, most, num_pul_y);  
     gen_pulses(&calcpt_z, most, num_pul_z);  
@@ -736,6 +762,118 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
 
 }
       
+
+
+/******************************************/
+
+void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
+                              Vector3 fr_pt, 
+                              Vector3 to_pt,
+                              int numdivs)
+{
+
+    bool debug = false;
+
+    point_ops PG;
+
+    //set the pulses per linear unit (spatial unit divions) - X,Y,Z unit prescaler 
+    //for now use one number for all 3 - we will add the others in later
+    unsigned int pp_lux      = numdivs;
+    unsigned int pp_luy      = numdivs;
+    unsigned int pp_luz      = numdivs;
+
+    //calc a new 3D vector betwen the two points in 3D
+    //Vector3 between   = sub(fr_pt, to_pt);     //old vector lib 
+    Vector3 between   = fr_pt.operator-(to_pt); //new vector lib 
+    
+    //calc the length of the path vector
+    //float mag     = between.length();
+    
+    int xp=0;int yp=0;int zp=0;
+
+    //calculate 3 scalars for the absolute change on each axis  
+    float delta_x = fr_pt.x-to_pt.x;
+    float delta_y = fr_pt.y-to_pt.y;
+    float delta_z = fr_pt.z-to_pt.z;
+
+    if (debug)
+    {
+        std::cout << " calc_3d_pulses: delta x "<< delta_x <<   
+                                           " y "<< delta_y << 
+                                           " z "<< delta_z << "\n";
+    }
+
+    //2 is a magic number to (all other data is 1 )
+    //calc the direction of the vector 
+    if (to_pt.x>fr_pt.x){
+        xp=2;
+    }else{
+        xp=0; 
+    }
+    //calc the direction of the vector 
+    if (to_pt.y>fr_pt.y){
+        yp=2;
+    }else{
+        yp=0; 
+    }
+    //calc the direction of the vector 
+    if (to_pt.z>fr_pt.z){
+        zp=2;
+    }else{
+        zp=0; 
+    }
+    
+    //first element of pulse train stores the direction 
+    //pt_pulsetrain->push_back(newvec3(xp,yp,zp));
+    pt_pulsetrain->push_back(Vector3(xp,yp,zp));
+
+    //use the amount of change times the spatial divisions to get the pulses 
+    //DEBUG - we may want to use the mag of the 3d vector in here                  
+    unsigned int num_pul_x = pp_lux*abs(delta_x);
+    unsigned int num_pul_y = pp_luy*abs(delta_y);
+    unsigned int num_pul_z = pp_luz*abs(delta_z); 
+
+    if (debug)
+    {
+        std::cout << "# calc_3d_pulses num pulses " << num_pul_x <<" "<<num_pul_y<<" "<<num_pul_z <<"\n";
+    }
+
+    // get the absolute highest number of pulses (on any axis) to calculate 
+    unsigned int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
+    //std::cout << "before: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
+    std::sort(std::begin(tmp), std::end(tmp)  );
+    //std::cout << "after: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
+    unsigned int most = tmp[2];
+
+    //--------------------------------------//             
+    if (debug)
+    {            
+        std::cout << "#   most   " << most << " "<< numdivs << " " <<"\n";  
+        std::cout << "#   numpts " << num_pul_x <<" " << num_pul_y <<" " << num_pul_z <<"\n"; 
+        std::cout << "#####\n";
+    }
+
+    std::vector<int> calcpt_x;
+    std::vector<int> calcpt_y;
+    std::vector<int> calcpt_z;
+        
+    // calc the pulses using a ratio of length to divs. 
+    gen_pulses(&calcpt_x, most, num_pul_x);  
+    gen_pulses(&calcpt_y, most, num_pul_y);  
+    gen_pulses(&calcpt_z, most, num_pul_z);  
+
+    ////
+
+    for(unsigned int a=0;a<most;a++)
+    {
+        pt_pulsetrain->push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+        pt_pulsetrain->push_back(Vector3(0,0,0));
+    } 
+    
+
+} 
+
+
 
 
 
@@ -839,185 +977,6 @@ void cnc_plot::run(void)
 
 
 /******************************************/
-/******************************************/
-
-/*
-
-void cnc_plot::calc_3d_pulses(vector<Vector3>* pt_pulsetrain,
-                              Vector3 fr_pt, 
-                              Vector3 to_pt,
-                              int numdivs)
-{
-
-    bool debug = false;
-
-    point_ops PG;
-
-    //set the pulses per linear unit (spatial unit divions) - X,Y,Z unit prescaler 
-    //for now use one number for all 3 - we will add the others in later
-    // int pp_lux      = 10;
-    // int pp_luy      = 10;
-    // int pp_luz      = 10;
-    int pp_lux      = numdivs;
-    int pp_luy      = numdivs;
-    int pp_luz      = numdivs;
 
 
-    //make some storage for the data to work in 
-    vector<Vector3> x_pts;
-    vector<Vector3> y_pts;
-    vector<Vector3> z_pts;
-    vector<Vector3> samples;
-
-    //make some pointers to those data.
-    //(people who say THOSE data are technically correct, but they are pedantic dillholes) 
-    vector<Vector3>* pt_xpts    = &x_pts;
-    vector<Vector3>* pt_ypts    = &y_pts;
-    vector<Vector3>* pt_zpts    = &z_pts;
-    vector<Vector3>* pt_samples = &samples;
-
-
-    //set up variables to do vector-y stuff
-    Vector3 between   = sub(fr_pt, to_pt);
-    float mag     = length(between);
-    float gran    = 0;  //granularity 
-    float thresh  = 0;  //threshold 
-    //std::cout << mag <<"\n";
-    
-    int xp=0;int yp=0;int zp=0;
-
-    //calculate the absolute change for each axis  
-    float delta_x = fr_pt.x-to_pt.x;
-    float delta_y = fr_pt.y-to_pt.y;
-    float delta_z = fr_pt.z-to_pt.z;
-
-    //calc the direction of the vector 
-    if (to_pt.x>fr_pt.x){
-        xp=2;
-    }else{
-        xp=0; 
-    }
-    //calc the direction of the vector 
-    if (to_pt.y>fr_pt.y){
-        yp=2;
-    }else{
-        yp=0; 
-    }
-    //calc the direction of the vector 
-    if (to_pt.z>fr_pt.z){
-        zp=2;
-    }else{
-        zp=0; 
-    }
-    //first element of pulse train stores the direction 
-    pt_pulsetrain->push_back(newvec3(xp,yp,zp));
-
-    
-    //not totally sure this is right 
-    int num_pul_x = (mag*pp_lux)*abs(delta_x);
-    int num_pul_y = (mag*pp_luy)*abs(delta_y);
-    int num_pul_z = (mag*pp_luz)*abs(delta_z);            
-
-    if (debug)
-        std::cout << "# num pulses " << num_pul_x <<" "<<num_pul_y<<" "<<num_pul_z <<"\n";
-
-    // get the absolute highest number of pulses (on any axis) to calculate 
-    int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
-    //std::cout << "before: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
-    std::sort(std::begin(tmp), std::end(tmp)  );
-    //std::cout << "after: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
-    int most = tmp[2];
-                         
-    // get the smallest division to use for sampling (granularity) 
-    if (mag!=0 && most !=0)
-    {
-        gran = (mag/most);
-    }else{
-        gran = 0;
-    }
-
-
-    // calculate a series of points along vector for each axis 
-    if(num_pul_x!=0)
-    {
-        PG.locate_pt_along3d(pt_xpts, to_pt, fr_pt, num_pul_x);
-    }
-    if(num_pul_y!=0) 
-    {
-        PG.locate_pt_along3d(pt_ypts, to_pt, fr_pt, num_pul_y);
-    }
-    if(num_pul_z!=0)
-    {            
-        PG.locate_pt_along3d(pt_zpts, to_pt, fr_pt, num_pul_z);
-    }
-
-    //# build a sampleset of all points along the vector - then iterate and match each axis to those points
-    //# converting the spatial points into a pulse train 
-    if (most!=0 && gran!=0)
-    {
-        //take the smallest possible sample.. and cut it in half for good measure
-        thresh = gran/2;
-        
-        PG.locate_pt_along3d(pt_samples, to_pt, fr_pt, most);
-        
-        //DEBUG this "works" but does not distribute the pulses properly due to the 3 loops in a loop
-        //the pulses should be evenly spaced across the entirety, and this makes clumps of pulses 
-        int a=0;int i=0;
-        for(a=0;a<samples.size();a++)
-        {
-
-            xp=0;
-            yp=0;
-            zp=0;
-
-            Vector3 spt = samples[a]; 
-
-            //X 
-            for (i=0;i<x_pts.size();i++)
-            {
-                Vector3 xpt = x_pts[i];
-                Vector3 ss = sub(xpt,spt);
-                if( length(ss)<thresh)
-                {
-                    xp=1;
-                    //break;
-                }
-            }
-
-            //Y
-            for (i=0;i<y_pts.size();i++)
-            {
-                Vector3 ypt = y_pts[i];
-                Vector3 ss = sub(ypt,spt);
-                if( length(ss)<thresh)
-                {
-                    yp=1;
-                    //break;
-                }
-            }
-
-
-            //Z
-            for (i=0;i<z_pts.size();i++)
-            {
-                Vector3 zpt = z_pts[i];
-                Vector3 ss = sub(zpt,spt);
-                if( length(ss)<thresh)
-                {
-                    zp=1;
-                    //break;
-                }
-            }
-
-            pt_pulsetrain->push_back(newvec3(xp,yp,zp));
-            pt_pulsetrain->push_back(newvec3(0,0,0));
-        }
-     
-
-   }
-
-
-}
-
-*/
-
+ 

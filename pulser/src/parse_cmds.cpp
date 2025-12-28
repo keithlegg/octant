@@ -144,7 +144,7 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "dm : display mode                                 \n";
         std::cout << "  wire, persp, otop, oside, etc                   \n";
         std::cout << "                                                  \n";
-        //std::cout << "cachepulses   -build a pulsetrain cache           \n";
+        std::cout << "precache    -debug feature  -build a pulsetrain cache           \n";
         std::cout << "                                                  \n";
         std::cout << "show                                              \n";
         std::cout << "  pt       -pulsetrain info                       \n";
@@ -183,6 +183,12 @@ void parse_cmd_text(std::string *buffer)
         }             
     } 
     */
+    //run external tools 
+    if (a1=="precache")
+    {
+        pt_motionplot->precache_sim();  
+    }
+
     //run external tools 
     if (a1=="testport")
     {
