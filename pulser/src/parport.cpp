@@ -471,8 +471,9 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
             
 
             }
-
-            usleep(cg->pp1_pulse_dly_us); 
+             
+            //this does no good here, only in freerun 
+            //usleep(cg->pp1_pulse_dly_us); 
         }
 
     }

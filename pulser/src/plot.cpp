@@ -80,6 +80,58 @@ timer* pt_mtime = &mtime;
 
 
 
+/***************************************/
+ 
+void run_cncplot(double f_x,
+                 double f_y,
+                 double f_z,
+                 double s_x,
+                 double s_y,
+                 double s_z,
+                 int divs)  
+{
+
+    bool DEBUG = false; 
+
+    cnc_plot* plot = new cnc_plot;
+    cnc_parport* pport = new cnc_parport;
+    
+    //cncglobals cg;
+    //cg.load_cfg_file(cfgfile); 
+
+    float dummy = 0;
+
+    Vector3 s_p = Vector3(f_x , f_y ,f_z );
+    Vector3 e_p = Vector3(s_x , s_y ,s_z );
+
+    // std::cout << "## s vec " <<s_p.x <<" "<< s_p.y <<" "<< s_p.z <<  " \n";
+    // std::cout << "## e vec " <<e_p.x <<" "<< e_p.y <<" "<< e_p.z <<  " \n";
+    // std::cout << "## divs " << divs <<  " \n";
+
+    plot->calc_3d_pulses(s_p, e_p, divs);
+
+    if(DEBUG==true)
+    {
+        std::cout << "## run_cncplot debug mode \n";
+ 
+        for(unsigned int x=0;x<plot->pulsetrain.size();x++)
+        {
+            std::cout<<plot->pulsetrain[x].x  <<" "
+                     <<plot->pulsetrain[x].y  <<" "
+                     <<plot->pulsetrain[x].z  <<"\n";        
+        } 
+    }
+
+    if(DEBUG==false)
+    {
+        pport->freerun_pulses(&dummy, &cg, plot);
+    }
+
+    delete pport; 
+    delete plot;
+}
+
+
 
 /***************************************/
 void cnc_plot::timer_init(void)

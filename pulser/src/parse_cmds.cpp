@@ -104,7 +104,7 @@ void stop_machine(void)
 /***************************************/
 /***************************************/
 
-std::string a1,a2,a3,a4,a5,a6,a7;
+std::string a1,a2,a3,a4,a5,a6,a7,a8,a9,a10;
 float v11,v12,v13,v21,v22,v23 = 0;
 
 int last_cmd = 0;
@@ -128,13 +128,17 @@ void parse_cmd_text(std::string *buffer)
 
     for(unsigned int i = 0; i < tokens.size(); i++)
     {
-        if(i==0){ a1 = tokens[i]; }
-        if(i==1){ a2 = tokens[i]; }
-        if(i==2){ a3 = tokens[i]; }
-        if(i==3){ a4 = tokens[i]; }
-        if(i==4){ a5 = tokens[i]; }
-        if(i==5){ a6 = tokens[i]; }    
-        if(i==6){ a7 = tokens[i]; }         
+        if(i==0){ a1  = tokens[i]; }
+        if(i==1){ a2  = tokens[i]; }
+        if(i==2){ a3  = tokens[i]; }
+        if(i==3){ a4  = tokens[i]; }
+        if(i==4){ a5  = tokens[i]; }
+        if(i==5){ a6  = tokens[i]; }    
+        if(i==6){ a7  = tokens[i]; }         
+        if(i==7){ a8  = tokens[i]; }   
+        if(i==8){ a9  = tokens[i]; }   
+        if(i==9){ a10 = tokens[i]; } 
+
     }
 
     //toggle grid
@@ -183,10 +187,26 @@ void parse_cmd_text(std::string *buffer)
         }             
     } 
     */
-    //run external tools 
+
+    //experimental pre cache  
     if (a1=="precache")
     {
         pt_motionplot->precache_sim();  
+    }
+
+    //freerun  
+    if (a1=="fr")
+    {
+        v11 = std::stof(a2);
+        v12 = std::stof(a3);
+        v13 = std::stof(a4);
+        
+        v21 = std::stof(a5);
+        v22 = std::stof(a6);
+        v23 = std::stof(a7);
+
+        std::cout << " freerun " << a2 <<" " << a3<<" " << a4<<" " << a5<<" " << a6<<" " << a7<<" " << a8 << "\n";  
+        run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
     }
 
     //run external tools 

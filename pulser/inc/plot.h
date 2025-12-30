@@ -9,6 +9,17 @@
 #define MAX_NUM_PLY 100000
 
 
+
+//----------------------------//
+void run_cncplot(double f_x,
+                 double f_y,
+                 double f_z,
+                 double s_x,
+                 double s_y,
+                 double s_z,
+                 int divs);  
+
+
 //----------------------------//
 //gen_pulses() intentionally left out of class
 //historicaly it processed pulsetrain data not stored in object itself 
