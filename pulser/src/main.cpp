@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-#include <thread>
+//#include <thread>
 
 
 
@@ -68,14 +68,25 @@ void parse_args(int argc, char **argv)
 }
 */
 
+/***************************************/
 
-void pulse_gen(char **argv)
-{
-    
-    cg.load_cfg_file(argv[1]);
-    parport.speed_test(&cg, 1000000);
+/*
+    void pulse_gen(char **argv)
+    {
+        
+        cg.load_cfg_file(argv[1]);
+        parport.speed_test(&cg, 1000000);
 
-}
+    }
+
+
+    std::thread pgen_thread(pulse_gen, argv);
+
+    // you should always either join or detach a thread before the flows of execution reaches the destructor.
+    pgen_thread.detach();  
+
+
+*/
 
 
 
@@ -87,14 +98,7 @@ int main(int argc, char **argv)
 
     //parse_args(argc, argv); 
 
-    /*------------------*/  
 
-
-    // Elsewhere in some part of the galaxy
-    //std::thread pgen_thread(pulse_gen, argv);
-    
-    // And probably
-    //pgen_thread.detach();  
 
 
 

@@ -49,10 +49,12 @@
 #include <unistd.h> //sleep()
 #include <sys/io.h> //outb() ioperm()
 #include <math.h>
+
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <thread>
 
 #include "Vectors.h"
 #include "timer.h"
@@ -77,6 +79,8 @@ extern cncglobals cg;
 //Timer related 
 timer mtime = timer();
 timer* pt_mtime = &mtime;
+
+
 
 
 
@@ -131,7 +135,21 @@ void run_cncplot(double f_x,
     delete plot;
 }
 
+/***************************************/
 
+void pulse_thread(double f_x,
+                  double f_y,
+                  double f_z,
+                  double s_x,
+                  double s_y,
+                  double s_z,
+                  int divs)  
+{
+    
+
+    std::thread pgen_thread(run_cncplot, 0, 0, 0, 1, 1, 1, 100);
+    pgen_thread.detach();  
+}
 
 /***************************************/
 void cnc_plot::timer_init(void)

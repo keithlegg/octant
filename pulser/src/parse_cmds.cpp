@@ -361,7 +361,15 @@ void parse_cmd_text(std::string *buffer)
         pt_motionplot->quill_pos.z = v23;   
 
         std::cout << " freerun " << a2 <<" " << a3<<" " << a4<<" " << a5<<" " << a6<<" " << a7<<" " << a8 << "\n";  
-        run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
+        
+        //non threaded - its all broke-y
+        //run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
+
+        //threaded - it workey great
+        pulse_thread( v11, v12, v13, v21, v22, v23, std::stoi(a8));
+
+        
+
     }
     //--------------
     /*

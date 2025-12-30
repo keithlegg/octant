@@ -9,6 +9,15 @@
 #define MAX_NUM_PLY 100000
 
 
+//----------------------------//
+
+void pulse_thread(double f_x,
+                  double f_y,
+                  double f_z,
+                  double s_x,
+                  double s_y,
+                  double s_z,
+                  int divs); 
 
 //----------------------------//
 void run_cncplot(double f_x,
