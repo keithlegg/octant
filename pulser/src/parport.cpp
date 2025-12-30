@@ -64,7 +64,7 @@ extern bool tog_testport;
 
 /***************************************/
 /***************************************/
-bool ports_are_available(unsigned int portaddr)
+bool check_ports_available(unsigned int portaddr)
 {
     bool send_it = false;
 
@@ -93,16 +93,11 @@ bool ports_are_available(unsigned int portaddr)
 void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
 {
 
-    ports_are_available(cg->parport1_addr);
-    ports_are_available(cg->parport2_addr);
- 
-    //unsigned char data_read;
-    //data_read = inb(cg->parport1_addr);
-    //data_read = data_read |= (1 << pin);
-    //outb(data_read, cg->parport1_addr);  
+    check_ports_available(cg->parport1_addr);
+    check_ports_available(cg->parport2_addr);
+
     
     std::cout << "pulsing port: addr: "<< cg->parport1_addr << "\n";
-
 
     //run at full speed to see what she can do 
     for (unsigned i=0;i<big_num;i++)
@@ -170,10 +165,8 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
                                     unsigned char* b_sigmask,
                                     bool* stale)
 {
-    if(ioperm(cg->parport1_addr+1,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    }    
+   
+    check_ports_available(cg->parport1_addr+1);
 
     //sample the data from parallel port input register
     data_read = inb(cg->parport1_addr+1); 
