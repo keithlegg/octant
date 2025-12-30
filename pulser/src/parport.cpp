@@ -94,27 +94,26 @@ void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
 {
 
     check_ports_available(cg->parport1_addr);
-    check_ports_available(cg->parport2_addr);
-
-    
     std::cout << "pulsing port: addr: "<< cg->parport1_addr << "\n";
 
     //run at full speed to see what she can do 
     for (unsigned i=0;i<big_num;i++)
     {
         outb(0xff, cg->parport1_addr);  
-        //usleep(1000);  
         outb(0x00, cg->parport1_addr);  
-        //usleep(1000);         
     }
-    ///////
-    /*
+    
+    //-----
+    
+    check_ports_available(cg->parport2_addr);
+    std::cout << "pulsing port: addr: "<< cg->parport2_addr << "\n";
+
     //run at full speed to see what she can do 
     for (unsigned i=0;i<big_num;i++)
     {
         outb(0xff, cg->parport2_addr);    
         outb(0x00, cg->parport2_addr);  
-    }*/
+    } 
 
 
 
@@ -222,11 +221,7 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 
 void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
 {
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
+    check_ports_available(cg->parport1_addr);
 
     //read the byte to get the current state, 
     //then twiddle the pins accordingly 
@@ -243,11 +238,7 @@ void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
 
 void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
 {
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
+    check_ports_available(cg->parport1_addr);
 
     //read the byte to get the current state, 
     //then twiddle the pins accordingly 
@@ -288,11 +279,7 @@ void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
 void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
 {
 
-    if(ioperm(cg->parport1_addr+1,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
+    check_ports_available(cg->parport1_addr+1);
 
     unsigned char pin_10_mask = 0b11000000;
     unsigned char pin_12_mask = 0b10100000;
@@ -362,6 +349,9 @@ void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
 
 void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plot )
 {
+
+    check_ports_available(cg->parport1_addr);
+
     //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
@@ -378,10 +368,6 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
 
     if(enable_send==1)
     {
-        if(ioperm(cg->parport1_addr,1,1))
-        { 
-            fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-        }
         if(debug)
         {
             std::cout << "# transmitting pulses to LPT port \n";
@@ -568,6 +554,8 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
 
 void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
 {
+    check_ports_available(cg->parport1_addr);
+
     //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
@@ -584,10 +572,6 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 
     if(enable_send==1)
     {
-        if(ioperm(cg->parport1_addr,1,1))
-        { 
-            fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-        }
         if(debug)
         {
             std::cout << "# transmitting pulses to LPT port \n";
@@ -761,11 +745,7 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 
 void cnc_parport::test_port_output(cncglobals* cg, int number)
 {
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-    
-    }
+    check_ports_available(cg->parport1_addr);
 
     // unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
@@ -796,12 +776,7 @@ void cnc_parport::test_port_output(cncglobals* cg, int number)
 void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
 {
 
-    if(ioperm(cg->parport1_addr+1,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
-        //std::cout << "# Couldn't open parallel port \n";
-
-    }
+    check_ports_available(cg->parport1_addr+1);
 
     unsigned char pin_10_mask = 0b11000000;
     unsigned char pin_12_mask = 0b10100000;
