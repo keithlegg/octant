@@ -719,19 +719,20 @@ void cnc_parport::test_port_output(cncglobals* cg)
     // unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
-    int a=0;int b=0;
+ 
 
     outb(0x00,cg->parport1_addr); 
-    //for(b=0;b<4;b++)
+    //for(unsigned int b=0;b<4;b++)
     //{
         send_byte = 0x01;
-        for(a<0;a<8;a++)
+        for(unsigned int a=0;a<8;a++)
         {
             outb(send_byte,cg->parport1_addr);
-            usleep(500000); 
+            usleep(cg->pp1_pulse_dly_us); 
                        
             outb(0x00,cg->parport1_addr); 
-            usleep(500000); 
+            usleep(cg->pp1_pulse_dly_us); 
+
             send_byte = send_byte << 1;
             std::cout <<"bit "<< a <<" value: "<< HEX(send_byte) <<"\n";
 
