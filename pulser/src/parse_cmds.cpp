@@ -150,7 +150,12 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "dm : display mode                                 \n";
         std::cout << "  wire, persp, otop, oside, etc                   \n";
         std::cout << "                                                  \n";
-        std::cout << "precache    -debug feature  -build a pulsetrain cache           \n";
+        
+        std::cout << "------                                            \n";        
+        std::cout << "precache     -debug   build a pulsetrain cache    \n";
+        std::cout << "tm_out (INT) -debug   test parport output         \n";
+        std::cout << "tm_in        -debug   build a pulsetrain cache    \n";        
+
         std::cout << "                                                  \n";
         std::cout << "show                                              \n";
         std::cout << "  pt       -pulsetrain info                       \n";
@@ -201,8 +206,10 @@ void parse_cmd_text(std::string *buffer)
     //test port out (how fast can we blink?)
     if (a1=="tp_out")
     {
+        int num = std::stoi(a2);
+
         //test_port_output
-        parport.test_port_output(&cg);
+        parport.test_port_output(&cg, num );
 
 
     }

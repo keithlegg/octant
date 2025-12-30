@@ -52,7 +52,10 @@ class cnc_parport
          cnc_parport(){};
         ~cnc_parport(){};
 
-    void test_port_output(cncglobals*);
+
+    void speed_test(cncglobals* cg, unsigned int big_num);
+
+    void test_port_output(cncglobals* cg, int number);
 
     void aux_on(cncglobals*, unsigned int);
     void aux_off(cncglobals*, unsigned int);

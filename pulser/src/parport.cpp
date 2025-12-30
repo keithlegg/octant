@@ -67,6 +67,25 @@ extern bool tog_testport;
 
 
 
+/***************************************/
+//how fast does this thing go, anyway?
+void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
+{
+    if(ioperm(cg->parport1_addr,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+    }
+
+    //run at full speed to see what she can do 
+    for (unsigned i=0;i<big_num;i++)
+    {
+        outb(0xff, cg->parport1_addr);    
+        outb(0x00, cg->parport1_addr);  
+    }
+
+
+}
+
 
 
 /***************************************/
@@ -708,7 +727,7 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
     test that port is working 
 */
 
-void cnc_parport::test_port_output(cncglobals* cg)
+void cnc_parport::test_port_output(cncglobals* cg, int number)
 {
     if(ioperm(cg->parport1_addr,1,1))
     { 
@@ -722,8 +741,8 @@ void cnc_parport::test_port_output(cncglobals* cg)
  
 
     outb(0x00,cg->parport1_addr); 
-    //for(unsigned int b=0;b<4;b++)
-    //{
+    for(unsigned int b=0;b<number;b++)
+    {
         send_byte = 0x01;
         for(unsigned int a=0;a<8;a++)
         {
@@ -737,7 +756,7 @@ void cnc_parport::test_port_output(cncglobals* cg)
             std::cout <<"bit "<< a <<" value: "<< HEX(send_byte) <<"\n";
 
         }
-    //}
+    }
 
 }
 

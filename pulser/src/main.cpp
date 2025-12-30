@@ -24,6 +24,9 @@
 
 char* obj_filepath;  
 
+extern cnc_parport parport;
+extern cncglobals cg;
+
 
 
 
@@ -57,9 +60,6 @@ void parse_args(int argc, char **argv)
 }
 */
 
- 
-
-
 
 /***************************************/
 
@@ -71,7 +71,12 @@ int main(int argc, char **argv)
 
     /*------------------*/  
     
-     
+
+    //parport.speed_test(&cg);
+
+
+    /*------------------*/   
+       
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -81,7 +86,7 @@ int main(int argc, char **argv)
             printf("# file %s does not exist.\n", obj_filepath);
             exit(0);
         }
-    }
+    } 
     
 
     /*------------------*/
