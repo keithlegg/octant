@@ -194,20 +194,7 @@ void parse_cmd_text(std::string *buffer)
         pt_motionplot->precache_sim();  
     }
 
-    //freerun  
-    if (a1=="fr")
-    {
-        v11 = std::stof(a2);
-        v12 = std::stof(a3);
-        v13 = std::stof(a4);
-        
-        v21 = std::stof(a5);
-        v22 = std::stof(a6);
-        v23 = std::stof(a7);
 
-        std::cout << " freerun " << a2 <<" " << a3<<" " << a4<<" " << a5<<" " << a6<<" " << a7<<" " << a8 << "\n";  
-        run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
-    }
 
     //run external tools 
     if (a1=="testport")
@@ -338,6 +325,28 @@ void parse_cmd_text(std::string *buffer)
 
     }
 
+    //--------------
+    //freerun  
+    if (a1=="fr")
+    {
+        v11 = std::stof(a2);
+        v12 = std::stof(a3);
+        v13 = std::stof(a4);
+        
+        v21 = std::stof(a5);
+        v22 = std::stof(a6);
+        v23 = std::stof(a7);
+
+        //this is not right, but its something  
+        pt_motionplot->quill_pos.x = v21;
+        pt_motionplot->quill_pos.y = v22;
+        pt_motionplot->quill_pos.z = v23;   
+
+        std::cout << " freerun " << a2 <<" " << a3<<" " << a4<<" " << a5<<" " << a6<<" " << a7<<" " << a8 << "\n";  
+        run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
+    }
+    //--------------
+    /*
 
 
     //--------------
@@ -398,7 +407,6 @@ void parse_cmd_text(std::string *buffer)
         }   
     }
 
-    //--------------
     //relative transform (from current xyz)
     if (a1=="rt")
     {
@@ -423,7 +431,7 @@ void parse_cmd_text(std::string *buffer)
         
         //add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
 
-    }
+    }*/
 
     //--------------
     //display modes

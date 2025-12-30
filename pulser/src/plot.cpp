@@ -682,7 +682,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     point_ops PG;
 
-    //set the pulses per linear unit (spatial unit divions) - X,Y,Z unit prescaler 
+    //set the pulses per linear unit (spatial unit divisions) - X,Y,Z unit prescaler 
     //for now use one number for all 3 - we will add the others in later
     unsigned int pp_lux      = numdivs;
     unsigned int pp_luy      = numdivs;

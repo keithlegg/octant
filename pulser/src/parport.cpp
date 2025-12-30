@@ -410,12 +410,13 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
 
     {
 
-        //if(enable_send==0)
-        //{
-            std::cout << pt_plot->pulsetrain.at(x).x<<" " 
-                      << pt_plot->pulsetrain.at(x).y<<" " 
-                      << pt_plot->pulsetrain.at(x).z <<"\n";
-        //}
+        if(enable_send==0)
+        {
+            std::cout << "sending "
+                << pt_plot->pulsetrain.at(x).x<<" " 
+                << pt_plot->pulsetrain.at(x).y<<" " 
+                << pt_plot->pulsetrain.at(x).z <<"\n";
+        }
 
         if(enable_send==1)
         {
@@ -445,18 +446,9 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
                 if(pt_plot->pulsetrain.at(x).y==1){
                     send_byte = send_byte |= (1 << 2);
                     outb(send_byte, cg->parport1_addr);    
-
-                    //!! THIS IS ALSO RUNNING Z AXIS (INVERTED DIR) FOR A GANTRY 
-                    //send_byte = send_byte |= (1 << 4);
-                    //outb(send_byte, cg->parport1_addr);    
-
                 }else{
                     send_byte = send_byte &= ~(1 << 2);
                     outb(send_byte, cg->parport1_addr);           
-
-                    //!! THIS IS ALSO RUNNING Z AXIS (INVERTED DIR) FOR A GANTRY 
-                    //send_byte = send_byte &= ~(1 << 4);
-                    //outb(send_byte, cg->parport1_addr);                    
                 }
 
                   
