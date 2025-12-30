@@ -97,11 +97,8 @@ void run_cncplot(double f_x,
 
     bool DEBUG = false; 
 
-    cnc_plot* plot = new cnc_plot;
+    cnc_plot* plot     = new cnc_plot;
     cnc_parport* pport = new cnc_parport;
-    
-    //cncglobals cg;
-    //cg.load_cfg_file(cfgfile); 
 
     float dummy = 0;
 
@@ -147,7 +144,7 @@ void pulse_thread(double f_x,
 {
     
 
-    std::thread pgen_thread(run_cncplot, 0, 0, 0, 1, 1, 1, 100);
+    std::thread pgen_thread(run_cncplot, f_x, f_y, f_z, s_x, s_y, s_z, divs);
     pgen_thread.detach();  
 }
 
