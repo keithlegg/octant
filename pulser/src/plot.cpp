@@ -360,7 +360,10 @@ void cnc_plot::update_sim(void)
             //THEN add a function that creeps along 0-1 index 
             if (localsimtime>0.0 && localsimtime<1.0 )
             {
-
+                 
+                //DEBUG - THIS WONT WORK WITH THE IN BETWEENS 
+                //PIDX WILL NOT COUNT THE INTERPOLATED POSITIONS 
+                //BETWEEN THE ACTUAL CACHED VECTORS 
                 if(pidx<=pt_idxs->size()-2 && pt_idxs->size()!=0)
                 {
 
@@ -374,10 +377,8 @@ void cnc_plot::update_sim(void)
                     double scale = (double)window_size/1;
                     double dstep = scale * localsimtime;
                     int istep =(int)dstep; 
-
-                    std::cout << "window size " << window_size << " istep "<< istep << "\n";
-
-                    //parport.send_pulses(&istep, &cg, (this) );
+                    //std::cout << "window size " << window_size << " istep "<< istep << "\n";
+                    parport.send_pulses(&istep, &cg, (this) );
 
                 }//if we have cache data 
                 
