@@ -45,6 +45,10 @@ class cnc_bitmasks
 
 /***************************************/
 
+bool ports_are_available(unsigned int portaddr);
+
+
+
 //handle the IO to the parports 
 class cnc_parport
 {

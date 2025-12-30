@@ -64,6 +64,27 @@ extern bool tog_testport;
 
 /***************************************/
 /***************************************/
+bool ports_are_available(unsigned int portaddr)
+{
+    bool send_it = false;
+
+    if(portaddr==0)
+    {
+        std::cout << "error port address is bad - got cfg ?\n";
+    }
+
+    if(ioperm(portaddr,1,1))
+    { 
+        fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
+    }
+    
+
+    // probably could do better than this. 
+    send_it = true;
+
+    return send_it;
+
+}
 
 
 
@@ -71,23 +92,10 @@ extern bool tog_testport;
 //how fast does this thing go, anyway?
 void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
 {
-    if(cg->parport1_addr==0||cg->parport2_addr==0)
-    {
-        std::cout << "error port address is bad - got cfg ?\n";
-    }
 
-    if(ioperm(cg->parport1_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port 1 \n"), exit(1);
-    }
-    
-    if(ioperm(cg->parport2_addr,1,1))
-    { 
-        fprintf(stderr, "# Couldn't open parallel port 2 \n"), exit(1);
-    }
-
-    //-----------
-
+    ports_are_available(cg->parport1_addr);
+    ports_are_available(cg->parport2_addr);
+ 
     //unsigned char data_read;
     //data_read = inb(cg->parport1_addr);
     //data_read = data_read |= (1 << pin);
