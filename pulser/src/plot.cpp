@@ -174,7 +174,13 @@ void cnc_plot::showpthids(void)
 void cnc_plot::show_pt(void)
 {
 
-    std::cout << " pulsetrain size "<< pulsetrain.size() << "\n";
+    std::cout << " pulsetrain size     "<< pulsetrain.size() << "\n";
+    std::cout << " pulsetrain idx size "<< pt_idxs->size()    << "\n";
+
+    for(unsigned int x=0;x<pt_idxs->size();x++)
+    {
+        std::cout <<" idx: " << x <<" "<< pt_idxs->at(x) << "\n";      
+    }
 
     // for(unsigned int x=0;x<pulsetrain.size();x++)
     // {
@@ -259,29 +265,48 @@ void cnc_plot::stop(void)
 
 void cnc_plot::precache_sim(void)
 {
+    bool debug = false;
+      
     pulsetrain.clear();
-    //pt_idxs.clear();
+    pt_idxs->clear();
 
-    std::cout << " NOT DONE DEBUG - precache "<<toolpath_vecs.size()<<"\n";
+    std::vector<Vector3> * pt_pulsetrain = &pulsetrain;
+
+    std::cout << " NOT DONE DEBUG - precache num vecs:"<<toolpath_vecs.size()<<"\n";
 
     //----------------- 
     //iterate all coords and run calc_3d_pulses for them
     for (unsigned int pc=0;pc<toolpath_vecs.size()-1;pc++)
     {
+        //----- 
         //set up the vector to process 
         Vector3 s_p = toolpath_vecs[pc];
         Vector3 e_p = toolpath_vecs[pc+1];  
+        if(debug)
+        {
+            std::cout << "precache_sim \n"; 
+            std::cout << s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
+            std::cout << e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";
+        }
+
+        //----- 
+        //std::cout << "pulsetrain size - new index " << pt_pulsetrain->size() << "\n";
+        pt_idxs->push_back( pt_pulsetrain->size() );
+
+        //precalc_3d_pulses appends each time we run it  
+        //DEBUG  also need to calc length/time to get num divs 
+        precalc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
         
-        std::cout << s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
-        std::cout << e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";
+         
+        for (unsigned int pi=0;pi<pt_idxs->size();pi++)
+        {
+            std::cout << "PT IDX " << pt_idxs->at(pi) << "\n";
+            std::cout << "START OF PULSETRAIN VEC - IDX " << pt_pulsetrain->at(pt_idxs->at(pi))  << "\n";
+        } 
 
-        //void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
-        //                      Vector3 fr_pt, 
-        //                      Vector3 to_pt,
-        //                      int numdivs)
 
+    }//iterate all calculated toolpath vectors 
 
-    }
 
 }
 
@@ -335,20 +360,28 @@ void cnc_plot::update_sim(void)
             //THEN add a function that creeps along 0-1 index 
             if (localsimtime>0.0 && localsimtime<1.0 )
             {
-               
-                /*
-                //just calc it on the fly for now 
-                calc_3d_pulses(s_p,e_p, 10);
-                double scale = (double)pulsetrain.size()/1;
-                double dstep = scale * localsimtime;
-                int istep =(int)dstep; 
-                //Vector3 now = pulsetrain[istep];
-                //std::cout << "#vidx:"<< pidx << " tim:" << localsimtime<<" data:"<< now.x <<" "<<now.y<<" "<<now.z << "\n";
- 
-                parport.send_pulses(&istep, &cg, (this) );
-                */ 
 
-            }
+                if(pidx<=pt_idxs->size()-2 && pt_idxs->size()!=0)
+                {
+
+                    //std::cout << " this " << pt_idxs->at(pidx)   << "\n";
+                    //std::cout << " next " << pt_idxs->at(pidx+1) << "\n";  
+                    
+                    int pt_this = pt_idxs->at(pidx);
+                    int pt_next = pt_idxs->at(pidx+1);
+
+                    int window_size = pt_next - pt_this;
+                    double scale = (double)window_size/1;
+                    double dstep = scale * localsimtime;
+                    int istep =(int)dstep; 
+
+                    std::cout << "window size " << window_size << " istep "<< istep << "\n";
+
+                    //parport.send_pulses(&istep, &cg, (this) );
+
+                }//if we have cache data 
+                
+            }//if sim is running and in range 0-1
 
             //interpolate xyz posiiton over time 
             PG.lerp_along(&quill_pos, 

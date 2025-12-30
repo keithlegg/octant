@@ -130,23 +130,28 @@ class cnc_plot
         //-----
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
+        //pulse train indeces 
+        std::vector<unsigned int> pt_idxs[MAX_NUM_PLY];
+
+        //-----        
 
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<Vector3> program_vecs;  
+        
+        //-----         
         // the final "baked" path that gets run
         std::vector<Vector3> toolpath_vecs;
-
+        //tool path indeces
+        std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
         //-----
         // original vectors loaded from disk  
         // these get copied to program_vecs and linebuffer1 vecs (for display)
         std::vector<Vector3> loaded_file_vecs;
         
-        //tool path indeces
-        std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
 
-        //pulse train indeces 
-        std::vector<unsigned int> pt_idxs[MAX_NUM_PLY];
+
+
 
 
     private:
