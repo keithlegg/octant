@@ -71,12 +71,12 @@ int main(int argc, char **argv)
 
     /*------------------*/  
     
-
-    //parport.speed_test(&cg);
+    cg.load_cfg_file(argv[1]);
+    parport.speed_test(&cg, 1000000);
 
 
     /*------------------*/   
-       
+    /*   
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
             printf("# file %s does not exist.\n", obj_filepath);
             exit(0);
         }
-    } 
+    } */
     
 
     /*------------------*/
