@@ -1,8 +1,16 @@
 
 #include <iostream>
 #include <cstring>
+
 #include <functional>
 #include <unistd.h>
+
+
+#include <thread>
+
+
+
+
 
 #include "point_op.h"         
 
@@ -61,6 +69,16 @@ void parse_args(int argc, char **argv)
 */
 
 
+void pulse_gen(char **argv)
+{
+    
+    cg.load_cfg_file(argv[1]);
+    parport.speed_test(&cg, 1000000);
+
+}
+
+
+
 /***************************************/
 
 int main(int argc, char **argv) 
@@ -70,13 +88,19 @@ int main(int argc, char **argv)
     //parse_args(argc, argv); 
 
     /*------------------*/  
+
+
+    // Elsewhere in some part of the galaxy
+    //std::thread pgen_thread(pulse_gen, argv);
     
-    cg.load_cfg_file(argv[1]);
-    parport.speed_test(&cg, 1000000);
+    // And probably
+    //pgen_thread.detach();  
+
+
 
 
     /*------------------*/   
-    /*   
+      
     if( argc == 2 ) {
         obj_filepath = argv[1] ;
 
@@ -86,7 +110,7 @@ int main(int argc, char **argv)
             printf("# file %s does not exist.\n", obj_filepath);
             exit(0);
         }
-    } */
+    }  
     
 
     /*------------------*/
