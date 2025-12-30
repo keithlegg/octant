@@ -165,8 +165,6 @@ extern cnc_plot motionplot;
 extern cnc_plot* pt_motionplot;
 
 extern cnc_parport parport;
-// cnc_parport* pt_parport;
-
 
 extern cncglobals cg;
 

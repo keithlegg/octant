@@ -75,6 +75,8 @@
 //idx of text that invisible "cursor" sits on
 int cursor = 0;
 
+extern cnc_parport parport;
+
 extern bool tog_testport; 
  
 extern bool disp_ply_solo;
@@ -194,10 +196,19 @@ void parse_cmd_text(std::string *buffer)
         pt_motionplot->precache_sim();  
     }
 
+    //------------------
+
+    //test port out (how fast can we blink?)
+    if (a1=="tp_out")
+    {
+        //test_port_output
+        parport.test_port_output(&cg);
 
 
-    //run external tools 
-    if (a1=="testport")
+    }
+
+    //test port in (quadrature decode) 
+    if (a1=="tp_in")
     {
         if(tog_testport){
             std::cout << "PARPORT TESTER\n";
@@ -207,7 +218,7 @@ void parse_cmd_text(std::string *buffer)
         }
     }
 
-
+    //------------------
     //run external tools 
     if (a1=="python")
     {
