@@ -85,7 +85,7 @@ timer* pt_mtime = &mtime;
 
 
 /***************************************/
- 
+// just a self contained example to launch the pulser  
 void run_cncplot(double f_x,
                  double f_y,
                  double f_z,
@@ -134,6 +134,7 @@ void run_cncplot(double f_x,
 
 /***************************************/
 
+// experiment in threads - so far so good 
 void pulse_thread(double f_x,
                   double f_y,
                   double f_z,
@@ -421,13 +422,21 @@ void cnc_plot::update_sim(void)
             //set up the vector to process 
             Vector3 s_p = toolpath_vecs[pidx];
             Vector3 e_p = toolpath_vecs[pidx+1];  
- 
+
+
             //send the pulses out 
             //DEBUG - need to precompute the pulsetrain 
             //THEN add a function that creeps along 0-1 index 
             if (localsimtime>0.0 && localsimtime<1.0 )
             {
-                 
+
+                pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
+
+
+                /*
+                
+                OLD EXPERIMENT FOR RUNNING 
+
                 //DEBUG - THIS WONT WORK WITH THE IN BETWEENS 
                 //PIDX WILL NOT COUNT THE INTERPOLATED POSITIONS 
                 //BETWEEN THE ACTUAL CACHED VECTORS 
@@ -448,6 +457,7 @@ void cnc_plot::update_sim(void)
                     parport.send_pulses(&istep, &cg, (this) );
 
                 }//if we have cache data 
+                */
                 
             }//if sim is running and in range 0-1
 
