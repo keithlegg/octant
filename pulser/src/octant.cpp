@@ -76,7 +76,7 @@
     // #include "gl_setup.h"
     // #include "gl_gui.h"
     // #include "gl_render.h"
-    // #include "parse_cmds.h"
+    // #include "gl_cmds.h"
 #endif  
 
 #define LEN(arr) ( (int) (sizeof (arr) / sizeof (arr)[0]) ) 

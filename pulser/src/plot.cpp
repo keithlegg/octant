@@ -377,10 +377,10 @@ void cnc_plot::update_sim(void)
         if (localsimtime>=1.0)
         {
 
-            //DEBUG - WHY -2? IDK, IM DRUNK  
             //iterate the stack of vectors to process
             if (pidx<toolpath_vecs.size()-2)
             {
+                std::cout << "finished processing vector "<< pidx+1 <<" of " << toolpath_vecs.size()-2 << "\n";
                 pidx++;        
                 mtime.reset_sim();
                 localsimtime=0;

@@ -43,10 +43,11 @@
 #include "parport.h"
 #include "plot.h"
 
+//no need for preprocessor , this file should not be sourced
 #include "gl_setup.h"
 #include "gl_gui.h"
 #include "gl_render.h"
-#include "parse_cmds.h"
+#include "gl_cmds.h"
 
 
 

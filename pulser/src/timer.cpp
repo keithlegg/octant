@@ -56,7 +56,7 @@ void timer::reset_sim(void)
     gettimeofday(&startCount, NULL);
     start_simtime = (startCount.tv_sec * 1000000.0) + startCount.tv_usec;
 
-    std::cout << "timer -> time was reset " << sim_time_us <<"\n";
+    //std::cout << "timer -> time was reset " << sim_time_us <<"\n";
     sim_time_us = 0;
 }
 
