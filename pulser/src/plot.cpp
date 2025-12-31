@@ -93,34 +93,6 @@ std::mutex mtx_p; //you can use std::lock_guard if you want to be exception safe
 
 /***************************************/
 
-/*
-
-// https://stackoverflow.com/questions/4989451/mutex-example-tutorial 
-
-int i = 0;
-
-void call1(void) 
-{
-    mtx_p.lock();
-    std::cout << i << " Hello Wife" << std::endl;
-    i++;//no other thread can access variable i until mtx_p.unlock() is called
-    mtx_p.unlock(); 
-}
-
-int call2(void) 
-{
-    //This is the main crowd of people uninterested in making a phone call
-    std::thread man1(call1);
-    std::thread man2(call1);
-    std::thread man3(call1);
-
-    man1.join(); 
-    man2.join(); 
-    man3.join(); 
-    return 0;
-}
-
-*/
 
 
 
@@ -345,14 +317,11 @@ void cnc_plot::process_vec(unsigned int window_idx)
     Vector3 s_p = toolpath_vecs[window_idx];
     Vector3 e_p = toolpath_vecs[window_idx+1];  
 
-    if (localsimtime>0.0 && localsimtime<1.0 )
-    {
-        //this uses join(), not detach()
-        //the blocking nature of it is good enough to appear to work
-        //we need a whole lot more like mutex, semaphores, etc
-        pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
+    //this uses join(), not detach()
+    //the blocking nature of it is good enough to appear to work
+    //we need a whole lot more like mutex, semaphores, etc
+    pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
 
-    }//if sim is running and in range 0-1
 }
 
 
@@ -370,16 +339,20 @@ void cnc_plot::update_sim(void)
         //the main loop where we update display and pulse the ports.
         if (vec_idx<=toolpath_vecs.size()-1 && mtime.tm_running)
         {
-            //set up the vector to process 
-            Vector3 s_p = toolpath_vecs[vec_idx];
-            Vector3 e_p = toolpath_vecs[vec_idx+1]; 
 
-            //interpolate xyz posiiton over time 
-            PG.lerp_along(&quill_pos, 
-                        s_p, 
-                        e_p, 
-                        (float) localsimtime);
+            if (localsimtime>0.0 && localsimtime<1.0 )
+            {
+                //set up the vector to process 
+                Vector3 s_p = toolpath_vecs[vec_idx];
+                Vector3 e_p = toolpath_vecs[vec_idx+1]; 
 
+                //interpolate xyz posiiton over time 
+                PG.lerp_along(&quill_pos, 
+                            s_p, 
+                            e_p, 
+                            (float) localsimtime);
+
+            }//if sim is running and in range 0-1
         }//update locator position 
 
         //----------------- 
