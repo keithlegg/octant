@@ -39,11 +39,12 @@
 #include "globals.h"
 #include "plot.h"
 
-#include "gl_gui.h"
-#include "gl_setup.h"
-#include "gl_render.h"
+#if DO_BUILD_GUI == true
+    #include "gl_gui.h"
+    #include "gl_setup.h"
+    #include "gl_render.h"
+#endif
 
-//#include "octant.h"
 
 
 extern int scr_size_x;
@@ -70,42 +71,30 @@ extern std::vector<Vector3> linebuffer2_rgb;
 void start_gui(int *argc, char** argv){
 
     glutInit(argc, argv);  
-
-    //shader_test();
     set_colors();
-
- 
     pt_motionplot->timer_init();
-    //mtime.start();
 
     //------------
-
     //load CNC cfg (including paths to .obj files) 
-
-    //setup filepaths and paths to cut 
     cg.load_cfg_file(argv[1]);
-
     //load the 3d models 
     cg.load_objects();
 
-    // we have vectors in display - calcluate the head path from them   
+    // we should now have display vectors to process, 
+    // calcluate the 3D quill path from them   
     pt_motionplot->loadpath(&linebuffer1);
     pt_motionplot->retract_height = cg.retract_height;
     pt_motionplot->work_height    = cg.work_height;
 
-
-
     //------------
-    
     //warnings();
-         
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
     glutInitWindowSize(scr_size_x, scr_size_y);  //window size
     glutInitWindowPosition(0, 0);  
     
     window_id = glutCreateWindow("Octant 2026"); //create an opengl window 
  
-    /////////////////////////////////////////////////
+    //------------
     reset_view();
 
     // Register GL callbacks       
@@ -118,15 +107,14 @@ void start_gui(int *argc, char** argv){
     glutMouseFunc (octant_mouse_button);
     glutMotionFunc (octant_mouse_motion);
 
-    //---
+    //------------
 
     // experimental draw polygon 
     //glutMouseFunc (draw_poly_mousevent);
-
     //loadImage("textures/generated2.bmp" , imageloaded_bfr);
     //loadImage("textures/generated2.bmp" , imageloaded_bfr2);
     
-    ///////////
+    //------------
     // create and apply 2D texture   
     glGenTextures(4, &texture[0]);            //create 3 textures
 
@@ -141,7 +129,6 @@ void start_gui(int *argc, char** argv){
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR ); // scale linearly when image bigger than texture
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR ); // scale linearly when image smalled than texture
     //glTexImage2D(GL_TEXTURE_2D, 0, 3, imageloaded_bfr->sizeX, imageloaded_bfr->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, imageloaded_bfr2->data);
-
 
     //polygon color 2
     glBindTexture(GL_TEXTURE_2D, texture[3]);  

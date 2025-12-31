@@ -55,8 +55,8 @@
 #include <cctype>
 
 #include <fstream>
-#include <vector>
-using std::vector;
+//#include <vector>
+
 
 #include <sstream>
 #include "obj_model.h"

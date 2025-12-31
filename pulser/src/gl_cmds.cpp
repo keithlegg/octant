@@ -66,7 +66,7 @@
 
 //GUI LAYER 
 #if DO_BUILD_GUI == true
-    #include "parse_cmds.h"
+    #include "gl_cmds.h"
     #include "gl_setup.h"
     #include "gl_render.h"
 #endif

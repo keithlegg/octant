@@ -43,15 +43,13 @@
 #include "parport.h"
 #include "plot.h"
 
-//no need for preprocessor , this file should not be sourced
-#include "gl_setup.h"
-#include "gl_gui.h"
-#include "gl_render.h"
-#include "gl_cmds.h"
-
-
-
-
+//this file should not be called anyway if no GUI, but whatever
+#if DO_BUILD_GUI == true
+    #include "gl_setup.h"
+    #include "gl_gui.h"
+    #include "gl_render.h"
+    #include "gl_cmds.h"
+#endif
 
 //semaphore mouse click 
 int on_click;
