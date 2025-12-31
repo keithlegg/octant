@@ -43,26 +43,14 @@
 #include <algorithm>
 #include <vector>
 
-
-//#include "math_op.h"
-//#include "point_op.h"
-
 #include "parport.h"
 #include "globals.h"
 #include "plot.h"
 
 
-
-
-
-
-
 extern bool tog_testport; 
 
 
-
-
-/***************************************/
 /***************************************/
 bool check_ports_available(unsigned int portaddr)
 {
@@ -122,7 +110,7 @@ void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
 
 
 /***************************************/
-//DEBUG - devise a way to dynamically asign pins with config file 
+//DEBUG - devise a way to dynamically assign pins with config file 
 
 /*
 
@@ -248,14 +236,6 @@ void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
     outb(data_read, cg->parport1_addr);    
 
 }
-
-
-
-
-
-
-
-
 
 /***************************************/
 /*
@@ -536,10 +516,8 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
     db25 pin #6 - Z pulse  -  address 0x10  -  bitshift (1<<4)
     db25 pin #7 - Z dir    -  address 0x20  -  bitshift (1<<5)
 
-
     #optional pulses
     db25 pin #8 - INV Y pulse   -  address 0x40  -  bitshift (1<<6)
-
 
     Args:
 
@@ -653,13 +631,15 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
         *pt_progress = (int) pt_plot->pulsetrain.size()/x;
 
 
-        //if(enable_send==0)
-        //{
+        //----
+        if(enable_send==0)
+        {
             std::cout << pt_plot->pulsetrain.at(x).x<<" " 
                       << pt_plot->pulsetrain.at(x).y<<" " 
                       << pt_plot->pulsetrain.at(x).z <<"\n";
-        //}
-
+        }
+         
+        //---- 
         if(enable_send==1)
         {
             
@@ -734,11 +714,6 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 /***************************************/
 /***************************************/
 
-
-
-
-
-/***************************************/
 /*
     test that port is working 
 */
@@ -747,10 +722,7 @@ void cnc_parport::test_port_output(cncglobals* cg, int number)
 {
     check_ports_available(cg->parport1_addr);
 
-    // unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
-
- 
 
     outb(0x00,cg->parport1_addr); 
     for(unsigned int b=0;b<number;b++)

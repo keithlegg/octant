@@ -72,12 +72,12 @@
 
 //#include "socket.h"
 
-//GUI RELATED 
-// #include "gl_setup.h"
-// #include "gl_gui.h"
-// #include "gl_render.h"
-// #include "parse_cmds.h"
-//GUI RELATED 
+#if DO_BUILD_GUI == true
+    // #include "gl_setup.h"
+    // #include "gl_gui.h"
+    // #include "gl_render.h"
+    // #include "parse_cmds.h"
+#endif  
 
 #define LEN(arr) ( (int) (sizeof (arr) / sizeof (arr)[0]) ) 
 
@@ -107,47 +107,10 @@ Vector3 animate_locator = Vector3(0,0,0);
 
 int TCP_PORT;
 
-
-/***************************************/
-
-/*
-//Mouse related
-extern bool view_ismoving  ;
-extern bool mouseLeftDown  ;
-extern bool mouseRightDown ;
-extern float orbit_dist; 
-extern float orbit_x;         
-extern float orbit_y;  
-
-extern float cam_posx; 
-extern float cam_posy;
-extern float cam_posz;
-
-//second callback for click 
-extern int on_click;
-extern int clk_x_coord;
-extern int clk_y_coord;
-*/
-
-
 /***************************************/
 //3d objects to load 
 extern char* obj_filepath;
 extern std::vector<std::string>  obj_filepaths;
-
-
-
-
-
-
-
-
-
-/***************************************/
- 
-
-
-
 
 /***************************************/
 

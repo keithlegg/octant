@@ -65,9 +65,11 @@
 #include "octant.h"
 
 //GUI LAYER 
-#include "parse_cmds.h"
-#include "gl_setup.h"
-#include "gl_render.h"
+#if DO_BUILD_GUI == true
+    #include "parse_cmds.h"
+    #include "gl_setup.h"
+    #include "gl_render.h"
+#endif
 
 
 
@@ -152,9 +154,9 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n";
         
         std::cout << "------                                            \n";        
-        std::cout << "precache     -debug   build a pulsetrain cache    \n";
-        std::cout << "tm_out (INT) -debug   test parport output         \n";
-        std::cout << "tm_in        -debug   build a pulsetrain cache    \n";        
+        //std::cout << "precache     -debug   build a pulsetrain cache    \n";
+        //std::cout << "tp_out (INT) -debug   test parport output         \n";
+        //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";        
 
         std::cout << "                                                  \n";
         std::cout << "show                                              \n";
@@ -193,13 +195,14 @@ void parse_cmd_text(std::string *buffer)
         {
         }             
     } 
-    */
-
+    
+    
     //experimental pre cache  
     if (a1=="precache")
     {
         pt_motionplot->precache_sim();  
     }
+    */
 
     //------------------
 
@@ -207,11 +210,8 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="tp_out")
     {
         int num = std::stoi(a2);
-
         //test_port_output
         parport.test_port_output(&cg, num );
-
-
     }
 
     //test port in (quadrature decode) 
@@ -265,12 +265,6 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="show")
     { 
         std::cout << "------------------------------------------        \n";
-
-        //view globals   
-        if(a2=="pt")
-        { 
-            pt_motionplot->show_pt(); 
-        }
 
         //view globals   
         if(a2=="cfg")
@@ -482,13 +476,6 @@ void parse_cmd_text(std::string *buffer)
     {
         run_machine();
     }
-
-
-
-    //--------------
-    //clear for next transaction
-    //a1,a2,a3,a4,a5,a6,a7 = "";
-    //--------------
 
 }//end 
 

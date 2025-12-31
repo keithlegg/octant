@@ -36,6 +36,10 @@
 /*************************************************************/
 
 
+
+
+
+
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -56,9 +60,11 @@
 #include "parport.h"
 #include "globals.h"
 
-//GUI RELATED 
-//#include "gl_setup.h"
-//GUI RELATED 
+
+#if DO_BUILD_GUI == true
+    //#include "gl_setup.h"
+#endif 
+
 
 extern cnc_plot* pt_motionplot;
 

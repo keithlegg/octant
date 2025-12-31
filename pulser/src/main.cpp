@@ -2,31 +2,23 @@
 #include <iostream>
 #include <cstring>
 
-#include <functional>
+//#include <thread>
+
 #include <unistd.h>
 
 
-//#include <thread>
-
-
-
-
-
 #include "point_op.h"         
-
 #include "globals.h"
 #include "plot.h" 
 #include "parport.h" 
-
 #include "octant.h" 
 
 
 
-//GUI RELATED 
-//#include "gl_setup.h"
-#include "gl_gui.h"
-
-//GUI RELATED 
+#if DO_BUILD_GUI == true
+    #include <functional>
+    #include "gl_gui.h"
+#endif
 
 
 
@@ -34,6 +26,7 @@ char* obj_filepath;
 
 extern cnc_parport parport;
 extern cncglobals cg;
+
 
 
 
@@ -97,27 +90,23 @@ int main(int argc, char **argv)
 
 
     //parse_args(argc, argv); 
-
-
-
-
-
-
     /*------------------*/   
-      
-    if( argc == 2 ) {
-        obj_filepath = argv[1] ;
 
-        if( access( obj_filepath, F_OK ) != -1 ) {
-            start_gui(&argc, argv); 
-        } else {
-            printf("# file %s does not exist.\n", obj_filepath);
-            exit(0);
-        }
-    }  
-    
+    #if DO_BUILD_GUI == true
+        if( argc == 2 ) {
+            obj_filepath = argv[1] ;
+
+            if( access( obj_filepath, F_OK ) != -1 ) {
+                start_gui(&argc, argv); 
+            } else {
+                printf("# file %s does not exist.\n", obj_filepath);
+                exit(0);
+            }
+        }  
+    #endif
 
     /*------------------*/
+
     /*
     // test of limit switch reading 
     cnc_parport plot;

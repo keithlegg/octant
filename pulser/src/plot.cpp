@@ -54,18 +54,23 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+
 #include <thread>
+#include <mutex>
+
+#include "globals.h"
 
 #include "Vectors.h"
 #include "timer.h"
 #include "point_op.h"
-#include "globals.h"
 #include "parport.h"
 #include "plot.h"
 
-//GUI RELATED 
-#include "gl_setup.h"
-//GUI RELATED 
+
+#if DO_BUILD_GUI == true
+    #include "gl_setup.h"
+#endif 
+
 
 
 #define HEX(x) setw(2) << setfill('0') << hex << (int)( x )
@@ -83,9 +88,47 @@ timer* pt_mtime = &mtime;
 
 
 
+/*
+
+// https://stackoverflow.com/questions/4989451/mutex-example-tutorial
+
+std::mutex m;//you can use std::lock_guard if you want to be exception safe
+int i = 0;
+
+void makeACallFromPhoneBooth() 
+{
+    m.lock();//man gets a hold of the phone booth door and locks it. The other men wait outside
+      //man happily talks to his wife from now....
+      std::cout << i << " Hello Wife" << std::endl;
+      i++;//no other thread can access variable i until m.unlock() is called
+      //...until now, with no interruption from other men
+    m.unlock();//man lets go of the door handle and unlocks the door
+}
+
+int main() 
+{
+    //This is the main crowd of people uninterested in making a phone call
+    
+    //man1 leaves the crowd to go to the phone booth
+    std::thread man1(makeACallFromPhoneBooth);
+    //Although man2 appears to start second, there's a good chance he might
+    //reach the phone booth before man1
+    std::thread man2(makeACallFromPhoneBooth);
+    //And hey, man3 also joined the race to the booth
+    std::thread man3(makeACallFromPhoneBooth);
+    
+    man1.join();//man1 finished his phone call and joins the crowd
+    man2.join();//man2 finished his phone call and joins the crowd
+    man3.join();//man3 finished his phone call and joins the crowd
+    return 0;
+}
+*/
+
 
 /***************************************/
-// just a self contained example to launch the pulser  
+// just a self contained example to launch the pulser 
+// it was never meant to be more than that 
+
 void run_cncplot(double f_x,
                  double f_y,
                  double f_z,
@@ -105,16 +148,12 @@ void run_cncplot(double f_x,
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
-    // std::cout << "## s vec " <<s_p.x <<" "<< s_p.y <<" "<< s_p.z <<  " \n";
-    // std::cout << "## e vec " <<e_p.x <<" "<< e_p.y <<" "<< e_p.z <<  " \n";
-    // std::cout << "## divs " << divs <<  " \n";
-
     plot->calc_3d_pulses(s_p, e_p, divs);
 
     if(DEBUG==true)
     {
         std::cout << "## run_cncplot debug mode \n";
- 
+
         for(unsigned int x=0;x<plot->pulsetrain.size();x++)
         {
             std::cout<<plot->pulsetrain[x].x  <<" "
@@ -146,7 +185,9 @@ void pulse_thread(double f_x,
     
 
     std::thread pgen_thread(run_cncplot, f_x, f_y, f_z, s_x, s_y, s_z, divs);
-    pgen_thread.detach();  
+    //pgen_thread.detach();  
+    pgen_thread.join(); 
+
 }
 
 /***************************************/
@@ -163,8 +204,6 @@ void cnc_plot::timer_init(void)
     program_vecs     = main part of toolpath construction 
     tp_idxs          = index to progvectors , per polygon basis - (like faces in .OBJ file)
 
-    //std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
-
     loaded_file_vecs = buffer for file loading only 
 
 */
@@ -179,37 +218,6 @@ void cnc_plot::add_file_vec(Vector3* nv)
 {
    loaded_file_vecs.push_back(*nv);
 }
-
-
-/******************************************/
-/*
-//DEBUG - LEGACY, NOT USED 
-void cnc_plot::run_send_pulses(cncglobals* pt_cg,
-                     float f_x, float f_y, float f_z,
-                     float s_x, float s_y, float s_z,
-                     int divs)  
-{
-    Vector3 s_p = Vector3(f_x , f_y ,f_z );
-    Vector3 e_p = Vector3(s_x , s_y ,s_z );
-    calc_3d_pulses(s_p, e_p, divs);
-     
-    if(pt_cg->GLOBAL_DEBUG==true)
-    {
-        for(int x=0;x<pulsetrain.size();x++)
-        {
-            std::cout<<pulsetrain[x].x  <<" "
-                     <<pulsetrain[x].y  <<" "
-                     <<pulsetrain[x].z  <<"\n";        
-        } 
-    }//if debug
-
-    if(pt_cg->GLOBAL_DEBUG==false)
-    {
-        std::cout << "PULSING DISABLED FOR NOW \n";
-        // void cnc_parport::send_pulses(float* pt_progress, cncglobals* cg, cnc_plot* (*this) )
-    }//no debug, run it!
- }   
-*/
 
 /******************************************/
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
@@ -239,25 +247,7 @@ void cnc_plot::showpthids(void)
 }
 
 /******************************************/
-void cnc_plot::show_pt(void)
-{
-
-    std::cout << " pulsetrain size     "<< pulsetrain.size() << "\n";
-    std::cout << " pulsetrain idx size "<< pt_idxs->size()    << "\n";
-
-    for(unsigned int x=0;x<pt_idxs->size();x++)
-    {
-        std::cout <<" idx: " << x <<" "<< pt_idxs->at(x) << "\n";      
-    }
-
-    // for(unsigned int x=0;x<pulsetrain.size();x++)
-    // {
-    //     std::cout <<         
-    // }
-
-}
-
-/******************************************/
+// a "polygon" is a sequence of line geometry used as a toolpath 
 void cnc_plot::showply(unsigned int pidx)
 {
     std::cout << "------------------------\n";
@@ -283,10 +273,8 @@ void cnc_plot::showply(unsigned int pidx)
 
 }
 
-
-
-
 /******************************************/
+// sequence of line geometries used as a toolpath(s) 
 void cnc_plot::showgeom(void)
 {
     std::cout << "\n #"<< rapidmove_vecs.size() <<" rapid vecs \n";
@@ -301,7 +289,6 @@ void cnc_plot::showgeom(void)
 }
 
 /******************************************/
-
 void cnc_plot::pause(void)
 {
     if(running)
@@ -325,58 +312,6 @@ void cnc_plot::stop(void)
     std::cout << " toolpath plot stopped \n";
 }
 
-
-/******************************************/
-//walk each vector in the toolpath 
-//calc the pulsetrain, store the index at start of each 
-//cache the step and direction data to speed up the running "simulation"
-
-void cnc_plot::precache_sim(void)
-{
-    bool debug = false;
-      
-    pulsetrain.clear();
-    pt_idxs->clear();
-
-    std::vector<Vector3> * pt_pulsetrain = &pulsetrain;
-
-    std::cout << " NOT DONE DEBUG - precache num vecs:"<<toolpath_vecs.size()<<"\n";
-
-    //----------------- 
-    //iterate all coords and run calc_3d_pulses for them
-    for (unsigned int pc=0;pc<toolpath_vecs.size()-1;pc++)
-    {
-        //----- 
-        //set up the vector to process 
-        Vector3 s_p = toolpath_vecs[pc];
-        Vector3 e_p = toolpath_vecs[pc+1];  
-        if(debug)
-        {
-            std::cout << "precache_sim \n"; 
-            std::cout << s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
-            std::cout << e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";
-        }
-
-        //----- 
-        //std::cout << "pulsetrain size - new index " << pt_pulsetrain->size() << "\n";
-        pt_idxs->push_back( pt_pulsetrain->size() );
-
-        //precalc_3d_pulses appends each time we run it  
-        //DEBUG  also need to calc length/time to get num divs 
-        precalc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
-        
-         
-        for (unsigned int pi=0;pi<pt_idxs->size();pi++)
-        {
-            std::cout << "PT IDX " << pt_idxs->at(pi) << "\n";
-            std::cout << "START OF PULSETRAIN VEC - IDX " << pt_pulsetrain->at(pt_idxs->at(pi))  << "\n";
-        } 
-
-
-    }//iterate all calculated toolpath vectors 
-
-
-}
 
 /******************************************/
 //ideally this all happens in this class
@@ -403,8 +338,6 @@ void cnc_plot::run_sim(void)
 }
 
 /******************************************/
-//this gets called at semi-random intervals from render_loop()  (or whoever, really) 
-//until I learn threads, just cnc_plot::run() and cnc_plot::update() from render_loop 
 
 void cnc_plot::update_sim(void)
 {
@@ -423,42 +356,13 @@ void cnc_plot::update_sim(void)
             Vector3 s_p = toolpath_vecs[pidx];
             Vector3 e_p = toolpath_vecs[pidx+1];  
 
-
-            //send the pulses out 
-            //DEBUG - need to precompute the pulsetrain 
-            //THEN add a function that creeps along 0-1 index 
             if (localsimtime>0.0 && localsimtime<1.0 )
             {
+                //this uses join(), not detach()
+                //the blocking nature of it is good enough to appear to work
+                //we need a whole lot more like mutex, semaphores, etc
+                //pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
 
-                pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
-
-
-                /*
-                
-                OLD EXPERIMENT FOR RUNNING 
-
-                //DEBUG - THIS WONT WORK WITH THE IN BETWEENS 
-                //PIDX WILL NOT COUNT THE INTERPOLATED POSITIONS 
-                //BETWEEN THE ACTUAL CACHED VECTORS 
-                if(pidx<=pt_idxs->size()-2 && pt_idxs->size()!=0)
-                {
-
-                    //std::cout << " this " << pt_idxs->at(pidx)   << "\n";
-                    //std::cout << " next " << pt_idxs->at(pidx+1) << "\n";  
-                    
-                    int pt_this = pt_idxs->at(pidx);
-                    int pt_next = pt_idxs->at(pidx+1);
-
-                    int window_size = pt_next - pt_this;
-                    double scale = (double)window_size/1;
-                    double dstep = scale * localsimtime;
-                    int istep =(int)dstep; 
-                    //std::cout << "window size " << window_size << " istep "<< istep << "\n";
-                    parport.send_pulses(&istep, &cg, (this) );
-
-                }//if we have cache data 
-                */
-                
             }//if sim is running and in range 0-1
 
             //interpolate xyz posiiton over time 
@@ -467,8 +371,6 @@ void cnc_plot::update_sim(void)
                            e_p, 
                            (float) localsimtime);
         }//update locator position 
-
-
 
         //----------------- 
         //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
@@ -517,8 +419,10 @@ void cnc_plot::update_toolpaths(void)
         toolpath_vecs.clear();
         rapidmove_vecs.clear();
         
-        //clear display geom 
-        clear_linebuffers();
+        #if DO_BUILD_GUI == true
+            //clear display geom 
+            clear_linebuffers();
+        #endif
 
         //---- 
         //std::cout << tp_idxs.size() << "\n";
@@ -637,9 +541,11 @@ void cnc_plot::add_new_polygon(int numply, int numids)
 
             //add to program_vecs (toolpath) 
             add_prg_vec(&loaded_file_vecs.at(p));
-    
-            //add to display buffer 
-            add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+            
+            #if DO_BUILD_GUI == true
+                //add to display buffer 
+                add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+            #endif
         }
     }
 
@@ -989,19 +895,79 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
 
 
 /******************************************/
-/******************************************/
-/*
-    when this runs, it locks up the GUI 
-    We have some serious choices to make now. 
- 
-    Threads? Use render loop to drive it?
- 
-    The real nighmare of speeds and feeds becomes very apparent. 
-    LinuxCNC is a marvel of engineering and this program will never pretend to be that.
-    For my simple stuff, it may not matter though. 
-    
 
-    Authors note -  I will keep this comnmented out and let the GL/GUI update.
+//probably will be obsolete with threading ?
+/*
+void cnc_plot::show_pt(void)
+{
+
+    std::cout << " pulsetrain size     "<< pulsetrain.size() << "\n";
+    std::cout << " pulsetrain idx size "<< pt_idxs->size()    << "\n";
+
+    for(unsigned int x=0;x<pt_idxs->size();x++)
+    {
+        std::cout <<" idx: " << x <<" "<< pt_idxs->at(x) << "\n";      
+    }
+
+}
+*/
+
+/******************************************/
+
+//walk each vector in the toolpath 
+//calc the pulsetrain, store the index at start of each 
+//cache the step and direction data to speed up the running "simulation"
+/*
+void cnc_plot::precache_sim(void)
+{
+    bool debug = false;
+      
+    pulsetrain.clear();
+    pt_idxs->clear();
+
+    std::vector<Vector3> * pt_pulsetrain = &pulsetrain;
+
+    std::cout << " NOT DONE DEBUG - precache num vecs:"<<toolpath_vecs.size()<<"\n";
+
+    //----------------- 
+    //iterate all coords and run calc_3d_pulses for them
+    for (unsigned int pc=0;pc<toolpath_vecs.size()-1;pc++)
+    {
+        //----- 
+        //set up the vector to process 
+        Vector3 s_p = toolpath_vecs[pc];
+        Vector3 e_p = toolpath_vecs[pc+1];  
+        if(debug)
+        {
+            std::cout << "precache_sim \n"; 
+            std::cout << s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
+            std::cout << e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";
+        }
+
+        //----- 
+        //std::cout << "pulsetrain size - new index " << pt_pulsetrain->size() << "\n";
+        pt_idxs->push_back( pt_pulsetrain->size() );
+
+        //precalc_3d_pulses appends each time we run it  
+        //DEBUG  also need to calc length/time to get num divs 
+        precalc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
+        
+         
+        for (unsigned int pi=0;pi<pt_idxs->size();pi++)
+        {
+            std::cout << "PT IDX " << pt_idxs->at(pi) << "\n";
+            std::cout << "START OF PULSETRAIN VEC - IDX " << pt_pulsetrain->at(pt_idxs->at(pi))  << "\n";
+        } 
+
+
+    }//iterate all calculated toolpath vectors 
+
+
+}
+*/
+
+
+/*
 
 
 void cnc_plot::run(void)

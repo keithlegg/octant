@@ -88,10 +88,9 @@ class cnc_plot
         
         void run_sim(void);
         void update_sim(void);
-        void precache_sim(void);
+        //void precache_sim(void);
 
         void timer_init(void);
-        //void timer_reset(void)
 
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);

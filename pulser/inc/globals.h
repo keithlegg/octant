@@ -1,17 +1,26 @@
 #ifndef CNC_GLOBALS_H    
 #define CNC_GLOBALS_H
 
-
 #include <vector>
 
-
+//**********************************//
+//option for a gui-less, "headless" tool  
 /*
-   container for machine properties  
-   for a CNC /3D printer/Pick and Place, etc
+   if you do this, remove:
+       all files prefixed with "gl_XXX"
+       parse_cmds.cpp
 */
+#define DO_BUILD_GUI true
+//**********************************//
+
+
+
+
 
 
 void exit_program(void);
+
+
 
 
 class cncglobals
