@@ -5,9 +5,11 @@
     interface to a parallel port (and hopefully someday a Mesa5i25 card)
 
 
+
+
     MIT License
 
-    Copyright (c) 2025 Keith Legg - keithlegg23@gmail.com
+    Copyright (c) 2026 Keith Legg - keithlegg23@gmail.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

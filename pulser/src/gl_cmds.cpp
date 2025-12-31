@@ -26,7 +26,7 @@
 
     MIT License
 
-    Copyright (c) 2025 Keith Legg - keithlegg23@gmail.com
+    Copyright (c) 2026 Keith Legg - keithlegg23@gmail.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -486,7 +486,7 @@ void parse_cmd_text(std::string *buffer)
 /*
     single key press callback freom OpenGL. 
 
-    It has a poinmter to the screen text buffer and   
+    It has a pointer to the screen text buffer and   
     can manipulate it before sending it back.
 
     The "enter" acctivates the more in depth parser on the text buffer. 
@@ -498,6 +498,8 @@ void parse_cmd_text(std::string *buffer)
 
 void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
+    bool show_debug = false;
+
     int i = static_cast<int>(*pt_key);
     
     //need a way to capture stuck keys - DEBUG - stew on it for a while
@@ -508,9 +510,12 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 
     last_cmd=i;
 
-    //debug info 
-    //std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
-    //std::cout << " key val " << i  << std::endl;
+    if(show_debug)
+    {
+        std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
+        std::cout << " key val " << i  << std::endl;
+    }
+
 
     //emergency soft stop is ` key 
     if(i==96)
@@ -533,14 +538,10 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     //enter key
     if(i==13)
     {
-        //todo - keep a log of commands as txt file ??
-        
-        //std::cout << "command to parse \n" << *buffer << "\n";
-
+        //todo - keep a history log of commands as txt file ??
         parse_cmd_text(buffer);
         buffer->clear();
         cursor=0;
-        //std::cout << "ENTER PRESSED\n";        
     }    
 
     //-----
@@ -552,7 +553,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     }  
 
     //-----
-    //ignore backspace, enter, ` ,
+    //ignore backspace, enter, `,
     if(i!=8 && i!=13 && i!=96)
     {   
         cursor = buffer->size(); 

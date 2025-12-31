@@ -14,7 +14,7 @@
 
     MIT License
 
-    Copyright (c) 2025 Keith Legg - keithlegg23@gmail.com
+    Copyright (c) 2026 Keith Legg - keithlegg23@gmail.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -436,7 +436,7 @@ void obj_model::calc_normals(void)
         // calculate the face normal  
         Vector3 a = p1.operator-(p2);
         Vector3 b = p1.operator-(p3);
-        Vector3 n = a.cross(b).normalize();
+        Vector3 n = a.cross(b).normalize()/4;
 
         fnormals[obj_model::num_fnrmls]=n;
         num_fnrmls++;

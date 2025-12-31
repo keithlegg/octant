@@ -428,6 +428,18 @@ void octant_mouse_button(int button, int state, int x, int y)
 
     //-----------
     //left click 
+    if (button == GLUT_MIDDLE_BUTTON)
+    {
+        if(state == GLUT_DOWN)
+        {
+            std::cout << " middle click " << "\n"; 
+            std::cout << " x:" <<x <<" y: "<<y << "\n"; 
+        }//middle pressed
+
+    }//middle button
+
+    //-----------
+    //left click 
     if (button == GLUT_LEFT_BUTTON)
     {
         if(state == GLUT_DOWN)
@@ -451,7 +463,8 @@ void octant_mouse_button(int button, int state, int x, int y)
         // Disregard redundant GLUT_UP events
         if (state == GLUT_UP) return; 
 
-        if (button == 3){
+        if (button == 3)
+        {
             //if (orbit_dist < -1.5){
             orbit_dist+=.1;  
             //printf("# orbit dist %f \n", orbit_dist );                                 
@@ -463,13 +476,17 @@ void octant_mouse_button(int button, int state, int x, int y)
             //}
         }
 
-        //std::cout << " zomming " << orbit_dist << "\n";
+        //std::cout << " zooming " << orbit_dist << "\n";
 
-    }else{  // normal button event
-        if (state == GLUT_DOWN){
-            // printf("olmec middle click\n");  
+    }else
+    {   
+        // normal button event (not wheel)
+        if (state == GLUT_DOWN)
+        {
+
+
         }
-    }
+    } 
 
     //-----------
     //Right click
@@ -700,6 +717,7 @@ void render_normals(obj_model* pt_model_buffer)
         Vector3 p1 = pt_model_buffer->points[pt_model_buffer->quads[p_i][0]-1];
         Vector3 p2 = pt_model_buffer->points[pt_model_buffer->quads[p_i][1]-1];
         Vector3 p3 = pt_model_buffer->points[pt_model_buffer->quads[p_i][2]-1];
+        
         // calculate the centroid 
         Vector3 quad_cntr;
         quad_cntr.x = (p1.x + p2.x + p3.x)/3;
@@ -713,10 +731,12 @@ void render_normals(obj_model* pt_model_buffer)
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         glMaterialfv(GL_FRONT, GL_EMISSION, clr_yellow);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_off);
+        
         glBegin(GL_LINES);
             glVertex3f(quad_cntr.x, quad_cntr.y, quad_cntr.z);
             glVertex3f(mv.x, mv.y, mv.z);
         glEnd();
+
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);  
     }
@@ -962,10 +982,13 @@ void render_loop(void)
     {
         if(on_click)
         {
-            //active but does not do anything 
-            //maybe look at camera pos and rot and draw a vector for intersection with triangle?
-             
-            //std::cout << " click! "<< clk_x_coord << " "<< clk_x_coord << "\n";
+            #if DEBUG_MOUSE_CLICK == true 
+                //active but does not do anything 
+                //maybe look at camera pos and rot and draw a vector for intersection with triangle?
+
+                std::cout << " click! "<< clk_x_coord << " "<< clk_x_coord << "\n";
+            #endif 
+
             on_click=0;
         }
 
@@ -1428,10 +1451,10 @@ void render_loop(void)
            
         }//display all polygons 
      
-
+        //////////////////////////////////////////////////////////
+        
         //std::cout << "foo " << pt_motionplot->tp_idxs[0].size() << "\n";
 
-        //////////////////////////////////////////////////////////
         /*
         int test = 1;
 
@@ -1459,10 +1482,6 @@ void render_loop(void)
         */ 
         //////////////////////////////////////////////////////////
 
-
-
-        //----       
-        
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
 

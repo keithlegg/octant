@@ -4,13 +4,14 @@
 
     
 
-    modified - 2025 Keith Legg - keithlegg23@gmail.com
+    modified - 2026 Keith Legg - keithlegg23@gmail.com
 
-    AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
+
+    ORIGINAL AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
     Copyright (C) 2005 Song Ho Ahn
 
-    MIT License
 
+    MIT License
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

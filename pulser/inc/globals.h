@@ -11,6 +11,9 @@
        parse_cmds.cpp
 */
 #define DO_BUILD_GUI true
+#define DEBUG_MOUSE_CLICK false
+
+
 //**********************************//
 
 

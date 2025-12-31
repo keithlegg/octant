@@ -110,7 +110,7 @@ void spinningCubeDemo(int *argc, char** argv){
     ///////////////////////////    
    
     glutMouseFunc (maya_mouse_button);
-    glutMotionFunc (maya_mouse_motion);
+    //glutMotionFunc (maya_mouse_motion);
 
     ///////////////////////////      
     // Create our popup menu
@@ -381,6 +381,7 @@ static void maya_mouse_button(int button, int state, int x, int y)
 
 
 ///////////////////////
+//SHOW_GUI_MOUSECLICK
 static void maya_mouse_motion(int x, int y)
 {
 
