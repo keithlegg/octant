@@ -9,6 +9,12 @@
 #define MAX_NUM_PLY 100000
 
 
+
+void call1(void);
+int call2(void);
+
+
+
 //----------------------------//
 
 void pulse_thread(double f_x,
@@ -59,7 +65,7 @@ class cnc_plot
         cnc_plot()
         {
             timediv    = 1; //speed == simtime divisions == 1 second/divs
-            pidx       = 0;
+            vec_idx    = 0;
             num_plys   = 0;
 
             running    = false;
@@ -79,7 +85,7 @@ class cnc_plot
         void show(void);
         void showgeom(void);
         void showpthids(void);
-        void showply(unsigned int pidx);
+        void showply(unsigned int vec_idx);
         void show_pt(void);
 
 
@@ -94,6 +100,8 @@ class cnc_plot
 
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
+        
+        void process_vec(unsigned int vec_idx);
 
         void add_new_polygon(int numply, int numids);
         
@@ -121,7 +129,7 @@ class cnc_plot
         unsigned int num_plys;
 
         // index to the current vector processed while running 
-        unsigned int pidx;
+        unsigned int vec_idx;
         double timediv;
         
         // calculated values - length of travel for vectors

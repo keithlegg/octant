@@ -87,44 +87,41 @@ extern cncglobals cg;
 timer mtime = timer();
 timer* pt_mtime = &mtime;
 
+/***************************************/
 
+std::mutex mtx_p; //you can use std::lock_guard if you want to be exception safe
 
+/***************************************/
 
 /*
 
-// https://stackoverflow.com/questions/4989451/mutex-example-tutorial
+// https://stackoverflow.com/questions/4989451/mutex-example-tutorial 
 
-std::mutex m;//you can use std::lock_guard if you want to be exception safe
 int i = 0;
 
-void makeACallFromPhoneBooth() 
+void call1(void) 
 {
-    m.lock();//man gets a hold of the phone booth door and locks it. The other men wait outside
-      //man happily talks to his wife from now....
-      std::cout << i << " Hello Wife" << std::endl;
-      i++;//no other thread can access variable i until m.unlock() is called
-      //...until now, with no interruption from other men
-    m.unlock();//man lets go of the door handle and unlocks the door
+    mtx_p.lock();
+    std::cout << i << " Hello Wife" << std::endl;
+    i++;//no other thread can access variable i until mtx_p.unlock() is called
+    mtx_p.unlock(); 
 }
 
-int main() 
+int call2(void) 
 {
     //This is the main crowd of people uninterested in making a phone call
-    
-    //man1 leaves the crowd to go to the phone booth
-    std::thread man1(makeACallFromPhoneBooth);
-    //Although man2 appears to start second, there's a good chance he might
-    //reach the phone booth before man1
-    std::thread man2(makeACallFromPhoneBooth);
-    //And hey, man3 also joined the race to the booth
-    std::thread man3(makeACallFromPhoneBooth);
-    
-    man1.join();//man1 finished his phone call and joins the crowd
-    man2.join();//man2 finished his phone call and joins the crowd
-    man3.join();//man3 finished his phone call and joins the crowd
+    std::thread man1(call1);
+    std::thread man2(call1);
+    std::thread man3(call1);
+
+    man1.join(); 
+    man2.join(); 
+    man3.join(); 
     return 0;
 }
+
 */
+
 
 
 /***************************************/
@@ -300,7 +297,7 @@ void cnc_plot::pause(void)
     }
 }
 
-
+/******************************************/
 void cnc_plot::stop(void)
 {
     if(running)
@@ -340,7 +337,26 @@ void cnc_plot::run_sim(void)
 }
 
 /******************************************/
+void cnc_plot::process_vec(unsigned int window_idx)
+{
+    std::cout << "called prcess vec \n";
 
+    //set up the vector to process 
+    Vector3 s_p = toolpath_vecs[window_idx];
+    Vector3 e_p = toolpath_vecs[window_idx+1];  
+
+    if (localsimtime>0.0 && localsimtime<1.0 )
+    {
+        //this uses join(), not detach()
+        //the blocking nature of it is good enough to appear to work
+        //we need a whole lot more like mutex, semaphores, etc
+        pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
+
+    }//if sim is running and in range 0-1
+}
+
+
+/******************************************/
 void cnc_plot::update_sim(void)
 {
     if (mtime.tm_running)
@@ -352,48 +368,47 @@ void cnc_plot::update_sim(void)
 
         //----------------- 
         //the main loop where we update display and pulse the ports.
-        if (pidx<=toolpath_vecs.size()-1 && mtime.tm_running)
+        if (vec_idx<=toolpath_vecs.size()-1 && mtime.tm_running)
         {
             //set up the vector to process 
-            Vector3 s_p = toolpath_vecs[pidx];
-            Vector3 e_p = toolpath_vecs[pidx+1];  
-
-            if (localsimtime>0.0 && localsimtime<1.0 )
-            {
-                //this uses join(), not detach()
-                //the blocking nature of it is good enough to appear to work
-                //we need a whole lot more like mutex, semaphores, etc
-                //pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
-
-            }//if sim is running and in range 0-1
+            Vector3 s_p = toolpath_vecs[vec_idx];
+            Vector3 e_p = toolpath_vecs[vec_idx+1]; 
 
             //interpolate xyz posiiton over time 
             PG.lerp_along(&quill_pos, 
-                           s_p, 
-                           e_p, 
-                           (float) localsimtime);
+                        s_p, 
+                        e_p, 
+                        (float) localsimtime);
+
         }//update locator position 
 
         //----------------- 
         //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
         if (localsimtime>=1.0)
         {
+            //DEBUG MUTEX LOCK  
+            mtx_p.lock();
+
+            process_vec(vec_idx);
 
             //iterate the stack of vectors to process
-            if (pidx<toolpath_vecs.size()-2)
+            if (vec_idx<toolpath_vecs.size()-2)
             {
-                std::cout << "finished processing vector "<< pidx+1 <<" of " << toolpath_vecs.size()-2 << "\n";
-                pidx++;        
+                std::cout << "finished processing vector "<< vec_idx+1 <<" of " << toolpath_vecs.size()-2 << "\n";
+                vec_idx++;        
                 mtime.reset_sim();
                 localsimtime=0;
             }
             //program finished here
-            else if (pidx>=toolpath_vecs.size()-2)
+            else if (vec_idx>=toolpath_vecs.size()-2)
             {
                 stop();
-                pidx = 0;
+                vec_idx = 0;
             }//stop when we processed all the data
-           
+            
+            //DEBUG MUTEX UNLOCK 
+            mtx_p.unlock(); 
+
         }//step or stop the program  
 
 
@@ -1005,12 +1020,12 @@ void cnc_plot::run(void)
         {
              
             //std::cout << "-----------------------------------\n";        
-            //std::cout << "running index " << pidx        << "\n";
+            //std::cout << "running index " << vec_idx        << "\n";
 
             //iterate the stack of vectors to process
-            if (pidx<toolpath_vecs.size())
+            if (vec_idx<toolpath_vecs.size())
             {
-                pidx++;        
+                vec_idx++;        
 
                 // start the (sim) clock over at the end of each vector segment 
                 // 0.0 - 1.0 is the range - which feeds the 3D `lerp  
@@ -1018,13 +1033,13 @@ void cnc_plot::run(void)
                 localsimtime=0;
             }
             //program finished here
-            else if (pidx>=toolpath_vecs.size()-1)
+            else if (vec_idx>=toolpath_vecs.size()-1)
             {
                 stop();
 
                 //std::cout << "-----------------------------------\n";        
                 //std::cout << "mtime stopped  "  << "\n";
-                pidx = 0;
+                vec_idx = 0;
                 //update_toolpaths();
 
             }
@@ -1035,10 +1050,10 @@ void cnc_plot::run(void)
 
         //----------------- 
         //the main loop where we update display and pulse the ports.
-        if (pidx<=toolpath_vecs.size()-1 && mtime.tm_running)
+        if (vec_idx<=toolpath_vecs.size()-1 && mtime.tm_running)
         {
-            Vector3 s_p = toolpath_vecs[pidx];
-            Vector3 e_p = toolpath_vecs[pidx+1];  
+            Vector3 s_p = toolpath_vecs[vec_idx];
+            Vector3 e_p = toolpath_vecs[vec_idx+1];  
 
             PG.lerp_along(&quill_pos, 
                            s_p, 

@@ -88,6 +88,8 @@ void parse_args(int argc, char **argv)
 int main(int argc, char **argv) 
 {  
 
+    //call2();
+
 
     //parse_args(argc, argv); 
     /*------------------*/   
