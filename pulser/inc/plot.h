@@ -23,7 +23,9 @@ void pulse_thread(double f_x,
                   double s_x,
                   double s_y,
                   double s_z,
-                  int divs); 
+                 unsigned int x_divs, 
+                 unsigned int y_divs,                                   
+                 unsigned int z_divs);  
 
 //----------------------------//
 void run_cncplot(double f_x,
@@ -32,7 +34,9 @@ void run_cncplot(double f_x,
                  double s_x,
                  double s_y,
                  double s_z,
-                 int divs);  
+                 unsigned int x_divs, 
+                 unsigned int y_divs,                                   
+                 unsigned int z_divs);  
 
 
 //----------------------------//

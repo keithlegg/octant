@@ -354,13 +354,26 @@ void parse_cmd_text(std::string *buffer)
         pt_motionplot->quill_pos.y = v22;
         pt_motionplot->quill_pos.z = v23;   
 
-        std::cout << " freerun " << a2 <<" " << a3<<" " << a4<<" " << a5<<" " << a6<<" " << a7<<" " << a8 << "\n";  
-        
+        std::cout << " freerun " << a2 <<" " << a3<<" " << a4<<" " << a5<<" " << a6<<" " << a7<<" " << "\n";  
+
+        Vector3 s_p = Vector3(v11,v12,v13);
+        Vector3 e_p = Vector3(v21,v22,v23); 
+
+        Vector3 offset = e_p - s_p;
+
+        unsigned int numx = 0;
+        unsigned int numy = 0;
+        unsigned int numz = 0;
+
+        numx = offset.length()/cg.pp1u_x;
+        numy = offset.length()/cg.pp1u_y;
+        numz = offset.length()/cg.pp1u_z;
+
         //non threaded - its all broke-y
         //run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
 
         //threaded - it workey great
-        pulse_thread( v11, v12, v13, v21, v22, v23, std::stoi(a8));
+        pulse_thread( v11, v12, v13, v21, v22, v23, numx, numy, numz);
 
         
 

@@ -106,7 +106,9 @@ void run_cncplot(double f_x,
                  double s_x,
                  double s_y,
                  double s_z,
-                 int divs)  
+                 unsigned int x_divs, 
+                 unsigned int y_divs,                                   
+                 unsigned int z_divs) 
 {
 
     bool DEBUG = false; 
@@ -119,7 +121,7 @@ void run_cncplot(double f_x,
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
-    plot->calc_3d_pulses(s_p, e_p, divs, divs, divs);
+    plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs);
 
     if(DEBUG==true)
     {
@@ -151,11 +153,13 @@ void pulse_thread(double f_x,
                   double s_x,
                   double s_y,
                   double s_z,
-                  int divs)  
+                 unsigned int x_divs, 
+                 unsigned int y_divs,                                   
+                 unsigned int z_divs)  
 {
     
 
-    std::thread pgen_thread(run_cncplot, f_x, f_y, f_z, s_x, s_y, s_z, divs);
+    std::thread pgen_thread(run_cncplot, f_x, f_y, f_z, s_x, s_y, s_z, x_divs, y_divs, z_divs);
     //pgen_thread.detach();  
     pgen_thread.join(); 
 
@@ -321,18 +325,15 @@ void cnc_plot::process_vec(unsigned int window_idx)
     Vector3 offset = e_p - s_p;
 
     
+    unsigned int numx = 0;
+    unsigned int numy = 0;
+    unsigned int numz = 0;
+
+    numx = offset.length()/cg.pp1u_x;
+    numy = offset.length()/cg.pp1u_y;
+    numz = offset.length()/cg.pp1u_z;
     
-    // cg.pp1u_x           = 100;
-    // cg.pp1u_y           = 100;
-    // cg.pp1u_z           = 100;
-
-    //offset.length()
-
-
-    //this uses join(), not detach()
-    //the blocking nature of it is good enough to appear to work
-    //we need a whole lot more like mutex, semaphores, etc
-    pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, 100 ); 
+    pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
 
 }
 
