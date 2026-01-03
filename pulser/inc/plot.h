@@ -45,16 +45,17 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
 
 //----------------------------//
 
-//old version which we removed from class and brought back to life
-//this is so we can precache each section of pulsetrain without the hassle of 
-//dealing with internal object.pulsetrain data container 
+// old version which we removed from class and brought back to life
+// this is so we can precache each section of pulsetrain without the hassle of 
+// dealing with internal object.pulsetrain data container 
 
-void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
-                              Vector3 fr_pt, 
-                              Vector3 to_pt,
-                              int numdivs);
-
-
+// void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
+//                               Vector3 fr_pt, 
+//                               Vector3 to_pt,
+//                               unsigned int numdivx,
+//                               unsigned int numdivy,
+//                               unsigned int numdivz);
+ 
 
 /********************/
 
@@ -111,9 +112,11 @@ class cnc_plot
         void update_toolpaths(void);
         void loadpath( std::vector<Vector3>* pt_drawvecs);
         
-        void calc_3d_pulses(Vector3, 
-                            Vector3,
-                            unsigned int);
+        void calc_3d_pulses(Vector3 fr_pt, 
+                            Vector3 to_pt,
+                            unsigned int numdivx,
+                            unsigned int numdivy,
+                            unsigned int numdivz);
 
         void run_send_pulses(cncglobals* pt_cg,
                              float f_x, float f_y, float f_z,

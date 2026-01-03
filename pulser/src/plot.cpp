@@ -119,7 +119,7 @@ void run_cncplot(double f_x,
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
-    plot->calc_3d_pulses(s_p, e_p, divs);
+    plot->calc_3d_pulses(s_p, e_p, divs, divs, divs);
 
     if(DEBUG==true)
     {
@@ -316,6 +316,18 @@ void cnc_plot::process_vec(unsigned int window_idx)
     //set up the vector to process 
     Vector3 s_p = toolpath_vecs[window_idx];
     Vector3 e_p = toolpath_vecs[window_idx+1];  
+
+    //calculate length of the vector 
+    Vector3 offset = e_p - s_p;
+
+    
+    
+    // cg.pp1u_x           = 100;
+    // cg.pp1u_y           = 100;
+    // cg.pp1u_z           = 100;
+
+    //offset.length()
+
 
     //this uses join(), not detach()
     //the blocking nature of it is good enough to appear to work
@@ -594,7 +606,9 @@ void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs)
 
 void cnc_plot::calc_3d_pulses(Vector3 fr_pt, 
                               Vector3 to_pt,
-                              unsigned int numdivs)
+                              unsigned int numdivx,
+                              unsigned int numdivy,
+                              unsigned int numdivz)
 {
 
     pulsetrain.clear();
@@ -602,12 +616,6 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     bool debug = false;
 
     point_ops PG;
-
-    //set the pulses per linear unit (spatial unit divisions) - X,Y,Z unit prescaler 
-    //for now use one number for all 3 - we will add the others in later
-    unsigned int pp_lux      = numdivs;
-    unsigned int pp_luy      = numdivs;
-    unsigned int pp_luz      = numdivs;
 
     //calc a new 3D vector betwen the two points in 3D
     //Vector3 between   = sub(fr_pt, to_pt);     //old vector lib 
@@ -656,9 +664,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     //use the amount of change times the spatial divisions to get the pulses 
     //DEBUG - we may want to use the mag of the 3d vector in here                  
-    unsigned int num_pul_x = pp_lux*abs(delta_x);
-    unsigned int num_pul_y = pp_luy*abs(delta_y);
-    unsigned int num_pul_z = pp_luz*abs(delta_z); 
+    unsigned int num_pul_x = numdivx*abs(delta_x);
+    unsigned int num_pul_y = numdivy*abs(delta_y);
+    unsigned int num_pul_z = numdivz*abs(delta_z); 
 
     if (debug)
     {
@@ -675,7 +683,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     //--------------------------------------//             
     if (debug)
     {            
-        std::cout << "#   most   " << most << " "<< numdivs << " " <<"\n";  
+        std::cout << "#   most   " << most << " dx "<< numdivx << " dy "<< numdivy << " dz "<< numdivz <<"\n";  
         std::cout << "#   numpts " << num_pul_x <<" " << num_pul_y <<" " << num_pul_z <<"\n"; 
         std::cout << "#####\n";
     }
@@ -686,11 +694,23 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     
     // calc the pulses using a ratio of length to divs. 
     gen_pulses(&calcpt_x, most, num_pul_x);  
-    gen_pulses(&calcpt_y, most, num_pul_y);  
-    gen_pulses(&calcpt_z, most, num_pul_z);  
+    
 
-    ////
+    //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
+    if(FAKE_Z_UP_AXIS)
+    {
+        std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
+        
+        gen_pulses(&calcpt_z, most, num_pul_y);  
+        gen_pulses(&calcpt_y, most, num_pul_z); 
 
+    }else
+    {
+        gen_pulses(&calcpt_y, most, num_pul_y);  
+        gen_pulses(&calcpt_z, most, num_pul_z);         
+    }
+
+    //------------
     for(unsigned int a=0;a<most;a++)
     {
         pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));

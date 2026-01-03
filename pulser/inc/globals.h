@@ -14,6 +14,9 @@
 #define DEBUG_MOUSE_CLICK false
 
 
+#define FAKE_Z_UP_AXIS true
+
+
 //**********************************//
 
 

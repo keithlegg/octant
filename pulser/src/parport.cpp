@@ -382,7 +382,7 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
 
         /*****/
 
-        //y direction high 
+        //y direction high (optional Z if swapped) 
         if (dirpulses.y>1){
             send_byte = send_byte |= (1 << 3);
             outb(send_byte, cg->parport1_addr);  
@@ -406,7 +406,7 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
         /*****/
         //THIS IS A STANDARD 3D SETUP USING Z AXIS
 
-        //z direction high 
+        //z direction high (optional Y if swapped) 
         if (dirpulses.z>1){
             send_byte = send_byte |= (1 << 5);
             outb(send_byte, cg->parport1_addr);               
