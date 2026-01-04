@@ -917,6 +917,9 @@ class polygon_operator(pop3d):
             for idx in range(len(ply)):
                 # iterate by two and store segments
                 cidx = ply[idx-1]
+                
+                print(len(geom[1]), cidx)
+
                 out_edge_ids.append((  cidx            ,ply[idx]          )) # poly index
                 out_edge_pts.append((  geom[1][cidx-2] , geom[1][cidx-1]  )) # point index
 

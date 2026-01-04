@@ -25,10 +25,9 @@ from examples.milling import *
 #from examples.render import *
 from tools.imagecam import * 
 
-"""
-from gnolinker import * 
-mu = math_util() 
-"""
+#mu = math_util() 
+
+ 
 
 ##***********************************************************##
 """ 
@@ -37,8 +36,6 @@ mu = math_util()
 
     python3 pycore.py 3d_obj/sphere.obj runcommand 
 
-
-
     netstat -na | grep 2864
 
 
@@ -46,47 +43,6 @@ mu = math_util()
 
 
 
-
-##***********************************************************##
-
-## print(sys.argv, len(sys.argv))
-
-if __name__=="__main__":
-    
-    
-    arg2 = sys.argv[1] #.encode('utf-8', 'replace').decode()
-    
-    arg3 = sys.argv[2] #.encode('utf-8', 'replace').decode()
-
-    if len(sys.argv)<3:
-        print("no arguments to command line pycore\n")
-        exit()
-    
-    # if len(sys.argv) > 2:
-    #     if not os.path.exists(sys.argv[1]):
-    #         print("pycore warn: "+sys.argv[1] +" does not exist \n"  )
-    #         #exit() 
-
-    #PYCORE_OBJ_IN   = arg2
-    #PYCORE_GEOMPATH = "3d_obj"
-    #PYCORE_OBJ_OUT  = "%s/%s"%(PYCORE_GEOMPATH, "PYCORE.obj")
-
-    #PYCORE_BMP_OUT  = "py_render.bmp"
-    #M44_DISK_FILE = "camera_matrix.olm"
-    # print("# PYCORE %s --> %s "% (PYCORE_OBJ_IN, PYCORE_OBJ_OUT) )
-
-    print("\n\n\n\n")
-    print("### PYCORE INPUT %s %s"% (arg2,arg3))
-
-
-"""
-print("## DEBUG PATHS ")  
-print("## PYCORE_OBJ_IN   ", PYCORE_OBJ_IN )
-print("## PYCORE_GEOMPATH ", PYCORE_GEOMPATH )
-print("## PYCORE_OBJ_OUT  ", PYCORE_OBJ_OUT )
-print("## PYCORE_BMP_OUT  ", PYCORE_BMP_OUT )
-print("## M44_DISK_FILE   ", M44_DISK_FILE )
-"""
 
 
 
@@ -114,6 +70,153 @@ print("## M44_DISK_FILE   ", M44_DISK_FILE )
 
 
 
+
+
+"""
+print("## DEBUG PATHS ")  
+print("## PYCORE_OBJ_IN   ", PYCORE_OBJ_IN )
+print("## PYCORE_GEOMPATH ", PYCORE_GEOMPATH )
+print("## PYCORE_OBJ_OUT  ", PYCORE_OBJ_OUT )
+print("## PYCORE_BMP_OUT  ", PYCORE_BMP_OUT )
+print("## M44_DISK_FILE   ", M44_DISK_FILE )
+"""
+
+##***********************************************************##
+##***********************************************************##
+##***********************************************************##
+##***********************************************************##
+
+"""
+def extract():
+    obj = object3d()
+    obj.load(PYCORE_OBJ_IN)
+
+    obj2 = object3d()
+
+    ## you can use it just with a list of IDs 
+    # geom = obj.get_face_geom( [22,23,1,2,3,4] )
+
+    ## or you can use indexer for more power 
+    pids = obj.indexer( ids=[30],span=[8,10])
+    geom = obj.get_face_geom( pids, reindex=True )
+    obj2.insert(geom)
+
+    pids = obj.indexer( ids=[5,10])
+    geom = obj.get_face_geom( pids, reindex=True )
+    obj2.insert(geom)
+
+    obj2.save(PYCORE_OBJ_OUT)
+    
+
+
+def kicad_test():
+    # experiment to parse a kicad pcb file and export it to gcode 
+    kicadproj = '/Users/klegg/serv/camtest'
+    #kicadproj = '/Users/klegg/serv/SID_DUINO3'
+
+    tokens = kicadproj.split(os.sep) 
+    projname = tokens[len(tokens)-1]
+    pcbname = projname+'.kicad_pcb'
+
+    kiparser = pcbfile()
+
+    #kiparser.load_gcode('gcode/ngc/3D_Chips.ngc')
+    kiparser.load_kicadpcb(kicadproj+os.sep+pcbname)
+
+    # pts = kiparser.calc_circle(pos=(-2,5,0), dia=30, spokes=5)
+    # kiparser.filled_polys.append(pts) 
+    # pts = kiparser.calc_circle(pos=(1,1,0), dia=60, spokes=11)
+    # kiparser.gr_polys.append(pts) 
+
+    #kiparser.bufferinfo()
+    #kiparser.showbuffers()
+    #kiparser.show_geom()
+
+    kiparser.export_ngc('cineballz.ngc')
+    kiparser.save_3d_obj(PYCORE_OBJ_OUT)
+
+
+
+def linuxcnctest():
+    # experiment to parse a gcode file 
+    print("####### foo")
+    gc_poly = gcode()
+ 
+    cwd = os.getcwd()
+    path = cwd+'/gnelscript/gcode/ngc/arcspiral.ngc'
+    gc_poly.load_gcode(path)
+
+    #gc_poly.load_gcode('gcode/ngc/arcspiral.ngc')
+    #gc_poly.load_gcode('gcode/ngc/calibrate_5X1.ngc')
+    #gc_poly.load_gcode('gcode/ngc/3D_Chips.ngc')
+
+    gc_poly.show_data()
+
+
+
+def linuxcnctest2():
+    # standalone gcode experiment 
+    gcode = generate_gcode()
+    gcode.lineartest()
+    
+    #print( gcode.outfile )
+    gcode.savengc("cineballs.ngc")
+
+
+
+def gear_test():
+    #experiment to generate some gears 
+    gearz = gear_generator()
+    
+    # build( shaftdia, dia, teeth_height, numteeth ):
+
+    pts =  gearz.build(1, 2,.5, 12) 
+    gearz.linegeom_fr_points(pts, color=(100,0,100), periodic=False )
+    gearz.save(PYCORE_OBJ_OUT)
+
+
+
+#####################################################
+
+
+
+if __name__=="__main__":
+
+    print("############ ", sys.argv )
+
+    if sys.argv[2] == 'tcptest':
+        tcpviz = tcpviz()
+        #tcpviz.send_str('abcdefg')
+        #tcpviz.close()
+
+        #tcpviz.vz_locator() 
+        tcpviz.vp_set_grid('1')
+
+    if sys.argv[2] == 'tcpclose':
+        tcpviz = tcpviz()
+        tcpviz.close()
+
+        #if sys.argv[1] =='close':
+        #    tcp_send(0x00)
+        #else:
+        #    tcp_send(bytes(sys.argv[1], 'utf-8'))
+
+    if sys.argv[2] == 'runcommand':
+        runcommand()
+
+    if sys.argv[2] == 'scanline':
+        pyrender_ogl()    
+
+    #if sys.argv[2] == 'normals':
+    #    gen_normals()
+
+"""
+
+
+
+
+
+
 ##***********************************************************##
 ##***********************************************************##
 ##***********************************************************##
@@ -121,7 +224,13 @@ print("## M44_DISK_FILE   ", M44_DISK_FILE )
 ## DEFINE PYCORE COMMANDS (FROM PYGFX)
 
 
-"""
+def triangulate():
+    obj = object3d()
+    obj.load(PYCORE_OBJ_IN)
+    obj.triangulate()
+    obj.save(PYCORE_OBJ_OUT)
+
+
 
 def loadkicad():
     kicad = pcbfile()
@@ -138,13 +247,9 @@ def loadkicad():
     kicad.save_3d_obj(PYCORE_OBJ_OUT) 
  
 
-def triangulate():
-    obj = object3d()
-    obj.load(PYCORE_OBJ_IN)
-    obj.triangulate()
-    obj.save(PYCORE_OBJ_OUT)
 
 
+ 
 ##------------------
 
 def gen_normals():
@@ -196,7 +301,7 @@ def modify_partial():
     obj = object3d()
     obj.load(PYCORE_OBJ_IN)
     
-    geom = obj.sub_select_geom( span=(40,120) )
+    geom = obj.sub_select_geom( span=(0,10) )
 
 
     newpts = obj.points
@@ -382,11 +487,13 @@ def pt_transform():
 
 ##------------------
 def face_extrude():
+    """
     brute force test of face extrude 
     extrudes all faces in a polygon object 
     also will display a cheapo test "progress bar"
     because it can be slow 
-    
+    """
+
     obj = object3d()
     obj.load(PYCORE_OBJ_IN)
 
@@ -732,235 +839,30 @@ def test_pointgen():
     # print( obj.indexer( ids, [1,10], False , 10) )
     print(obj.chunker(6, ids) )
 
-"""
 
-
-#####################################################
-
-
-
-"""
-obj = object3d()
-#obj.load('gnelscript/objects/cube.obj')
-obj.load(PYCORE_OBJ_IN)
-
-#obj.rotate_pts((45,45,45))
-obj.scale_pts((.5,.5,.5))
-
-obj.save(PYCORE_OBJ_OUT)
-#obj.save("%s/%s"%(PYCORE_GEOMPATH, "cube.obj"))
-""" 
-
-
-
-
-## """ lookup and return the polygon indices and points for a single polygon 
-##     reindex - if True  - renumber the new polygon indices startring at 1, 
-##               if False - retain the oringial numbering 
-##     geom - act on a geom obj passed in, or on self
-## """
-
-"""
-def extract():
-    obj = object3d()
-    obj.load(PYCORE_OBJ_IN)
-
-    obj2 = object3d()
-
-    ## you can use it just with a list of IDs 
-    # geom = obj.get_face_geom( [22,23,1,2,3,4] )
-
-    ## or you can use indexer for more power 
-    pids = obj.indexer( ids=[30],span=[8,10])
-    geom = obj.get_face_geom( pids, reindex=True )
-    obj2.insert(geom)
-
-    pids = obj.indexer( ids=[5,10])
-    geom = obj.get_face_geom( pids, reindex=True )
-    obj2.insert(geom)
-
-    obj2.save(PYCORE_OBJ_OUT)
-    
-
-
-def kicad_test():
-    # experiment to parse a kicad pcb file and export it to gcode 
-    kicadproj = '/Users/klegg/serv/camtest'
-    #kicadproj = '/Users/klegg/serv/SID_DUINO3'
-
-    tokens = kicadproj.split(os.sep) 
-    projname = tokens[len(tokens)-1]
-    pcbname = projname+'.kicad_pcb'
-
-    kiparser = pcbfile()
-
-    #kiparser.load_gcode('gcode/ngc/3D_Chips.ngc')
-    kiparser.load_kicadpcb(kicadproj+os.sep+pcbname)
-
-    # pts = kiparser.calc_circle(pos=(-2,5,0), dia=30, spokes=5)
-    # kiparser.filled_polys.append(pts) 
-    # pts = kiparser.calc_circle(pos=(1,1,0), dia=60, spokes=11)
-    # kiparser.gr_polys.append(pts) 
-
-    #kiparser.bufferinfo()
-    #kiparser.showbuffers()
-    #kiparser.show_geom()
-
-    kiparser.export_ngc('cineballz.ngc')
-    kiparser.save_3d_obj(PYCORE_OBJ_OUT)
-
-
-
-def linuxcnctest():
-    # experiment to parse a gcode file 
-    print("####### foo")
-    gc_poly = gcode()
- 
-    cwd = os.getcwd()
-    path = cwd+'/gnelscript/gcode/ngc/arcspiral.ngc'
-    gc_poly.load_gcode(path)
-
-    #gc_poly.load_gcode('gcode/ngc/arcspiral.ngc')
-    #gc_poly.load_gcode('gcode/ngc/calibrate_5X1.ngc')
-    #gc_poly.load_gcode('gcode/ngc/3D_Chips.ngc')
-
-    gc_poly.show_data()
-
-
-
-def linuxcnctest2():
-    # standalone gcode experiment 
-    gcode = generate_gcode()
-    gcode.lineartest()
-    
-    #print( gcode.outfile )
-    gcode.savengc("cineballs.ngc")
-
-
-
-def gear_test():
-    #experiment to generate some gears 
-    gearz = gear_generator()
-    
-    # build( shaftdia, dia, teeth_height, numteeth ):
-
-    pts =  gearz.build(1, 2,.5, 12) 
-    gearz.linegeom_fr_points(pts, color=(100,0,100), periodic=False )
-    gearz.save(PYCORE_OBJ_OUT)
-
-################################################
-
-## parse commands coming in and run them
-def runcommand():
-    #SELECTION EXAMPLES 
-    #slice_extract_and_makenew(PYCORE_OBJ_OUT)
-    #extract_by_copy_hack(PYCORE_OBJ_OUT)
-    #test_subsel_point_transform(PYCORE_OBJ_OUT)
-    ## modify_a_subselect(PYCORE_OBJ_OUT) ##BROKEN 
-    #select_polygons_spatially(  PYCORE_OBJ_OUT, (.25,.21,1), 5 )
-
-    #VECTOR EXAMPLES 
-    #rotate_around_vec(PYCORE_OBJ_OUT)
-    #m33  = matrix33();render_m33_as_vec3s(m33, PYCORE_OBJ_OUT, transpose=False, vlist=None)
-    #numpy_m33_fromvec(PYCORE_OBJ_OUT)
-    #make_right_triangle(PYCORE_OBJ_OUT, 71.61)
-    # unit_circle_viewer(PYCORE_OBJ_OUT) ##BROKEN 
-    #visualize_cross_product( PYCORE_OBJ_OUT )
-    #offset_between_2vecs( PYCORE_OBJ_OUT )
-    #build_orthogonal_vector(PYCORE_OBJ_OUT)
-
-    #WIP EXAMPLES 
-    #place_obect_on_vector(PYCORE_OBJ_OUT)
-    
-    kicad_test()
-    #scratch_obj2()
-    #linuxcnctest()
-    #linuxcnctest2()
-    #gear_test()
-
-
-
-    #extract()
-
-    #face_extrude()
-
-    #loadgcode()
-    #loadkicad()
-    #test_pointgen()
-
-    #scratch_obj1()
-
-    #bezier3d()
-    #lathe()
-    
-    #visualize_matrix_rotation()
-    #visualize_perspective_matrix()
-    #gen_normals()
-    
-    #circle_cube_pts()
-    #primitive('triangle')
-    
-    #procedural_1()
-    
-
-    #primitive('sphere')
-
-    #pt_transform()
-    #procedural_1()
-    #modify_partial()
-    #triangulate()
-    #object_rotate()
-    #copy_sop()
-    pass
-
-
-
-
-
-
-
-#####################################################
-
-
+##***********************************************************##
+##***********************************************************##
+##***********************************************************##
 
 if __name__=="__main__":
+    
+    
+    arg2 = sys.argv[1] #.encode('utf-8', 'replace').decode()
+    arg3 = sys.argv[2] #.encode('utf-8', 'replace').decode()
 
-    print("############ ", sys.argv )
+    if len(sys.argv)<3:
+        print("no arguments to command line pycore\n")
+        exit()
+    
+    PYCORE_OBJ_IN   = arg2
+    PYCORE_GEOMPATH = "3d_obj"
+    PYCORE_OBJ_OUT  = "%s/%s"%(PYCORE_GEOMPATH, "PYCORE.obj")
 
-    if sys.argv[2] == 'tcptest':
-        tcpviz = tcpviz()
-        #tcpviz.send_str('abcdefg')
-        #tcpviz.close()
-
-        #tcpviz.vz_locator() 
-        tcpviz.vp_set_grid('1')
-
-    if sys.argv[2] == 'tcpclose':
-        tcpviz = tcpviz()
-        tcpviz.close()
-
-        #if sys.argv[1] =='close':
-        #    tcp_send(0x00)
-        #else:
-        #    tcp_send(bytes(sys.argv[1], 'utf-8'))
-
-    if sys.argv[2] == 'runcommand':
-        runcommand()
-
-    if sys.argv[2] == 'scanline':
-        pyrender_ogl()    
-
-    #if sys.argv[2] == 'normals':
-    #    gen_normals()
+    print("\n\n\n\n")
+    print("### PYCORE INPUT %s %s"% (arg2,arg3))
 
 
 
-
-
-
-
-
-"""
 
 
 
