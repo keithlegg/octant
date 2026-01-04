@@ -334,7 +334,7 @@ void cnc_plot::process_vec(unsigned int window_idx)
     numz = offset.length()*cg.pp1u_z;
         
     //std::cout << "num calc " << offset.length() <<" "<< cg.pp1u_x << " " << cg.pp1u_y << " " << cg.pp1u_z << "\n";    
-    //std::cout << "num calc " << numx << " " << numy << " " << numz << "\n";
+    std::cout << "num calc " << numx << " " << numy << " " << numz << "\n";
 
     pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
 
