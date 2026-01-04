@@ -89,46 +89,10 @@ if SHAPELY_IS_LOADED:
     from shapely import MultiPolygon as shp_mltply
     from shapely import LineString as shp_ln
 
-##------------------------
-# CORE MODULES
-
-"""
-
-from chopper.pygfx.grid_ops import *
-from chopper.pygfx.kicad_ops import *
-from chopper.pygfx.math_ops import *
-from chopper.pygfx.neighbors import *
-from chopper.pygfx.obj2d import *
-from chopper.pygfx.obj3d import *
-from chopper.pygfx.point_ops import *
-from chopper.pygfx.point_ops_2d import *
-from chopper.pygfx.raster_ops import *
-from chopper.pygfx.render import *
-"""
-
-
-##------------------------
-# EXAMPLES  
-
-"""
-from chopper.examples.objects_2d import *
-from chopper.examples.milling import *
-from chopper.examples.raster import *
-from chopper.examples.selection import *
-
-from chopper.examples.wip import *
-from chopper.examples.dag import *
-from chopper.examples.dag import *
-from chopper.examples.objects_3d import *
-"""
 
 ##------------------------
 # TOOLS 
 
-"""
-
-from chopper.tools.raytrace import *
-"""
 
 from chopper.tools.imagecam import *
 from chopper.tools.raytrace import *
@@ -144,8 +108,6 @@ from chopper.pygfx.doc_ops import *
 
 from chopper.unit_tests.ut_matrix import *
 
-#test_2d_intersect() 
-
 
 GLOBAL_PROJ = '/Users/klegg/serv/gnolmec'
 
@@ -155,13 +117,7 @@ GLOBAL_PROJ = '/Users/klegg/serv/gnolmec'
 
 #make_rect(4, 4, GLOBAL_PROJ, 'quad')
 
-
-
-pcb_to_tesselated(GLOBAL_PROJ, 'foo.kicad_pcb')
-
-
-
-
+#pcb_to_tesselated(GLOBAL_PROJ, 'foo.kicad_pcb')
 
 #def tesselate_json(scale, numx, numy, numrots, seedpts, folder, injson, outjson):
 

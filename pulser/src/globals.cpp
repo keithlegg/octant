@@ -294,14 +294,13 @@ void cncglobals::load_objects(void)
             strcpy(char_array, obj_filepaths[x].c_str()); 
             pt_model_buffer->load(char_array);
             pt_model_buffer->calc_normals();
+
+            //DEBUG - this assumes the last obj loaded (or just 1)
+            active_filepath = obj_filepaths[x];
+
         };
 
-        //DEBUG - this assumes the last obj loaded (or just 1)
-        //probably a lousy way to do things 
-        
-        //store the name of the file we are working on 
-        //this is so python can work on it 
-        //active_filepath = obj_filepaths[x];
+
     };
 }
 

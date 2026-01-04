@@ -663,8 +663,14 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     }
     
     //first element of pulse train stores the direction 
-    //pt_pulsetrain->push_back(newvec3(xp,yp,zp));
-    pulsetrain.push_back(Vector3(xp,yp,zp));
+    Vector3 dirvec = Vector3(xp,yp,zp);
+
+    pulsetrain.push_back(dirvec);
+
+    if (debug)
+    {
+        std::cout << " direction of vec " << " x " << dirvec.x << " y " << dirvec.y << " z " << dirvec.z << "\n";
+     }
 
     //use the amount of change times the spatial divisions to get the pulses 
     //DEBUG - we may want to use the mag of the 3d vector in here                  

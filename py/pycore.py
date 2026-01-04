@@ -3,21 +3,29 @@ import os
 import sys
 
 
+from pygfx import NUMPY_IS_LOADED, SCIPY_IS_LOADED, GEOJSON_IS_LOADED, \
+                  SHAPELY_IS_LOADED, TRIMESH_IS_LOADED, NETWORKX_IS_LOADED, \
+                  SKLEARN_IS_LOADED, MATPLOTLIB_IS_LOADED 
+
+
+
+ 
+from pygfx.math_ops import  *
+from pygfx.point_ops import *
+from pygfx.obj3d import  *
+from pygfx.render import *
+
+
+from examples.selection import * 
+ 
+from examples.vector import *
+from examples.wip import *
+from examples.milling import *
+#from examples.raster import *
+#from examples.render import *
+from tools.imagecam import * 
+
 """
-from gnelscript.pygfx.math_ops import  *
-from gnelscript.pygfx.point_ops import *
-from gnelscript.pygfx.obj3d import  *
-from gnelscript.pygfx.render import *
-#from gnelscript.pygfx.gis_vector_ops import *
-# from gnelscript.pygfx.kicad_ops import * 
-# from gnelscript.pygfx.milling_ops import * 
-from gnelscript.examples.selection import * 
-from gnelscript.examples.vector import *
-from gnelscript.examples.wip import *
-from gnelscript.examples.milling import *
-#from gnelscript.examples.raster import *
-#from gnelscript.examples.render import *
-from gnelscript.tools.imagecam import * 
 from gnolinker import * 
 mu = math_util() 
 """
@@ -45,9 +53,12 @@ mu = math_util()
 
 if __name__=="__main__":
     
+    
     arg2 = sys.argv[1] #.encode('utf-8', 'replace').decode()
+    
+    arg3 = sys.argv[2] #.encode('utf-8', 'replace').decode()
 
-    if len(sys.argv)<2:
+    if len(sys.argv)<3:
         print("no arguments to command line pycore\n")
         exit()
     
@@ -65,7 +76,7 @@ if __name__=="__main__":
     # print("# PYCORE %s --> %s "% (PYCORE_OBJ_IN, PYCORE_OBJ_OUT) )
 
     print("\n\n\n\n")
-    print("### PYCORE INPUT %s"% arg2)
+    print("### PYCORE INPUT %s %s"% (arg2,arg3))
 
 
 """

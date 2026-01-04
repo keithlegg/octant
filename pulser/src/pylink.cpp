@@ -66,17 +66,23 @@ extern int TCP_PORT;
 
 void exe_python(void)
 {
-    std::cout << "ACTIVE OBJ FILE IS " << cg.active_filepath << "\n";
+    if(cg.active_filepath.size()==0)
+    {
+        std::cout << "ERROR - NO PYTHON OBJECT TO LINK \n";
+    }
 
+    //std::cout << "ACTIVE PYTHON OBJ IS " << cg.active_filepath << "\n";
     
     char buffer[256];
+    
+    std::string runcommand ="foo";
 
     if (cg.active_filepath.size() )
     {
-        snprintf(buffer, sizeof(buffer), "python3 ../py/pycore.py %s", cg.active_filepath.c_str());
+        snprintf(buffer, sizeof(buffer), "python3 ../py/pycore.py %s %s", cg.active_filepath.c_str(), runcommand.c_str() );
     }
 
-    //std::cout << "COMMAND SENT FROM C "<< buffer << "\n";
+    std::cout << "PY COMMAND SENT: "<< buffer << "\n";
 
     system(buffer);
 
