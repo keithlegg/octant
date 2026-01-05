@@ -9,11 +9,6 @@
     Some of the older, single key callbacks are called with the legacy function  
       --> key_cb()
 
-
-    DEBUG - we need a way to call commands from the headless, CLI only. 
-    Need to rethink and rebuild the whole command structure. 
-
-
        
     ------------------------------------------- 
 
@@ -97,16 +92,18 @@ void run_machine(void)
     pt_motionplot->run_sim();
 }
 
-void reset_machine(void)
+
+void pause_machine(void)
 {
-    //pt_motionplot->run_sim();
+    pt_motionplot->pause();
 }
 
 
 
+//void reset_machine(void)
 void stop_machine(void)
 {
-    pt_motionplot->pause();
+    pt_motionplot->stop();
 }
 
 
@@ -538,7 +535,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     //emergency soft stop is ` key 
     if(i==96)
     {
-        stop_machine();
+        pause_machine();        
     }
 
     //-----

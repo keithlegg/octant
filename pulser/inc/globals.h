@@ -19,8 +19,10 @@
 
 //#define DISABLE_PARPORT false
 
-#define DEBUG_MOUSE_CLICK true
+#define DEBUG_MOUSE_CLICK false
 
+//this will swap the Z-Y axis on the signals out only 
+//Octant is Y up, CNC/CAM is Z up 
 #define FAKE_Z_UP_AXIS true
 
 
