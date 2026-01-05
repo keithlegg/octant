@@ -315,7 +315,13 @@ void cnc_plot::run_sim(void)
 /******************************************/
 void cnc_plot::process_vec(unsigned int window_idx)
 {
-    std::cout << "called prcess vec \n";
+    bool debug = false;
+
+    if(debug)
+    {   
+        std::cout << "called prcess vec \n";
+    }
+
 
     //set up the vector to process 
     Vector3 s_p = toolpath_vecs[window_idx];
@@ -332,9 +338,12 @@ void cnc_plot::process_vec(unsigned int window_idx)
     numx = offset.length()*cg.pp1u_x;
     numy = offset.length()*cg.pp1u_y;
     numz = offset.length()*cg.pp1u_z;
-        
-    //std::cout << "num calc " << offset.length() <<" "<< cg.pp1u_x << " " << cg.pp1u_y << " " << cg.pp1u_z << "\n";    
-    std::cout << "num calc " << numx << " " << numy << " " << numz << "\n";
+    
+    if(debug)
+    {    
+        //std::cout << "num calc " << offset.length() <<" "<< cg.pp1u_x << " " << cg.pp1u_y << " " << cg.pp1u_z << "\n";    
+        std::cout << "num calc " << numx << " " << numy << " " << numz << "\n";
+    }
 
     pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
 
@@ -344,6 +353,8 @@ void cnc_plot::process_vec(unsigned int window_idx)
 /******************************************/
 void cnc_plot::update_sim(void)
 {
+    bool debug = false;
+
     if (mtime.tm_running)
     {
         //----------------- 
@@ -383,7 +394,10 @@ void cnc_plot::update_sim(void)
             //iterate the stack of vectors to process
             if (vec_idx<toolpath_vecs.size()-2)
             {
-                std::cout << "finished processing vector "<< vec_idx+1 <<" of " << toolpath_vecs.size()-2 << "\n";
+                if(debug)
+                { 
+                    std::cout << "finished processing vector "<< vec_idx+1 <<" of " << toolpath_vecs.size()-2 << "\n";
+                }
                 vec_idx++;        
                 mtime.reset_sim();
                 localsimtime=0;
@@ -709,7 +723,10 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
     if(FAKE_Z_UP_AXIS)
     {
-        std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
+        if (debug)
+        { 
+            std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
+        }
         
         gen_pulses(&calcpt_z, most, num_pul_y);  
         gen_pulses(&calcpt_y, most, num_pul_z); 
