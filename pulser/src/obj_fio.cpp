@@ -498,10 +498,10 @@ void obj_model::save( char *filepath)
     // export array of lines
     if(num_lines>0)
     {
-        for (unsigned int xx=0; xx<num_lines; xx++)
+        for (uint xx=0; xx<num_lines; xx++)
         {
             myfile << "f ";
-            for (unsigned int ff=0; ff < lines[xx].size();ff++)
+            for (uint ff=0; ff < lines[xx].size();ff++)
             {
                 if (ff<lines[xx].size()-1){ 
                     myfile << lines[xx][ff] << " ";
@@ -518,10 +518,10 @@ void obj_model::save( char *filepath)
     // export array of triangles
     if(num_tris>0)
     {
-        for (unsigned int xx=0; xx<num_tris; xx++)
+        for (uint xx=0; xx<num_tris; xx++)
         {
             myfile << "f ";
-            for (unsigned int ff=0; ff < tris[xx].size();ff++)
+            for (uint ff=0; ff < tris[xx].size();ff++)
             {
                 myfile << tris[xx][ff] << " "; 
             }
@@ -533,10 +533,10 @@ void obj_model::save( char *filepath)
     // export array of quads
     if(num_quads>0)
     {
-        for (unsigned int xx=0; xx<num_quads; xx++)
+        for (uint xx=0; xx<num_quads; xx++)
         {
             myfile << "f ";
-            for (unsigned int ff=0; ff < quads[xx].size();ff++)
+            for (uint ff=0; ff < quads[xx].size();ff++)
             {
                 myfile << quads[xx][ff] << " "; 
             }

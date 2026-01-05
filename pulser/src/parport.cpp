@@ -54,7 +54,7 @@ extern bool tog_testport;
 
 
 /***************************************/
-bool check_ports_available(unsigned int portaddr)
+bool check_ports_available(uint portaddr)
 {
     bool send_it = false;
 
@@ -80,14 +80,14 @@ bool check_ports_available(unsigned int portaddr)
 
 /***************************************/
 //how fast does this thing go, anyway?
-void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
+void cnc_parport::speed_test(cncglobals* cg, uint big_num)
 {
 
     check_ports_available(cg->parport1_addr);
     std::cout << "pulsing port: addr: "<< cg->parport1_addr << "\n";
 
     //run at full speed to see what she can do 
-    for (unsigned i=0;i<big_num;i++)
+    for (uint i=0;i<big_num;i++)
     {
         outb(0xff, cg->parport1_addr);  
         outb(0x00, cg->parport1_addr);  
@@ -99,7 +99,7 @@ void cnc_parport::speed_test(cncglobals* cg, unsigned int big_num)
     std::cout << "pulsing port: addr: "<< cg->parport2_addr << "\n";
 
     //run at full speed to see what she can do 
-    for (unsigned i=0;i<big_num;i++)
+    for (uint i=0;i<big_num;i++)
     {
         outb(0xff, cg->parport2_addr);    
         outb(0x00, cg->parport2_addr);  
@@ -209,7 +209,7 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 /***************************************/
 //turn auxillary device on  (extruder, spindle motor, etc)
 
-void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
+void cnc_parport::aux_on(cncglobals* cg, uint pin)
 {
     check_ports_available(cg->parport1_addr);
 
@@ -226,7 +226,7 @@ void cnc_parport::aux_on(cncglobals* cg, unsigned int pin)
 /***************************************/
 //turn auxillary device off  (extruder, spindle motor, etc)
 
-void cnc_parport::aux_off(cncglobals* cg, unsigned int pin)
+void cnc_parport::aux_off(cncglobals* cg, uint pin)
 {
     check_ports_available(cg->parport1_addr);
 
@@ -335,7 +335,7 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
     check_ports_available(cg->parport1_addr);
 
     //unsigned char send_byte = 0x00;
-    unsigned int send_byte = 0;
+    uint send_byte = 0;
 
     bool debug         = false;
     bool enable_send   = true; 
@@ -536,10 +536,10 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 {
     check_ports_available(cg->parport1_addr);
 
-    unsigned int send_byte = 0;
+    uint send_byte = 0;
 
     //-------------
-    bool debug         = true;
+    bool debug         = false;
 
     bool enable_send   = true; 
     bool enable_limits = false; 
@@ -549,9 +549,18 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
     if (debug)
     {
         std::cout << "# we have pulses! count: " << pt_plot->pulsetrain.size() << "\n";
-        std::cout << "# parport address is :   " << cg->parport1_addr          << "\n";
-        std::cout << "# delay us           :   " << cg->pp1_pulse_dly_us       << "\n";
+        
+        if(pt_plot->pulsetrain.size())
+        { 
+            Vector3 tmp = pt_plot->pulsetrain.at(0); 
+            std::cout << "# pulse direction      :   " << tmp.x << " "<< tmp.y << " " << tmp.z   << "\n";
+        }
+
+        std::cout << "# parport address is   :   " << cg->parport1_addr          << "\n";
+        std::cout << "# delay us             :   " << cg->pp1_pulse_dly_us       << "\n";
+        std::cout << "#-------------------------#\n";
     }
+
 
     if(enable_send==1)
     {
@@ -611,7 +620,7 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 
     //the first element is reserved for direction data 
     //we intentionally skip it starting at index 1 
-    for(unsigned int x=1;x<pt_plot->pulsetrain.size();x++)
+    for(uint x=1;x<pt_plot->pulsetrain.size();x++)
     {
 
         //update the progress so we can display it in the GUI 
@@ -674,11 +683,11 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
             }//if limit switches not triggered (or disabled)
 
             usleep(cg->pp1_pulse_dly_us); 
-        }
+        }//if enable send 
 
-    }
+    }//iterate pulsetrain
 
-    if(enable_send ==1 && debug)
+    if(enable_send == 1 && debug)
     {
         std::cout << "finished transmitting pulses.\n";
     }
@@ -700,13 +709,13 @@ void cnc_parport::test_port_output(cncglobals* cg, int number)
 {
     check_ports_available(cg->parport1_addr);
 
-    unsigned int send_byte = 0;
+    uint send_byte = 0;
 
     outb(0x00,cg->parport1_addr); 
-    for(unsigned int b=0;b<number;b++)
+    for(uint b=0;b<number;b++)
     {
         send_byte = 0x01;
-        for(unsigned int a=0;a<8;a++)
+        for(uint a=0;a<8;a++)
         {
             outb(send_byte,cg->parport1_addr);
             usleep(cg->pp1_pulse_dly_us); 

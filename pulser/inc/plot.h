@@ -9,12 +9,6 @@
 #define MAX_NUM_PLY 100000
 
 
-
-void call1(void);
-int call2(void);
-
-
-
 //----------------------------//
 
 void pulse_thread(double f_x,
@@ -23,9 +17,9 @@ void pulse_thread(double f_x,
                   double s_x,
                   double s_y,
                   double s_z,
-                 unsigned int x_divs, 
-                 unsigned int y_divs,                                   
-                 unsigned int z_divs);  
+                 uint x_divs, 
+                 uint y_divs,                                   
+                 uint z_divs);  
 
 //----------------------------//
 void run_cncplot(double f_x,
@@ -34,9 +28,9 @@ void run_cncplot(double f_x,
                  double s_x,
                  double s_y,
                  double s_z,
-                 unsigned int x_divs, 
-                 unsigned int y_divs,                                   
-                 unsigned int z_divs);  
+                 uint x_divs, 
+                 uint y_divs,                                   
+                 uint z_divs);  
 
 
 //----------------------------//
@@ -44,25 +38,8 @@ void run_cncplot(double f_x,
 //historicaly it processed pulsetrain data not stored in object itself 
 void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
 
-//old experimental version that used true 3D data to build pulsetrain 
-//void gen_3d_pules(std::vector<Vector3>*, int, int);
 
 //----------------------------//
-
-// old version which we removed from class and brought back to life
-// this is so we can precache each section of pulsetrain without the hassle of 
-// dealing with internal object.pulsetrain data container 
-
-// void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
-//                               Vector3 fr_pt, 
-//                               Vector3 to_pt,
-//                               unsigned int numdivx,
-//                               unsigned int numdivy,
-//                               unsigned int numdivz);
- 
-
-/********************/
-
 
 class cnc_plot
 {
@@ -80,8 +57,8 @@ class cnc_plot
             prg_origin = Vector3(0,0,0);
             prg_end    = Vector3(0,0,0);
 
-            //vec1.reserve(30);  // Allocate space for 30 items, but vec1 is still empty.
-            //vec2.resize(30);  // Allocate space for 30 items, and vec2 now contains 30 items.
+            //vec1.reserve(30);  //  how does reserve work ??
+            //vec2.resize(30);   // 
 
         };
         
@@ -90,7 +67,7 @@ class cnc_plot
         void show(void);
         void showgeom(void);
         void showpthids(void);
-        void showply(unsigned int vec_idx);
+        void showply(uint vec_idx);
         void show_pt(void);
 
 
@@ -106,7 +83,7 @@ class cnc_plot
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
         
-        void process_vec(unsigned int vec_idx);
+        void process_vec(uint vec_idx);
 
         void add_new_polygon(int numply, int numids);
         
@@ -118,31 +95,29 @@ class cnc_plot
         
         void calc_3d_pulses(Vector3 fr_pt, 
                             Vector3 to_pt,
-                            unsigned int numdivx,
-                            unsigned int numdivy,
-                            unsigned int numdivz);
+                            uint numdivx,
+                            uint numdivy,
+                            uint numdivz);
 
         void run_send_pulses(cncglobals* pt_cg,
                              float f_x, float f_y, float f_z,
                              float s_x, float s_y, float s_z,
                              int divs);          
-
         
         double localsimtime;
 
         // keep track of number of polygons 
         // a ploygon is an indexed array of path vectors 
         // similar to an .OBJ file face, etc
-        unsigned int num_plys;
+        uint num_plys;
 
         // index to the current vector processed while running 
-        unsigned int vec_idx;
+        uint vec_idx;
         double timediv;
         
         // calculated values - length of travel for vectors
         float rapid_dist;
         float program_dist;     
-
 
         //-----
         Vector3 quill_pos;
@@ -165,7 +140,7 @@ class cnc_plot
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
         //pulse train indeces 
-        std::vector<unsigned int> pt_idxs[MAX_NUM_PLY];
+        std::vector<uint> pt_idxs[MAX_NUM_PLY];
 
         //-----        
 
@@ -177,24 +152,15 @@ class cnc_plot
         // the final "baked" path that gets run
         std::vector<Vector3> toolpath_vecs;
         //tool path indeces
-        std::vector<unsigned int> tp_idxs[MAX_NUM_PLY];
+        std::vector<uint> tp_idxs[MAX_NUM_PLY];
         //-----
         // original vectors loaded from disk  
         // these get copied to program_vecs and linebuffer1 vecs (for display)
         std::vector<Vector3> loaded_file_vecs;
-        
-
-
-
-
 
     private:
         void show_vecs(std::vector<Vector3> * pt_vec);
 
-
-
-
- 
 
 };
 

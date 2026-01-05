@@ -121,7 +121,7 @@ void cncglobals::copy_file_vecs_display(void)
 {
     
     //std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
-    for (unsigned int p=0;p<pt_motionplot->loaded_file_vecs.size();p++)
+    for (uint p=0;p<pt_motionplot->loaded_file_vecs.size();p++)
     {   
         add_vec_lbuf1(&pt_motionplot->loaded_file_vecs.at(p)); 
     }
@@ -164,6 +164,13 @@ void cncglobals::show_params( void )
     std::cout << " y_xtntx        : " << y_xtntx<< "\n";
     std::cout << " z_xtntx        : " << z_xtntx<< "\n";
     std::cout <<"\n";
+
+
+    //GLOBAL_SIM_TIMER_PERIOD
+    std::cout << " ## sim time clock period " << "\n";  
+    std::cout << " glob_simtime_period : " << (*this).glob_simtime_period << "\n";
+    std::cout <<"\n";
+
 
     std::cout << " ## waveform generation parameters " << "\n";  
     std::cout << " pp1_pulse_dly_us : " << (*this).pp1_pulse_dly_us << "\n";
@@ -286,9 +293,8 @@ void cncglobals::load_objects(void)
         std::cout << "## DEBUG load_objfile resetting obj_file internals \n";
         pt_model_buffer->reset();
 
-        unsigned int x = 0;
 
-        for( x=0;x<obj_filepaths.size();x++)
+        for( uint x=0;x<obj_filepaths.size();x++)
         {
             //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
             strcpy(char_array, obj_filepaths[x].c_str()); 
@@ -345,8 +351,8 @@ void cncglobals::load_cfg_file( char* filepath )
     }
 
 
-    unsigned int line_ct       = 0;
-    unsigned int local_vec_idx = 0; //remember how many new points to add 
+    uint line_ct       = 0;
+    uint local_vec_idx = 0; //remember how many new points to add 
 
     while (!cfg_filein.eof())
     {   

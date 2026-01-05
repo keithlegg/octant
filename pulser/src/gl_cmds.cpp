@@ -82,7 +82,7 @@ extern cnc_parport parport;
 extern bool tog_testport; 
  
 extern bool disp_ply_solo;
-extern unsigned int disp_ply_solo_id;
+extern uint disp_ply_solo_id;
 
 
 //position of extruder/quill/etc
@@ -130,7 +130,7 @@ void parse_cmd_text(std::string *buffer)
         tokens.push_back(intermediate);
     }
 
-    for(unsigned int i = 0; i < tokens.size(); i++)
+    for(uint i = 0; i < tokens.size(); i++)
     {
         if(i==0){ a1  = tokens[i]; }
         if(i==1){ a2  = tokens[i]; }
@@ -313,7 +313,7 @@ void parse_cmd_text(std::string *buffer)
             }
             else if(a3!="")
             {
-                unsigned int pidx = std::stoi(a3);
+                uint pidx = std::stoi(a3);
                 
                 disp_ply_solo = true;
                 disp_ply_solo_id = pidx;
@@ -361,9 +361,9 @@ void parse_cmd_text(std::string *buffer)
 
         Vector3 offset = e_p - s_p;
 
-        unsigned int numx = 0;
-        unsigned int numy = 0;
-        unsigned int numz = 0;
+        uint numx = 0;
+        uint numy = 0;
+        uint numz = 0;
 
         numx = offset.length()/cg.pp1u_x;
         numy = offset.length()/cg.pp1u_y;

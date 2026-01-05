@@ -97,7 +97,7 @@ bool draw_points_vbo = false;
 //bool draw_bbox       = true;
 
 bool disp_ply_solo            = false;
-unsigned int disp_ply_solo_id = 0;
+uint disp_ply_solo_id = 0;
 
 /***************************************/
 //I think this was from a test of the VBO 
@@ -1373,7 +1373,7 @@ void render_loop(void)
         //OLD CODE THAT DRAWS EVERYTHING AS A SINGLE POLY 
         //intentionally start at 1 - skip the first point 
         //we need at least two points to indicate a line 
-        for (unsigned int p_i=1;p_i<linebuffer1.size();p_i++)
+        for (uint p_i=1;p_i<linebuffer1.size();p_i++)
         {   
             //ignore the first vector/point - off for now 
             // if(p_i==0)
@@ -1414,11 +1414,11 @@ void render_loop(void)
         if (disp_ply_solo)
         {
   
-            for (unsigned int ii=1;ii<pt_motionplot->tp_idxs[disp_ply_solo_id].size();ii++)
+            for (uint ii=1;ii<pt_motionplot->tp_idxs[disp_ply_solo_id].size();ii++)
             {
                 glBegin(GL_LINES);
-                    unsigned int si= pt_motionplot->tp_idxs[disp_ply_solo_id][ii-1];
-                    unsigned int ei= pt_motionplot->tp_idxs[disp_ply_solo_id][ii];
+                    uint si= pt_motionplot->tp_idxs[disp_ply_solo_id][ii-1];
+                    uint ei= pt_motionplot->tp_idxs[disp_ply_solo_id][ii];
                     sv  = pt_motionplot->program_vecs[si];
                     ev  = pt_motionplot->program_vecs[ei];
                     glColor3f(0,1.,0); //hack for now
@@ -1431,13 +1431,13 @@ void render_loop(void)
         }//single poly display 
         else
         {
-            for (unsigned int p_i=0;p_i<pt_motionplot->num_plys;p_i++)
+            for (uint p_i=0;p_i<pt_motionplot->num_plys;p_i++)
             {   
-                for (unsigned int ii=1;ii<pt_motionplot->tp_idxs[p_i].size();ii++)
+                for (uint ii=1;ii<pt_motionplot->tp_idxs[p_i].size();ii++)
                 {
                     glBegin(GL_LINES);
-                        unsigned int si= pt_motionplot->tp_idxs[p_i][ii-1];
-                        unsigned int ei= pt_motionplot->tp_idxs[p_i][ii];
+                        uint si= pt_motionplot->tp_idxs[p_i][ii-1];
+                        uint ei= pt_motionplot->tp_idxs[p_i][ii];
                         sv  = pt_motionplot->program_vecs[si];
                         ev  = pt_motionplot->program_vecs[ei];
                         //rgb = linebuffer1_rgb[p_i];            
@@ -1460,11 +1460,11 @@ void render_loop(void)
 
         if (pt_motionplot->tp_idxs[test].size()>1)
         {
-            for (unsigned int ii=1;ii<pt_motionplot->tp_idxs[test].size();ii++)
+            for (uint ii=1;ii<pt_motionplot->tp_idxs[test].size();ii++)
             {
                 glBegin(GL_LINES);
-                    unsigned int si= pt_motionplot->tp_idxs[test][ii-1];
-                    unsigned int ei= pt_motionplot->tp_idxs[test][ii];
+                    uint si= pt_motionplot->tp_idxs[test][ii-1];
+                    uint ei= pt_motionplot->tp_idxs[test][ii];
 
                     sv  = pt_motionplot->program_vecs[si];
                     ev  = pt_motionplot->program_vecs[ei];
@@ -1499,7 +1499,7 @@ void render_loop(void)
         
         //intentionally start at 1 - skip the first point 
         //we need at least two points to indicate a line 
-        for (unsigned int p_i=1;p_i<linebuffer2.size();p_i++)
+        for (uint p_i=1;p_i<linebuffer2.size();p_i++)
         {   
             if(p_i>=1){ 
                 sv  = linebuffer2[p_i-1];
@@ -1558,7 +1558,7 @@ void toggle_polygon_draw()
 
 
 //define keyboard events 
-void key_cb(unsigned int key) 
+void key_cb(uint key) 
 {
 
     //9 - toggle vertex color

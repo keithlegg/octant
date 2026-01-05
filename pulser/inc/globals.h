@@ -3,6 +3,8 @@
 
 #include <vector>
 
+
+
 //**********************************//
 //option for a gui-less, "headless" tool  
 /*
@@ -11,8 +13,13 @@
        parse_cmds.cpp
 */
 #define DO_BUILD_GUI true
-#define DEBUG_MOUSE_CLICK false
 
+
+//**********************************//
+
+//#define DISABLE_PARPORT false
+
+#define DEBUG_MOUSE_CLICK true
 
 #define FAKE_Z_UP_AXIS true
 
@@ -48,7 +55,7 @@ class cncglobals
 
         ~cncglobals(){};
         
-        unsigned int ply_count;
+        uint ply_count;
         bool active_polygon_load;
 
         bool GLOBAL_DEBUG;
@@ -84,6 +91,8 @@ class cncglobals
 
         //----------
         //waveform generation parameters
+        uint glob_simtime_period = 1000;
+
         uint pp1_pulse_dly_us = 200;
         uint pp2_pulse_dly_us = 200;
 

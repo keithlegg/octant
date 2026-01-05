@@ -106,9 +106,9 @@ void run_cncplot(double f_x,
                  double s_x,
                  double s_y,
                  double s_z,
-                 unsigned int x_divs, 
-                 unsigned int y_divs,                                   
-                 unsigned int z_divs) 
+                 uint x_divs, 
+                 uint y_divs,                                   
+                 uint z_divs) 
 {
 
     bool DEBUG = false; 
@@ -127,7 +127,7 @@ void run_cncplot(double f_x,
     {
         std::cout << "## run_cncplot debug mode \n";
 
-        for(unsigned int x=0;x<plot->pulsetrain.size();x++)
+        for(uint x=0;x<plot->pulsetrain.size();x++)
         {
             std::cout<<plot->pulsetrain[x].x  <<" "
                      <<plot->pulsetrain[x].y  <<" "
@@ -153,9 +153,9 @@ void pulse_thread(double f_x,
                   double s_x,
                   double s_y,
                   double s_z,
-                 unsigned int x_divs, 
-                 unsigned int y_divs,                                   
-                 unsigned int z_divs)  
+                 uint x_divs, 
+                 uint y_divs,                                   
+                 uint z_divs)  
 {
     
 
@@ -215,7 +215,7 @@ void cnc_plot::show(void)
 /******************************************/
 void cnc_plot::showpthids(void)
 {
-    for(unsigned int x=0;x<num_plys;x++)
+    for(uint x=0;x<num_plys;x++)
     {
         std::cout << " ply id:" << x <<" size:"<< tp_idxs[x].size() << " \n";        
     }
@@ -223,7 +223,7 @@ void cnc_plot::showpthids(void)
 
 /******************************************/
 // a "polygon" is a sequence of line geometry used as a toolpath 
-void cnc_plot::showply(unsigned int pidx)
+void cnc_plot::showply(uint pidx)
 {
     std::cout << "------------------------\n";
 
@@ -235,10 +235,10 @@ void cnc_plot::showply(unsigned int pidx)
     if(pidx>=0 && pidx<=num_plys)
     {
 
-        for(unsigned int x=0;x<tp_idxs[pidx].size();x++)
+        for(uint x=0;x<tp_idxs[pidx].size();x++)
         {
 
-            unsigned int id = tp_idxs[pidx].at(x);
+            uint id = tp_idxs[pidx].at(x);
             
             Vector3 v =  program_vecs[id];
             std::cout << "vec "<< x << "  " <<v.x <<" "<< v.y << " "<<v.z << "\n";
@@ -313,7 +313,7 @@ void cnc_plot::run_sim(void)
 }
 
 /******************************************/
-void cnc_plot::process_vec(unsigned int window_idx)
+void cnc_plot::process_vec(uint window_idx)
 {
     bool debug = false;
 
@@ -331,9 +331,9 @@ void cnc_plot::process_vec(unsigned int window_idx)
     Vector3 offset = e_p - s_p;
 
     
-    unsigned int numx = 0;
-    unsigned int numy = 0;
-    unsigned int numz = 0;
+    uint numx = 0;
+    uint numy = 0;
+    uint numz = 0;
 
     numx = offset.length()*cg.pp1u_x;
     numy = offset.length()*cg.pp1u_y;
@@ -459,7 +459,7 @@ void cnc_plot::update_toolpaths(void)
             //toolpath_vecs.push_back(up_vec);
 
             //iterate all polygons     
-            for (unsigned int pl=0;pl<num_plys;pl++)
+            for (uint pl=0;pl<num_plys;pl++)
             {
                 Vector3 this_st = program_vecs[tp_idxs[pl][0]];
                 Vector3 hover = Vector3(this_st.x, retract_height, this_st.z);
@@ -474,7 +474,7 @@ void cnc_plot::update_toolpaths(void)
 
 
                 //add each vec3 for the polygon 
-                for (unsigned int vid=0;vid<tp_idxs[pl].size();vid++)
+                for (uint vid=0;vid<tp_idxs[pl].size();vid++)
                 {
                     Vector3 seg = program_vecs[tp_idxs[pl][vid]];
 
@@ -542,7 +542,7 @@ void cnc_plot::add_new_polygon(int numply, int numids)
 
     //dynamically add more indices 
     //we just iterate a sequence of ids up to N verteces
-    for (unsigned int i=0;i<numids;i++)
+    for (uint i=0;i<numids;i++)
     {   
         tp_idxs[numply].push_back( (reindex+i) );
     }
@@ -554,7 +554,7 @@ void cnc_plot::add_new_polygon(int numply, int numids)
     }    
     if (loaded_file_vecs.size()>1)
     {
-        for (unsigned int p=0;p<loaded_file_vecs.size();p++)
+        for (uint p=0;p<loaded_file_vecs.size();p++)
         {   
             // Vector3 foo = loaded_file_vecs.at(p);
             // std::cout << "ADDING "<< foo.x << " "<< foo.y << " "<< foo.z << "\n";
@@ -624,14 +624,14 @@ void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs)
 
 void cnc_plot::calc_3d_pulses(Vector3 fr_pt, 
                               Vector3 to_pt,
-                              unsigned int numdivx,
-                              unsigned int numdivy,
-                              unsigned int numdivz)
+                              uint numdivx,
+                              uint numdivy,
+                              uint numdivz)
 {
 
     pulsetrain.clear();
 
-    bool debug = false;
+    bool debug = true;
 
     point_ops PG;
 
@@ -675,28 +675,38 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     }else{
         zp=0; 
     }
-    
+
+    //use the amount of change times the spatial divisions to get the pulses 
+    //DEBUG - we may want to use the mag of the 3d vector in here                  
+    uint num_pul_x = numdivx*abs(delta_x);
+    uint num_pul_y = numdivy*abs(delta_y);
+    uint num_pul_z = numdivz*abs(delta_z);     
+
+
     //first element of pulse train stores the direction 
     Vector3 dirvec = Vector3(xp,yp,zp);
-    pulsetrain.push_back(dirvec);
 
+    //--------------------
+    //DEBUG -no point in cachine pulses if empty 
+    //if(num_pul_x>0 && num_pul_x>0 && num_pul_x>0)
+    //{
+        pulsetrain.push_back(dirvec);
+    //}
+    //--------------------
+
+   
     if (debug)
     {
         std::cout << "  vector dir   x " << dirvec.x << " y " << dirvec.y << " z " << dirvec.z << "\n";
     }
 
-    //use the amount of change times the spatial divisions to get the pulses 
-    //DEBUG - we may want to use the mag of the 3d vector in here                  
-    unsigned int num_pul_x = numdivx*abs(delta_x);
-    unsigned int num_pul_y = numdivy*abs(delta_y);
-    unsigned int num_pul_z = numdivz*abs(delta_z); 
 
     // get the absolute highest number of pulses (on any axis) to calculate 
-    unsigned int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
+    uint tmp[] = {num_pul_x, num_pul_y, num_pul_z};
     //std::cout << "before: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
     std::sort(std::begin(tmp), std::end(tmp)  );
     //std::cout << "after: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
-    unsigned int most = tmp[2];
+    uint most = tmp[2];
 
     //--------------------------------------//             
     if (debug)
@@ -710,34 +720,37 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     std::vector<int> calcpt_x;
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
-    
-    // calc the pulses using a ratio of length to divs. 
-    gen_pulses(&calcpt_x, most, num_pul_x);  
-    
 
-    //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
-    if(FAKE_Z_UP_AXIS)
+    //DEBUG -no point in cachine pulses if empty 
+    if(num_pul_x>0 && num_pul_x>0 && num_pul_x>0)
     {
-        if (debug)
-        { 
-            std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
+        // calc the pulses using a ratio of length to divs. 
+        gen_pulses(&calcpt_x, most, num_pul_x);  
+        
+        //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
+        if(FAKE_Z_UP_AXIS)
+        {
+            if (debug)
+            { 
+                std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
+            }
+
+            gen_pulses(&calcpt_z, most, num_pul_y);  
+            gen_pulses(&calcpt_y, most, num_pul_z); 
+
+        }else
+        {
+            gen_pulses(&calcpt_y, most, num_pul_y);  
+            gen_pulses(&calcpt_z, most, num_pul_z);         
         }
 
-        gen_pulses(&calcpt_z, most, num_pul_y);  
-        gen_pulses(&calcpt_y, most, num_pul_z); 
-
-    }else
-    {
-        gen_pulses(&calcpt_y, most, num_pul_y);  
-        gen_pulses(&calcpt_z, most, num_pul_z);         
+        //------------
+        for(uint a=0;a<most;a++)
+        {
+            pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+            pulsetrain.push_back(Vector3(0,0,0));
+        } 
     }
-
-    //------------
-    for(unsigned int a=0;a<most;a++)
-    {
-        pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
-        pulsetrain.push_back(Vector3(0,0,0));
-    } 
     
 
 } 

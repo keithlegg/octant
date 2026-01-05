@@ -7,7 +7,7 @@
 
 
 
-void key_cb(unsigned int key);
+void key_cb(uint key);
  
 void setlight0(void);
 

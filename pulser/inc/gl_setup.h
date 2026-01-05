@@ -14,9 +14,9 @@
 //consolidated from gnolmec framebuffer.h 
 //24 bit color 
 typedef struct{
-    unsigned int r=0;
-    unsigned int g=0;
-    unsigned int b=0;
+    uint r=0;
+    uint g=0;
+    uint b=0;
 }RGBType;
 
 struct material {

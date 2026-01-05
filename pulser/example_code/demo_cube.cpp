@@ -28,16 +28,16 @@ extern GLuint texture[3];
 
 // data for animated "pong" texture 
 //democube uses it - probably get rid of that 
-unsigned int upos = 100;
-unsigned int vpos = 320;  
-unsigned int dir_u = 0;
-unsigned int dir_v = 0;
-unsigned int pong_speed = 5;
-unsigned int pong_size  = 60;
-unsigned int img_usize  = 512;
-unsigned int img_vsize  = 512;
+uint upos = 100;
+uint vpos = 320;  
+uint dir_u = 0;
+uint dir_v = 0;
+uint pong_speed = 5;
+uint pong_size  = 60;
+uint img_usize  = 512;
+uint img_vsize  = 512;
 
-unsigned int use_tex = 0;
+uint use_tex = 0;
 
 
 //extern Image* main_bg_bfr      ; 
@@ -205,8 +205,8 @@ void drawglscene_3d()
 
     ///////////////////////
 
-    unsigned int u_edge = img_usize - pong_size;
-    unsigned int v_edge = img_vsize - pong_size;
+    uint u_edge = img_usize - pong_size;
+    uint v_edge = img_vsize - pong_size;
 
     if(upos<0)         { upos = 100; }
     if(vpos<0)         { vpos = 100; }

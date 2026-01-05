@@ -45,7 +45,7 @@ class cnc_bitmasks
 
 /***************************************/
 
-bool check_ports_available(unsigned int portaddr);
+bool check_ports_available(uint portaddr);
 
 
 //handle the IO to the parports 
@@ -56,12 +56,12 @@ class cnc_parport
         ~cnc_parport(){};
 
 
-    void speed_test(cncglobals* cg, unsigned int big_num);
+    void speed_test(cncglobals* cg, uint big_num);
 
     void test_port_output(cncglobals* cg, int number);
 
-    void aux_on(cncglobals*, unsigned int);
-    void aux_off(cncglobals*, unsigned int);
+    void aux_on(cncglobals*, uint);
+    void aux_off(cncglobals*, uint);
 
     void test_inputs(cncglobals* cg, 
                      unsigned char* data);
