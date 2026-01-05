@@ -30,6 +30,8 @@ class timer
         
         timer()
         {
+
+
             startCount.tv_sec = startCount.tv_usec = 0;
             endCount.tv_sec = endCount.tv_usec = 0;
 
@@ -61,6 +63,8 @@ class timer
         double get_elapsed_simtime_sec(void);
         double get_elapsed_simtime(void);
         double get_elapsed_simtime_fakeunits(void);     //user adjustable time increment 
+
+        double cvt_num_to_ratio; //convenience to convert num us to a decimal ratio 
 
         //keith added these
         void reset_sim(void);

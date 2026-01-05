@@ -47,8 +47,8 @@
 
 double trav_speed ; //linear unit per sec 
 
-extern cncglobals cg;
 
+extern cncglobals cg;
 
 /***************************************/
 //step/reset gets called once every "tick" between 0-1 
@@ -173,21 +173,19 @@ double timer::get_elapsed_simtime_sec(void)
 /***************************************/
 double timer::get_elapsed_simtime_fakeunits(void)
 {
-    
-    // cncglobals cg;
+     
 
+    cvt_num_to_ratio = (double)1/(double)cg.glob_simtime_period;
+    //std::cout << " CVT TIME UNITS " << cvt_num_to_ratio;
     this->get_elapsed_simtime_us();
-    return this->sim_time_us * 0.00001;
+    return this->sim_time_us * cvt_num_to_ratio;
 }
 
 /***************************************/
 double timer::get_elapsed_simtime(void)
 {
-    
     //return this->get_elapsed_simtime_sec();
-    
     return this->get_elapsed_simtime_fakeunits();
-
 }
 
 
