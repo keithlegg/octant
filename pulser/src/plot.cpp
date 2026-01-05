@@ -116,8 +116,6 @@ void run_cncplot(double f_x,
     cnc_plot* plot     = new cnc_plot;
     cnc_parport* pport = new cnc_parport;
 
-    float dummy = 0;
-
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
@@ -137,7 +135,7 @@ void run_cncplot(double f_x,
 
     if(DEBUG==false)
     {
-        pport->freerun_pulses(&dummy, &cg, plot);
+        pport->freerun_pulses( &cg, plot);
     }
 
     delete pport; 
@@ -322,14 +320,12 @@ void cnc_plot::process_vec(uint window_idx)
         std::cout << "called prcess vec \n";
     }
 
-
     //set up the vector to process 
     Vector3 s_p = toolpath_vecs[window_idx];
     Vector3 e_p = toolpath_vecs[window_idx+1];  
 
     //calculate length of the vector 
     Vector3 offset = e_p - s_p;
-
     
     uint numx = 0;
     uint numy = 0;
@@ -840,9 +836,9 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
 
     //set the pulses per linear unit (spatial unit divions) - X,Y,Z unit prescaler 
     //for now use one number for all 3 - we will add the others in later
-    unsigned int pp_lux      = numdivs;
-    unsigned int pp_luy      = numdivs;
-    unsigned int pp_luz      = numdivs;
+    uint pp_lux      = numdivs;
+    uint pp_luy      = numdivs;
+    uint pp_luz      = numdivs;
 
     //calc a new 3D vector betwen the two points in 3D
     //Vector3 between   = sub(fr_pt, to_pt);     //old vector lib 
@@ -891,9 +887,9 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
 
     //use the amount of change times the spatial divisions to get the pulses 
     //DEBUG - we may want to use the mag of the 3d vector in here                  
-    unsigned int num_pul_x = pp_lux*abs(delta_x);
-    unsigned int num_pul_y = pp_luy*abs(delta_y);
-    unsigned int num_pul_z = pp_luz*abs(delta_z); 
+    uint num_pul_x = pp_lux*abs(delta_x);
+    uint num_pul_y = pp_luy*abs(delta_y);
+    uint num_pul_z = pp_luz*abs(delta_z); 
 
     if (debug)
     {
@@ -901,11 +897,11 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
     }
 
     // get the absolute highest number of pulses (on any axis) to calculate 
-    unsigned int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
+    uint tmp[] = {num_pul_x, num_pul_y, num_pul_z};
     //std::cout << "before: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
     std::sort(std::begin(tmp), std::end(tmp)  );
     //std::cout << "after: "<<tmp[0] << " "<< tmp[1] <<" "<< tmp[2] <<"\n";
-    unsigned int most = tmp[2];
+    uint most = tmp[2];
 
     //--------------------------------------//             
     if (debug)
@@ -926,7 +922,7 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
 
     ////
 
-    for(unsigned int a=0;a<most;a++)
+    for(uint a=0;a<most;a++)
     {
         pt_pulsetrain->push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
         pt_pulsetrain->push_back(Vector3(0,0,0));
@@ -949,7 +945,7 @@ void cnc_plot::show_pt(void)
     std::cout << " pulsetrain size     "<< pulsetrain.size() << "\n";
     std::cout << " pulsetrain idx size "<< pt_idxs->size()    << "\n";
 
-    for(unsigned int x=0;x<pt_idxs->size();x++)
+    for(uint x=0;x<pt_idxs->size();x++)
     {
         std::cout <<" idx: " << x <<" "<< pt_idxs->at(x) << "\n";      
     }
@@ -976,7 +972,7 @@ void cnc_plot::precache_sim(void)
 
     //----------------- 
     //iterate all coords and run calc_3d_pulses for them
-    for (unsigned int pc=0;pc<toolpath_vecs.size()-1;pc++)
+    for (uint pc=0;pc<toolpath_vecs.size()-1;pc++)
     {
         //----- 
         //set up the vector to process 
@@ -998,7 +994,7 @@ void cnc_plot::precache_sim(void)
         precalc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
         
          
-        for (unsigned int pi=0;pi<pt_idxs->size();pi++)
+        for (uint pi=0;pi<pt_idxs->size();pi++)
         {
             std::cout << "PT IDX " << pt_idxs->at(pi) << "\n";
             std::cout << "START OF PULSETRAIN VEC - IDX " << pt_pulsetrain->at(pt_idxs->at(pi))  << "\n";

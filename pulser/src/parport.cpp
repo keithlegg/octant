@@ -532,7 +532,9 @@ void cnc_parport::send_pulses(int* pt_pulseidx, cncglobals* cg, cnc_plot* pt_plo
 
 */
 
-void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
+//void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* pt_plot )
+
+void cnc_parport::freerun_pulses( cncglobals* cg, cnc_plot* pt_plot )
 {
     check_ports_available(cg->parport1_addr);
 
@@ -624,7 +626,7 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
     {
 
         //update the progress so we can display it in the GUI 
-        *pt_progress = (int) pt_plot->pulsetrain.size()/x;
+        //*pt_progress = (int) pt_plot->pulsetrain.size()/x;
 
 
         //----

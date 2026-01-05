@@ -42,12 +42,12 @@
 #include <chrono>
 #include <iostream>
 
-
+#include "globals.h"
 #include "timer.h"
 
 double trav_speed ; //linear unit per sec 
 
-
+extern cncglobals cg;
 
 
 /***************************************/
@@ -169,10 +169,25 @@ double timer::get_elapsed_simtime_sec(void)
     this->get_elapsed_simtime_us();
     return this->sim_time_us * 0.000001;
 }
+
+/***************************************/
+double timer::get_elapsed_simtime_fakeunits(void)
+{
+    
+    // cncglobals cg;
+
+    this->get_elapsed_simtime_us();
+    return this->sim_time_us * 0.00001;
+}
+
 /***************************************/
 double timer::get_elapsed_simtime(void)
 {
-    return this->get_elapsed_simtime_sec();
+    
+    //return this->get_elapsed_simtime_sec();
+    
+    return this->get_elapsed_simtime_fakeunits();
+
 }
 
 

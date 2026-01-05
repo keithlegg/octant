@@ -49,16 +49,13 @@
 #include <cstring>
 #include <vector>
 
-//#include "math_op.h"
-//#include "point_op.h"
-
+#include "globals.h"
 #include "obj_model.h"
 #include "plot.h"
 
 //renamed to "parport", anticipating other interfaces in the future
-//#include "io.h"
 #include "parport.h"
-#include "globals.h"
+
 
 
 #if DO_BUILD_GUI == true
@@ -165,12 +162,10 @@ void cncglobals::show_params( void )
     std::cout << " z_xtntx        : " << z_xtntx<< "\n";
     std::cout <<"\n";
 
-
     //GLOBAL_SIM_TIMER_PERIOD
     std::cout << " ## sim time clock period " << "\n";  
     std::cout << " glob_simtime_period : " << (*this).glob_simtime_period << "\n";
     std::cout <<"\n";
-
 
     std::cout << " ## waveform generation parameters " << "\n";  
     std::cout << " pp1_pulse_dly_us : " << (*this).pp1_pulse_dly_us << "\n";
@@ -520,7 +515,14 @@ void cncglobals::load_cfg_file( char* filepath )
                         }
 
                         //-------------------------------------------
-                        //-- PULSE TIMING ---------------
+                        
+                        //-- GLOBAL SIM TIME PERIOD  ----------------
+                        if (tokenized.at(0).find("GLOBAL_SIM_TIMER_PERIOD") != std::string::npos)
+                        {    
+                            glob_simtime_period = std::stoi( tokenized.at(1) );      
+                        }
+
+                        //-- PULSE TIMING ---------------------------
                         if (tokenized.at(0).find("PP1_PULSE_DLY_US") != std::string::npos)
                         {    
                             pp1_pulse_dly_us = std::stoi( tokenized.at(1) );      
@@ -532,7 +534,7 @@ void cncglobals::load_cfg_file( char* filepath )
                         }
 
                         //-------------------------------------------
-                        //-- 3D SPATIAL DIVISIONS ----------
+                        //-- 3D SPATIAL DIVISIONS -------------------
                         if (tokenized.at(0).find("PP1_STEPS_PER_UNIT_X") != std::string::npos )
                         {        
                             pp1u_x = std::stoi( tokenized.at(1) );   

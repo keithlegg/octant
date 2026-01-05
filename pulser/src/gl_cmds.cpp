@@ -97,6 +97,11 @@ void run_machine(void)
     pt_motionplot->run_sim();
 }
 
+void reset_machine(void)
+{
+    //pt_motionplot->run_sim();
+}
+
 
 
 void stop_machine(void)

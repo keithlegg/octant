@@ -73,18 +73,14 @@ class cnc_parport
                             unsigned char* b_sigmask,
                             bool* stale);
 
-  
+    //experimental send that allows incremental pulsetrain  
     void send_pulses(int* pt_pulseidx, 
                      cncglobals* cg, 
                      cnc_plot* pt_plot);
 
-    //OLD send_pulses
-    //pt_progress was never implemented 
-    //I envisioned an output - instead send_pulses will accept index input
-    void freerun_pulses(float* pt_progress, 
-                     cncglobals* cg, 
-                     cnc_plot* pt_plot);
-
+    //send that runs the whole pulsetrain 
+    void freerun_pulses(cncglobals* cg, 
+                        cnc_plot* pt_plot);
 
 
     void read_limits(cncglobals*, Vector3*);

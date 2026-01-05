@@ -43,13 +43,21 @@ class cncglobals
         cncglobals()
         {
             active_filepath="";
+
             GLOBAL_DEBUG           = true;
-            //DEBUG_PARAMS           = false;
             ENABLE_LIMIT_SWITCHES  = false;
             ENABLE_MOTOR_DRIVE     = false;
 
             ply_count              = 0; 
             active_polygon_load    = false; 
+
+            glob_simtime_period   = 1000;
+            pp1_pulse_dly_us      = 400;
+            pp2_pulse_dly_us      = 400;
+        
+            pp1u_x = 100;
+            pp1u_y = 100;
+            pp1u_z = 100;
 
         };
 
@@ -85,21 +93,21 @@ class cncglobals
         float retract_height = 0;
         float work_height    = 0;
 
+        //machine extents (in linear units)
         float x_xtntx = 25;
         float y_xtntx = 25;
         float z_xtntx = 25;
 
         //----------
         //waveform generation parameters
-        uint glob_simtime_period = 1000;
-
-        uint pp1_pulse_dly_us = 200;
-        uint pp2_pulse_dly_us = 200;
+        uint glob_simtime_period;
+        uint pp1_pulse_dly_us;
+        uint pp2_pulse_dly_us;
 
         //3d pulses per linear unit 
-        uint pp1u_x           = 100;
-        uint pp1u_y           = 100;
-        uint pp1u_z           = 100;
+        uint pp1u_x ;
+        uint pp1u_y ;
+        uint pp1u_z ;
 
         //----------
         //pin assignments port1
