@@ -651,9 +651,9 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     if (debug)
     {
-        std::cout << " calc_3d_pulses: delta x "<< delta_x <<   
-                                           " y "<< delta_y << 
-                                           " z "<< delta_z << "\n";
+        std::cout << "  delta        x "<< delta_x <<   
+                                 " y "<< delta_y << 
+                                 " z "<< delta_z << "\n";
     }
 
     //2 is a magic number to (all other data is 1 )
@@ -678,24 +678,18 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     
     //first element of pulse train stores the direction 
     Vector3 dirvec = Vector3(xp,yp,zp);
-
     pulsetrain.push_back(dirvec);
 
     if (debug)
     {
-        std::cout << " direction of vec " << " x " << dirvec.x << " y " << dirvec.y << " z " << dirvec.z << "\n";
-     }
+        std::cout << "  vector dir   x " << dirvec.x << " y " << dirvec.y << " z " << dirvec.z << "\n";
+    }
 
     //use the amount of change times the spatial divisions to get the pulses 
     //DEBUG - we may want to use the mag of the 3d vector in here                  
     unsigned int num_pul_x = numdivx*abs(delta_x);
     unsigned int num_pul_y = numdivy*abs(delta_y);
     unsigned int num_pul_z = numdivz*abs(delta_z); 
-
-    if (debug)
-    {
-        std::cout << "# calc_3d_pulses num pulses " << num_pul_x <<" "<<num_pul_y<<" "<<num_pul_z <<"\n";
-    }
 
     // get the absolute highest number of pulses (on any axis) to calculate 
     unsigned int tmp[] = {num_pul_x, num_pul_y, num_pul_z};
@@ -707,9 +701,10 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     //--------------------------------------//             
     if (debug)
     {            
-        std::cout << "#   most   " << most << " dx "<< numdivx << " dy "<< numdivy << " dz "<< numdivz <<"\n";  
-        std::cout << "#   numpts " << num_pul_x <<" " << num_pul_y <<" " << num_pul_z <<"\n"; 
-        std::cout << "#####\n";
+        std::cout << "  num divs     " << numdivx   << " dy "<< numdivy << " dz "<< numdivz <<"\n";  
+        std::cout << "  num pulses   " << num_pul_x <<" " << num_pul_y <<" " << num_pul_z <<"\n"; 
+        std::cout << "  ceiling val  " << most      << "\n";
+        std::cout << "#----#----#----#----# \n";
     }
 
     std::vector<int> calcpt_x;
@@ -727,7 +722,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
         { 
             std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
         }
-        
+
         gen_pulses(&calcpt_z, most, num_pul_y);  
         gen_pulses(&calcpt_y, most, num_pul_z); 
 

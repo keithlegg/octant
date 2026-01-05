@@ -536,12 +536,15 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 {
     check_ports_available(cg->parport1_addr);
 
-    //unsigned char send_byte = 0x00;
     unsigned int send_byte = 0;
 
-    bool debug         = false;
+    //-------------
+    bool debug         = true;
+
     bool enable_send   = true; 
     bool enable_limits = false; 
+    //-------------
+
 
     if (debug)
     {
@@ -560,10 +563,10 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 
     //**************************//
     Vector3 dirpulses = pt_plot->pulsetrain.at(0);
-    
     Vector3 limit_switches = Vector3(0,0,0);
 
 
+    //**************************//
     if(enable_send==0)
     {
         std::cout <<"# debug - send_pulses dir "<< dirpulses.x<<" " << dirpulses.y<<" " << dirpulses.z <<"\n";
@@ -573,41 +576,25 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
     {   
         //x direction high 
         if (dirpulses.x>1){
-            //outb(0x02, cg->parport1_addr);
             send_byte = send_byte |= (1 << 1);
             outb(send_byte, cg->parport1_addr);            
         }else{
-             //outb(0x00, cg->parport1_addr);  
             send_byte = send_byte &= ~(1 << 1);
             outb(send_byte, cg->parport1_addr);               
         }
 
         /*****/
-
         //y direction high 
         if (dirpulses.y>1){
             send_byte = send_byte |= (1 << 3);
             outb(send_byte, cg->parport1_addr);  
-            
-            //!! THIS IS EXTRA FOR A GANTRY MACHINE INVERTED Z AXIS
-            //send_byte = send_byte &= ~(1 << 5);   
-            //outb(send_byte, cg->parport1_addr); 
-
         }else{
             //y direction low         
             send_byte = send_byte &= ~(1 << 3);
             outb(send_byte, cg->parport1_addr);   
-
-            //!! THIS IS EXTRA FOR A GANTRY MACHINE INVERTED Z AXIS
-            //send_byte = send_byte |= (1 << 5);
-            //outb(send_byte, cg->parport1_addr);                          
-
         }
 
-
         /*****/
-        //THIS IS A STANDARD 3D SETUP USING Z AXIS
-
         //z direction high 
         if (dirpulses.z>1){
             send_byte = send_byte |= (1 << 5);
@@ -621,12 +608,10 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
 
 
     //**************************//
-    int x=0;
-    
 
     //the first element is reserved for direction data 
     //we intentionally skip it starting at index 1 
-    for(x=1;x<pt_plot->pulsetrain.size();x++)
+    for(unsigned int x=1;x<pt_plot->pulsetrain.size();x++)
     {
 
         //update the progress so we can display it in the GUI 
@@ -670,18 +655,9 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
                 if(pt_plot->pulsetrain.at(x).y==1){
                     send_byte = send_byte |= (1 << 2);
                     outb(send_byte, cg->parport1_addr);    
-
-                    //!! THIS IS ALSO RUNNING Z AXIS (INVERTED DIR) FOR A GANTRY 
-                    //send_byte = send_byte |= (1 << 4);
-                    //outb(send_byte, cg->parport1_addr);    
-
                 }else{
                     send_byte = send_byte &= ~(1 << 2);
                     outb(send_byte, cg->parport1_addr);           
-
-                    //!! THIS IS ALSO RUNNING Z AXIS (INVERTED DIR) FOR A GANTRY 
-                    //send_byte = send_byte &= ~(1 << 4);
-                    //outb(send_byte, cg->parport1_addr);                    
                 }
 
                   
@@ -695,7 +671,7 @@ void cnc_parport::freerun_pulses(float* pt_progress, cncglobals* cg, cnc_plot* p
                 }
             
 
-            }
+            }//if limit switches not triggered (or disabled)
 
             usleep(cg->pp1_pulse_dly_us); 
         }
