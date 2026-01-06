@@ -91,7 +91,10 @@ import math
 import re 
 import os 
 
-from pygfx import SHAPELY_IS_LOADED
+from pygfx import SHAPELY_IS_LOADED, TRIMESH_IS_LOADED, NUMPY_IS_LOADED 
+
+
+
 
 from pygfx.obj3d import object3d
 from pygfx.obj2d import object2d
@@ -126,8 +129,12 @@ if SHAPELY_IS_LOADED:
     #from shapely import Feature as shp_ftr
     #from shapely import FeatureCollection as shp_fc
 
-import trimesh
-import numpy as np
+
+if TRIMESH_IS_LOADED:
+    import trimesh
+
+if NUMPY_IS_LOADED:
+    import numpy as np
 
 
 """

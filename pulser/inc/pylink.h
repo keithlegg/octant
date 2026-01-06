@@ -5,7 +5,7 @@
 
 // void print_bytes( char * bytes, uint8_t num_bytes);
 
-void exe_python(void);
+void exe_python(std::string runcommand);
 
 void sockettest(void) ;
 void sockettest2(void) ;

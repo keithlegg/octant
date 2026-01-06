@@ -144,7 +144,7 @@ void run_cncplot(double f_x,
 
 /***************************************/
 
-// experiment in threads - so far so good 
+// experiment in multithreading - so far so good 
 void pulse_thread(double f_x,
                   double f_y,
                   double f_z,
@@ -158,6 +158,7 @@ void pulse_thread(double f_x,
     
 
     std::thread pgen_thread(run_cncplot, f_x, f_y, f_z, s_x, s_y, s_z, x_divs, y_divs, z_divs);
+
     //pgen_thread.detach();  
     pgen_thread.join(); 
 
@@ -317,7 +318,10 @@ void cnc_plot::process_vec(uint window_idx)
 
     if(debug)
     {   
-        std::cout << "called prcess vec \n";
+        std::cout << " ------------------- \n";
+        std::cout << " called prcess vec \n";
+        std::cout << " pplu  x:" << cg.pp1u_x << " y:"<< cg.pp1u_x << " z:"<< cg.pp1u_x << "\n";
+     
     }
 
     //set up the vector to process 
@@ -338,7 +342,7 @@ void cnc_plot::process_vec(uint window_idx)
     if(debug)
     {    
         //std::cout << "num calc " << offset.length() <<" "<< cg.pp1u_x << " " << cg.pp1u_y << " " << cg.pp1u_z << "\n";    
-        std::cout << "num calc " << numx << " " << numy << " " << numz << "\n";
+        std::cout << " num calc " << numx << " " << numy << " " << numz << "\n";
     }
 
     pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 

@@ -64,7 +64,7 @@ extern int TCP_PORT;
 /*********************************************************/
 
 
-void exe_python(void)
+void exe_python(std::string runcommand)
 {
     if(cg.active_filepath.size()==0)
     {
@@ -75,7 +75,7 @@ void exe_python(void)
     
     char buffer[256];
     
-    std::string runcommand ="foo";
+    //std::string runcommand ="foo";
 
     if (cg.active_filepath.size() )
     {

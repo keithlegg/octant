@@ -954,12 +954,11 @@ if __name__=="__main__":
     if sys.argv[2] == 'runcommand':
         runcommand()
 
-    if sys.argv[2] == 'scanline':
-        pyrender_ogl()    
+    if sys.argv[2] == 'normals':
+        gen_normals()
 
-    #if sys.argv[2] == 'normals':
-    #    gen_normals()
-
+    
+ 
 
 
 

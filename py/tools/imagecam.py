@@ -16,8 +16,16 @@ requires
 
 """
 
+from pygfx import NUMPY_IS_LOADED, IMAGEIO_IS_LOADED
+
+# GEOJSON_IS_LOADED, SHAPELY_IS_LOADED, TRIMESH_IS_LOADED, NETWORKX_IS_LOADED, \
+#                  SKLEARN_IS_LOADED, MATPLOTLIB_IS_LOADED
+
+
+
 ##-- 
-import imageio
+if IMAGEIO_IS_LOADED:
+    import imageio
 
 import numpy as np
 import scipy

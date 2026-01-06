@@ -231,7 +231,7 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="python")
     {
-        exe_python();    
+        exe_python(a2);    
     }
 
     /*

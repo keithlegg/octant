@@ -75,7 +75,7 @@ bool DRAW_POLYS       = true; // state for toggle command
 bool DRAW_GEOM        = true; // state for toggle command
 bool draw_cntrgrid    = true;
 bool tog_grid         = true; 
-bool tog_vtxrgb       = true; 
+bool tog_vtxrgb       = false; 
 bool tog_testport     = false; 
 
 bool toglr_flatshaded = true; //DEBUG 
