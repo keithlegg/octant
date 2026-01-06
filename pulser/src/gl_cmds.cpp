@@ -51,6 +51,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <cmath>
 #include <unistd.h>  
 
@@ -88,14 +89,18 @@ extern obj_model* pt_model_buffer;
 
 /***************************************/
 
-void load_2d_obj(void)
+void load_2d_obj(std::string objfilepath)
 {
-  
+    char char_array[100];
+
     obj_model* pt_obj2d_loader  = new obj_model;
 
-    //pt_model_buffer->reset();
+    pt_obj2d_loader->reset();
+ 
+    strcpy(char_array, objfilepath.c_str()); 
+ 
 
-    //pt_model_buffer->load(char_array);
+    pt_obj2d_loader->load(char_array);
     //pt_model_buffer->calc_normals();
 }
 
@@ -246,7 +251,8 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="python")
     {
         exe_python(a2);    
-        load_2d_obj();
+        std::string path = "3d_obj/PYCORE.obj";
+        load_2d_obj(path);
     }
 
     /*
