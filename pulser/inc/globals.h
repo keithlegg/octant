@@ -44,7 +44,8 @@ class cncglobals
     public: 
         cncglobals()
         {
-            active_filepath="";
+            active_filepath        = "";
+            linear_unit            = "mm"; //"mm" or "inch" 
 
             GLOBAL_DEBUG           = true;
             ENABLE_LIMIT_SWITCHES  = false;
@@ -52,14 +53,19 @@ class cncglobals
 
             ply_count              = 0; 
             active_polygon_load    = false; 
+             
+            glob_simtime_period    = 1000;
+            pp1_pulse_dly_us       = 400;
+            pp2_pulse_dly_us       = 400;
+            
+            pp1u_x                 = 100;
+            pp1u_y                 = 100;
+            pp1u_z                 = 100;
 
-            glob_simtime_period   = 1000;
-            pp1_pulse_dly_us      = 400;
-            pp2_pulse_dly_us      = 400;
-        
-            pp1u_x = 100;
-            pp1u_y = 100;
-            pp1u_z = 100;
+            x_xtntx = 20;
+            y_xtntx = 20;
+            z_xtntx = 20;
+
 
         };
 
@@ -81,24 +87,27 @@ class cncglobals
 
         //----------
         //controller hardware config 
-        uint parport1_addr = 0;
-        uint parport2_addr = 0;
+        uint parport1_addr;
+        uint parport2_addr;
 
-        uint parport2_mode            = 10; // OUT, INOUT
-        uint parport2_bytes_per_frame = 4;  //8 bit (byte) * frame  - per data transaction 
-        //uint parport2_latency_us      = 10;
+        //uint parport2_mode;             // OUT, INOUT
+        //uint parport2_bytes_per_frame;  //8 bit (byte) * frame  - per data transaction 
 
         //----------
         //machine travel size in 3D 
-        std::string linear_unit = "mm"; //"mm" or "inch" 
+        std::string linear_unit; //"mm" or "inch" 
+        
+        //python object returned from pycore 
+        std::string obj_pycore; 
+
 
         float retract_height = 0;
         float work_height    = 0;
 
         //machine extents (in linear units)
-        float x_xtntx = 25;
-        float y_xtntx = 25;
-        float z_xtntx = 25;
+        float x_xtntx;
+        float y_xtntx;
+        float z_xtntx;
 
         //----------
         //waveform generation parameters

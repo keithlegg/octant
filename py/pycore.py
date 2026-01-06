@@ -179,37 +179,6 @@ def gear_test():
 #####################################################
 
 
-
-if __name__=="__main__":
-
-    print("############ ", sys.argv )
-
-    if sys.argv[2] == 'tcptest':
-        tcpviz = tcpviz()
-        #tcpviz.send_str('abcdefg')
-        #tcpviz.close()
-
-        #tcpviz.vz_locator() 
-        tcpviz.vp_set_grid('1')
-
-    if sys.argv[2] == 'tcpclose':
-        tcpviz = tcpviz()
-        tcpviz.close()
-
-        #if sys.argv[1] =='close':
-        #    tcp_send(0x00)
-        #else:
-        #    tcp_send(bytes(sys.argv[1], 'utf-8'))
-
-    if sys.argv[2] == 'runcommand':
-        runcommand()
-
-    if sys.argv[2] == 'scanline':
-        pyrender_ogl()    
-
-    #if sys.argv[2] == 'normals':
-    #    gen_normals()
-
 """
 
 
@@ -861,8 +830,37 @@ if __name__=="__main__":
     print("\n\n\n\n")
     print("### PYCORE INPUT %s %s"% (arg2,arg3))
 
+    
+
+    ##-----------------------------------------------------##
+
+    print("## PYCORE AND THE SNOW DOGS ## ", sys.argv )
+
+    if sys.argv[2] == 'tcptest':
+        tcpviz = tcpviz()
+        #tcpviz.send_str('abcdefg')
+        #tcpviz.close()
+
+        #tcpviz.vz_locator() 
+        tcpviz.vp_set_grid('1')
+
+    if sys.argv[2] == 'tcpclose':
+        tcpviz = tcpviz()
+        tcpviz.close()
+
+        #if sys.argv[1] =='close':
+        #    tcp_send(0x00)
+        #else:
+        #    tcp_send(bytes(sys.argv[1], 'utf-8'))
+
+    if sys.argv[2] == 'runcommand':
+        runcommand()
 
 
+    if sys.argv[2] == 'normals':
+        gen_normals()
 
+
+ 
 
 

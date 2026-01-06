@@ -133,6 +133,12 @@ void cncglobals::show_params( void )
     std::cout <<"\n\n";
     std::cout << " #### CNC GLOBALS #### " << "\n";
 
+    std::cout << " active obj file   :" << active_filepath << "\n";
+    std::cout << " python return obj :" << obj_pycore      << "\n";
+    std::cout <<"\n";
+
+    
+    //--------------------------
     //capture the state of cout 
     std::ios_base::fmtflags f( std::cout.flags() );  
     
@@ -148,7 +154,8 @@ void cncglobals::show_params( void )
     std::cout << " parport2_addr : " << parport2_addr << "\n";
 
     std::cout <<"\n";
-    
+
+    //--------------------------
     std::cout << " ## machine params " << "\n";  
     //std::cout << " linear_unit : " << (*this).linear_unit << "\n";  
 
@@ -162,21 +169,25 @@ void cncglobals::show_params( void )
     std::cout << " z_xtntx        : " << z_xtntx<< "\n";
     std::cout <<"\n";
 
+    //--------------------------
     //GLOBAL_SIM_TIMER_PERIOD
     std::cout << " ## sim time clock period " << "\n";  
     std::cout << " glob_simtime_period : " << (*this).glob_simtime_period << "\n";
     std::cout <<"\n";
 
+    //--------------------------
     std::cout << " ## waveform generation parameters " << "\n";  
     std::cout << " pp1_pulse_dly_us : " << (*this).pp1_pulse_dly_us << "\n";
     std::cout <<"\n";
 
+    //--------------------------
     std::cout << " ## pulses per linear unit (x,y,z)" << "\n";        
     std::cout << " pp1u_x : " << pp1u_x << "\n";
     std::cout << " pp1u_y : " << pp1u_y << "\n";
     std::cout << " pp1u_z : " << pp1u_z << "\n";
     std::cout <<"\n";
 
+    //--------------------------
     //std::cout << std::boolalpha;
     std::cout << " ## DB25 pin assignments " << "\n";  
     std::cout << " parprt1_dir_x  : " << parprt1_dir_x  << " inverted: "<< parprt1_dir_x_inv  << "\n";
@@ -199,6 +210,8 @@ void cncglobals::show_params( void )
     std::cout << " parprt2_dir_a  : " << parprt2_dir_a  << " inverted: "<< parprt2_dir_a_inv  << "\n";
     std::cout << " parprt2_step_a : " << parprt2_step_a << " inverted: "<< parprt2_step_a_inv << "\n";
     */
+    //--------------------------
+
 
     std::cout << "\n"; 
     std::cout << " x_limit_pin    : " << x_limitsw_pin << " inverted: "<< x_limitsw_pin_inv << "\n";
@@ -382,6 +395,21 @@ void cncglobals::load_cfg_file( char* filepath )
                         //****************************************/
                         // RUN SCRIPT OPERATORS IN HERE 
                         //****************************************/                                    
+                        
+                        // PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
+                        if (tokenized.at(0).find("op_py_obj")!= std::string::npos)
+                        {   
+
+                            std::string buffer;
+                            //std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
+                            buffer = tokenized.at(1);
+
+                            std::cout << "hypnogog " << tokenized.at(1) << " " <<"\n";
+
+                            //obj_pycore = buffer;  
+
+                        }
+
 
                         // LOAD 3D OBJECT - Alias .OBJ file (CLASSIC DISPLAY)
                         if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
@@ -464,6 +492,7 @@ void cncglobals::load_cfg_file( char* filepath )
                             //std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
                             buffer = tokenized.at(1);
                             //std::cout << "DEBUG parsing LINEAR_UNIT " << linear_unit << "\n";
+
                         }
 
                         //***************************************/ 
