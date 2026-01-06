@@ -146,9 +146,6 @@ float mouse_orbit_speed   = 2.1f;
 
 
 
-
-extern point_ops PG;
-
 /***************************************/
 
 char cs[100];
@@ -158,6 +155,7 @@ char s[100];
 //extern timer mtime;
 extern timer* pt_mtime;
 
+extern point_ops PG;
 
 
 extern cnc_plot motionplot;

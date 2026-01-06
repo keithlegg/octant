@@ -86,7 +86,21 @@ extern cncglobals cg;
 extern cnc_plot* pt_motionplot;
 extern obj_model* pt_model_buffer;
 
+/***************************************/
 
+void load_2d_obj(void)
+{
+  
+    obj_model* pt_obj2d_loader  = new obj_model;
+
+    //pt_model_buffer->reset();
+
+    //pt_model_buffer->load(char_array);
+    //pt_model_buffer->calc_normals();
+}
+
+
+/***************************************/
 void run_machine(void)
 {
     pt_motionplot->run_sim();
@@ -232,6 +246,7 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="python")
     {
         exe_python(a2);    
+        load_2d_obj();
     }
 
     /*
