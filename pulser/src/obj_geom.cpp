@@ -635,7 +635,7 @@ void obj_model::sample_data(void)
 /**********************************************************/
 
 //sample 3d object - may not be the "proper" way to do it 
-void obj_model::make_cube(float scale)
+void obj_model::prim_cube(float scale)
 {
 
     // vertices
@@ -675,7 +675,7 @@ void obj_model::make_cube(float scale)
 
   
 //sample 3d object - may not be the "proper" way to do it
- void obj_model::make_circle(int divs, float scale)
+ void obj_model::prim_circle(int divs, float scale)
  {
 
     float a = 0;
@@ -717,7 +717,7 @@ void obj_model::make_cube(float scale)
 
  
 //sample 3d object - may not be the "proper" way to do it
-void obj_model::make_square(float scale)
+void obj_model::prim_square(float scale)
 {
     fac_tmp.clear();
 
@@ -738,7 +738,7 @@ void obj_model::make_square(float scale)
  
  //DEBUG - NOT DONE AT ALL 
  //sample 3d object - may not be the "proper" way to do it
- void obj_model::make_triangle(float scale)
+ void obj_model::prim_triangle(float scale)
  {
     fac_tmp.clear();
 
@@ -773,10 +773,11 @@ void obj_model::make_square(float scale)
 
 
 /**********************************************************/
- 
+
+
 //DEBUG - THIS IS NOT 3D - taken from renderer 
 //sample 3d object - may not be the "proper" way to do it
-void obj_model::make_line(float scale)
+void obj_model::prim_line(float scale)
 {
     // vertices - (3d vectors)
     points[0].set(-scale, 0,  -scale);
@@ -787,7 +788,8 @@ void obj_model::make_line(float scale)
     num_lines = 1;
     num_pts   = 4;
 }     
- 
+  
+
 
 
 

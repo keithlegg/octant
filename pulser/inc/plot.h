@@ -70,7 +70,6 @@ class cnc_plot
         void showply(uint vec_idx);
         void show_pt(void);
 
-
         void pause(void);
         void stop(void);
         

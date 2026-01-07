@@ -235,6 +235,25 @@ extern RGBType *pt_gridcolor;
 extern RGBType *pt_gridcolor2;
 
 
+/***************************************/
+//color palette 
+
+//wireframe colors
+#define pt_clr1 glColor3f(1,.3,.6)
+#define pt_clr2 glColor3f(1,.3,.6)
+#define pt_clr3 glColor3f(1,.3,.6)
+
+//face normals
+#define nrml_clr glColor3f(1,.3,.6)
+
+//quill locator color
+#define loc_idle_clr glColor3f(1,.3,.6)
+#define loc_active_clr glColor3f(1,.3,.6)
+
+//text color
+#define text_clr glColor3f(0.6f, 1.0f, 0.0f)
+
+#define green_clr glColor3f(0.0f, 1.0f, 0.0f)
 
 
 
@@ -708,7 +727,7 @@ void reshape_window(int width, int height)
 void render_normals(obj_model* pt_model_buffer)
 {
 
-    glColor3f(.5,.5,0);
+    nrml_clr;
     for (int p_i=0;p_i<pt_model_buffer->num_quads;p_i++)
     {             
         // fetch the pts for a triangle
@@ -894,10 +913,23 @@ void render_lines(obj_model* pt_model_buffer)
 
             //std::cout << "line color is set to " << c1.x <<" "<< c1.y<< " " << c1.z << "\n";
             glMaterialfv(GL_FRONT, GL_EMISSION, clr_linez);
-            glColor3f(c1.x, c1.y, c1.z);   
+
+            //point 1 
+            if (tog_vtxrgb)
+            {
+                glColor3f(c1.x, c1.y, c1.z); 
+            }else{
+                pt_clr1;
+            };
             glVertex3f(pt1.x, pt1.y, pt1.z);
 
-            glColor3f(c2.x, c2.y, c2.z);  
+            //point 2 
+            if (tog_vtxrgb)
+            {
+                glColor3f(c1.x, c1.y, c1.z); 
+            }else{
+                pt_clr2;
+            };
             glVertex3f(pt2.x, pt2.y, pt2.z);
 
         glEnd();
@@ -1001,14 +1033,14 @@ void render_loop(void)
         void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
         
         // command line text 
-        glColor3f(0.6f, 1.0f, 0.0f);  //text color 
+        text_clr;
         renderBitmapString(  20, scr_size_y-20  ,(void *)font,  cmd_buffer.c_str() );
       
         //--
         //X Y Z - QUILL/HEAD POSITION  
              
                 
-        glColor3d(0, 1.0, 1.0);        
+        green_clr;        
         sprintf(cs, "X:%.2f Y:%.2f Z:%.2f", motionplot.quill_pos.x, motionplot.quill_pos.y, motionplot.quill_pos.z );
         renderBitmapString( ((int)(scr_size_x/2)-100), 50  ,(void *)font, cs );
          

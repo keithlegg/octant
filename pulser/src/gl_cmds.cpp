@@ -94,14 +94,18 @@ void load_2d_obj(std::string objfilepath)
     char char_array[100];
 
     obj_model* pt_obj2d_loader  = new obj_model;
-
+    
+    //may not be needed on a new object?? DEBUG 
     pt_obj2d_loader->reset();
- 
+   
     strcpy(char_array, objfilepath.c_str()); 
+    pt_obj2d_loader->load(char_array);
+    
+    
+    //use this (or something like it) to add new vectors
+    // pt_motionplot->add_prg_vec(Vector3* nv)
  
 
-    pt_obj2d_loader->load(char_array);
-    //pt_model_buffer->calc_normals();
 }
 
 

@@ -374,11 +374,13 @@ void obj_model::load(char *filepath)
                         //if two face indices - its a line  
                         if (fidx==2)
                         {
-                            //DEBUG THIS IS BLOWING UP                             
-                            // lines[num_lines][0] = pt1;
-                            // lines[num_lines][1] = pt2;                          
-                            //num_lines++;                    
-                            
+                            lines[num_lines].push_back(pt1);
+                            lines[num_lines].push_back(pt2);                          
+                            num_lines++;                    
+
+                            //Vector3 points[MAX_NUM_VERTICES];           // vertices of model    
+                            //std::vector<int> lines [MAX_NUM_FACES];     // 2 sided faces 
+
                         }//end line loader
 
                         //-------
