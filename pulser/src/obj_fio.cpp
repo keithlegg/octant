@@ -104,6 +104,14 @@ void obj_model::load(char *filepath)
         exit (1); // exit if file not found
     }
 
+    //check to see if an object was already loaded - offset the point indeces if so 
+    //point offset indices to points - if geom exists already 
+    if (num_pts>0)
+    {
+        pofst = num_pts;
+    }
+
+    //begin the object load - walk the file parsing it 
     while (!obj_filein.eof() && !obj_filein.fail() && !obj_filein.bad())
     {  
 
@@ -113,12 +121,6 @@ void obj_model::load(char *filepath)
             // std::cout << "FULL LINE " << line << std::endl;
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
-            //DEBUG   
-            // //point offset indices to points - if geom exists already 
-            // if (num_pts>0)
-            // {
-            //     pofst = num_pts;
-            // }
 
             std::string coords_str; // string that verts get copied to 
             std::string nrmls_str;  // string that verts get copied to 

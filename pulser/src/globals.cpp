@@ -88,7 +88,9 @@ std::vector<Vector3> scene_drawpointsclr;
 // std::vector<Vector3>* scene_drawpointsclr = new std::vector<Vector3>;
 
 
-std::vector<Vector3>* pt_scene_drawpoints = &scene_drawpoints;
+
+//std::vector<Vector3>* pt_scene_drawpoints = &scene_drawpoints;
+
 obj_model* pt_model_buffer  = new obj_model;
 
 const int MAX_CHARS_PER_LINE = 512;
@@ -440,7 +442,7 @@ void cncglobals::load_cfg_file( char* filepath )
                                 }else{                          
                                     std::cout << "load_cfg_file - adding new polygon  " << ply_count <<"\n"; 
 
-                                    pt_motionplot->add_new_polygon(ply_count, local_vec_idx);
+                                    pt_motionplot->add_new_tp_polygon(ply_count, local_vec_idx);
                                     local_vec_idx = 0;
                                     ply_count++;
                                 }//if data to load 

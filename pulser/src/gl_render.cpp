@@ -219,7 +219,7 @@ GLuint texture[3]; // storage for textures
 //display 3D points and color 
 extern std::vector<Vector3> scene_drawpoints;
 extern std::vector<Vector3> scene_drawpointsclr;
-extern std::vector<Vector3>* pt_scene_drawpoints;
+//extern std::vector<Vector3>* pt_scene_drawpoints;
 
 extern obj_model* pt_model_buffer;
 
@@ -247,14 +247,14 @@ extern RGBType *pt_gridcolor2;
 #define nrml_clr glColor3f(1,.3,.6)
 
 //quill locator color
-#define loc_idle_clr glColor3f(1,.3,.6)
-#define loc_active_clr glColor3f(1,.3,.6)
+#define loc_idle_clr glColor3f(1f,.3f,.6f)
+#define loc_active_clr glColor3f(1f,.3f,.6f)
 
 //text color
 #define text_clr glColor3f(0.6f, 1.0f, 0.0f)
 
 #define green_clr glColor3f(0.0f, 1.0f, 0.0f)
-
+#define red_clr glColor3f(1.0f, 0.0f, 0.0f)
 
 
 /***************************************/
@@ -1086,12 +1086,12 @@ void render_loop(void)
         //PROBABLY NOT WHAT YOU WANT - CONSIDER THREADS AND A MORE COMPLEX SEMAPHORE 
         if(!pt_mtime->tm_running)
         {
-            glColor3d(1.0, 0, 0);
+            red_clr;
             renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
         }
         else
         {
-            glColor3d(0.0, 1.0, 0);
+            green_clr;
             renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
         }
 

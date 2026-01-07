@@ -185,6 +185,12 @@ void cnc_plot::timer_init(void)
 void cnc_plot::add_prg_vec(Vector3* nv)
 {
     program_vecs.push_back(*nv);
+
+    //add to display buffer 
+    #if DO_BUILD_GUI == true
+        add_vec_lbuf1(nv); 
+    #endif
+
 }
 
 /******************************************/
@@ -507,22 +513,23 @@ void cnc_plot::update_toolpaths(void)
 
 /******************************************/
 /*
-    add a new polygon to program and display buffer.
+    add a new polygon from loaded_file_vecs buffer.
 
     This dumps the filebuffer into a new polygon, or set of line vectors.
 
     Polygons (line polygons, not to be confused with 3D object faces ) are stored in 
-    
+
+    move from temp file buffer and clear file buffer for next incoming polygon 
+    because the polygon is CCW/CW contigous, all we need is to know how many ids to add
+
     Polygon vertices/vectors are:
         stored    in -  this.program_vecs  
         indexed   in -  this.tp_idxs
         displayed in -  lbuffer1, lbuffer2, etc  
 
-    move from temp file buffer and clear file buffer for next incoming polygon 
-    because the polygon is CCW/CW contigous, all we need is to know how many ids to add
 */
 
-void cnc_plot::add_new_polygon(int numply, int numids)
+void cnc_plot::add_new_tp_polygon(int numply, int numids)
 {
     //std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
          
@@ -550,7 +557,7 @@ void cnc_plot::add_new_polygon(int numply, int numids)
     // incoming data is in file buffer - copy it to program buffer with index 
     if (loaded_file_vecs.size()==1)
     {
-        std::cout << "WARNING add_new_polygon - need at least two points for a line."<<"\n";
+        std::cout << "WARNING add_new_tp_polygon - need at least two points for a line."<<"\n";
     }    
     if (loaded_file_vecs.size()>1)
     {
@@ -562,10 +569,10 @@ void cnc_plot::add_new_polygon(int numply, int numids)
             //add to program_vecs (toolpath) 
             add_prg_vec(&loaded_file_vecs.at(p));
             
-            #if DO_BUILD_GUI == true
-                //add to display buffer 
-                add_vec_lbuf1(&loaded_file_vecs.at(p)); 
-            #endif
+            // #if DO_BUILD_GUI == true
+            //     //add to display buffer 
+            //     add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+            // #endif
         }
     }
 
