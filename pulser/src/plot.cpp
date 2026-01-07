@@ -71,6 +71,10 @@
 
 #if DO_BUILD_GUI == true
     #include "gl_setup.h"
+    extern std::vector<Vector3> linebuffer1; 
+    extern std::vector<Vector3> linebuffer1_rgb; 
+    extern std::vector<Vector3> linebuffer2; 
+    extern std::vector<Vector3> linebuffer2_rgb; 
 #endif 
 
 
@@ -211,10 +215,16 @@ void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 /******************************************/
 void cnc_plot::show(void)
 {
-    std::cout << "\n #"<< rapidmove_vecs.size()   <<" rapid vecs \n";
-    std::cout << " #"  << program_vecs.size()     <<" program vecs \n";    
-    std::cout << " #"  << toolpath_vecs.size()    <<" path vecs \n";    
-    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs \n";   
+    std::cout << "\n #"<< rapidmove_vecs.size()   <<"   rapid vecs \n";
+    std::cout << " #"  << program_vecs.size()     <<"   program vecs \n";    
+    std::cout << " #"  << toolpath_vecs.size()    <<"   toolpath vecs \n";    
+    std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs \n";   
+
+    #if DO_BUILD_GUI == true    
+        std::cout << " #"  << linebuffer1.size() <<"   render1 vecs \n";   
+        std::cout << " #"  << linebuffer2.size() <<"   render1 vecs \n"; 
+    #endif    
+
 }
 
 /******************************************/
@@ -439,6 +449,13 @@ void cnc_plot::update_sim(void)
 
 void cnc_plot::update_toolpaths(void)
 {
+    bool debug = true;
+    
+    if(debug)
+    {
+        std::cout << " num polys " << num_plys << "\n"; 
+    } 
+    
     if(finished==true && running==false)
     {
         //clear the old data out 
@@ -457,10 +474,8 @@ void cnc_plot::update_toolpaths(void)
 
             //move head up at current quill pos
             //Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
-            
             //add_vec_lbuf2(&quill_pos);
             //toolpath_vecs.push_back(quill_pos);
-
             //add_vec_lbuf2(&up_vec);
             //toolpath_vecs.push_back(up_vec);
 
@@ -483,9 +498,18 @@ void cnc_plot::update_toolpaths(void)
                 for (uint vid=0;vid<tp_idxs[pl].size();vid++)
                 {
                     Vector3 seg = program_vecs[tp_idxs[pl][vid]];
+                    
+                    if(debug)
+                    {
+                        std::cout << " update debug " << vid << " "<< seg.x << "\n";
+                    }
 
-                    //add_vec_lbuf2(    );
                     toolpath_vecs.push_back(seg);  
+
+                    #if DO_BUILD_GUI == true
+                        add_vec_lbuf2(&seg);
+                    #endif 
+
                 };
 
             }//iterate polygons 
@@ -531,48 +555,55 @@ void cnc_plot::update_toolpaths(void)
 
 void cnc_plot::add_new_tp_polygon(int numply, int numids)
 {
-    //std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
-         
-    int reindex = 0;
     
-     
-    //if data already loaded - increase index to new incoming data 
-    if(numply==0)
+    bool debug = false;
+
+    if(debug)
     {
-        reindex = numply; 
-    }else{
-        reindex = program_vecs.size(); 
+        std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
     }
-    //std::cout << "add ply reindex "<< reindex << "\n";
- 
+
+  
+    //auto increment the indices if data already loaded
+    int num_prg_exist = program_vecs.size();
+
+    if(debug)
+    {
+        std::cout << "add ply reindex "<< num_prg_exist << "\n";
+    }
+
 
 
     //dynamically add more indices 
     //we just iterate a sequence of ids up to N verteces
     for (uint i=0;i<numids;i++)
     {   
-        tp_idxs[numply].push_back( (reindex+i) );
+        tp_idxs[numply].push_back( (num_prg_exist+i) );
     }
 
     // incoming data is in file buffer - copy it to program buffer with index 
     if (loaded_file_vecs.size()==1)
     {
         std::cout << "WARNING add_new_tp_polygon - need at least two points for a line."<<"\n";
-    }    
+    }   
+
     if (loaded_file_vecs.size()>1)
     {
         for (uint p=0;p<loaded_file_vecs.size();p++)
         {   
-            // Vector3 foo = loaded_file_vecs.at(p);
-            // std::cout << "ADDING "<< foo.x << " "<< foo.y << " "<< foo.z << "\n";
+            if(debug)
+            {
+                Vector3 foo = loaded_file_vecs.at(p);
+                std::cout << "ADDING "<< foo.x << " "<< foo.y << " "<< foo.z << "\n";
+            }
 
             //add to program_vecs (toolpath) 
             add_prg_vec(&loaded_file_vecs.at(p));
             
-            // #if DO_BUILD_GUI == true
-            //     //add to display buffer 
-            //     add_vec_lbuf1(&loaded_file_vecs.at(p)); 
-            // #endif
+            //add to display buffer 
+            //#if DO_BUILD_GUI == true
+            //    add_vec_lbuf1(&loaded_file_vecs.at(p)); 
+            //#endif
         }
     }
 

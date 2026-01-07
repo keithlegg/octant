@@ -91,6 +91,7 @@ std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  
 /*******************************************************************/
 void obj_model::load(char *filepath)
 {
+    bool debug = false;
 
     std::cout << "## obj_model::load loading file "<< filepath << "\n";
     
@@ -118,7 +119,8 @@ void obj_model::load(char *filepath)
         std::string line;
         while (std::getline(obj_filein, line)) 
         {  
-            // std::cout << "FULL LINE " << line << std::endl;
+            if(debug){ std::cout << "FULL LINE " << line << std::endl; }
+
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
 
@@ -148,9 +150,10 @@ void obj_model::load(char *filepath)
                         //walk the space delineated tokens per each line
                         for (int a=0;a<tokenized.size();a++)
                         {   
-                 
-                            //std::cout << " line " << line_ct << " vtxpass " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
-                          
+                            if(debug){
+                                std::cout << " line " << line_ct << " vtxpass " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 
+                            }
+
                             if(vidx==1){
                                 xc = std::stof(tokenized.at(a));
                             }
@@ -174,8 +177,12 @@ void obj_model::load(char *filepath)
 
                             vidx++; 
                         }
-                        
-                        //std::cout << "vidx is "<< vidx <<"\n"; 
+
+                        //--------------------------------//                        
+                        if(debug)
+                        {
+                            std::cout << "vidx is "<< vidx <<"\n"; 
+                        }
 
                         //--------------------------------//
                         //done looping vertex line, now process the data we found 
@@ -255,13 +262,20 @@ void obj_model::load(char *filepath)
                         for (int a=1;a<tokenized.size();a++)
                         {   
 
-                            //get type  
-                            //std::cout << " FOO  " << typeid(tokenized.at(fidx)).name()  << "\n";
+                            // get type  
+                            //if(debug)
+                            //{
+                            //    std::cout << " FOO  " << typeid(tokenized.at(fidx)).name()  << "\n";
+                            //}
 
                             if( tokenized.at(a).size())
                             {
-                                //std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
-                                
+                                if(debug)
+                                {
+                                    std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
+                                }
+
+
                                 //------                                   
                                 //only supports 2,3,4 sided polygons  
                                 if(fidx==0)

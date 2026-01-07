@@ -109,28 +109,27 @@ void load_2d_obj(std::string objfilepath)
     if(debug)
     {
         std::cout << pt_obj2d_loader->num_lines << "\n";
-        for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
-        {
-            int pidx1 = pt_obj2d_loader->lines[x][0];
-            int pidx2 = pt_obj2d_loader->lines[x][0];
-            
-            Vector3 pt1 = pt_obj2d_loader->points[pidx1];
-            Vector3 pt2 = pt_obj2d_loader->points[pidx2];
-
-            //copy the object3d vectors into a toolpath 
-            pt_motionplot->add_file_vec(&pt1);
-            pt_motionplot->add_file_vec(&pt2);
-
-            //pt_motionplot->add_new_polygon(0,2);
-
-            //DEBUG - does this even work??  
-            //pt_motionplot->update_toolpaths();
-
-        }
-   
     }
 
+    uint pcount = 0;
+    for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
+    {
+        int pidx1 = pt_obj2d_loader->lines[x][0];
+        int pidx2 = pt_obj2d_loader->lines[x][0];
+        
+        Vector3 pt1 = pt_obj2d_loader->points[pidx1];
+        Vector3 pt2 = pt_obj2d_loader->points[pidx2];
 
+        //copy the object3d vectors into a toolpath 
+        pt_motionplot->add_file_vec(&pt1);
+        pt_motionplot->add_file_vec(&pt2);
+
+        pt_motionplot->add_new_tp_polygon(pcount,2);
+        pcount++;
+    }
+    
+    //DEBUG - does this even work??  
+    pt_motionplot->update_toolpaths();
  
 
 }
