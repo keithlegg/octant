@@ -85,6 +85,7 @@ GLfloat emis_points[] = { 0 , .6 , .2, 0};
 GLfloat emis_off[]    = { 0 , 0  ,  0, 0};
 GLfloat emis_teal[]   = { 0 , 1. , 1., 0};
 GLfloat emis_red[]    = { 1., 0  ,  0, 0};
+GLfloat emis_purple[] = { 1., 0  , 1., 0};
 GLfloat emis_green[]  = { 0 , 1. ,  0, 0};
 GLfloat emis_blue[]   = { 0 , 0  , 1., 0};
 GLfloat emis_lines[]  = { .5, 0  , .5, 0};
@@ -180,6 +181,7 @@ void draw_locator( Vector3* pos, float locsize)
     
     float hl = locsize/2; //halfline
 
+    glMaterialfv(GL_FRONT, GL_EMISSION, emis_purple);
     glBegin(GL_LINES);
         glVertex3f(  pos->x-hl, pos->y , pos->z );
         glVertex3f(  pos->x+hl, pos->y , pos->z );

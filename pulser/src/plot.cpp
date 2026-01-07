@@ -310,6 +310,15 @@ void cnc_plot::stop(void)
 
 void cnc_plot::run_sim(void)
 {
+    
+    //DEBUG - it crashes if you run with no data 
+    //this does not solve the problem 
+    if(toolpath_vecs.size()==0)
+    {
+        running=false; 
+        finished=true;
+    }
+
     //this is for cases where we are paused but still running  
     if(running==true && finished==false)
     {
@@ -449,7 +458,7 @@ void cnc_plot::update_sim(void)
 
 void cnc_plot::update_toolpaths(void)
 {
-    bool debug = true;
+    bool debug = false;
     
     if(debug)
     {
@@ -669,7 +678,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     pulsetrain.clear();
 
-    bool debug = true;
+    bool debug = false;
 
     point_ops PG;
 
