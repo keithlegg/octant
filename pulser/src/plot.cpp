@@ -312,11 +312,12 @@ void cnc_plot::run_sim(void)
 {
     
     //DEBUG - it crashes if you run with no data 
-    //this does not solve the problem 
-    if(toolpath_vecs.size()==0)
+    //this is a hack to stop that
+    if(toolpath_vecs.size()==0)  
     {
         running=false; 
         finished=true;
+        return void();
     }
 
     //this is for cases where we are paused but still running  

@@ -319,16 +319,24 @@ void cncglobals::load_objects(void)
 
 
 /*******************************************************/
-void cncglobals::load_cfg_file( char* filepath )
+void cncglobals::set_cfg_path( char* filepath )
+{
+    cfg_filepath = filepath;
+}
+
+/*******************************************************/
+void cncglobals::load_cfg_file( void )
 {
 
-    std::cout << "cncglobals loading file "<< filepath << "\n";
+    //
+
+    std::cout << "cncglobals loading file "<< cfg_filepath << "\n";
 
     std::ifstream cfg_filein;
 
     //DEBUG - need to check to make sure its a file, not a directory 
     /*
-    const std::string pathString = std::to_string(filepath);
+    const std::string pathString = std::to_string(cfg_filepath);
     const fs::path path(pathString); 
     std::error_code ec;  
 
@@ -350,9 +358,9 @@ void cncglobals::load_cfg_file( char* filepath )
     }*/
 
 
-    cfg_filein.open(filepath); // open a file
+    cfg_filein.open(cfg_filepath); // open a file
     if (!cfg_filein.good()){ 
-        std::cout << "config file \""<< filepath <<"\" appears to be missing." << std::endl;
+        std::cout << "config file \""<< cfg_filepath <<"\" appears to be missing." << std::endl;
         exit (EXIT_FAILURE); // exit if file not found
     }
 

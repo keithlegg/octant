@@ -68,15 +68,20 @@ extern std::vector<Vector3> linebuffer2_rgb;
 
 
 /********************************************/
-void start_gui(int *argc, char** argv){
+void start_gui(){
 
-    glutInit(argc, argv);  
+
+    // I see no reason to pass args - use dummy args instead
+    int argc = 1;
+    char *argv[1] = {(char*)"Something"};
+    glutInit(&argc, argv ); 
+
     set_colors();
     pt_motionplot->timer_init();
 
     //------------
     //load CNC cfg (including paths to .obj files) 
-    cg.load_cfg_file(argv[1]);
+    cg.load_cfg_file();
     //load the 3d models 
     cg.load_objects();
 

@@ -11,7 +11,7 @@
 
 
 
-void start_gui(int *argc, char** argv);
+void start_gui(void);
 
 void octant_mouse_motion(int x, int y);
 void octant_mouse_button(int button, int state, int x, int y);

@@ -17,7 +17,9 @@
 
 //**********************************//
 
-//#define DISABLE_PARPORT false
+//#define DISABLE_PARPOR
+
+//set_cfg_pathT false
 
 #define DEBUG_MOUSE_CLICK false
 
@@ -44,6 +46,7 @@ class cncglobals
     public: 
         cncglobals()
         {
+            //debug rename this to OBJECT  
             active_filepath        = "";
             linear_unit            = "mm"; //"mm" or "inch" 
 
@@ -83,7 +86,9 @@ class cncglobals
         //std::vector<std::string> obj_vecpaths;
         std::vector<std::string> obj_filepaths;
 
+        std::string cfg_filepath;
         std::string active_filepath;
+
 
         //----------
         //controller hardware config 
@@ -217,9 +222,11 @@ class cncglobals
         int cvt_int( const std::string&);
 
         //void copy_file_vecs_display(void);
-
+        
+        void set_cfg_path(char* obj_filepath);
+        void load_cfg_file(void);
+        
         void load_objects(void);
-        void load_cfg_file( char*);
         void show_params( void );
         void show_obj( void );
 

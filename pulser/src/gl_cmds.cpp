@@ -127,11 +127,17 @@ void load_2d_obj(std::string objfilepath)
         pt_motionplot->add_new_tp_polygon(pcount,2);
         pcount++;
     }
-    
-    //DEBUG - does this even work??  
-    pt_motionplot->update_toolpaths();
- 
 
+ 
+    pt_motionplot->update_toolpaths();
+
+}
+/***************************************/
+
+
+void unload_obj(void)
+{
+    pt_model_buffer->reset();
 }
 
 
@@ -205,10 +211,6 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n";
         
         std::cout << "------                                            \n";        
-        //std::cout << "precache     -debug   build a pulsetrain cache    \n";
-        //std::cout << "tp_out (INT) -debug   test parport output         \n";
-        //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";        
-
         std::cout << "                                                  \n";
         std::cout << "show                                              \n";
         std::cout << "  pt       -pulsetrain info                       \n";
@@ -221,7 +223,18 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n"; 
         std::cout << "lup (look up by ID)                               \n";
         std::cout << "   pathid (int),                                  \n";
+        
         std::cout << "------------------------------------------        \n";
+        //std::cout << "precache     -debug   build a pulsetrain cache    \n";
+        //std::cout << "tp_out (INT) -debug   test parport output         \n";
+        //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";  
+        
+        std::cout << "#unload, reload                                   \n";
+
+        std::cout << "------------------------------------------        \n";  
+        std::cout << "                                                  \n";
+
+
 
     }    
     
@@ -247,12 +260,7 @@ void parse_cmd_text(std::string *buffer)
         }             
     } 
     
-    
-    //experimental pre cache  
-    if (a1=="precache")
-    {
-        pt_motionplot->precache_sim();  
-    }
+
     */
 
     //------------------
@@ -275,6 +283,25 @@ void parse_cmd_text(std::string *buffer)
             tog_testport = true;
         }
     }
+
+
+    //------------------
+    //clear scene cache 
+    if (a1=="unload")
+    {
+        unload_obj();
+    }
+
+    if (a1=="reload")
+    {
+        //load CNC cfg (including paths to .obj files) 
+        //cg.load_cfg_file(argv[1]);
+        
+        //load the 3d models 
+        //cg.load_objects();
+
+    }
+
 
     //------------------
     //run external tools 

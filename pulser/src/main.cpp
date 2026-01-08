@@ -97,9 +97,11 @@ int main(int argc, char **argv)
     #if DO_BUILD_GUI == true
         if( argc == 2 ) {
             obj_filepath = argv[1] ;
+            
+            cg.set_cfg_path(obj_filepath);
 
             if( access( obj_filepath, F_OK ) != -1 ) {
-                start_gui(&argc, argv); 
+                start_gui(); 
             } else {
                 printf("# file %s does not exist.\n", obj_filepath);
                 exit(0);
