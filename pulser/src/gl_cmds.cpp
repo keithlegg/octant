@@ -135,13 +135,23 @@ void load_2d_obj(std::string objfilepath)
 /***************************************/
 
 
+void reload_obj(void)
+{
+    pt_model_buffer->reset();
+
+    //load CNC cfg (including paths to .obj files) 
+    cg.load_cfg_file();
+    
+    //load the 3d models 
+    cg.load_objects();
+
+}
+
 void unload_obj(void)
 {
     pt_model_buffer->reset();
 }
 
-
-/***************************************/
 void run_machine(void)
 {
     pt_motionplot->run_sim();
@@ -294,12 +304,7 @@ void parse_cmd_text(std::string *buffer)
 
     if (a1=="reload")
     {
-        //load CNC cfg (including paths to .obj files) 
-        //cg.load_cfg_file(argv[1]);
-        
-        //load the 3d models 
-        //cg.load_objects();
-
+        reload_obj();
     }
 
 

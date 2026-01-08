@@ -94,18 +94,32 @@ class obj_model: public polygon_ops {
         Vector3 get_triface_normal(int);
 
         // --- 
-        Vector3 points[MAX_NUM_VERTICES];           // vertices of model    
-        Vector3 vtxrgb[MAX_NUM_VERTICES];           // vextex colors of model  
-        Vector2 uvs[MAX_NUM_VERTICES];              // UV coords      - storage for lookup  
-        Vector3 vnormals[MAX_NUM_VERTICES];         // vertex normals - storage for lookup 
-        Vector3 fnormals[MAX_NUM_FACES];            // face normals   - common ID with faces
 
-        //lists of ID tables for lookup 
-        std::vector<int> lines [MAX_NUM_FACES];     // 2 sided faces 
-        std::vector<int> tris  [MAX_NUM_FACES];     // 3 sided faces
-        std::vector<int> vnids [MAX_NUM_VERTICES];  // vertex normal ids
-        std::vector<int> quads [MAX_NUM_FACES];     // 4 sided faces
-        std::vector<int> faces [MAX_NUM_FACES];     // >4, N sided faces 
+        //Vector3 points[MAX_NUM_VERTICES];           // vertices of model 
+        //Vector3 vtxrgb[MAX_NUM_VERTICES];           // vextex colors of model  
+        //Vector2 uvs[MAX_NUM_VERTICES];              // UV coords      - storage for lookup  
+        //Vector3 vnormals[MAX_NUM_VERTICES];         // vertex normals - storage for lookup 
+        //Vector3 fnormals[MAX_NUM_FACES];            // face normals   - common ID with faces
+        Vector3* points     = new Vector3[MAX_NUM_VERTICES];   // vertices of model 
+        Vector3* vtxrgb     = new Vector3[MAX_NUM_VERTICES];   // vextex colors of model  
+        Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
+        Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
+        Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
+
+
+        // --- 
+        
+        // //lists of ID tables for lookup 
+        // std::vector<int> lines [MAX_NUM_FACES];     // 2 sided faces 
+        // std::vector<int> tris  [MAX_NUM_FACES];     // 3 sided faces
+        // std::vector<int> vnids [MAX_NUM_VERTICES];  // vertex normal ids
+        // std::vector<int> quads [MAX_NUM_FACES];     // 4 sided faces
+        // std::vector<int> faces [MAX_NUM_FACES];     // >4, N sided faces 
+        std::vector<int>* lines = new std::vector<int>[MAX_NUM_FACES];     // 2 sided faces 
+        std::vector<int>* tris  = new std::vector<int>[MAX_NUM_FACES];     // 3 sided faces
+        std::vector<int>* vnids = new std::vector<int>[MAX_NUM_VERTICES];  // vertex normal ids
+        std::vector<int>* quads = new std::vector<int>[MAX_NUM_FACES];     // 4 sided faces
+        std::vector<int>* faces = new std::vector<int>[MAX_NUM_FACES];     // >4, N sided faces 
 
         // ---
         Vector3 bfr_pts[MAX_NUM_VERTICES];          // general point buffer   ( tmp work area )
