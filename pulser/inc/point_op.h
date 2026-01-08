@@ -111,14 +111,14 @@ class polygon_ops : public point_ops
     virtual void reset(void);
 
     //properties about our model 
-    int num_pts;
-    int num_vtxrgb;
-    int num_vnrmls;    
-    int num_fnrmls;
-    int num_uvs;
-    int num_lines;
-    int num_tris;
-    int num_quads;    
+    uint num_pts;
+    uint num_vtxrgb;
+    uint num_vnrmls;    
+    uint num_fnrmls;
+    uint num_uvs;
+    uint num_lines;
+    uint num_tris;
+    uint num_quads;    
 
     // extents of model (you can derive centroid from these)
     float bb_min_x;

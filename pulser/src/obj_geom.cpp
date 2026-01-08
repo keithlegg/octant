@@ -398,7 +398,7 @@ void obj_model::triangulate(void)
 
 void obj_model::calc_normals(void)
 {
-    int  p_i = 0;
+    uint  p_i = 0;
     Vector3 tri_cntr;
 
     //debug - clear any loaded normals 

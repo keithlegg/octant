@@ -1253,7 +1253,7 @@ void render_loop(void)
 
   
         glBegin(GL_TRIANGLES);  
-            for (int p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
+            for (uint p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             { 
               
                 // fetch the triangle indices from vertex list

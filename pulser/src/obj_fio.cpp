@@ -91,7 +91,8 @@ std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  
 /*******************************************************************/
 void obj_model::load(char *filepath)
 {
-    bool debug = false;
+    bool debug     = false;
+    bool debugfile = false;
 
     std::cout << "## obj_model::load loading file "<< filepath << "\n";
     
@@ -119,10 +120,9 @@ void obj_model::load(char *filepath)
         std::string line;
         while (std::getline(obj_filein, line)) 
         {  
-            if(debug){ std::cout << "FULL LINE " << line << std::endl; }
+            if(debugfile){ std::cout << "FULL LINE " << line << std::endl; }
 
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
-
 
             std::string coords_str; // string that verts get copied to 
             std::string nrmls_str;  // string that verts get copied to 
@@ -131,13 +131,15 @@ void obj_model::load(char *filepath)
             //if line is not blank
             if(tokenized.size()>0)
             {
+
                 int commentpos = tokenized.at(0).find('#');
                 if ( commentpos != std::string::npos)
                 {
-                    //confige file - line is commented out  
+                    // config file - line is commented out  
                 }
                 else
                 {
+
                     //-----------------------------//
                     // look for V / vertices
                     if ( tokenized.at(0).find("v") != std::string::npos )
@@ -148,7 +150,7 @@ void obj_model::load(char *filepath)
                         float  cr, cg, cb = 0.0; //RGB float (0.0 - 1.0)
 
                         //walk the space delineated tokens per each line
-                        for (int a=0;a<tokenized.size();a++)
+                        for (uint a=0;a<tokenized.size();a++)
                         {   
                             if(debug){
                                 std::cout << " line " << line_ct << " vtxpass " << vidx << " " << tokenized.at(a) <<"\n"; // <- vertex line 

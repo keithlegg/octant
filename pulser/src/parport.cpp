@@ -743,7 +743,7 @@ void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
     unsigned char pin_12_mask = 0b10100000;
     unsigned char pin_13_mask = 0b00010000;
 
-    unsigned char data_read;
+    //unsigned char data_read;
     *data = inb(cg->parport1_addr+1); 
     
     //printf("Data read from parallel port: 0x%x\n", data_read);

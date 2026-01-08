@@ -84,7 +84,7 @@ class cnc_plot
         
         void process_vec(uint vec_idx);
 
-        void add_new_tp_polygon(int numply, int numids);
+        void add_new_tp_polygon(int numply, uint numids);
         
         //void old_rapid_move(void);
         void rapid_move(void);

@@ -78,9 +78,6 @@
 #endif 
 
 
-
-#define HEX(x) setw(2) << setfill('0') << hex << (int)( x )
-
 point_ops PG;
 
 extern cnc_parport parport;
@@ -206,7 +203,7 @@ void cnc_plot::add_file_vec(Vector3* nv)
 /******************************************/
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 {
-    for (int vidx=0;vidx<pt_vec->size();vidx++)
+    for (uint vidx=0;vidx<pt_vec->size();vidx++)
     {
         std::cout <<vidx <<" "<< pt_vec->at(vidx) << "\n";
     }
@@ -492,8 +489,8 @@ void cnc_plot::update_toolpaths(void)
             //iterate all polygons     
             for (uint pl=0;pl<num_plys;pl++)
             {
-                Vector3 this_st = program_vecs[tp_idxs[pl][0]];
-                Vector3 hover = Vector3(this_st.x, retract_height, this_st.z);
+                //Vector3 this_st = program_vecs[tp_idxs[pl][0]];
+                //Vector3 hover = Vector3(this_st.x, retract_height, this_st.z);
 
                 //add_vec_lbuf2(&hover);
                 //toolpath_vecs.push_back(hover);
@@ -563,7 +560,7 @@ void cnc_plot::update_toolpaths(void)
 
 */
 
-void cnc_plot::add_new_tp_polygon(int numply, int numids)
+void cnc_plot::add_new_tp_polygon(int numply, uint numids)
 {
     
     bool debug = false;
@@ -644,7 +641,7 @@ void cnc_plot::add_new_tp_polygon(int numply, int numids)
 
 void cnc_plot::loadpath( std::vector<Vector3>* pt_drawvecs)
 {
-    for (int i=0;i<pt_drawvecs->size();i++)
+    for (uint i=0;i<pt_drawvecs->size();i++)
     {   
         //debug - should add a class method to get first and last vec 
         if(i==0)
@@ -685,7 +682,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     //calc a new 3D vector betwen the two points in 3D
     //Vector3 between   = sub(fr_pt, to_pt);     //old vector lib 
-    Vector3 between   = fr_pt.operator-(to_pt); //new vector lib 
+    //Vector3 between   = fr_pt.operator-(to_pt); //new vector lib 
     
     //calc the length of the path vector
     //float mag     = between.length();
@@ -819,7 +816,7 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
     }
 
     double div = (double)size/(double)num;
-    double gran = div/num;
+    //double gran = div/num;
 
     int a;  
 
@@ -894,7 +891,7 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
 
     //calc a new 3D vector betwen the two points in 3D
     //Vector3 between   = sub(fr_pt, to_pt);     //old vector lib 
-    Vector3 between   = fr_pt.operator-(to_pt); //new vector lib 
+    //Vector3 between   = fr_pt.operator-(to_pt); //new vector lib 
     
     //calc the length of the path vector
     //float mag     = between.length();
