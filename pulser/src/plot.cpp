@@ -441,6 +441,22 @@ void cnc_plot::update_sim(void)
     }//if program is running  
 }
 
+/******************************************/
+
+void cnc_plot::clear_toolpaths(void)
+{
+
+    if(finished==true && running==false)
+    {
+        //clear the old data out 
+        toolpath_vecs.clear();
+        rapidmove_vecs.clear();
+    }else
+    {
+        std::cout << "clear_toolpaths: cant clear while running  \n"; 
+    }
+
+}
 
 /******************************************/
 /*

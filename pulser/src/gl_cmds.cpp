@@ -132,8 +132,9 @@ void load_py_obj(std::string objfilepath)
     pt_motionplot->update_toolpaths();
 
 }
-/***************************************/
 
+
+/***************************************/
 
 void reload_obj(void)
 {
@@ -148,8 +149,37 @@ void reload_obj(void)
 }
 
 
+void reload_vec(void)
+{
+   std::cout << "# reloading toolpaths \n";     
+   
+   //DEBUG hmm obj and vecs live in same file - decouple?
+   cg.load_cfg_file();
+
+   pt_motionplot->update_toolpaths(); 
+}
+
+
+void unload_vec(void)
+{
+    std::cout << "# dumping cached vectors \n";  
+    
+    pt_motionplot->clear_toolpaths();
+    pt_motionplot->rapidmove_vecs.clear();
+    pt_motionplot->program_vecs.clear();
+
+    clear_linebuffers();
+
+    // pt_motionplot->update_toolpaths(); 
+
+}
+
+
+
+
 void unload_obj(void)
 {
+    std::cout << "# dumping cached 3D object(s) \n";  
     pt_model_buffer->reset();
 }
 
@@ -240,7 +270,9 @@ void parse_cmd_text(std::string *buffer)
         //std::cout << "tp_out (INT) -debug   test parport output         \n";
         //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";  
         
-        std::cout << "#unload, reload                                   \n";
+        std::cout << "#unload  (vec,obj)                                \n";
+        std::cout << "#reload  (vec,obj)                                \n";
+
 
         std::cout << "------------------------------------------        \n";  
         std::cout << "                                                  \n";
@@ -300,12 +332,40 @@ void parse_cmd_text(std::string *buffer)
     //clear scene cache 
     if (a1=="unload")
     {
-        unload_obj();
+        if(a2=="")
+        {
+            std::cout << "unload: needs args\n";
+        }
+
+        if(a2=="obj")
+        {    
+            unload_obj();
+        }
+
+        if(a2=="vec")
+        {    
+            unload_vec();
+        }        
     }
+
 
     if (a1=="reload")
     {
-        reload_obj();
+
+        if(a2=="")
+        {
+            std::cout << "reload: needs args\n";
+        }
+
+        if(a2=="obj")
+        {    
+            reload_obj();
+        }
+
+        if(a2=="vec")
+        {    
+            reload_vec();
+        }          
     }
 
 
@@ -449,19 +509,28 @@ void parse_cmd_text(std::string *buffer)
 
         Vector3 offset = e_p - s_p;
 
-        uint numx = 0;
-        uint numy = 0;
-        uint numz = 0;
+        uint numx, numy, numz = 0;
 
-        numx = offset.length()/cg.pp1u_x;
-        numy = offset.length()/cg.pp1u_y;
-        numz = offset.length()/cg.pp1u_z;
+        if(a8 != "")
+        {
+            std::cout << "freerun a8 detected " << a8 << "\n";
 
-        //non threaded - its all broke-y
-        //run_cncplot( v11, v12, v13, v21, v22, v23, std::stoi(a8));
+            numx = std::stoi(a8);
+            numy = std::stoi(a8);
+            numz = std::stoi(a8);            
+        }
+        else
+        {
+            numx = offset.length()/cg.pp1u_x;
+            numy = offset.length()/cg.pp1u_y;
+            numz = offset.length()/cg.pp1u_z;
+        }
 
-        //threaded - it workey great
-        pulse_thread( v11, v12, v13, v21, v22, v23, numx, numy, numz);
+        //non threaded - older 
+        run_cncplot( v11, v12, v13, v21, v22, v23, numx, numy, numz);
+
+        //threaded - it seems to work
+        //pulse_thread( v11, v12, v13, v21, v22, v23, numx, numy, numz);
 
         
 

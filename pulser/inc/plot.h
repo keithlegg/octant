@@ -86,6 +86,8 @@ class cnc_plot
 
         void add_new_tp_polygon(int numply, uint numids);
         
+        void clear_toolpaths(void);
+
         //void old_rapid_move(void);
         void rapid_move(void);
         
