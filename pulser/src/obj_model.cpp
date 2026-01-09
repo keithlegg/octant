@@ -76,18 +76,20 @@ extern obj_model* pt_model_buffer;
 
 void obj_model::reset(void)
 {
-
-
     //DEBUG - FIX THIS 
+
+
+    // Vector3* points     = new Vector3[MAX_NUM_VERTICES];   // vertices of model 
+    // Vector3* vtxrgb     = new Vector3[MAX_NUM_VERTICES];   // vextex colors of model  
+    // Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
+    // Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
+    // Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
     
-    // memset(uvs,      0, num_pts);
-    // memset(points,   0, num_pts);
-    // memset(vnormals, 0, num_pts);
-    // memset(vtxrgb,   0, num_pts);
-    // memset(fnormals, 0, num_pts);
-    // memset(tris,     0, num_tris);
-    // memset(quads,    0, num_quads);
-    
+    lines->clear();  
+    tris->clear(); 
+    vnids->clear(); 
+    quads->clear(); 
+    faces->clear();  
 
     num_pts = 0;
     num_uvs = 0;

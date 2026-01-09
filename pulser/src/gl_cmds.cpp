@@ -91,7 +91,7 @@ extern obj_model* pt_model_buffer;
 
 //callback from python link
 //load the results back  
-void load_2d_obj(std::string objfilepath)
+void load_py_obj(std::string objfilepath)
 {
     bool debug = true;
 
@@ -147,10 +147,12 @@ void reload_obj(void)
 
 }
 
+
 void unload_obj(void)
 {
     pt_model_buffer->reset();
 }
+
 
 void run_machine(void)
 {
@@ -162,7 +164,6 @@ void pause_machine(void)
 {
     pt_motionplot->pause();
 }
-
 
 
 //void reset_machine(void)
@@ -315,7 +316,7 @@ void parse_cmd_text(std::string *buffer)
         exe_python(a2);    
         std::string path = "3d_obj/PYCORE.obj";
         
-        load_2d_obj(path);
+        load_py_obj(path);
 
     }
 

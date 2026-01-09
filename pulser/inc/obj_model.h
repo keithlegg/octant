@@ -30,30 +30,6 @@
 #define MAX_NUM_FACES 200000
 
 
-/*
-// index/indices for a line object 
-typedef struct line{
-    int pt1;
-    int pt2;
-};
-
-// index/indices for a triangle polygon
-typedef struct triangle{
-    int pt1;
-    int pt2;
-    int pt3;    
-};
-
-// index/indices for a quad polygon 
-typedef struct quad{
-    int pt1;
-    int pt2;
-    int pt3;    
-    int pt4;
-};
-*/
-
-
 class obj_model: public polygon_ops {
     public:
 
