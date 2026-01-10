@@ -87,6 +87,13 @@ extern cncglobals cg;
 extern cnc_plot* pt_motionplot;
 extern obj_model* pt_model_buffer;
 
+
+std::string a1,a2,a3,a4,a5,a6,a7,a8,a9,a10;
+float v11,v12,v13,v21,v22,v23 = 0;
+
+int last_cmd = 0;
+
+
 /***************************************/
 
 //callback from python link
@@ -130,7 +137,6 @@ void load_py_obj(std::string objfilepath)
 
  
     pt_motionplot->update_toolpaths();
-
 }
 
 
@@ -145,10 +151,9 @@ void reload_obj(void)
     
     //load the 3d models 
     cg.load_objects();
-
 }
 
-
+/***************************************/
 void reload_vec(void)
 {
    std::cout << "# reloading toolpaths \n";     
@@ -159,7 +164,7 @@ void reload_vec(void)
    pt_motionplot->update_toolpaths(); 
 }
 
-
+/***************************************/
 void unload_vec(void)
 {
     std::cout << "# dumping cached vectors \n";  
@@ -167,6 +172,11 @@ void unload_vec(void)
     pt_motionplot->clear_toolpaths();
     pt_motionplot->rapidmove_vecs.clear();
     pt_motionplot->program_vecs.clear();
+    
+    for(uint x=0;x<MAX_NUM_PLY;x++)
+    {
+        pt_motionplot->tp_idxs[x].clear();
+    }
 
     clear_linebuffers();
 
@@ -176,26 +186,26 @@ void unload_vec(void)
 
 
 
-
+/***************************************/
 void unload_obj(void)
 {
     std::cout << "# dumping cached 3D object(s) \n";  
     pt_model_buffer->reset();
 }
 
-
+/***************************************/
 void run_machine(void)
 {
     pt_motionplot->run_sim();
 }
 
-
+/***************************************/
 void pause_machine(void)
 {
     pt_motionplot->pause();
 }
 
-
+/***************************************/
 //void reset_machine(void)
 void stop_machine(void)
 {
@@ -206,10 +216,7 @@ void stop_machine(void)
 /***************************************/
 /***************************************/
 
-std::string a1,a2,a3,a4,a5,a6,a7,a8,a9,a10;
-float v11,v12,v13,v21,v22,v23 = 0;
 
-int last_cmd = 0;
 
 
 void parse_cmd_text(std::string *buffer)
@@ -247,14 +254,13 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="help")
     {   
         std::cout << "------------------------------------------        \n";
+        std::cout << "------------------------------------------        \n";
         std::cout << "dm : display mode                                 \n";
-        std::cout << "  wire, persp, otop, oside, etc                   \n";
+        std::cout << "  wire, persp, top, side                          \n";
         std::cout << "                                                  \n";
-        
         std::cout << "------                                            \n";        
-        std::cout << "                                                  \n";
         std::cout << "show                                              \n";
-        std::cout << "  pt       -pulsetrain info                       \n";
+        std::cout << "  pt       - pulsetrain info                       \n";
         std::cout << "  cfg      - view important globals               \n";
         std::cout << "  obj      - stats about loaded 3d object         \n";
         std::cout << "  path     - stats about toolpath                 \n";
@@ -264,14 +270,16 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n"; 
         std::cout << "lup (look up by ID)                               \n";
         std::cout << "   pathid (int),                                  \n";
-        
+        std::cout << "                                                  \n";         
+        std::cout << "unload  (vec,obj)                                \n";
+        std::cout << "reload  (vec,obj)                                \n";
+
         std::cout << "------------------------------------------        \n";
         //std::cout << "precache     -debug   build a pulsetrain cache    \n";
         //std::cout << "tp_out (INT) -debug   test parport output         \n";
         //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";  
         
-        std::cout << "#unload  (vec,obj)                                \n";
-        std::cout << "#reload  (vec,obj)                                \n";
+
 
 
         std::cout << "------------------------------------------        \n";  
@@ -398,7 +406,7 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //peek at internals 
-    if (a1=="lup")
+    if (a1=="lookup"||a1=="lup")
     { 
         if(a2=="pathid")
         {
@@ -410,7 +418,7 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //peek at internals 
-    if (a1=="show")
+    if (a1=="show"|| a1=="sho")
     { 
         std::cout << "------------------------------------------        \n";
 
@@ -421,7 +429,7 @@ void parse_cmd_text(std::string *buffer)
         }
         
         //stats about plotter 
-        if(a2=="path")
+        if(a2=="path"||a2=="paths")
         { 
             pt_motionplot->show();             
         }
@@ -475,7 +483,7 @@ void parse_cmd_text(std::string *buffer)
 
     //--------------
     // gle grid
-    if (a1=="tog")
+    if (a1=="toggle"||a1=="tog")
     {
         if(a2=="tris")   {key_cb(100);};
         if(a2=="grid")   {key_cb(103);};
@@ -663,8 +671,6 @@ void parse_cmd_text(std::string *buffer)
     It calls parse_cmd_text() which further tokenizes and runs more advanced commands. 
 
 */
-
-
 
 void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {

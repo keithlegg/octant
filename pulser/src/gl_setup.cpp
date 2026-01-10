@@ -460,8 +460,6 @@ void dump_points_GLfloat( GLfloat* verts, std::vector<Vector3>* pt_vecarray, int
         // verts[num_gl_pts] =  (GLfloat)pt_vecarray->at(y).y; num_gl_pts++;
         // verts[num_gl_pts] =  (GLfloat)pt_vecarray->at(y).z; num_gl_pts++;        
         // verts[num_gl_pts] =  (GLfloat)1.0; num_gl_pts++;        
-  
-
     }
 
 }

@@ -219,7 +219,7 @@ void cnc_plot::show(void)
 
     #if DO_BUILD_GUI == true    
         std::cout << " #"  << linebuffer1.size() <<"   render1 vecs \n";   
-        std::cout << " #"  << linebuffer2.size() <<"   render1 vecs \n"; 
+        std::cout << " #"  << linebuffer2.size() <<"   render2 vecs \n"; 
     #endif    
 
 }

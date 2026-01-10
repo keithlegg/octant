@@ -83,7 +83,7 @@ bool toglr_flatshaded = true; //DEBUG
 /***************************************/
 // single view prefs - use for debugging 
 
-bool draw_lines      = true;
+bool draw_lines      = false;
 bool draw_normals    = false;
 bool draw_quads      = false;
 bool draw_triangles  = true;
