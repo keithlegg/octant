@@ -51,12 +51,20 @@
 
 
 extern bool tog_testport; 
-
+extern cncglobals cg;
 
 /***************************************/
 bool check_ports_available(uint portaddr)
 {
     bool send_it = false;
+    
+    //DEBUG - there is a downstream bug that blows up if motors disabled 
+    //probaly related to pulsetrain, et al 
+    if (cg.ENABLE_MOTOR_DRIVE==0)
+    {
+        std::cout << "*** WARNING MOTORS DISABLED IN CFG ***\n";
+        return false;
+    }
 
     if(portaddr==0)
     {
@@ -69,8 +77,12 @@ bool check_ports_available(uint portaddr)
     }
     
 
-    // probably could do better than this. 
-    send_it = true;
+
+
+    if (cg.ENABLE_MOTOR_DRIVE==1)
+    {
+        send_it = true;
+    }
 
     return send_it;
 

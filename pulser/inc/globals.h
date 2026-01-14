@@ -52,7 +52,7 @@ class cncglobals
 
             GLOBAL_DEBUG           = true;
             ENABLE_LIMIT_SWITCHES  = false;
-            ENABLE_MOTOR_DRIVE     = false;
+            ENABLE_MOTOR_DRIVE     = 1;
 
             ply_count              = 0; 
             active_polygon_load    = false; 
@@ -69,18 +69,17 @@ class cncglobals
             y_xtntx = 20;
             z_xtntx = 20;
 
-
         };
 
         ~cncglobals(){};
         
         uint ply_count;
-        bool active_polygon_load;
+        uint ENABLE_MOTOR_DRIVE;
 
+        bool active_polygon_load;
         bool GLOBAL_DEBUG;
         //bool DEBUG_PARAMS;
         bool ENABLE_LIMIT_SWITCHES;
-        bool ENABLE_MOTOR_DRIVE;
 
         //----------
         //std::vector<std::string> obj_vecpaths;

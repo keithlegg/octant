@@ -131,10 +131,12 @@ void cncglobals::show_params( void )
     std::cout <<"\n\n";
     std::cout << " #### CNC GLOBALS #### " << "\n";
     
-    std::cout << " loaded cfg file   :" << cfg_filepath    << "\n";
+    std::cout << " loaded cfg file    :" << cfg_filepath        << "\n";
 
-    std::cout << " active obj file   :" << active_filepath << "\n";
-    std::cout << " python return obj :" << obj_pycore      << "\n";
+    std::cout << " active obj file    :" << active_filepath     << "\n";
+    std::cout << " python return obj  :" << obj_pycore          << "\n";
+    std::cout << " ENABLE_MOTOR_DRIVE :" << ENABLE_MOTOR_DRIVE  << "\n";
+
     std::cout <<"\n";
 
     
@@ -406,20 +408,34 @@ void cncglobals::load_cfg_file( void )
                         //****************************************/                                    
                         
                         // PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
+                        if (tokenized.at(0).find("ENABLE_MOTOR_DRIVE")!= std::string::npos)
+                        {   
+                            // std::cout << "hypnogog       " << tokenized.at(1) << " " <<"\n";
+                            // std::cout << "block universe " << tokenized.at(1) << " " <<"\n";
+                            //ENABLE_MOTOR_DRIVE = std::istringstream(tokenized.at(1));
+
+
+                            ENABLE_MOTOR_DRIVE = std::stoi(tokenized.at(1));
+
+
+
+                        }
+
+                        //----- 
+                        // PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
                         if (tokenized.at(0).find("op_py_obj")!= std::string::npos)
                         {   
 
                             std::string buffer;
                             //std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
                             buffer = tokenized.at(1);
+                            std::cout << "PYTHON NEEDS SETTING OBJ DEBUG         \n";
 
-                            std::cout << "hypnogog " << tokenized.at(1) << " " <<"\n";
 
                             //obj_pycore = buffer;  
-
                         }
 
-
+                        //----- 
                         // LOAD 3D OBJECT - Alias .OBJ file (CLASSIC DISPLAY)
                         if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
                         {   
