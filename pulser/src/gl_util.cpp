@@ -57,6 +57,9 @@
 #endif
 
 
+
+extern std::vector<Vector3> point_buffer1;
+
 extern cnc_parport parport;
 extern cncglobals cg;
 
@@ -65,8 +68,15 @@ extern obj_model* pt_model_buffer;
 
 
 
+/*************************************************************/
+/*************************************************************/
+/*
+    load an OBJ and dump the data to lines 
+    use a single one time scoped obj_model 
 
- 
+*/
+
+
 void load_2d_obj(std::string objfilepath)
 {
     bool debug = true;
@@ -104,6 +114,64 @@ void load_2d_obj(std::string objfilepath)
         pcount++;
     }
 
- 
+
+    // I dont think this is needed, but hey
+    delete pt_obj2d_loader;
+
     pt_motionplot->update_toolpaths();
 }
+
+
+/*************************************************************/
+
+
+//DEBUG NOT DONE 
+
+void load_pts_obj(std::string objfilepath)
+{
+    bool debug = true;
+
+    char char_array[100];
+
+    obj_model* pt_obj2d_loader  = new obj_model;
+    
+    //may not be needed on a new object?? DEBUG 
+    pt_obj2d_loader->reset();
+   
+    strcpy(char_array, objfilepath.c_str()); 
+    pt_obj2d_loader->load(char_array);
+    
+    //DEBUG - put this in object 3d as a class method 
+    if(debug)
+    {
+        std::cout << pt_obj2d_loader->num_lines << "\n";
+    }
+
+    uint pcount = 0;
+    for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
+    {
+        int pidx1 = pt_obj2d_loader->lines[x][0];
+        int pidx2 = pt_obj2d_loader->lines[x][0];
+        
+        Vector3 pt1 = pt_obj2d_loader->points[pidx1];
+        Vector3 pt2 = pt_obj2d_loader->points[pidx2];
+
+
+        //point_buffer1
+
+
+    }
+
+
+    // I dont think this is needed, but hey
+    delete pt_obj2d_loader;
+
+    pt_motionplot->update_toolpaths();
+}
+
+
+
+
+
+/*************************************************************/
+

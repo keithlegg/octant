@@ -257,7 +257,7 @@ void obj_model::load(char *filepath)
                     if ( tokenized.at(0).find("f") != std::string::npos )
                     {
                         int fidx = 0;
-                        int pt1,pt2,pt3,pt4 = 0;
+                        uint pt1,pt2,pt3,pt4 = 0;
                         int vn1,vn2,vn3,vn4 = 0;
 
                         //walk the space delineated tokens per each line
@@ -387,6 +387,15 @@ void obj_model::load(char *filepath)
  
 
                         }
+
+                        //-------                  
+                        //if only one face index - its a point  
+                        if (fidx==1)
+                        {
+                            // points[num_lines].push_back(pt1);
+ 
+
+                        }//end line loader
 
                         //-------                  
                         //if two face indices - its a line  

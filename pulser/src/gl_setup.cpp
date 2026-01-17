@@ -46,14 +46,12 @@ extern float gridsquares;
 extern float gridsize;
 extern float gnomonsize;
 
-extern std::vector<Vector3> linebuffer1; 
-extern std::vector<Vector3> linebuffer1_rgb; 
-extern std::vector<Vector3> linebuffer2; 
-extern std::vector<Vector3> linebuffer2_rgb; 
-
 extern GLuint texture[3];
 
 
+
+//point buffer - just a list of points
+std::vector<Vector3> point_buffer1;
 
 
 //toolpath vectors
@@ -93,7 +91,7 @@ GLfloat clr_yellow[]  = { 1., 1. ,  0, 0};
 GLfloat clr_green[]   = { 0 , 1. ,  0, 0};
 GLfloat clr_blue[]    = { 0 , 0  , 1., 0};
 
-
+//these are defined elsewhere - need to consolidate color palette 
 //GLfloat loc_active[]   = { 1, .4, 1, 0};
 //GLfloat loc_idle[]    = { 1, .4, 1, 0};
 

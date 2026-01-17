@@ -79,7 +79,7 @@ extern obj_model* pt_model_buffer;
 // UNTESTED add a new 3D triangle using 3 vector3 
 void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
 {
-    vector<int> newtri;
+    vector<uint> newtri;
 
     points[num_pts] = pt1;
     newtri.push_back(num_pts+1);
@@ -104,7 +104,7 @@ void obj_model::add_triangle(int vid1, int vid2, int vid3)
 {
 
     // debug - use fac_tmp instead? 
-    vector<int> newtri;
+    vector<uint> newtri;
     newtri.push_back(vid1);
     newtri.push_back(vid2);
     newtri.push_back(vid3);
@@ -128,7 +128,7 @@ void obj_model::append_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3, int vid1, int 
     num_pts++;
     points[num_pts] = pt3 ;    
     //--------------------
-    vector<int> newtri;
+    vector<uint> newtri;
     newtri.push_back(vid1);
     newtri.push_back(vid2);
     newtri.push_back(vid3);
@@ -142,7 +142,7 @@ void obj_model::append_tri(Vector3 pt1, Vector3 pt2, Vector3 pt3, int vid1, int 
 void obj_model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2)  
 {
 
-    vector<int> newline;
+    vector<uint> newline;
 
     points[num_pts] = pt1;
     newline.push_back(num_pts+1);
@@ -163,7 +163,7 @@ void obj_model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2)
 void obj_model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2, Vector3 color)  
 {
 
-    vector<int> newline;
+    vector<uint> newline;
 
     points[num_pts] = pt1;
     vtxrgb[num_pts] = color; num_vtxrgb++;
@@ -194,7 +194,7 @@ void obj_model::between_2vecs_as_line(Vector3 pt1, Vector3 pt2, Vector3 color)
 void obj_model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos)
 {
 
-    vector<int> newline;
+    vector<uint> newline;
 
     points[num_pts] = atpos;
     newline.push_back(num_pts+1);
@@ -214,7 +214,7 @@ void obj_model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos)
 void obj_model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos, Vector3 color)
 {
 
-    vector<int> newline;
+    vector<uint> newline;
 
     points[num_pts] = atpos;
     vtxrgb[num_pts] = color;num_vtxrgb++; 
@@ -236,7 +236,7 @@ void obj_model::vec3_as_geom_atpos( Vector3 pt1 , Vector3 atpos, Vector3 color)
 void obj_model::vec3_as_geom(Vector3 pt1)
 {
 
-    vector<int> newline;
+    vector<uint> newline;
 
     points[num_pts] = Vector3(0,0,0);
     newline.push_back(num_pts+1);
@@ -293,7 +293,7 @@ Vector3 obj_model::get_triface_normal(int fid)
     
     Vector3 fac_normal;
     
-    std::vector<int> tri_face;
+    std::vector<uint> tri_face;
 
     if (num_tris>0){
         tri_face = tris[fid];
@@ -365,7 +365,6 @@ Vector3 obj_model::get_triface_normal(int fid)
 void obj_model::triangulate(void)
 {
 
-    int  p_i = 0;
     Vector3 tri_cntr;
 
     //debug - clear any loaded normals 
@@ -374,7 +373,7 @@ void obj_model::triangulate(void)
     printf("#number of quads %d\n", num_quads );
 
     //calc normals for quads 
-    for (p_i=0;p_i<num_quads;p_i++)
+    for (uint p_i=0;p_i<num_quads;p_i++)
     {   
            
         // fetch the pts for a triangle
@@ -679,8 +678,8 @@ void obj_model::prim_cube(float scale)
  {
 
     float a = 0;
-    int vcnt = 0;
-    int step = 360/divs;
+    uint vcnt = 0;
+    uint step = 360/divs;
     
     std::cout << "step is " << step << "\n" ;
 
@@ -701,13 +700,14 @@ void obj_model::prim_cube(float scale)
 
     // cout << faceindices[0] << faceindices[5];
 
-    for (int i=0; i<vcnt; i++) 
+    for (uint i=0; i<vcnt; i++) 
     {
         //fac_tmp.clear();
         fac_tmp.push_back(i+1);  
     }
 
-    faces[0] = fac_tmp;
+    faces[num_faces] = fac_tmp;
+    num_faces++;
 
     num_pts = vcnt;
  }     
@@ -719,7 +719,7 @@ void obj_model::prim_cube(float scale)
 //sample 3d object - may not be the "proper" way to do it
 void obj_model::prim_square(float scale)
 {
-    fac_tmp.clear();
+    //fac_tmp.clear();
 
     points[0].set(-scale, 1,  scale);
     points[1].set( scale, 1,  scale);
@@ -740,7 +740,7 @@ void obj_model::prim_square(float scale)
  //sample 3d object - may not be the "proper" way to do it
  void obj_model::prim_triangle(float scale)
  {
-    fac_tmp.clear();
+    //fac_tmp.clear();
 
     // vertices - (3d vectors)
     

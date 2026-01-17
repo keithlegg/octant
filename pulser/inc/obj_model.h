@@ -29,6 +29,15 @@
 #define MAX_NUM_VERTICES 200000
 #define MAX_NUM_FACES 200000
 
+/*
+   The temrinology is confusing 
+
+   obj_model.points should really be called vertex/verteces 
+
+   I added a point location later , (pt_locs) - this is an indexed point (or 1 dimensional indexed vert)
+
+*/
+
 
 class obj_model: public polygon_ops {
     public:
@@ -48,6 +57,8 @@ class obj_model: public polygon_ops {
         uint num_lines;
         uint num_tris;
         uint num_quads;    
+        uint num_faces;
+
 
         // extents of model (you can derive centroid from these)
         float bb_min_x;
@@ -63,7 +74,7 @@ class obj_model: public polygon_ops {
         //------
         //buffers to be used as tmp storage 
         std::vector<float> vtx_tmp;
-        std::vector<int>   fac_tmp;  
+        std::vector<uint>   fac_tmp;  
         
         //Vector3 calc_centroid( void );
         Vector3 calc_extents(void);
@@ -91,15 +102,16 @@ class obj_model: public polygon_ops {
         // std::vector<int> vnids [MAX_NUM_VERTICES];  // vertex normal ids
         // std::vector<int> quads [MAX_NUM_FACES];     // 4 sided faces
         // std::vector<int> faces [MAX_NUM_FACES];     // >4, N sided faces 
-        std::vector<int>* lines = new std::vector<int>[MAX_NUM_FACES];     // 2 sided faces 
-        std::vector<int>* tris  = new std::vector<int>[MAX_NUM_FACES];     // 3 sided faces
-        std::vector<int>* vnids = new std::vector<int>[MAX_NUM_VERTICES];  // vertex normal ids
-        std::vector<int>* quads = new std::vector<int>[MAX_NUM_FACES];     // 4 sided faces
-        std::vector<int>* faces = new std::vector<int>[MAX_NUM_FACES];     // >4, N sided faces 
+        uint* pt_loc               = new uint[MAX_NUM_FACES];                     // 1 point location 
+        std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
+        std::vector<uint>* tris    = new std::vector<uint>[MAX_NUM_FACES];     // 3 sided faces
+        std::vector<uint>* vnids   = new std::vector<uint>[MAX_NUM_VERTICES];  // vertex normal ids
+        std::vector<uint>* quads   = new std::vector<uint>[MAX_NUM_FACES];     // 4 sided faces
+        std::vector<uint>* faces   = new std::vector<uint>[MAX_NUM_FACES];     // >4, N sided faces 
 
         // ---
         Vector3 bfr_pts[MAX_NUM_VERTICES];          // general point buffer   ( tmp work area )
-        std::vector<int> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
+        std::vector<uint> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
 
         //----------------
         //----------------
