@@ -121,6 +121,8 @@ extern GLfloat clr_green[]   ;
 extern GLfloat clr_blue[]    ;
 
 
+
+
 extern GLuint texture[3];
 
 
@@ -247,8 +249,8 @@ extern RGBType *pt_gridcolor2;
 #define nrml_clr glColor3f(1,.3,.6)
 
 //quill locator color
-#define loc_idle_clr glColor3f(1f,.3f,.6f)
-#define loc_active_clr glColor3f(1f,.3f,.6f)
+#define loc_active_clr glColor3f(1.f,.3f,.6f)
+#define loc_idle_clr glColor3f(.3f,.6f,.8f)
 
 //text color
 #define text_clr glColor3f(0.6f, 1.0f, 0.0f)
@@ -980,15 +982,18 @@ void render_loop(void)
     glutKeyboardFunc(parser_cb);
 
     //------------ 
- 
+
+
+    //GLfloat loac_idle[]    = { 0 , 0  , 1., 0};
+
     if(pt_mtime->tm_running)
     {
 
-        //I tried to make this sepereate from the GUI but then we need threads. Sigh. 
+        //I tried to make this separate from the GUI but then we need threads. Sigh. 
         //this seems like a good compromise
         pt_motionplot->update_sim();
-            
-        glColor3d(1, .4, 1);
+
+        loc_active_clr;         
         draw_locator(&motionplot.quill_pos, .5);
 
     }//end program cycle running  
@@ -999,7 +1004,7 @@ void render_loop(void)
     //draw locator when idle 
     if(!pt_mtime->tm_running)
     {
-        glColor3d(.7, .7, .7);
+        loc_idle_clr;
         draw_locator(&motionplot.quill_pos, .5);        
     }
     

@@ -93,6 +93,10 @@ GLfloat clr_yellow[]  = { 1., 1. ,  0, 0};
 GLfloat clr_green[]   = { 0 , 1. ,  0, 0};
 GLfloat clr_blue[]    = { 0 , 0  , 1., 0};
 
+
+//GLfloat loc_active[]   = { 1, .4, 1, 0};
+//GLfloat loc_idle[]    = { 1, .4, 1, 0};
+
 // quaternion frank = quaternion_identity();
 
 

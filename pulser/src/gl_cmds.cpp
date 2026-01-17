@@ -385,7 +385,7 @@ void parse_cmd_text(std::string *buffer)
             unload_obj();
         }
 
-        if(a2=="vec")
+        if(a2=="paths"||a2=="path"||a2=="vec")
         {    
             unload_vec();
         }        
@@ -405,7 +405,7 @@ void parse_cmd_text(std::string *buffer)
             reload_obj();
         }
 
-        if(a2=="vec")
+        if(a2=="paths"||a2=="path"||a2=="vec")
         {    
             reload_vec();
         }          
