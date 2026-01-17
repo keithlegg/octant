@@ -964,6 +964,7 @@ void parser_cb(unsigned char key, int x, int y)
 /***************************************/
 //placeholder for future feature we havent invented yet
 float dummy = 0;
+uint top_text_y = 20;
 
 void render_loop(void)
 {
@@ -1077,22 +1078,34 @@ void render_loop(void)
 
         //---        
         //sprintf(s, "    %d quads ", pt_model_buffer->num_quads );
-        //renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-20  ,(void *)font, s );
+        //renderBitmapString( ((int)(scr_size_x/2)-200) , scr_size_y-top_text_y  ,(void *)font, s );
         
         
         //-----------------------------------------
 
+        if(!cg.ENABLE_MOTOR_DRIVE)
+        {
+            red_clr;
+            renderBitmapString( ((int)(scr_size_x/2)-50) , top_text_y  ,(void *)font, "DISABLED" ); 
+        }
+        else
+        {
+            green_clr;
+            renderBitmapString( ((int)(scr_size_x/2)-50) , top_text_y  ,(void *)font, "ENABLED" ); 
+        }
+
+        //-----------------------------------------
         //DEBUG USING THE TIMER AS INDICATOR OF MACHINE RUNNING 
         //PROBABLY NOT WHAT YOU WANT - CONSIDER THREADS AND A MORE COMPLEX SEMAPHORE 
         if(!pt_mtime->tm_running)
         {
             red_clr;
-            renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
+            renderBitmapString( ((int)(scr_size_x/2)-200) , top_text_y  ,(void *)font, "ESTOP" ); 
         }
         else
         {
             green_clr;
-            renderBitmapString( ((int)(scr_size_x/2)-300) , 30  ,(void *)font, "ESTOP" ); 
+            renderBitmapString( ((int)(scr_size_x/2)-200) , top_text_y  ,(void *)font, "ESTOP" ); 
         }
 
         //-----------------------------------------

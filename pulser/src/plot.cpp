@@ -101,6 +101,11 @@ std::mutex mtx_p; //you can use std::lock_guard if you want to be exception safe
 // just a self contained example to launch the pulser 
 // it was never meant to be more than that 
 
+
+//hmm - create a new object each time? Sounds not effecient 
+cnc_plot* plot     = new cnc_plot;
+//cnc_parport* pport = new cnc_parport;
+
 void run_cncplot(double f_x,
                  double f_y,
                  double f_z,
@@ -114,17 +119,24 @@ void run_cncplot(double f_x,
 
     bool DEBUG = false; 
 
-    cnc_plot* plot     = new cnc_plot;
-    cnc_parport* pport = new cnc_parport;
-
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
+    //----
+    
+    //cnc_plot* plot     = new cnc_plot;
+    //cnc_parport* pport = new cnc_parport;
+
+    //plot->clear_toolpaths();
+    
     plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs);
+    
+    //----
+
 
     if(DEBUG==true)
     {
-        std::cout << "## run_cncplot debug mode \n";
+        std::cout << "## run_cncplot debug mode \n"; 
 
         for(uint x=0;x<plot->pulsetrain.size();x++)
         {
@@ -134,13 +146,19 @@ void run_cncplot(double f_x,
         } 
     }
 
-    if(DEBUG==false)
+    if(cg.ENABLE_MOTOR_DRIVE==0)
     {
-        pport->freerun_pulses( &cg, plot);
+        std::cout << "*** WARNING MOTORS DISABLED IN CFG ***\n";
     }
 
-    delete pport; 
-    delete plot;
+    if(DEBUG==false && cg.ENABLE_MOTOR_DRIVE==1)
+    {
+        parport.freerun_pulses( &cg, plot);
+    }
+
+    //I was creating each time. Debug  
+    //delete pport; 
+    //delete plot;
 }
 
 /***************************************/
@@ -442,7 +460,14 @@ void cnc_plot::update_sim(void)
 }
 
 /******************************************/
+// //clear everything 
+// void cnc_plot::clear_sim(void)
+// {
+//     //std::vector<Vector3> pulsetrain;
+// }
 
+/******************************************/
+//clear toolpaths only 
 void cnc_plot::clear_toolpaths(void)
 {
 

@@ -131,11 +131,11 @@ void cncglobals::show_params( void )
     std::cout <<"\n\n";
     std::cout << " #### CNC GLOBALS #### " << "\n";
     
-    std::cout << " loaded cfg file    :" << cfg_filepath        << "\n";
+    std::cout << " loaded cfg file    : " << cfg_filepath        << "\n";
 
-    std::cout << " active obj file    :" << active_filepath     << "\n";
-    std::cout << " python return obj  :" << obj_pycore          << "\n";
-    std::cout << " ENABLE_MOTOR_DRIVE :" << ENABLE_MOTOR_DRIVE  << "\n";
+    std::cout << " active obj file    : " << active_filepath     << "\n";
+    std::cout << " python return obj  : " << obj_pycore          << "\n";
+    std::cout << " ENABLE_MOTOR_DRIVE : " << ENABLE_MOTOR_DRIVE  << "\n";
 
     std::cout <<"\n";
 

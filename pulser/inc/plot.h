@@ -87,6 +87,7 @@ class cnc_plot
         void add_new_tp_polygon(int numply, uint numids);
         
         void clear_toolpaths(void);
+        //void clear_sim(void);
 
         //void old_rapid_move(void);
         void rapid_move(void);
@@ -140,8 +141,8 @@ class cnc_plot
         //-----
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
-        //pulse train indeces 
-        std::vector<uint> pt_idxs[MAX_NUM_PLY];
+        //pulse train indeces (experiment not used?) 
+        //std::vector<uint> pt_idxs[MAX_NUM_PLY];
 
         //-----        
 
