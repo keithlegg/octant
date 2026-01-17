@@ -213,6 +213,20 @@ void stop_machine(void)
 }
 
 
+//void reset_machine(void)
+void set_motor(uint setval)
+{
+    if(setval==1){
+        cg.ENABLE_MOTOR_DRIVE = 1;
+    }
+    if(setval==0){
+        cg.ENABLE_MOTOR_DRIVE = 0;
+    }    
+}
+
+
+
+
 /***************************************/
 /***************************************/
 
@@ -258,6 +272,9 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "dm : display mode                                 \n";
         std::cout << "  wire, persp, top, side                          \n";
         std::cout << "                                                  \n";
+        
+        std::cout << "mtr : motor                                       \n";
+        std::cout << "  on,off                                          \n";
         std::cout << "------                                            \n";        
         std::cout << "show                                              \n";
         std::cout << "  pt       - pulsetrain info                       \n";
@@ -313,6 +330,24 @@ void parse_cmd_text(std::string *buffer)
     
 
     */
+
+
+
+    //test port out (how fast can we blink?)
+    if (a1=="mtr")
+    {
+        if (a2=="1")
+        {    
+            set_motor(1);
+        }
+
+        if (a2=="0")
+        {    
+            set_motor(0);
+        }        
+
+    }
+
 
     //------------------
 

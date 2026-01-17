@@ -255,6 +255,8 @@ extern RGBType *pt_gridcolor2;
 
 #define green_clr glColor3f(0.0f, 1.0f, 0.0f)
 #define red_clr glColor3f(1.0f, 0.0f, 0.0f)
+#define enabled_txt_clr glColor3f(.3f, 0.5f, 0.4f)
+#define enabled_txt_clr2 glColor3f(.5f, 0.7f, 0.6f)
 
 
 /***************************************/
@@ -1085,12 +1087,12 @@ void render_loop(void)
 
         if(!cg.ENABLE_MOTOR_DRIVE)
         {
-            red_clr;
+            enabled_txt_clr;
             renderBitmapString( ((int)(scr_size_x/2)-50) , top_text_y  ,(void *)font, "DISABLED" ); 
         }
         else
         {
-            green_clr;
+            enabled_txt_clr2;
             renderBitmapString( ((int)(scr_size_x/2)-50) , top_text_y  ,(void *)font, "ENABLED" ); 
         }
 
