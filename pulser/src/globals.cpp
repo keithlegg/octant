@@ -422,7 +422,16 @@ void cncglobals::load_cfg_file( void )
                         }
 
                         //----- 
-                        // PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
+                        // DEBUG - NOT DONE -
+                        // 2d OBJ file  
+                        if (tokenized.at(0).find("op_loadpaths")!= std::string::npos)
+                        {   
+                            std::cout << "DEBUG LOAD 2D OBJECT  \n";
+ 
+                        }
+
+                        //----- 
+                        // DEBUG - NOT DONE - PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
                         if (tokenized.at(0).find("op_py_obj")!= std::string::npos)
                         {   
 

@@ -334,7 +334,7 @@ void parse_cmd_text(std::string *buffer)
 
 
     //test port out (how fast can we blink?)
-    if (a1=="mtr")
+    if (a1=="mtr" || a1=="motor")
     {
         if (a2=="1")
         {    
