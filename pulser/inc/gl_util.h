@@ -3,4 +3,10 @@
 
 
 
+
+
+void load_2d_obj(std::string objfilepath);
+
+
+
 #endif

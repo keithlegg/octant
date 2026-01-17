@@ -56,6 +56,7 @@
 
 #if DO_BUILD_GUI == true
     //#include "gl_setup.h"
+    #include "gl_util.h"
 #endif 
 
 
@@ -426,8 +427,12 @@ void cncglobals::load_cfg_file( void )
                         // 2d OBJ file  
                         if (tokenized.at(0).find("op_loadpaths")!= std::string::npos)
                         {   
+                            std::string buffer;
+                            buffer = tokenized.at(1);
+
                             std::cout << "DEBUG LOAD 2D OBJECT  \n";
- 
+                            load_2d_obj(buffer);
+
                         }
 
                         //----- 

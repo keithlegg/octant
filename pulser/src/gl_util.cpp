@@ -64,3 +64,46 @@ extern cnc_plot* pt_motionplot;
 extern obj_model* pt_model_buffer;
 
 
+
+
+ 
+void load_2d_obj(std::string objfilepath)
+{
+    bool debug = true;
+
+    char char_array[100];
+
+    obj_model* pt_obj2d_loader  = new obj_model;
+    
+    //may not be needed on a new object?? DEBUG 
+    pt_obj2d_loader->reset();
+   
+    strcpy(char_array, objfilepath.c_str()); 
+    pt_obj2d_loader->load(char_array);
+    
+    //DEBUG - put this in object 3d as a class method 
+    if(debug)
+    {
+        std::cout << pt_obj2d_loader->num_lines << "\n";
+    }
+
+    uint pcount = 0;
+    for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
+    {
+        int pidx1 = pt_obj2d_loader->lines[x][0];
+        int pidx2 = pt_obj2d_loader->lines[x][0];
+        
+        Vector3 pt1 = pt_obj2d_loader->points[pidx1];
+        Vector3 pt2 = pt_obj2d_loader->points[pidx2];
+
+        //copy the object3d vectors into a toolpath 
+        pt_motionplot->add_file_vec(&pt1);
+        pt_motionplot->add_file_vec(&pt2);
+
+        pt_motionplot->add_new_tp_polygon(pcount,2);
+        pcount++;
+    }
+
+ 
+    pt_motionplot->update_toolpaths();
+}
