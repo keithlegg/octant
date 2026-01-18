@@ -443,19 +443,39 @@ void cncglobals::load_cfg_file( void )
 
                         }
 
-                        //----- 
-                        // DEBUG - NOT DONE -
-                        // lines only - OBJ file  
-                        if (tokenized.at(0).find("op_loadpaths")!= std::string::npos)
-                        {   
-                            std::string buffer;
-                            buffer = tokenized.at(1);
+ 
+                        /**************************************/ 
+                        /**************************************/ 
+                        #if DO_BUILD_GUI == true
+                            // DEBUG - NOT DONE -
+                            // lines only - OBJ file  
+                            if (tokenized.at(0).find("op_loadpaths")!= std::string::npos)
+                            {   
+                                std::string buffer;
+                                buffer = tokenized.at(1);
 
-                            std::cout << "DEBUG LOAD 3D LINE OBJECT  \n";
-                            load_line_obj(buffer);
+                                std::cout << "DEBUG LOAD 3D LINE OBJECT  \n";
+                                load_line_obj(buffer);
 
-                        }
+                            }
 
+                            /**************************************/ 
+     
+                            if (tokenized.at(0).find("SCREEN_BG_COLOR") != std::string::npos )                            
+                            {  
+       
+                                //std::cout << "DEBUG BG COLOR " << buffer1 << " "<< buffer2 << " "<< buffer3 << "\n";
+                            
+                                bg_clr[0] = std::stof(tokenized.at(1));
+                                bg_clr[1] = std::stof(tokenized.at(2));
+                                bg_clr[2] = std::stof(tokenized.at(3));
+
+                            }
+
+                        #endif 
+                        /**************************************/ 
+                        /**************************************/ 
+                            
                         //----- 
                         // DEBUG - NOT DONE - PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
                         if (tokenized.at(0).find("op_py_obj")!= std::string::npos)
@@ -542,18 +562,7 @@ void cncglobals::load_cfg_file( void )
                                 }                            
                             }//load a 3D vector 
                         }//active polygon load 
-                        /**************************************/ 
- 
-                        if (tokenized.at(0).find("SCREEN_BG_COLOR") != std::string::npos )                            
-                        {  
-   
-                            //std::cout << "DEBUG BG COLOR " << buffer1 << " "<< buffer2 << " "<< buffer3 << "\n";
-                        
-                            bg_clr[0] = std::stof(tokenized.at(1));
-                            bg_clr[1] = std::stof(tokenized.at(2));
-                            bg_clr[2] = std::stof(tokenized.at(3));
 
-                        }
 
                         //** MACHINE HARDWARE SETUP ************//
                         if (tokenized.at(0).find("LINEAR_UNIT") != std::string::npos )                            

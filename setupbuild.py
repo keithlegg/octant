@@ -67,12 +67,14 @@ if __name__=="__main__":
     if len(sys.argv)>1:
         arg2 = sys.argv[1] #.encode('utf-8', 'replace').decode()
         
-        print("ARG IS " , arg2)  
-        
+
         if arg2 == 'gui': 
+            print(" -> moving gui related files in place ")  
+
             putback_gui_src()
 
         if arg2 == 'nogui': 
+            print(" -> hiding gui related files ")              
             takeaway_gui_src()
 
  
