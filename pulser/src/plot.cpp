@@ -610,7 +610,6 @@ void cnc_plot::add_new_tp_polygon(int numply, uint numids)
     {
         std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
     }
-
   
     //auto increment the indices if data already loaded
     int num_prg_exist = program_vecs.size();
@@ -619,8 +618,6 @@ void cnc_plot::add_new_tp_polygon(int numply, uint numids)
     {
         std::cout << "add ply reindex "<< num_prg_exist << "\n";
     }
-
-
 
     //dynamically add more indices 
     //we just iterate a sequence of ids up to N verteces

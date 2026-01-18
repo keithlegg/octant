@@ -50,7 +50,8 @@
 #include "plot.h"
 
 
-extern bool tog_testport; 
+//extern bool tog_testport; 
+
 extern cncglobals cg;
 
 /***************************************/
@@ -75,9 +76,6 @@ bool check_ports_available(uint portaddr)
     { 
         fprintf(stderr, "# Couldn't open parallel port \n"), exit(1);
     }
-    
-
-
 
     if (cg.ENABLE_MOTOR_DRIVE==1)
     {
