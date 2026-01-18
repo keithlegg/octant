@@ -340,8 +340,6 @@ void cncglobals::set_cfg_path( char* filepath )
 void cncglobals::load_cfg_file( void )
 {
 
-    //
-
     std::cout << "cncglobals loading file "<< cfg_filepath << "\n";
 
     std::ifstream cfg_filein;
@@ -475,7 +473,7 @@ void cncglobals::load_cfg_file( void )
                         #endif 
                         /**************************************/ 
                         /**************************************/ 
-                            
+
                         //----- 
                         // DEBUG - NOT DONE - PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
                         if (tokenized.at(0).find("op_py_obj")!= std::string::npos)
