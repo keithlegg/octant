@@ -29,38 +29,52 @@ def getfiles(ext):
     return paths
 
 
+#move all the files to a place outside of makes path (GUI disabled)
 def takeaway_gui_src():
     print(" -> build process - hide GUI related files")
     for p in getfiles('.h'):
         cmd1 = "%s/%s/%s"%(base_dir,header_dir,p) 
         cmd2 = "%s/%s/%s"%(base_dir,holding_dir,p)
-        print(cmd1, cmd2)
+        #print(cmd1, cmd2)
         shutil.move(cmd1, cmd2)
 
-    for p in getfiles('.cpp'):
-        command = "%s/%s"%(src_dir,p), "%s/%s"%(holding_dir,p)
-        #os.rename()
-        print(command)
-
-    #os.replace("path/to/current/file.foo", "path/to/new/destination/for/file.foo")
+    # for p in getfiles('.cpp'):
+    #     command = "%s/%s"%(src_dir,p), "%s/%s"%(holding_dir,p)
+    #     #os.rename()
+    #     print(command)
 
 
-
+#put all the files back to where they live (GUI enabled)
 def putback_gui_src():
     print(" -> build process - return GUI related files")
 
+    for p in getfiles('.h'):
+        cmd1 = "%s/%s/%s"%(base_dir,holding_dir,p)
+        cmd2 = "%s/%s/%s"%(base_dir,header_dir,p) 
+        #print(cmd1, cmd2)
+        shutil.move(cmd1, cmd2)
+
+    # for p in getfiles('.cpp'):
+    #     command = "%s/%s"%(src_dir,p), "%s/%s"%(base_dir,p)
+    #     #os.rename()
+    #     print(command)
 
 
-takeaway_gui_src()
+
+
 
 if __name__=="__main__":
 
-    if len(sys.argv)>=3:
+    if len(sys.argv)>1:
         arg2 = sys.argv[1] #.encode('utf-8', 'replace').decode()
         
         print("ARG IS " , arg2)  
+        
+        if arg2 == 'gui': 
+            putback_gui_src()
 
-
+        if arg2 == 'nogui': 
+            takeaway_gui_src()
 
  
 print(" -> build process in python - setup complete")
