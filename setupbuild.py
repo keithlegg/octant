@@ -33,15 +33,14 @@ def getfiles(ext):
 def takeaway_gui_src():
     print(" -> build process - hide GUI related files")
     for p in getfiles('.h'):
-        cmd1 = "%s/%s/%s"%(base_dir,header_dir,p) 
-        cmd2 = "%s/%s/%s"%(base_dir,holding_dir,p)
-        #print(cmd1, cmd2)
+        cmd1 = "%s/%s/%s"%(base_dir, header_dir , p) 
+        cmd2 = "%s/%s/%s"%(base_dir, holding_dir, p)
         shutil.move(cmd1, cmd2)
 
-    # for p in getfiles('.cpp'):
-    #     command = "%s/%s"%(src_dir,p), "%s/%s"%(holding_dir,p)
-    #     #os.rename()
-    #     print(command)
+    for p in getfiles('.cpp'):
+        cmd1 = "%s/%s/%s"%(base_dir, src_dir    ,p) 
+        cmd2 = "%s/%s/%s"%(base_dir, holding_dir,p)
+        shutil.move(cmd1, cmd2)
 
 
 #put all the files back to where they live (GUI enabled)
@@ -49,15 +48,15 @@ def putback_gui_src():
     print(" -> build process - return GUI related files")
 
     for p in getfiles('.h'):
-        cmd1 = "%s/%s/%s"%(base_dir,holding_dir,p)
-        cmd2 = "%s/%s/%s"%(base_dir,header_dir,p) 
+        cmd1 = "%s/%s/%s"%(base_dir, holding_dir, p)
+        cmd2 = "%s/%s/%s"%(base_dir, header_dir , p) 
         #print(cmd1, cmd2)
         shutil.move(cmd1, cmd2)
 
-    # for p in getfiles('.cpp'):
-    #     command = "%s/%s"%(src_dir,p), "%s/%s"%(base_dir,p)
-    #     #os.rename()
-    #     print(command)
+    for p in getfiles('.cpp'):
+        cmd1 = "%s/%s/%s"%(base_dir, holding_dir, p) 
+        cmd2 = "%s/%s/%s"%(base_dir, src_dir    , p)
+        shutil.move(cmd1, cmd2)
 
 
 
