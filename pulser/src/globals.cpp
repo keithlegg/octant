@@ -57,10 +57,16 @@
 #if DO_BUILD_GUI == true
     //#include "gl_setup.h"
     #include "gl_util.h"
+    #include "gl_setup.h"
+
+    extern GLfloat bg_clr[];
+
 #endif 
 
 
 extern cnc_plot* pt_motionplot;
+
+
 
 
 char strbuffer[100][100];
@@ -422,16 +428,31 @@ void cncglobals::load_cfg_file( void )
 
                         }
 
+                        
+
                         //----- 
                         // DEBUG - NOT DONE -
-                        // 2d OBJ file  
+                        // location - OBJ file   
+                        if (tokenized.at(0).find("op_loadlocs")!= std::string::npos)
+                        {   
+                            std::string buffer;
+                            buffer = tokenized.at(1);
+
+                            std::cout << "DEBUG LOAD 3D POINT (LOCs) OBJECT  \n";
+                             
+
+                        }
+
+                        //----- 
+                        // DEBUG - NOT DONE -
+                        // lines only - OBJ file  
                         if (tokenized.at(0).find("op_loadpaths")!= std::string::npos)
                         {   
                             std::string buffer;
                             buffer = tokenized.at(1);
 
-                            std::cout << "DEBUG LOAD 2D OBJECT  \n";
-                            load_2d_obj(buffer);
+                            std::cout << "DEBUG LOAD 3D LINE OBJECT  \n";
+                            load_line_obj(buffer);
 
                         }
 
@@ -522,7 +543,17 @@ void cncglobals::load_cfg_file( void )
                             }//load a 3D vector 
                         }//active polygon load 
                         /**************************************/ 
+ 
+                        if (tokenized.at(0).find("SCREEN_BG_COLOR") != std::string::npos )                            
+                        {  
+   
+                            //std::cout << "DEBUG BG COLOR " << buffer1 << " "<< buffer2 << " "<< buffer3 << "\n";
+                        
+                            bg_clr[0] = std::stof(tokenized.at(1));
+                            bg_clr[1] = std::stof(tokenized.at(2));
+                            bg_clr[2] = std::stof(tokenized.at(3));
 
+                        }
 
                         //** MACHINE HARDWARE SETUP ************//
                         if (tokenized.at(0).find("LINEAR_UNIT") != std::string::npos )                            

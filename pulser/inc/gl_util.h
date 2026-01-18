@@ -6,8 +6,8 @@
 
 
 
-void load_2d_obj(std::string objfilepath);
-void load_pts_obj(std::string objfilepath);
+void load_line_obj(std::string objfilepath);
+void load_locs_obj(std::string objfilepath);
 
 
 

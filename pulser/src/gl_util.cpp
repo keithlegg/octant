@@ -71,13 +71,14 @@ extern obj_model* pt_model_buffer;
 /*************************************************************/
 /*************************************************************/
 /*
-    load an OBJ and dump the data to lines 
-    use a single one time scoped obj_model 
+    load an OBJ - using two face indeces - ignore the 3rd face index, 
+    dump the data to 3D lines back into main object buffer 
+    uses a single one time scoped obj_model 
 
 */
 
 
-void load_2d_obj(std::string objfilepath)
+void load_line_obj(std::string objfilepath)
 {
     bool debug = true;
 
@@ -91,7 +92,7 @@ void load_2d_obj(std::string objfilepath)
     strcpy(char_array, objfilepath.c_str()); 
     pt_obj2d_loader->load(char_array);
     
-    //DEBUG - put this in object 3d as a class method 
+    //DEBUG - put this in object 3d as a class method ?
     if(debug)
     {
         std::cout << pt_obj2d_loader->num_lines << "\n";
@@ -124,10 +125,15 @@ void load_2d_obj(std::string objfilepath)
 
 /*************************************************************/
 
+/*
+   load an OBJ file ignore the 2nd and 3rd face index,
+   store the data as "points" (not vertices) but a point buffer 
+   represented in 3D space as multiple locators 
+*/
 
 //DEBUG NOT DONE 
 
-void load_pts_obj(std::string objfilepath)
+void load_locs_obj(std::string objfilepath)
 {
     bool debug = true;
 
@@ -141,7 +147,7 @@ void load_pts_obj(std::string objfilepath)
     strcpy(char_array, objfilepath.c_str()); 
     pt_obj2d_loader->load(char_array);
     
-    //DEBUG - put this in object 3d as a class method 
+    //DEBUG - put this in object 3d as a class method ?
     if(debug)
     {
         std::cout << pt_obj2d_loader->num_lines << "\n";
@@ -150,16 +156,11 @@ void load_pts_obj(std::string objfilepath)
     uint pcount = 0;
     for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
     {
-        int pidx1 = pt_obj2d_loader->lines[x][0];
-        int pidx2 = pt_obj2d_loader->lines[x][0];
-        
-        Vector3 pt1 = pt_obj2d_loader->points[pidx1];
-        Vector3 pt2 = pt_obj2d_loader->points[pidx2];
-
+        //int pidx1 = pt_obj2d_loader->pt_loc[x][0];
+        //Vector3 pt1 = pt_obj2d_loader->points[pidx1];
+        // ->num_locs++;
 
         //point_buffer1
-
-
     }
 
 

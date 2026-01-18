@@ -58,6 +58,7 @@ class obj_model: public polygon_ops {
         uint num_tris;
         uint num_quads;    
         uint num_faces;
+        uint num_locs;
 
 
         // extents of model (you can derive centroid from these)
@@ -102,7 +103,7 @@ class obj_model: public polygon_ops {
         // std::vector<int> vnids [MAX_NUM_VERTICES];  // vertex normal ids
         // std::vector<int> quads [MAX_NUM_FACES];     // 4 sided faces
         // std::vector<int> faces [MAX_NUM_FACES];     // >4, N sided faces 
-        uint* pt_loc               = new uint[MAX_NUM_FACES];                     // 1 point location 
+        uint* pt_loc               = new uint[MAX_NUM_FACES];                  // 3d "point only" location 
         std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
         std::vector<uint>* tris    = new std::vector<uint>[MAX_NUM_FACES];     // 3 sided faces
         std::vector<uint>* vnids   = new std::vector<uint>[MAX_NUM_VERTICES];  // vertex normal ids

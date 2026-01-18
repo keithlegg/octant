@@ -73,6 +73,8 @@ RGBType grid_color2;
 RGBType *pt_gridcolor2 = &grid_color2;
 
 
+GLfloat bg_clr[]    = { 0,0,0 };
+
 
 
 GLfloat clr_linez[]   = { 0 , 1. ,  0, 0};
@@ -384,7 +386,7 @@ void InitGL(int Width, int Height)
 {
         
     glEnable(GL_TEXTURE_2D);                  // Enable Texture Mapping
-    glClearColor(0.15f, 0.15f, 0.25f, 0.0f);  // Clear The Background Color To Blue 
+    glClearColor(bg_clr[0], bg_clr[1], bg_clr[2], 1.0f);  // Clear The Background Color To Blue 
     
     glClearDepth(1.0);                        // Enables Clearing Of The Depth Buffer
     glDepthFunc(GL_LESS);                     // The Type Of Depth Test To Do
