@@ -137,6 +137,7 @@ void run_cncplot(double f_x,
     if(DEBUG==true)
     {
         std::cout << "## run_cncplot debug mode \n"; 
+        std::cout << "## pulse train size " << plot->pulsetrain.size() << "\n";
 
         for(uint x=0;x<plot->pulsetrain.size();x++)
         {
@@ -714,7 +715,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     pulsetrain.clear();
 
-    bool debug = false;
+    bool debug = true;
 
     point_ops PG;
 
@@ -770,8 +771,8 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     Vector3 dirvec = Vector3(xp,yp,zp);
 
     //--------------------
-    //DEBUG -no point in cachine pulses if empty 
-    //if(num_pul_x>0 && num_pul_x>0 && num_pul_x>0)
+    //DEBUG -no point in caching pulses if empty 
+    //if(num_pul_x>0 && num_pul_y>0 && num_pul_z>0)
     //{
         pulsetrain.push_back(dirvec);
     //}
@@ -804,12 +805,19 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
 
-    //DEBUG -no point in cachine pulses if empty 
-    if(num_pul_x>0 && num_pul_x>0 && num_pul_x>0)
+    //DEBUG ADD THIS BACK LATER -no point in caching pulses if empty 
+    //if(num_pul_x>0 && num_pul_y>0 && num_pul_z>0)
+    if(1)
     {
         // calc the pulses using a ratio of length to divs. 
         gen_pulses(&calcpt_x, most, num_pul_x);  
-        
+        gen_pulses(&calcpt_y, most, num_pul_y);  
+        gen_pulses(&calcpt_z, most, num_pul_z); 
+
+        /*
+        //DEBUG ADD THIS BACK WHEN IT WORKS 
+        //THIS SWAPS Z AXIS WITH Y 
+
         //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
         if(FAKE_Z_UP_AXIS)
         {
@@ -826,6 +834,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
             gen_pulses(&calcpt_y, most, num_pul_y);  
             gen_pulses(&calcpt_z, most, num_pul_z);         
         }
+        */
 
         //------------
         for(uint a=0;a<most;a++)
