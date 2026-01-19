@@ -1494,36 +1494,7 @@ void render_loop(void)
            
         }//display all polygons 
      
-        //////////////////////////////////////////////////////////
-        
-        //std::cout << "foo " << pt_motionplot->tp_idxs[0].size() << "\n";
-
-        /*
-        int test = 1;
-
-        if (pt_motionplot->tp_idxs[test].size()>1)
-        {
-            for (uint ii=1;ii<pt_motionplot->tp_idxs[test].size();ii++)
-            {
-                glBegin(GL_LINES);
-                    uint si= pt_motionplot->tp_idxs[test][ii-1];
-                    uint ei= pt_motionplot->tp_idxs[test][ii];
-
-                    sv  = pt_motionplot->program_vecs[si];
-                    ev  = pt_motionplot->program_vecs[ei];
-      
-                
-                    glColor3f(0,1.,0); //hack for now
-                    glVertex3f(sv.x, sv.y, sv.z);
-                    
-                    glColor3f(1.,0,0); //hack for now
-                    glVertex3f(ev.x, ev.y, ev.z);
-
-                glEnd();
-            }
-        }  
-        */ 
-        //////////////////////////////////////////////////////////
+        //----
 
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 

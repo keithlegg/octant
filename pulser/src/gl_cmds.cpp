@@ -203,6 +203,10 @@ void run_machine(void)
 void pause_machine(void)
 {
     pt_motionplot->pause();
+    
+    //debug - maybe a good idea?
+    //cg.ENABLE_MOTOR_DRIVE = 0;
+
 }
 
 /***************************************/
@@ -215,6 +219,10 @@ void reset_machine(void)
 void stop_machine(void)
 {
     pt_motionplot->stop();
+    
+    //this line can lock the whole thing up - debug 
+    cg.ENABLE_MOTOR_DRIVE = 0;
+
 }
 
 
@@ -448,7 +456,7 @@ void parse_cmd_text(std::string *buffer)
     */
 
     //--------------
-    //toggle grid
+    //not really used - the preferred method is the '`' key 
     if (a1=="stop")
     {
         stop_machine(); 

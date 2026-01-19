@@ -8,6 +8,35 @@
 
 #define MAX_NUM_PLY 100000
 
+/*
+    WIP - OVERVIEW OF DATA SCTRUCTURE
+
+
+    
+    PROGRAM = ( NAME -> ORIGIN -> LINKTYPE (rapid,file,etc) PRELINK , POSTLINK )
+
+    
+
+    // cache of toolpath component vectors 
+    std::vector<Vector3> rapidmove_vecs;    
+    std::vector<Vector3> program_vecs;  
+
+    // original vectors loaded from disk  
+    std::vector<Vector3> loaded_file_vecs;
+
+
+    // the final "baked" path that gets run
+    std::vector<Vector3> toolpath_vecs;
+    //tool path indeces
+    std::vector<uint> tp_idxs[MAX_NUM_PLY];
+
+    // data for the actual pulsing out the parport 
+    std::vector<Vector3> pulsetrain;
+    //std::vector<uint> pt_idxs[MAX_NUM_PLY];
+
+*/
+
+
 
 //----------------------------//
 
@@ -87,17 +116,23 @@ class cnc_plot
         void update_sim(void);
         void timer_init(void);
 
-        //-- 
+        //----------- 
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
-        void process_vec(uint vec_idx);
+
+
+
         void add_new_tp_polygon(int numply, uint numids);
         void clear_toolpaths(void);
+        
         void update_toolpaths(void);
-
-        //-- 
-
         void loadpath( std::vector<Vector3>* pt_drawvecs);
+
+        void process_vec(uint vec_idx);
+
+        //----------- 
+
+
         
         void calc_3d_pulses(Vector3 fr_pt, 
                             Vector3 to_pt,
