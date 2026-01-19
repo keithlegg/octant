@@ -1,5 +1,19 @@
 #!/usr/bin/env python
 
+
+"""
+
+    Simple utility to move all GUI related files from/to a path where the compiler sees them.
+    
+    Usage:
+       If you run with "nogui" make sure to set the following in globals.h 
+       #define DO_BUILD_GUI false 
+
+       If you run with "gui" make sure to set the following in globals.h 
+       #define DO_BUILD_GUI true
+
+"""
+
 import sys 
 import os
 import shutil

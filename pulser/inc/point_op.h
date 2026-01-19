@@ -169,21 +169,29 @@ class polygon_ops : public point_ops
     Vector3 bfr_pts[MAX_NUM_VERTICES];           // general point buffer   ( tmp work area )
     std::vector<uint> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
 
+    //------------------------------------/
+    //------------------------------------/
+
     virtual void reset(void);
     void hello(void); //test of inheritance 
-
-
     int numpts(void);
+
+
+    //------------------------------------/
+    //functions mapped to python libraries 
+    //------------------------------------/
+
+    //bool pt_is_near( pt1, pt2, dist );
 
     void bbox3d(void);
 
-
-    //bool pt_is_near( pt1, pt2, dist );
-    
     //Vector3 centroid_pts( array_of_vector3 );
     Vector3 centroid(void);
     Vector3 centroid(Vector3, Vector3, Vector3);
     void centroid(Vector3*, Vector3, Vector3, Vector3);
+    //------------------------------------/
+    //------------------------------------/
+
 
     Vector3 triangle_pt_vec3(Vector3, Vector3, Vector3, Vector3);
     float triangle_mean_z(Vector3, Vector3, Vector3);

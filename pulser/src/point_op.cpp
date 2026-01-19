@@ -92,50 +92,20 @@ int polygon_ops::numpts(void){
     return 0;
 }
 
+
+
+
 /***************************************/
-//WIP test of pythn code mapping to C++, inheritance, etc 
 
-void polygon_ops::bbox3d(void)
-{
-    std::cout << "hello bbox!\n";
-    
-    /*
-    // grab a point from data to initialize
-    min_x=pts[0][0]
-    min_y=pts[0][1]
-    if len(pts)==3:
-        min_z=pts[0][2]
-    else:
-        min_z = 0 
 
-    max_x=pts[0][0]
-    max_y=pts[0][1]
-    if len(pts)==3:        
-        max_z=pts[0][2]
-    else:
-        max_z = 0 
 
-    for pt in pts:
-        if pt[0]<min_x:
-            min_x=pt[0]
-        if pt[0]>max_x:
-            max_x=pt[0]
-        
-        if pt[1]<min_y:
-            min_y=pt[1]
-        if pt[1]>max_y:
-            max_y=pt[1]
-        
-        if len(pt)==3:
-            if pt[2]<min_z:
-                min_z=pt[2]
-            if pt[2]>max_z:
-                max_z=pt[2]
+/***************************************/
 
-    //return [min_x, min_y, min_z, max_x, max_y, max_z ]
-    */
-   
-}
+
+
+/***************************************/
+
+
 
 /***************************************/
 
@@ -573,17 +543,67 @@ float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 }
 
 
+
 /***************************************/
+//WIP test of python code mapping to C++, inheritance, etc 
+// equivalent of python -> polygon_ops.calc_3d_bbox()
+
+void polygon_ops::bbox3d(void)
+{
+    std::cout << "hello bbox3d !\n";
+
+    /*
+    // grab a point from data to initialize
+    min_x=pts[0][0]
+    min_y=pts[0][1]
+    if len(pts)==3:
+        min_z=pts[0][2]
+    else:
+        min_z = 0 
+
+    max_x=pts[0][0]
+    max_y=pts[0][1]
+    if len(pts)==3:        
+        max_z=pts[0][2]
+    else:
+        max_z = 0 
+
+    for pt in pts:
+        if pt[0]<min_x:
+            min_x=pt[0]
+        if pt[0]>max_x:
+            max_x=pt[0]
+        
+        if pt[1]<min_y:
+            min_y=pt[1]
+        if pt[1]>max_y:
+            max_y=pt[1]
+        
+        if len(pt)==3:
+            if pt[2]<min_z:
+                min_z=pt[2]
+            if pt[2]>max_z:
+                max_z=pt[2]
+
+    //return [min_x, min_y, min_z, max_x, max_y, max_z ]
+    */
+   
+}
+
+
+/***************************************/
+// DEBUG NOT DONE
 
 // XYZ centroid of all loaded geom 
-//DEBUG NOT DONE
+// we need bbox3d() to get centroid 
+
 Vector3 polygon_ops::centroid(void)
 {
     std::cout << "CENTROID NOT DONE\n";
     return Vector3(0,0,0);
 }
 
-
+/***************************************/
 // XYZ centroid of a triangle 
 Vector3 polygon_ops::centroid(Vector3 p1, Vector3 p2, Vector3 p3)
 {
@@ -594,6 +614,7 @@ Vector3 polygon_ops::centroid(Vector3 p1, Vector3 p2, Vector3 p3)
     return out;
 }
 
+/***************************************/
 // XYZ centroid of a triangle 
 void polygon_ops::centroid(Vector3 *out, Vector3 p1, Vector3 p2, Vector3 p3)
 {
