@@ -279,31 +279,37 @@ void parse_cmd_text(std::string *buffer)
     //toggle grid
     if (a1=="help")
     {   
-        std::cout << "------------------------------------------        \n";
-        std::cout << "------------------------------------------        \n";
-        std::cout << "dm : display mode                                 \n";
+        std::cout << "         Octant help                              \n";
+        std::cout << "                                                  \n";
+        std::cout << "-------- SETUP COMMANDS ------------------        \n"; 
+        std::cout << "dm : (display operations)                         \n";
         std::cout << "  wire, persp, top, side                          \n";
         std::cout << "                                                  \n";
-        
-        //run, stop, reset 
 
-        std::cout << "mtr : motor                                       \n";
+        std::cout << "-------- PROGRAM COMMANDS ----------------        \n"; 
+        std::cout << "mtr : (motor enable)                              \n";
         std::cout << "  on,off                                          \n";
-        std::cout << "------                                            \n";        
-        std::cout << "show                                              \n";
-        std::cout << "  pt       - pulsetrain info                       \n";
+        std::cout << "                                                  \n";
+        std::cout << "run, stop, reset                                  \n";
+        std::cout << "                                                  \n";        
+        std::cout << "unload  (path,obj)                                \n";
+        std::cout << "reload  (path,obj)                                \n";
+        std::cout << "                                                  \n";
+
+        std::cout << "-------- DEBUGGING COMMANDS --------------        \n";               
+        std::cout << "show (sho)                                        \n";
         std::cout << "  cfg      - view important globals               \n";
+        std::cout << "  pt       - pulsetrain info                      \n";
         std::cout << "  obj      - stats about loaded 3d object         \n";
         std::cout << "  path     - stats about toolpath                 \n";
         std::cout << "  pathids  -                                      \n";
         std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
         std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
         std::cout << "                                                  \n"; 
-        std::cout << "lup (look up by ID)                               \n";
+        std::cout << "lup (lookup by ID)                                \n";
         std::cout << "   pathid (int),                                  \n";
-        std::cout << "                                                  \n";         
-        std::cout << "unload  (vec,obj)                                \n";
-        std::cout << "reload  (vec,obj)                                \n";
+        std::cout << "                                                  \n";    
+
 
         std::cout << "------------------------------------------        \n";
         //std::cout << "precache     -debug   build a pulsetrain cache    \n";
@@ -322,7 +328,21 @@ void parse_cmd_text(std::string *buffer)
     
     /**********************************************************************/
   
+
+    if (a1=="extent")
+    {
+        
+        pt_model_buffer->bbox3d();
+
+        //pt_model_buffer->hello();
+
+        //
+
+    }
+
+    //------------------
     /*
+    
     //export internal vectors to obj file 
     if (a1=="walk")
     {
@@ -330,6 +350,7 @@ void parse_cmd_text(std::string *buffer)
         {
         } 
     }
+
     //export internal vectors to obj file 
     if (a1=="export")
     {
@@ -345,7 +366,7 @@ void parse_cmd_text(std::string *buffer)
 
     */
 
-
+    //------------------
     //test port out (how fast can we blink?)
     if (a1=="reset")
     {
@@ -354,7 +375,7 @@ void parse_cmd_text(std::string *buffer)
         reset_machine();
     }
 
-
+    //------------------
     //test port out (how fast can we blink?)
     if (a1=="mtr" || a1=="motor")
     {
@@ -399,7 +420,10 @@ void parse_cmd_text(std::string *buffer)
     {
         if(a2=="")
         {
-            std::cout << "unload: needs args\n";
+            std::cout << " \n";
+            std::cout << "unload: needs args  \n";
+            std::cout << "   possible args:   \n";
+            std::cout << "       paths, obj   \n";
         }
 
         if(a2=="obj")
@@ -413,7 +437,7 @@ void parse_cmd_text(std::string *buffer)
         }        
     }
 
-
+    //------------------
     if (a1=="reload")
     {
 

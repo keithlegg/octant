@@ -871,7 +871,7 @@ class pop3d(object):
             return newpts
         return None
  
-     ##-------------------------------------------##  
+    ##-------------------------------------------##  
     def cvt_vec3(self, points):
         """ convert a single (tuple) or multiple (list) into vec3 objects
             this assumes tuple is a single point 

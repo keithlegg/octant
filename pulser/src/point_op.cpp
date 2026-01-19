@@ -92,7 +92,50 @@ int polygon_ops::numpts(void){
     return 0;
 }
 
+/***************************************/
+//WIP test of pythn code mapping to C++, inheritance, etc 
 
+void polygon_ops::bbox3d(void)
+{
+    std::cout << "hello bbox!\n";
+    
+    /*
+    // grab a point from data to initialize
+    min_x=pts[0][0]
+    min_y=pts[0][1]
+    if len(pts)==3:
+        min_z=pts[0][2]
+    else:
+        min_z = 0 
+
+    max_x=pts[0][0]
+    max_y=pts[0][1]
+    if len(pts)==3:        
+        max_z=pts[0][2]
+    else:
+        max_z = 0 
+
+    for pt in pts:
+        if pt[0]<min_x:
+            min_x=pt[0]
+        if pt[0]>max_x:
+            max_x=pt[0]
+        
+        if pt[1]<min_y:
+            min_y=pt[1]
+        if pt[1]>max_y:
+            max_y=pt[1]
+        
+        if len(pt)==3:
+            if pt[2]<min_z:
+                min_z=pt[2]
+            if pt[2]>max_z:
+                max_z=pt[2]
+
+    //return [min_x, min_y, min_z, max_x, max_y, max_z ]
+    */
+   
+}
 
 /***************************************/
 

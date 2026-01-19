@@ -26,8 +26,7 @@
 #include "point_op.h"
 
 
-#define MAX_NUM_VERTICES 200000
-#define MAX_NUM_FACES 200000
+
 
 /*
    The temrinology is confusing 
@@ -39,16 +38,17 @@
 */
 
 
-class obj_model: public polygon_ops {
+class obj_model: public polygon_ops 
+{
     public:
 
         obj_model(){};
 
         ~obj_model(){};
 
-
-        //INHERITED PROPERTIES 
-        //polygon level stuff moved to pointgen class
+        //-----------------------------------------//
+        // INHERITED PROPERTIES 
+        // polygon level stuff moved to pointgen class
         uint num_pts;
         uint num_vtxrgb;
         uint num_vnrmls;    
@@ -60,7 +60,6 @@ class obj_model: public polygon_ops {
         uint num_faces;
         uint num_locs;
 
-
         // extents of model (you can derive centroid from these)
         float bb_min_x;
         float bb_max_x;
@@ -69,6 +68,8 @@ class obj_model: public polygon_ops {
         float bb_min_z;
         float bb_max_z;
 
+        //end inherited properties 
+        //-----------------------------------------//
 
         void reset(void) override;
 
@@ -83,36 +84,6 @@ class obj_model: public polygon_ops {
 
         // --- 
 
-        //Vector3 points[MAX_NUM_VERTICES];           // vertices of model 
-        //Vector3 vtxrgb[MAX_NUM_VERTICES];           // vextex colors of model  
-        //Vector2 uvs[MAX_NUM_VERTICES];              // UV coords      - storage for lookup  
-        //Vector3 vnormals[MAX_NUM_VERTICES];         // vertex normals - storage for lookup 
-        //Vector3 fnormals[MAX_NUM_FACES];            // face normals   - common ID with faces
-        Vector3* points     = new Vector3[MAX_NUM_VERTICES];   // vertices of model 
-        Vector3* vtxrgb     = new Vector3[MAX_NUM_VERTICES];   // vextex colors of model  
-        Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
-        Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
-        Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
-
-
-        // --- 
-        
-        // //lists of ID tables for lookup 
-        // std::vector<int> lines [MAX_NUM_FACES];     // 2 sided faces 
-        // std::vector<int> tris  [MAX_NUM_FACES];     // 3 sided faces
-        // std::vector<int> vnids [MAX_NUM_VERTICES];  // vertex normal ids
-        // std::vector<int> quads [MAX_NUM_FACES];     // 4 sided faces
-        // std::vector<int> faces [MAX_NUM_FACES];     // >4, N sided faces 
-        uint* pt_loc               = new uint[MAX_NUM_FACES];                  // 3d "point only" location 
-        std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
-        std::vector<uint>* tris    = new std::vector<uint>[MAX_NUM_FACES];     // 3 sided faces
-        std::vector<uint>* vnids   = new std::vector<uint>[MAX_NUM_VERTICES];  // vertex normal ids
-        std::vector<uint>* quads   = new std::vector<uint>[MAX_NUM_FACES];     // 4 sided faces
-        std::vector<uint>* faces   = new std::vector<uint>[MAX_NUM_FACES];     // >4, N sided faces 
-
-        // ---
-        Vector3 bfr_pts[MAX_NUM_VERTICES];          // general point buffer   ( tmp work area )
-        std::vector<uint> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
 
         //----------------
         //----------------
@@ -137,6 +108,7 @@ class obj_model: public polygon_ops {
         //file IO operations 
         void load_m44(char* filename);
         //void save_m44(char* filename);
+        
         void load( char *);
         void save( char *);
 

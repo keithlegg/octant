@@ -478,7 +478,7 @@ void obj_model::save( char *filepath)
     std::ofstream myfile;
     myfile.open (filepath);
 
-    myfile << "#Exported with OctantCNC. Yay. \n";
+    myfile << "#Exported with Octant \n";
     myfile << "#number of verticies "    << num_pts  <<"\n";
     myfile << "#number of triangles     "<< num_tris <<"\n";
     myfile <<"\n";
