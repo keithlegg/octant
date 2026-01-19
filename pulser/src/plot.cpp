@@ -811,13 +811,16 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     {
         // calc the pulses using a ratio of length to divs. 
         gen_pulses(&calcpt_x, most, num_pul_x);  
+        
+        //the "swap axis" code below breaks things
+        //it works if I do this
         gen_pulses(&calcpt_y, most, num_pul_y);  
-        gen_pulses(&calcpt_z, most, num_pul_z); 
+        gen_pulses(&calcpt_z, most, num_pul_z);  
 
-        /*
+         
         //DEBUG ADD THIS BACK WHEN IT WORKS 
         //THIS SWAPS Z AXIS WITH Y 
-
+        /*
         //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
         if(FAKE_Z_UP_AXIS)
         {
@@ -835,6 +838,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
             gen_pulses(&calcpt_z, most, num_pul_z);         
         }
         */
+       
 
         //------------
         for(uint a=0;a<most;a++)
