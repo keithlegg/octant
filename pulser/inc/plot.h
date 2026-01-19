@@ -64,35 +64,39 @@ class cnc_plot
         
         ~cnc_plot(){};
 
+        //void old_rapid_move(void);
+        void rapid_move(void);
+
+        //-- 
+
         void show(void);
         void showgeom(void);
         void showpthids(void);
         void showply(uint vec_idx);
         void show_pt(void);
 
+        //-- 
+
         void pause(void);
         void stop(void);
-        
-        void run_sim(void);
-        void update_sim(void);
-        //void precache_sim(void);
-
-        void timer_init(void);
-
-        void add_prg_vec(Vector3* nv); 
-        void add_file_vec(Vector3* nv);
-        
-        void process_vec(uint vec_idx);
-
-        void add_new_tp_polygon(int numply, uint numids);
-        
-        void clear_toolpaths(void);
+        void reset(void);        
         //void clear_sim(void);
 
-        //void old_rapid_move(void);
-        void rapid_move(void);
-        
+        //-- 
+        void run_sim(void);
+        void update_sim(void);
+        void timer_init(void);
+
+        //-- 
+        void add_prg_vec(Vector3* nv); 
+        void add_file_vec(Vector3* nv);
+        void process_vec(uint vec_idx);
+        void add_new_tp_polygon(int numply, uint numids);
+        void clear_toolpaths(void);
         void update_toolpaths(void);
+
+        //-- 
+
         void loadpath( std::vector<Vector3>* pt_drawvecs);
         
         void calc_3d_pulses(Vector3 fr_pt, 

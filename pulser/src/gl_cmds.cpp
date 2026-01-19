@@ -206,14 +206,20 @@ void pause_machine(void)
 }
 
 /***************************************/
-//void reset_machine(void)
+void reset_machine(void)
+{
+    
+    pt_motionplot->reset();
+
+}
+
+/***************************************/
 void stop_machine(void)
 {
     pt_motionplot->stop();
 }
 
 
-//void reset_machine(void)
 void set_motor(uint setval)
 {
     if(setval==1){
@@ -273,6 +279,8 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "  wire, persp, top, side                          \n";
         std::cout << "                                                  \n";
         
+        //run, stop, reset 
+
         std::cout << "mtr : motor                                       \n";
         std::cout << "  on,off                                          \n";
         std::cout << "------                                            \n";        
@@ -331,6 +339,14 @@ void parse_cmd_text(std::string *buffer)
 
     */
 
+
+    //test port out (how fast can we blink?)
+    if (a1=="reset")
+    {
+        std::cout << " resetting simulation \n";
+
+        reset_machine();
+    }
 
 
     //test port out (how fast can we blink?)

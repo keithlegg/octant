@@ -85,7 +85,7 @@ extern cncglobals cg;
 
 
 //Timer related 
-timer mtime = timer();
+timer mtime     = timer();
 timer* pt_mtime = &mtime;
 
 /***************************************/
@@ -123,10 +123,9 @@ void run_cncplot(double f_x,
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
     //----
-    
+    //I was creating new objects each time. Debug ?  
     //cnc_plot* plot     = new cnc_plot;
     //cnc_parport* pport = new cnc_parport;
-
     //plot->clear_toolpaths();
     
     plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs);
@@ -134,7 +133,7 @@ void run_cncplot(double f_x,
     //----
 
 
-    if(DEBUG==true)
+    if(DEBUG == true)
     {
         std::cout << "## run_cncplot debug mode \n"; 
         std::cout << "## pulse train size " << plot->pulsetrain.size() << "\n";
@@ -152,12 +151,12 @@ void run_cncplot(double f_x,
         std::cout << "*** WARNING MOTORS DISABLED IN CFG ***\n";
     }
 
-    if(DEBUG==false && cg.ENABLE_MOTOR_DRIVE==1)
+    if(DEBUG == false && cg.ENABLE_MOTOR_DRIVE == 1)
     {
         parport.freerun_pulses( &cg, plot);
     }
 
-    //I was creating each time. Debug  
+    //I was creating each time. Debug ? 
     //delete pport; 
     //delete plot;
 }
@@ -303,6 +302,24 @@ void cnc_plot::pause(void)
         mtime.stop();
     }
 }
+
+
+/******************************************/
+void cnc_plot::reset(void)
+{
+    running=false;
+    finished = true;
+    mtime.stop();         
+    
+    //mtime.reset_sim(); //0-1 time only
+    vec_idx=0;
+
+    quill_pos = Vector3(prg_origin.x,
+                        prg_origin.y,
+                        prg_origin.z);
+            
+}
+
 
 /******************************************/
 void cnc_plot::stop(void)
@@ -715,7 +732,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 
     pulsetrain.clear();
 
-    bool debug = true;
+    bool debug = false;
 
     point_ops PG;
 
