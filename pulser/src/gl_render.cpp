@@ -988,26 +988,19 @@ void render_loop(void)
 
     if(pt_mtime->tm_running)
     {
-
-        //I tried to make this separate from the GUI but then we need threads. Sigh. 
-        //this seems like a good compromise
         pt_motionplot->update_sim();
-
-        loc_active_clr;         
-        draw_locator(&motionplot.quill_pos, .5);
-
     }//end program cycle running  
     
-   
-
     //------------ 
     //draw locator when idle 
-    if(!pt_mtime->tm_running)
+    if(!pt_motionplot->running)
     {
         loc_idle_clr;
-        draw_locator(&motionplot.quill_pos, .5);        
+    }else{
+        loc_active_clr;
     }
-    
+    draw_locator(&motionplot.quill_pos, .5);   
+
     
     //------------ 
     //I clearly dont get the whole view matrix thing - moved out of text render
