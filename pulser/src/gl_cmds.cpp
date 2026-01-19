@@ -208,9 +208,7 @@ void pause_machine(void)
 /***************************************/
 void reset_machine(void)
 {
-    
     pt_motionplot->reset();
-
 }
 
 /***************************************/

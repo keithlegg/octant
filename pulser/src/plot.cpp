@@ -230,10 +230,12 @@ void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 /******************************************/
 void cnc_plot::show(void)
 {
-    std::cout << "\n #"<< rapidmove_vecs.size()   <<"   rapid vecs \n";
-    std::cout << " #"  << program_vecs.size()     <<"   program vecs \n";    
+    std::cout << "\n #"  << num_plys                <<"   path polys    \n"; 
+    std::cout << "  -----------\n"; 
+    std::cout << " #"<< rapidmove_vecs.size()   <<"   rapid vecs    \n";
+    std::cout << " #"  << program_vecs.size()     <<"   program vecs  \n";    
     std::cout << " #"  << toolpath_vecs.size()    <<"   toolpath vecs \n";    
-    std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs \n";   
+    std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs     \n";   
 
     #if DO_BUILD_GUI == true    
         std::cout << " #"  << linebuffer1.size() <<"   render1 vecs \n";   
@@ -303,17 +305,45 @@ void cnc_plot::pause(void)
     }
 }
 
+/******************************************/
+//clear toolpaths only 
+void cnc_plot::clear_toolpaths(void)
+{
+
+    if(finished==true && running==false)
+    {
+        //clear the old data out 
+        rapidmove_vecs.clear();
+        toolpath_vecs.clear();
+    }else
+    {
+        std::cout << "clear_toolpaths: cant clear while running  \n"; 
+    }
+
+}
+
 
 /******************************************/
 void cnc_plot::reset(void)
 {
-    running=false;
-    finished = true;
-    mtime.stop();         
+    //need to move the head to start pos 
     
-    //mtime.reset_sim(); //0-1 time only
-    vec_idx=0;
+    // clear_toolpaths();
+    // toolpath_vecs.push_back(Vector3(0,0,0));
+    // toolpath_vecs.push_back(Vector3(1,-1,2));
 
+
+
+    // Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
+    // rapidmove_vecs.push_back(quill_pos);
+    // update_toolpaths();
+    
+
+    //this resets the internals 
+    mtime.stop(); 
+    vec_idx = 0;
+    running  = false;
+    finished = true;
     quill_pos = Vector3(prg_origin.x,
                         prg_origin.y,
                         prg_origin.z);
@@ -337,9 +367,6 @@ void cnc_plot::stop(void)
 
 
 /******************************************/
-//ideally this all happens in this class
-//the problem is the while(running) loop locks up the GUI
-//until I learn threads, just cnc_plot::run() and cnc_plot::update() from render_loop 
 
 void cnc_plot::run_sim(void)
 {
@@ -371,6 +398,8 @@ void cnc_plot::run_sim(void)
 }
 
 /******************************************/
+//called from update_sim()
+
 void cnc_plot::process_vec(uint window_idx)
 {
     bool debug = false;
@@ -410,6 +439,9 @@ void cnc_plot::process_vec(uint window_idx)
 
 
 /******************************************/
+
+//called with each "tick" of the simulation 
+
 void cnc_plot::update_sim(void)
 {
     bool debug = false;
@@ -484,37 +516,25 @@ void cnc_plot::update_sim(void)
 //     //std::vector<Vector3> pulsetrain;
 // }
 
-/******************************************/
-//clear toolpaths only 
-void cnc_plot::clear_toolpaths(void)
-{
-
-    if(finished==true && running==false)
-    {
-        //clear the old data out 
-        toolpath_vecs.clear();
-        rapidmove_vecs.clear();
-    }else
-    {
-        std::cout << "clear_toolpaths: cant clear while running  \n"; 
-    }
-
-}
 
 /******************************************/
 /*
 
     This rebuilds the path that moves the head. 
-    It is run prior to the machine moving. 
+    Can be setup and called as much as needed.
 
-    program_vecs    = cached vectors loaded from a file 
-    rapidmove_vecs  = a path to move the head up, over, and back down 
-    toolpath_vecs   = the actual path that will be "cut". This gets rebuilt each time we run.  
+
+    program_vecs   - vectors loaded from a file 
+    rapidmove_vecs - a path to move the head up, over, and back down 
+    toolpath_vecs  - the actual path that will be "cut". This gets rebuilt each time we run.  
 
 */
 
 void cnc_plot::update_toolpaths(void)
 {
+
+    //DEBUG _ NOT EVEN CLOSE TO DONE
+    
     bool debug = false;
     
     if(debug)
@@ -524,17 +544,30 @@ void cnc_plot::update_toolpaths(void)
     
     if(finished==true && running==false)
     {
+        #if DO_BUILD_GUI == true
+            clear_linebuffers(); //clear display geom 
+        #endif
         //clear the old data out 
         toolpath_vecs.clear();
-        rapidmove_vecs.clear();
         
-        #if DO_BUILD_GUI == true
-            //clear display geom 
-            clear_linebuffers();
-        #endif
+        //----
+        /*
+        if(rapidmove_vecs.size()>0)
+        {
+            //iterate all polygons     
+            for (uint tp=0;tp<rapidmove_vecs.size();tp++)
+            {
+                std::cout << " rapid vec " << tp << " "
+                          << rapidmove_vecs.at(tp).x << " "
+                          << rapidmove_vecs.at(tp).y << " "
+                          << rapidmove_vecs.at(tp).z << "\n";
+
+                //toolpath_vecs.push_back(seg); 
+            }//iterate all path polygons 
+
+        }*/
 
         //---- 
-        //std::cout << tp_idxs.size() << "\n";
         if(program_vecs.size()>0)
         {
 
@@ -581,7 +614,8 @@ void cnc_plot::update_toolpaths(void)
             }//iterate polygons 
 
             //----------------------
-            // //now we have them, add to the buffer to draw them 
+            //clear buffers for next operation  
+            //rapidmove_vecs.clear();
 
         }//if data exists
 
@@ -1049,169 +1083,3 @@ void precalc_3d_pulses(std::vector<Vector3>* pt_pulsetrain,
 } 
 
 
-
-
-
-/******************************************/
-
-//probably will be obsolete with threading ?
-/*
-void cnc_plot::show_pt(void)
-{
-
-    std::cout << " pulsetrain size     "<< pulsetrain.size() << "\n";
-    std::cout << " pulsetrain idx size "<< pt_idxs->size()    << "\n";
-
-    for(uint x=0;x<pt_idxs->size();x++)
-    {
-        std::cout <<" idx: " << x <<" "<< pt_idxs->at(x) << "\n";      
-    }
-
-}
-*/
-
-/******************************************/
-
-//walk each vector in the toolpath 
-//calc the pulsetrain, store the index at start of each 
-//cache the step and direction data to speed up the running "simulation"
-/*
-void cnc_plot::precache_sim(void)
-{
-    bool debug = false;
-      
-    pulsetrain.clear();
-    pt_idxs->clear();
-
-    std::vector<Vector3> * pt_pulsetrain = &pulsetrain;
-
-    std::cout << " NOT DONE DEBUG - precache num vecs:"<<toolpath_vecs.size()<<"\n";
-
-    //----------------- 
-    //iterate all coords and run calc_3d_pulses for them
-    for (uint pc=0;pc<toolpath_vecs.size()-1;pc++)
-    {
-        //----- 
-        //set up the vector to process 
-        Vector3 s_p = toolpath_vecs[pc];
-        Vector3 e_p = toolpath_vecs[pc+1];  
-        if(debug)
-        {
-            std::cout << "precache_sim \n"; 
-            std::cout << s_p.x <<" "<< s_p.y << " "<< s_p.z << "\n";
-            std::cout << e_p.x <<" "<< e_p.y << " "<< e_p.z << "\n";
-        }
-
-        //----- 
-        //std::cout << "pulsetrain size - new index " << pt_pulsetrain->size() << "\n";
-        pt_idxs->push_back( pt_pulsetrain->size() );
-
-        //precalc_3d_pulses appends each time we run it  
-        //DEBUG  also need to calc length/time to get num divs 
-        precalc_3d_pulses(pt_pulsetrain, s_p, e_p, 10);
-        
-         
-        for (uint pi=0;pi<pt_idxs->size();pi++)
-        {
-            std::cout << "PT IDX " << pt_idxs->at(pi) << "\n";
-            std::cout << "START OF PULSETRAIN VEC - IDX " << pt_pulsetrain->at(pt_idxs->at(pi))  << "\n";
-        } 
-
-
-    }//iterate all calculated toolpath vectors 
-
-
-}
-*/
-
-
-/*
-
-
-void cnc_plot::run(void)
-{
-    //this is for cases where we are paused but still running  
-    if(running==true && finished==false)
-    {
-        mtime.start();
-    }
-
-    //this is a fresh run from the beginning 
-    if(running==false && finished==true)
-    {
-        mtime.reset_sim(); //0-1 time only
-        mtime.start();
-        running  = true;
-        finished = false;
-    }
-
-    //-------------------------------//
-    while (mtime.tm_running)
-    {
-        //localsimtime = mtime.get_elapsed_simtime() * timediv;
-        localsimtime = mtime.get_elapsed_simtime();        
-
-
-        //std::cout << "--------------------------\n";
-        //std::cout << "cnc_plot -> local simtime " << localsimtime <<"\n";
-        // std::cout << "real time " << mtime.getElapsedTimeInSec() << "\n";
-
-        //simtime runs between 0-1 - it resets each time another vector in the stack has been processed
-        if (localsimtime>=1.0)
-        {
-             
-            //std::cout << "-----------------------------------\n";        
-            //std::cout << "running index " << vec_idx        << "\n";
-
-            //iterate the stack of vectors to process
-            if (vec_idx<toolpath_vecs.size())
-            {
-                vec_idx++;        
-
-                // start the (sim) clock over at the end of each vector segment 
-                // 0.0 - 1.0 is the range - which feeds the 3D `lerp  
-                mtime.reset_sim();
-                localsimtime=0;
-            }
-            //program finished here
-            else if (vec_idx>=toolpath_vecs.size()-1)
-            {
-                stop();
-
-                //std::cout << "-----------------------------------\n";        
-                //std::cout << "mtime stopped  "  << "\n";
-                vec_idx = 0;
-                //update_toolpaths();
-
-            }
-           
-        }
-        //-----------------
-        std::cout<< localsimtime << "\n";
-
-        //----------------- 
-        //the main loop where we update display and pulse the ports.
-        if (vec_idx<=toolpath_vecs.size()-1 && mtime.tm_running)
-        {
-            Vector3 s_p = toolpath_vecs[vec_idx];
-            Vector3 e_p = toolpath_vecs[vec_idx+1];  
-
-            PG.lerp_along(&quill_pos, 
-                           s_p, 
-                           e_p, 
-                           (float) localsimtime);
-        }
-
-    }//end program cycle running  
-
-
-
-}
-*/
-
-
-
-/******************************************/
-
-
- 
