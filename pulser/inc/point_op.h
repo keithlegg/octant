@@ -149,6 +149,8 @@ class polygon_ops : public point_ops
     Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
     Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
     Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
+    Vector3* locpos     = new Vector3[MAX_NUM_FACES];      // indexed locators 
+
     // --- 
     uint* pt_loc               = new uint[MAX_NUM_FACES];                  // 3d "point only" location 
     std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
@@ -179,7 +181,8 @@ class polygon_ops : public point_ops
     //Vector3 centroid_pts( array_of_vector3 );
     Vector3 centroid(void);
     Vector3 centroid(Vector3, Vector3, Vector3);
-    void centroid(Vector3*, Vector3, Vector3, Vector3);
+    //void centroid(Vector3*, Vector3, Vector3, Vector3);
+    
     //------------------------------------/
     //------------------------------------/
 

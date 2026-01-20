@@ -316,8 +316,18 @@ void cncglobals::load_objects(void)
         {
             //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
             strcpy(char_array, obj_filepaths[x].c_str()); 
+            
+            //----
             pt_model_buffer->load(char_array);
             pt_model_buffer->calc_normals();
+ 
+            // post load setup functions 
+            
+            //calc bbox  
+            pt_model_buffer->bbox3d();
+
+            //----
+
 
             //DEBUG - this assumes the last obj loaded (or just 1)
             active_filepath = obj_filepaths[x];

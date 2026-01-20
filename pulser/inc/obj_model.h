@@ -88,6 +88,9 @@ class obj_model: public polygon_ops
         
         void load( char *);
         void save( char *);
+        
+        void add_locator(Vector3);
+        
 
         //------
         //prim geometry functions 

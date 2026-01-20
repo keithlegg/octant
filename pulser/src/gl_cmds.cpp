@@ -329,8 +329,16 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="extent"||a1=="extents")
     {
         
-        pt_model_buffer->bbox3d();
+        
+        Vector3 foocntr = pt_model_buffer->centroid();
+        
+        pt_model_buffer->add_locator(foocntr);
 
+        //std::cout << foocntr.x << " "<< foocntr.y << " "<< foocntr.z << "\n";
+
+
+
+        //pt_model_buffer->bbox3d();
         //pt_model_buffer->hello();
 
         //

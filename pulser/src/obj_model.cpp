@@ -68,6 +68,19 @@ extern obj_model* pt_model_buffer;
 
 
 /***************************************/
+
+void obj_model::add_locator(Vector3 pos)
+{
+    //std::cout << "add locator called \n";
+
+    locpos[num_locs] = pos;
+    pt_loc[num_locs] = num_locs;
+    num_locs++;
+
+
+}
+
+/***************************************/
 /*
 
     Overridden function - inherited from polygon_ops  

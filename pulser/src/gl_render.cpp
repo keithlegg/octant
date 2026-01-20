@@ -1001,6 +1001,21 @@ void render_loop(void)
     }
     draw_locator(&motionplot.quill_pos, .5);   
 
+
+    //------------ 
+    //draw points as locators
+    
+    for (uint lp=0;lp<pt_model_buffer->num_locs;lp++)
+    {
+        uint idx = pt_model_buffer->pt_loc[lp];
+        Vector3 lpos = pt_model_buffer->locpos[idx];
+        green_clr;
+        draw_locator(&lpos, .25); 
+    } 
+  
+
+    
+
     
     //------------ 
     //I clearly dont get the whole view matrix thing - moved out of text render
