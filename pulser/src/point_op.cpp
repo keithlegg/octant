@@ -545,7 +545,6 @@ float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 
 
 /***************************************/
-// DEBUG NOT TESTED 
 /*
     WIP test of python code mapping to C++, inheritance, etc 
     equivalent of python -> polygon_ops.calc_3d_bbox()
@@ -591,6 +590,26 @@ void polygon_ops::bbox3d(void)
         std::cout << bb_min_z << " " << bb_max_z << "\n";    
     }
    
+}
+
+/***************************************/
+//DEBUG NOT DONE 
+//generate and return 8 3d points from an objects bbox 
+void polygon_ops::bbox3d_pts(void)
+{
+    //DEBUG - NAME OF THESE ARE SHITE  
+    t_maxx = Vector3( bb_max_x, bb_min_y, bb_max_z); 
+    t_maxy = Vector3( bb_min_x, bb_max_y, bb_max_z); 
+    t_minx = Vector3( bb_min_x, bb_min_y, bb_max_z); 
+    t_maxy = Vector3( bb_max_x, bb_max_y, bb_max_z); 
+
+    b_maxx = Vector3( bb_max_x, bb_min_y, bb_min_z); 
+    b_maxy = Vector3( bb_min_x, bb_max_y, bb_min_z); 
+    b_minx = Vector3( bb_min_x, bb_min_y, bb_min_z); 
+    b_maxy = Vector3( bb_max_x, bb_max_y, bb_min_z); 
+
+
+
 }
 
 

@@ -127,6 +127,17 @@ class polygon_ops : public point_ops
     float bb_min_z;
     float bb_max_z;
 
+    //DEBUG - RENAME THESE 
+    //bbox - 8 points of cube 
+    Vector3 t_maxx; 
+    Vector3 t_minx; 
+    Vector3 t_maxy; 
+    Vector3 t_miny; 
+    Vector3 b_maxx; 
+    Vector3 b_minx; 
+    Vector3 b_maxy; 
+    Vector3 b_miny; 
+
 
     //------------------------------------/
     //------------------------------------/
@@ -177,6 +188,7 @@ class polygon_ops : public point_ops
     //bool pt_is_near( pt1, pt2, dist );
 
     virtual void bbox3d(void);
+    virtual void bbox3d_pts(void); 
 
     //Vector3 centroid_pts( array_of_vector3 );
     Vector3 centroid(void);
