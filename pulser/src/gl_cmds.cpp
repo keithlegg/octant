@@ -329,24 +329,25 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="extent"||a1=="extents")
     {
         
-        // DEBUG THIS IS FOR TESTING 
-        // Vector3 foocntr = pt_model_buffer->centroid();
-        // pt_model_buffer->add_locator(foocntr);
-
-        //std::cout << foocntr.x << " "<< foocntr.y << " "<< foocntr.z << "\n";
-
-
-        pt_model_buffer->bbox3d_pts();
         
+
+        /* CENTROID  
+           Vector3 foocntr = pt_model_buffer->centroid();
+           pt_model_buffer->add_locator(foocntr);
+        */
+
+
+        //  BBOX (WIP)
         pt_model_buffer->add_locator(pt_model_buffer->t_maxx);
         pt_model_buffer->add_locator(pt_model_buffer->t_minx);
         pt_model_buffer->add_locator(pt_model_buffer->t_maxy);
         pt_model_buffer->add_locator(pt_model_buffer->t_miny);
 
-        // pt_model_buffer->add_locator(pt_model_buffer->b_maxx);
-        // pt_model_buffer->add_locator(pt_model_buffer->b_minx);
-        //pt_model_buffer->add_locator(pt_model_buffer->b_maxy);
-        //pt_model_buffer->add_locator(pt_model_buffer->b_miny);
+        pt_model_buffer->add_locator(pt_model_buffer->b_maxx);
+        pt_model_buffer->add_locator(pt_model_buffer->b_minx);
+        pt_model_buffer->add_locator(pt_model_buffer->b_maxy);
+        pt_model_buffer->add_locator(pt_model_buffer->b_miny);
+         
 
     }
 

@@ -2,8 +2,15 @@
 /* 
     point_op.cpp
 
-      Point Generators, create 2D/3D coordinates in all manner of fun ways. 
+    class point_op:
+        Deal exclusively with 3D point geometry 
+        Point Generators == generate patterns of points.  
+        create 2D/3D coordinates in all manner of fun ways. 
     
+
+    class polygon_ops: (3D Object Supereclass)
+        Deal with 3D point geometry in the form old polygons, triangles and quads mostly
+
 
 
     
@@ -357,6 +364,8 @@ int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p
 }
 
 /***************************************/
+//DEBUG - old code that needs to be updated 
+
 //not convinced this totally works due to roundoff error, but its close enough
 void point_ops::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_orig, float dia, int *num)
 {
@@ -545,6 +554,7 @@ float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 
 
 /***************************************/
+//DEBUG NOT FULLY TESTED  
 /*
     WIP test of python code mapping to C++, inheritance, etc 
     equivalent of python -> polygon_ops.calc_3d_bbox()
@@ -601,12 +611,12 @@ void polygon_ops::bbox3d_pts(void)
     t_maxx = Vector3( bb_max_x, bb_min_y, bb_max_z); 
     t_maxy = Vector3( bb_min_x, bb_max_y, bb_max_z); 
     t_minx = Vector3( bb_min_x, bb_min_y, bb_max_z); 
-    t_maxy = Vector3( bb_max_x, bb_max_y, bb_max_z); 
+    t_miny = Vector3( bb_max_x, bb_max_y, bb_max_z); 
 
     b_maxx = Vector3( bb_max_x, bb_min_y, bb_min_z); 
     b_maxy = Vector3( bb_min_x, bb_max_y, bb_min_z); 
     b_minx = Vector3( bb_min_x, bb_min_y, bb_min_z); 
-    b_maxy = Vector3( bb_max_x, bb_max_y, bb_min_z); 
+    b_miny = Vector3( bb_max_x, bb_max_y, bb_min_z); 
 
 
 
