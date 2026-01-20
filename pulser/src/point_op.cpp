@@ -550,24 +550,36 @@ float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 
 void polygon_ops::bbox3d(void)
 {
-    std::cout << "hello bbox3d !\n";
+    std::cout << "hello bbox3d ! "<< num_pts <<"\n";
 
-    /*
+    // bb_min_x;
+    // bb_max_x;
+    // bb_min_y;
+    // bb_max_y;
+    // bb_min_z;
+    // bb_max_z;
+
+
+    for(uint pi=0; pi<num_pts;pi++)
+    {
+        std::cout << "POINTZ " << pi << "\n";
+
+    }            
+    
     // grab a point from data to initialize
-    min_x=pts[0][0]
-    min_y=pts[0][1]
-    if len(pts)==3:
-        min_z=pts[0][2]
-    else:
-        min_z = 0 
+    //bb_min_x =
+    //bb_mzn_x =
 
-    max_x=pts[0][0]
-    max_y=pts[0][1]
-    if len(pts)==3:        
-        max_z=pts[0][2]
-    else:
-        max_z = 0 
+    // min_x=pts[0][0]
+    // min_y=pts[0][1]
+    // if len(pts)==3:
+    //     min_z=pts[0][2]
+    // else:
+    //     min_z = 0 
 
+
+    
+    /*
     for pt in pts:
         if pt[0]<min_x:
             min_x=pt[0]
@@ -584,9 +596,10 @@ void polygon_ops::bbox3d(void)
                 min_z=pt[2]
             if pt[2]>max_z:
                 max_z=pt[2]
+    */
 
     //return [min_x, min_y, min_z, max_x, max_y, max_z ]
-    */
+    
    
 }
 

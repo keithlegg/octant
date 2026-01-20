@@ -315,9 +315,6 @@ void parse_cmd_text(std::string *buffer)
         //std::cout << "precache     -debug   build a pulsetrain cache    \n";
         //std::cout << "tp_out (INT) -debug   test parport output         \n";
         //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";  
-        
-
-
 
         std::cout << "------------------------------------------        \n";  
         std::cout << "                                                  \n";
@@ -329,7 +326,7 @@ void parse_cmd_text(std::string *buffer)
     /**********************************************************************/
   
 
-    if (a1=="extent")
+    if (a1=="extent"||a1=="extents")
     {
         
         pt_model_buffer->bbox3d();

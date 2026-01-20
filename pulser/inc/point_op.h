@@ -95,16 +95,8 @@ class polygon_ops : public point_ops
     public: 
       int id_c; 
 
-        polygon_ops(){
-            num_pts     = 0;
-            num_vnrmls  = 0;
-            num_fnrmls  = 0;
-            num_uvs     = 0;
-            num_lines   = 0;
-            num_tris    = 0;
-            num_quads   = 0; 
-            num_vtxrgb  = 0;  
-
+        polygon_ops()
+        {
             bb_min_x = 0;
             bb_max_x = 0;
             bb_min_y = 0;
@@ -124,6 +116,8 @@ class polygon_ops : public point_ops
     uint num_lines;
     uint num_tris;
     uint num_quads;    
+    uint num_faces;
+    uint num_locs;
 
     // extents of model (you can derive centroid from these)
     float bb_min_x;
@@ -142,29 +136,26 @@ class polygon_ops : public point_ops
     //Vector2 uvs[MAX_NUM_VERTICES];              // UV coords      - storage for lookup  
     //Vector3 vnormals[MAX_NUM_VERTICES];         // vertex normals - storage for lookup 
     //Vector3 fnormals[MAX_NUM_FACES];            // face normals   - common ID with faces
-    Vector3* points     = new Vector3[MAX_NUM_VERTICES];   // vertices of model 
-    Vector3* vtxrgb     = new Vector3[MAX_NUM_VERTICES];   // vextex colors of model  
-    Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
-    Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
-    Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
-
-
     // --- 
-    
     // //lists of ID tables for lookup 
     // std::vector<int> lines [MAX_NUM_FACES];     // 2 sided faces 
     // std::vector<int> tris  [MAX_NUM_FACES];     // 3 sided faces
     // std::vector<int> vnids [MAX_NUM_VERTICES];  // vertex normal ids
     // std::vector<int> quads [MAX_NUM_FACES];     // 4 sided faces
     // std::vector<int> faces [MAX_NUM_FACES];     // >4, N sided faces 
+
+    Vector3* points     = new Vector3[MAX_NUM_VERTICES];   // vertices of model 
+    Vector3* vtxrgb     = new Vector3[MAX_NUM_VERTICES];   // vextex colors of model  
+    Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
+    Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
+    Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
+    // --- 
     uint* pt_loc               = new uint[MAX_NUM_FACES];                  // 3d "point only" location 
     std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
     std::vector<uint>* tris    = new std::vector<uint>[MAX_NUM_FACES];     // 3 sided faces
     std::vector<uint>* vnids   = new std::vector<uint>[MAX_NUM_VERTICES];  // vertex normal ids
     std::vector<uint>* quads   = new std::vector<uint>[MAX_NUM_FACES];     // 4 sided faces
     std::vector<uint>* faces   = new std::vector<uint>[MAX_NUM_FACES];     // >4, N sided faces 
-
-
     // ---
     Vector3 bfr_pts[MAX_NUM_VERTICES];           // general point buffer   ( tmp work area )
     std::vector<uint> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
@@ -183,7 +174,7 @@ class polygon_ops : public point_ops
 
     //bool pt_is_near( pt1, pt2, dist );
 
-    void bbox3d(void);
+    virtual void bbox3d(void);
 
     //Vector3 centroid_pts( array_of_vector3 );
     Vector3 centroid(void);

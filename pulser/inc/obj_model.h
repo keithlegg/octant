@@ -47,29 +47,6 @@ class obj_model: public polygon_ops
         ~obj_model(){};
 
         //-----------------------------------------//
-        // INHERITED PROPERTIES 
-        // polygon level stuff moved to pointgen class
-        uint num_pts;
-        uint num_vtxrgb;
-        uint num_vnrmls;    
-        uint num_fnrmls;
-        uint num_uvs;
-        uint num_lines;
-        uint num_tris;
-        uint num_quads;    
-        uint num_faces;
-        uint num_locs;
-
-        // extents of model (you can derive centroid from these)
-        float bb_min_x;
-        float bb_max_x;
-        float bb_min_y;
-        float bb_max_y;
-        float bb_min_z;
-        float bb_max_z;
-
-        //end inherited properties 
-        //-----------------------------------------//
 
         void reset(void) override;
 
