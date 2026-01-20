@@ -565,7 +565,7 @@ float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 void polygon_ops::bbox3d(void)
 {
     
-    bool debug = true;
+    bool debug = false;
     
     //std::cout << "hello bbox3d ! "<< num_pts <<"\n";
 

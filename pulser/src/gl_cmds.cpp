@@ -286,6 +286,10 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "  wire, persp, top, side                          \n";
         std::cout << "                                                  \n";
 
+        std::cout << "togg, toggle                                      \n";
+        std::cout << " tris, grid, gnomon, normals, vtxrgb              \n";
+        std::cout << "                                                  \n";
+
         std::cout << "-------- PROGRAM COMMANDS ----------------        \n"; 
         std::cout << "mtr : (motor enable)                              \n";
         std::cout << "  on,off                                          \n";
@@ -574,7 +578,20 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //--------------
-    // gle grid
+    //toggle grid shortcut
+    if (a1=="tg")
+    {
+        key_cb(103);
+    }
+    
+    //toggle gnomon shortcut
+    if (a1=="tgg")
+    {
+        key_cb(71);
+    }
+
+    //--------------
+    // toggle stuff
     if (a1=="toggle"||a1=="tog")
     {
         if(a2=="tris")   {key_cb(100);};
