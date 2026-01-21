@@ -1,18 +1,22 @@
 
-fix the "longer lines move faster" issue 
+
+
+motion_idx objects , rapid_in , rapid_out 
+
+
+smoother pulsing with no breaks bewteen vectors 
+control the pulses/speed based on distance in space 
+make speed based on "feedrate" 
+
 
 obj file dump current load new, load unlimited 
 
-2D obj line geom to toolpath load 
 
 do we need to dynamically draw each poly in render_loop??
 
-we need to control the pulses/speed based on distance in space 
 
+headless CLI command terminal when non gui 
 
-#recreate old objinfo - add class methods to model 
-    - bounding box
-    - 2D extents 
 
 
 #model_loader
@@ -23,11 +27,8 @@ we need to control the pulses/speed based on distance in space
     - triangles appear to be out of index 
     - triangulate
     
+
 - simple clickable buttons on screen 
-- animation - requires some notion of "time"
-
-
-- wire up CLI command parser 
 - explore basic mouse click, buttons 
 - add gcode/ngc parser 
 - add tcp socket for python control 
@@ -43,7 +44,8 @@ we need to control the pulses/speed based on distance in space
     - sort out the inheritance structure 
     - framebuffer RASTER texture for parport testing (green dots, etc)
     
--build 3D models of tools 
+-build 3D models of machines/tools 
+ 
 
 
 

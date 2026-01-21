@@ -275,7 +275,9 @@ void parse_cmd_text(std::string *buffer)
     //toggle grid
     if (a1=="help")
     {   
+        std::cout << "------------------------------------------        \n"; 
         std::cout << "         Octant help                              \n";
+        std::cout << "------------------------------------------        \n"; 
         std::cout << "                                                  \n";
         std::cout << "-------- SETUP COMMANDS ------------------        \n"; 
         std::cout << "dm : (display operations)                         \n";
@@ -322,8 +324,7 @@ void parse_cmd_text(std::string *buffer)
         //std::cout << "precache     -debug   build a pulsetrain cache    \n";
         //std::cout << "tp_out (INT) -debug   test parport output         \n";
         //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";  
-
-        std::cout << "------------------------------------------        \n";  
+        //std::cout << "------------------------------------------        \n";  
         std::cout << "                                                  \n";
 
 

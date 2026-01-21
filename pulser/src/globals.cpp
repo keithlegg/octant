@@ -513,9 +513,10 @@ void cncglobals::load_cfg_file( void )
                                 // create a new motion_idx object for each polygon 
 
                                 //DEBUG check for existing and append number to name if exists 
-                                pt_motionplot->add_motion(tokenized.at(1), "footype", 0, 0, 0 );
+                                //DEBUG type is optional?
+                                pt_motionplot->add_motion(tokenized.at(1), tokenized.at(2), 0, 0, 0 );
                                 //----
-                                
+
 
                             };
                         } 
