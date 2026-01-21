@@ -7,9 +7,10 @@
 #include "Vectors.h"
 
 #define MAX_NUM_PLY 100000
+#define MAX_MOTION_NUM 100000
 
 /*
-    WIP - OVERVIEW OF DATA SCTRUCTURE
+    WIP - OVERVIEW OF DATA SCTRUCTUREMAX_MOTION_NUM
 
 
     
@@ -66,6 +67,28 @@ void run_cncplot(double f_x,
 //gen_pulses() intentionally left out of class
 //historicaly it processed pulsetrain data not stored in object itself 
 void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
+
+//----------------------------//
+
+class motion_idx
+{
+
+    public:
+        motion_idx(){}; 
+        ~motion_idx(){};
+
+
+        Vector3 origin;
+
+        std::string name;
+        std::string type;
+
+        //index to objects 
+        uint pre_rapid_id;
+        uint post_rapid_id;
+        uint program_id;
+
+};
 
 
 //----------------------------//
@@ -130,10 +153,17 @@ class cnc_plot
 
         void process_vec(uint vec_idx);
 
-        //----------- 
+        //-----------  
+        // motion interface 
 
+        // add_motion   (std::string name, Vector3 start, Vector3 end);
+        // del_motion   (std::string name, Vector3 start, Vector3 end);
+        // link_motions (std::string name, Vector3 start, Vector3 end);
 
-        
+        // end motion interface 
+        //-----------  
+
+        //-----------         
         void calc_3d_pulses(Vector3 fr_pt, 
                             Vector3 to_pt,
                             uint numdivx,
@@ -188,7 +218,10 @@ class cnc_plot
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<Vector3> program_vecs;  
-        
+
+
+        std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  
+
         //-----         
         // the final "baked" path that gets run
         std::vector<Vector3> toolpath_vecs;

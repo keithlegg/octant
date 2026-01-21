@@ -969,9 +969,18 @@ void parser_cb(unsigned char key, int x, int y)
 //placeholder for future feature we havent invented yet
 float dummy = 0;
 uint top_text_y = 20;
+void *fontsm = GLUT_BITMAP_8_BY_13;     
+void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
+
+bool debug_onscreen = false;
+
 
 void render_loop(void)
 {
+    // updates when screen size changes 
+    uint enable_txt_x =  ((int)(scr_size_x/2));
+    uint estop_txt_x  =  ((int)(scr_size_x/2)-100);
+
     // Clear The Screen And The Depth Buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -982,9 +991,6 @@ void render_loop(void)
     glutKeyboardFunc(parser_cb);
 
     //------------ 
-
-
-    //GLfloat loac_idle[]    = { 0 , 0  , 1., 0};
 
     if(pt_mtime->tm_running)
     {
@@ -1001,7 +1007,6 @@ void render_loop(void)
     }
     draw_locator(&motionplot.quill_pos, .5);   
 
-
     //------------ 
     //draw points as locators
     
@@ -1012,10 +1017,6 @@ void render_loop(void)
         green_clr;
         draw_locator(&lpos, .25); 
     } 
-  
-
-    
-
     
     //------------ 
     //I clearly dont get the whole view matrix thing - moved out of text render
@@ -1044,9 +1045,6 @@ void render_loop(void)
     
         //-----------------------------
         // render text in window 
-
-        //void *fontsm = GLUT_BITMAP_8_BY_13;     
-        void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
         
         // command line text 
         text_clr;
@@ -1097,16 +1095,17 @@ void render_loop(void)
         
         
         //-----------------------------------------
-
+ 
+ 
         if(!cg.ENABLE_MOTOR_DRIVE)
         {
             enabled_txt_clr;
-            renderBitmapString( ((int)(scr_size_x/2)-50) , top_text_y  ,(void *)font, "DISABLED" ); 
+            renderBitmapString( enable_txt_x , top_text_y  ,(void *)font, "DISABLED" ); 
         }
         else
         {
             enabled_txt_clr2;
-            renderBitmapString( ((int)(scr_size_x/2)-50) , top_text_y  ,(void *)font, "ENABLED" ); 
+            renderBitmapString( enable_txt_x , top_text_y  ,(void *)font, "ENABLED" ); 
         }
 
         //-----------------------------------------
@@ -1115,20 +1114,21 @@ void render_loop(void)
         if(!pt_mtime->tm_running)
         {
             red_clr;
-            renderBitmapString( ((int)(scr_size_x/2)-200) , top_text_y  ,(void *)font, "ESTOP" ); 
+            renderBitmapString( estop_txt_x , top_text_y  ,(void *)font, "ESTOP" ); 
         }
         else
         {
             green_clr;
-            renderBitmapString( ((int)(scr_size_x/2)-200) , top_text_y  ,(void *)font, "ESTOP" ); 
+            renderBitmapString( estop_txt_x , top_text_y  ,(void *)font, "ESTOP" ); 
         }
 
         //-----------------------------------------
-
-        //---
-        // glColor3d(1.0, 1.0, 1.0);
-        // sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
-        // renderBitmapString( ((int)(scr_size_x/2)-250), 20  ,(void *)fontsm, s );
+        if(debug_onscreen)
+        {
+            glColor3d(1.0, 1.0, 1.0);
+            sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
+            renderBitmapString( ((int)(scr_size_x/2)-550), 15  ,(void *)fontsm, s );
+        }
         //-----------------------------
 
     }

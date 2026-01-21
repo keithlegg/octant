@@ -332,8 +332,6 @@ void cnc_plot::reset(void)
     // toolpath_vecs.push_back(Vector3(0,0,0));
     // toolpath_vecs.push_back(Vector3(1,-1,2));
 
-
-
     // Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
     // rapidmove_vecs.push_back(quill_pos);
     // update_toolpaths();
@@ -344,6 +342,9 @@ void cnc_plot::reset(void)
     vec_idx = 0;
     running  = false;
     finished = true;
+
+    //DEBUG prg_origin may get moved to motion_idx object 
+    //DEBUG - or copy it from plot-> motion_idx 
     quill_pos = Vector3(prg_origin.x,
                         prg_origin.y,
                         prg_origin.z);

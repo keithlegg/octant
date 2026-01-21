@@ -73,6 +73,8 @@
 //idx of text that invisible "cursor" sits on
 int cursor = 0;
 
+extern bool debug_onscreen;
+
 extern cnc_parport parport;
 
 extern bool tog_testport; 
@@ -309,7 +311,9 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "  pathids  -                                      \n";
         std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
         std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
-        std::cout << "                                                  \n"; 
+        std::cout << "  debug    -camera stats HUD                      \n";
+        std::cout << "                                                  \n";        
+
         std::cout << "lup (lookup by ID)                                \n";
         std::cout << "   pathid (int),                                  \n";
         std::cout << "                                                  \n";    
@@ -495,7 +499,7 @@ void parse_cmd_text(std::string *buffer)
     */
 
     //--------------
-    //not really used - the preferred method is the '`' key 
+    //not really used - the preferred method is the '``' key 
     if (a1=="stop")
     {
         stop_machine(); 
@@ -517,6 +521,13 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="show"|| a1=="sho")
     { 
         std::cout << "------------------------------------------        \n";
+
+        
+        //view globals   
+        if(a2=="debug")
+        { 
+            debug_onscreen = true;
+        }
 
         //view globals   
         if(a2=="cfg")
@@ -805,6 +816,9 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
     //emergency soft stop is ` key 
     if(i==96)
     {
+        //the folowing locks up the program 
+        //I am guessing its thread related  
+        //set_motor(0);
         pause_machine();        
     }
 
