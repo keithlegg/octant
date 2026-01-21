@@ -1,49 +1,61 @@
 
-
+---
 
 motion_idx objects , rapid_in , rapid_out 
 
-
+---
 smoother pulsing with no breaks bewteen vectors 
 control the pulses/speed based on distance in space 
 make speed based on "feedrate" 
 
+---
+global T,R,S of all data 
 
+---
+save "scene" back to a .cfg file 
+
+---
 obj file dump current load new, load unlimited 
 
-
-do we need to dynamically draw each poly in render_loop??
 
 
 headless CLI command terminal when non gui 
 
 
+debug - ? do we need to dynamically draw each poly in render_loop??
+
 
 #model_loader
+    - load quads / triangulate 
+    - triangles appear to be out of index
+    - triangulate
+    - calculate point normals      
     - blows up with arbitrary whitespace in obj file 
     - normals untested 
     - UVs untested 
-    - quads unstested
-    - triangles appear to be out of index 
-    - triangulate
-    
-
+ 
+---
 - simple clickable buttons on screen 
 - explore basic mouse click, buttons 
+
+---
 - add gcode/ngc parser 
+
+---
 - add tcp socket for python control 
 
-
+---
 #general cleanup 
     - recursive makefiles - clean
     - sort source into folders/modules 
 
-
+---
 #general architecture  
     - think about a newer Vector/Matrix library?
     - sort out the inheritance structure 
     - framebuffer RASTER texture for parport testing (green dots, etc)
-    
+   
+---
 -build 3D models of machines/tools 
  
 

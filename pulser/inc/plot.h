@@ -70,6 +70,11 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num);
 
 //----------------------------//
 
+/*
+    object to define an atomic unit of motion 
+    links to paths - kind of like a foreign key in databases 
+*/
+
 class motion_idx
 {
 
@@ -121,7 +126,11 @@ class cnc_plot
 
         //-- 
         void show_motion(void);
-        void show(void);
+        void show_motionpath_info(void);
+
+        void show_path_info(void);
+        void show_pt_buf_info(void);
+
         void showgeom(void);
         void showpthids(void);
         void showply(uint vec_idx);
@@ -220,7 +229,6 @@ class cnc_plot
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<Vector3> program_vecs;  
-
 
         std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  
 

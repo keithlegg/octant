@@ -299,7 +299,8 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n";
 
         std::cout << "-------- DEBUGGING COMMANDS --------------        \n";               
-        
+
+        std::cout << "mh - move head(quill)                             \n";          
         std::cout << "am - addmotion                                    \n";        
         std::cout << "                                                  \n";
 
@@ -308,7 +309,10 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "  motion   - show motion index objs               \n";
         std::cout << "  pt       - pulsetrain info                      \n";
         std::cout << "  obj      - stats about loaded 3d object         \n";
+        
         std::cout << "  path     - stats about toolpath                 \n";
+        std::cout << "  path     - stats about toolpath                 \n";
+
         std::cout << "  pathids  -                                      \n";
         std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
         std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
@@ -336,14 +340,14 @@ void parse_cmd_text(std::string *buffer)
 
     if (a1=="extent"||a1=="extents")
     {
-        
-        
+                
 
         /* CENTROID  
            Vector3 foocntr = pt_model_buffer->centroid();
            pt_model_buffer->add_locator(foocntr);
         */
 
+        //DEBUG - IF NO OBJECT - USE TOOLPATHS INSTEAD 
 
         //  BBOX (WIP)
         pt_model_buffer->add_locator(pt_model_buffer->t_maxx);
@@ -521,12 +525,6 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="show"|| a1=="sho")
     { 
         std::cout << "------------------------------------------        \n";
-        
-        // view motion   
-        if(a2=="motion")
-        { 
-            pt_motionplot->show_motion(); 
-        }
 
         // view camera info onscreen (no toggle)   
         if(a2=="debug")
@@ -540,12 +538,31 @@ void parse_cmd_text(std::string *buffer)
             cg.show_params();         
         }
         
+        //-- 
+        // show motionpath indices 
+        if(a2=="motioninfo")
+        { 
+            //pt_motionplot->show_motionpath_info();             
+        }
+        // view motion   
+        if(a2=="motion")
+        { 
+            pt_motionplot->show_motion(); 
+        }
+
+        //-- 
+        // show path indices 
+        if(a2=="pathinfo")
+        { 
+            pt_motionplot->show_path_info();             
+        }
         // stats about plotter 
         if(a2=="path"||a2=="paths")
         { 
-            pt_motionplot->show();             
+            pt_motionplot->show_pt_buf_info();             
         }
         
+        //-- 
         // stats about 3D object  (not path polygons)
         if(a2=="obj")
         { 
@@ -618,7 +635,35 @@ void parse_cmd_text(std::string *buffer)
 
     }
 
-    //--------------
+
+    /////////////////////////////////////////
+    // MOTION COMMANDS
+
+    //home head
+    //if (a1=="hh") {};
+
+    //move head (and store as a new program??)
+    if (a1=="mh")
+    {
+
+        if(a2!="" && a3!="" && a4!="")
+        {
+            std::cout << "move head cmd " << a2 << " " << a3 << " "<< a4 << "\n";
+
+            v11 = std::stof(a2);
+            v12 = std::stof(a3);
+            v13 = std::stof(a4);
+
+            // add vector (quill) @ retractheight  
+            // add vector (Vector3) @ retractheight  
+            
+            // void add_motion(std::string name, std::string type, 
+            //                 uint prog_id, uint rapid_in, uint rapid_out); 
+        }
+
+    }
+
+    /////////////////////////////////////////
     //freerun  
     if (a1=="fr")
     {
@@ -664,26 +709,11 @@ void parse_cmd_text(std::string *buffer)
 
         //threaded - it seems to work
         //pulse_thread( v11, v12, v13, v21, v22, v23, numx, numy, numz);
-
-        
-
     }
-    //--------------
+    /////////////////////////////////////////
     /*
 
 
-    //--------------
-    //relative transform (from current xyz)
-    if (a1=="clear" || a1=="clr")
-    {
-        //return head to origin 
-        pt_motionplot->quill_pos.x = 0;
-        pt_motionplot->quill_pos.y = 0;
-        pt_motionplot->quill_pos.z = 0; 
-        clear_linebuffers();
-    }
-
-    //--------------
     //absolute transform (in space)
     if (a1=="at")
     {
@@ -699,37 +729,7 @@ void parse_cmd_text(std::string *buffer)
         add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
     }
 
-    //--------------
-    //relative transform 2D (from current xyz)
-    if (a1=="rt2")
-    {
-        Vector3 rgb = Vector3(0,1.0,1.0);
-       
-        //learning about try -> catch.  
-        try {
-                v11 = std::stof(a2);
-                v12 = std::stof(a3);
-
-                //sample the qpos 
-                //Vector3 old = qpos;
-                //old = qpos.operator-(old);
-
-                //I AM SHIFTING THE AXIS TO Z UP HERE
-                //set new qpos
-                pt_motionplot->quill_pos.x = v11;
-                pt_motionplot->quill_pos.y = 0;  
-                pt_motionplot->quill_pos.z = v12;
-
-            //store the difference between them
-            add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
-
-        } catch (const std::invalid_argument& e) {  
-            //std::cerr << "Error: " << e.what() << std::endl; // Handling the error
-        } catch (...) { // Catch-all for any other unexpected exceptions
-            std::cerr << "RT command bad input " << std::endl;
-        }   
-    }
-
+    /////////////////////////////////////////
     //relative transform (from current xyz)
     if (a1=="rt")
     {
@@ -754,7 +754,11 @@ void parse_cmd_text(std::string *buffer)
         
         //add_vec_lbuf1(&pt_motionplot->quill_pos, &rgb);
 
-    }*/
+    }
+    */
+    /////////////////////////////////////////
+
+
 
     //--------------
     //display modes
