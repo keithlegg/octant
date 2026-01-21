@@ -5,7 +5,13 @@
     All the configuration details and machine paramenters live here, accessed globally. 
     Also deals with the loading (saving?) of machine parameters
 
- 
+    TODO 
+        properly deal with extra spaces in file 
+        error checking - check for unclosed polygoin definitions, etc 
+
+
+    -----------------
+
     MIT License
 
     Copyright (c) 2025 Keith Legg - keithlegg23@gmail.com
@@ -346,10 +352,12 @@ void cncglobals::set_cfg_path( char* filepath )
 /*******************************************************/
 void cncglobals::load_cfg_file( void )
 {
+    std::ifstream cfg_filein;
+
+    uint line_ct       = 0;
+    uint local_vec_idx = 0; //remember how many new points to add 
 
     std::cout << "cncglobals loading file "<< cfg_filepath << "\n";
-
-    std::ifstream cfg_filein;
 
     //DEBUG - need to check to make sure its a file, not a directory 
     /*
@@ -380,10 +388,6 @@ void cncglobals::load_cfg_file( void )
         std::cout << "config file \""<< cfg_filepath <<"\" appears to be missing." << std::endl;
         exit (EXIT_FAILURE); // exit if file not found
     }
-
-
-    uint line_ct       = 0;
-    uint local_vec_idx = 0; //remember how many new points to add 
 
     while (!cfg_filein.eof())
     {   
@@ -422,35 +426,23 @@ void cncglobals::load_cfg_file( void )
                         // PYTHON RETURN 3D OBJECT - (OUTPUT OF PYCORE) 
                         if (tokenized.at(0).find("ENABLE_MOTOR_DRIVE")!= std::string::npos)
                         {   
-                            // std::cout << "hypnogog       " << tokenized.at(1) << " " <<"\n";
-                            // std::cout << "block universe " << tokenized.at(1) << " " <<"\n";
-                            //ENABLE_MOTOR_DRIVE = std::istringstream(tokenized.at(1));
-
-
                             ENABLE_MOTOR_DRIVE = std::stoi(tokenized.at(1));
-
-
-
                         }
-
-                        
-
-                        //----- 
+    
+                        /**************************************/  
                         // DEBUG - NOT DONE -
                         // location - OBJ file   
                         if (tokenized.at(0).find("op_loadlocs")!= std::string::npos)
                         {   
                             std::string buffer;
                             buffer = tokenized.at(1);
-
                             std::cout << "DEBUG LOAD 3D POINT (LOCs) OBJECT  \n";
-                             
-
                         }
 
- 
                         /**************************************/ 
                         /**************************************/ 
+                        //GUI exclusive params
+
                         #if DO_BUILD_GUI == true
                             // DEBUG - NOT DONE -
                             // lines only - OBJ file  
@@ -465,7 +457,6 @@ void cncglobals::load_cfg_file( void )
                             }
 
                             /**************************************/ 
-     
                             if (tokenized.at(0).find("SCREEN_BG_COLOR") != std::string::npos )                            
                             {  
        
@@ -478,6 +469,8 @@ void cncglobals::load_cfg_file( void )
                             }
 
                         #endif 
+    
+                        //end exclusive GUI params 
                         /**************************************/ 
                         /**************************************/ 
 
@@ -495,7 +488,7 @@ void cncglobals::load_cfg_file( void )
                             //obj_pycore = buffer;  
                         }
 
-                        //----- 
+                        /**************************************/  
                         // LOAD 3D OBJECT - Alias .OBJ file (CLASSIC DISPLAY)
                         if (tokenized.at(0).find("op_loadobj")!= std::string::npos)
                         {   
@@ -514,13 +507,25 @@ void cncglobals::load_cfg_file( void )
                             }else{   
                                 std::cout << "load_cfg_file - debug - opening new polygon load \n";                         
                                 active_polygon_load=true;
+                                
+                                //----
+                                //DEBUG - still figuring this out 
+                                // create a new motion_idx object for each polygon 
+
+                                //DEBUG check for existing and append number to name if exists 
+                                pt_motionplot->add_motion(tokenized.at(1), "footype", 0, 0, 0 );
+                                //----
+                                
+
                             };
                         } 
-                        //-----                         
+
+                        /**************************************/                         
                         //keep track of the polygon index - close a new poly  
                         if (tokenized.at(0).find("end_polygon")!= std::string::npos)
                         {   
-                            if(active_polygon_load==false){
+                            if(active_polygon_load==false)
+                            {
                                 std::cout << "load_cfg_file - error - polygon load already closed. \n";
                             }else{
                                 if(local_vec_idx==0)
@@ -538,12 +543,12 @@ void cncglobals::load_cfg_file( void )
                             };
                         } 
                         
-                        //----- 
+                        /**************************************/  
                         if(active_polygon_load)
                         { 
                             // LOAD 3D VECTOR (3 floats for a vector display)
                             // load a 3d or 2d object to display as vector lines
-                            if (tokenized.at(0).find("op_scenevec")!= std::string::npos)
+                            if (tokenized.at(0).find("op_toolpath")!= std::string::npos)
                             {   
                                 float c1,c2,c3;
                                 //DEBUG - file loader counts blank spaces - need to fix
@@ -568,8 +573,10 @@ void cncglobals::load_cfg_file( void )
                             }//load a 3D vector 
                         }//active polygon load 
 
-
+                        //***************************************/ 
                         //** MACHINE HARDWARE SETUP ************//
+                        
+                        //DEBUG - NOT DONE 
                         if (tokenized.at(0).find("LINEAR_UNIT") != std::string::npos )                            
                         {  
                             std::string buffer;
@@ -818,16 +825,14 @@ void cncglobals::load_cfg_file( void )
 
                             }
                         }//set the DB25 pins here
-
-
-
                         //***************************************/ 
                         //***************************************/ 
+
                     }//if line has at least 2 sections and not commented 
                 }// if line is not commented
             }
 
-            //////
+            //***************************************/ 
             line_ct ++; 
         }//line by line of file
 

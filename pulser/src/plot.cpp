@@ -212,6 +212,26 @@ void cnc_plot::add_prg_vec(Vector3* nv)
 
 }
 
+
+/******************************************/
+void cnc_plot::show_motion(void)
+{
+    std::cout << " FOO MOTION\n";
+}
+
+void cnc_plot::add_motion(std::string name, 
+                          std::string type, 
+                          uint prog_id,
+                          uint rapid_in, 
+                          uint rapid_out 
+                          )
+{
+    std::cout << "add_motion: name "<< name << " type "
+              << type <<" prgid " << prog_id << " ri " << rapid_in << " ro "
+              << rapid_out << "\n";
+
+}
+
 /******************************************/
 void cnc_plot::add_file_vec(Vector3* nv)
 {

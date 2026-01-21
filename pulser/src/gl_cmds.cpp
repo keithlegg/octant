@@ -74,18 +74,12 @@
 int cursor = 0;
 
 extern bool debug_onscreen;
-
-extern cnc_parport parport;
-
 extern bool tog_testport; 
- 
 extern bool disp_ply_solo;
 extern uint disp_ply_solo_id;
-
-
-//position of extruder/quill/etc
+ 
 extern cncglobals cg;
-
+extern cnc_parport parport;
 extern cnc_plot* pt_motionplot;
 extern obj_model* pt_model_buffer;
 
@@ -303,8 +297,13 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n";
 
         std::cout << "-------- DEBUGGING COMMANDS --------------        \n";               
+        
+        std::cout << "am - addmotion                                    \n";        
+        std::cout << "                                                  \n";
+
         std::cout << "show (sho)                                        \n";
         std::cout << "  cfg      - view important globals               \n";
+        std::cout << "  motion   - show motion index objs               \n";
         std::cout << "  pt       - pulsetrain info                      \n";
         std::cout << "  obj      - stats about loaded 3d object         \n";
         std::cout << "  path     - stats about toolpath                 \n";
@@ -521,34 +520,39 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="show"|| a1=="sho")
     { 
         std::cout << "------------------------------------------        \n";
-
         
-        //view globals   
+        // view motion   
+        if(a2=="motion")
+        { 
+            pt_motionplot->show_motion(); 
+        }
+
+        // view camera info onscreen (no toggle)   
         if(a2=="debug")
         { 
             debug_onscreen = true;
         }
 
-        //view globals   
+        // view globals   
         if(a2=="cfg")
         { 
             cg.show_params();         
         }
         
-        //stats about plotter 
+        // stats about plotter 
         if(a2=="path"||a2=="paths")
         { 
             pt_motionplot->show();             
         }
         
-        //stats about 3D object  (not path polygons)
+        // stats about 3D object  (not path polygons)
         if(a2=="obj")
         { 
             pt_model_buffer->show();
         }
 
         //-------------------------
-        //these are probably only needed for debugging 
+        // these are probably only needed for debugging 
         
         if(a2=="objgeom")
         { 

@@ -120,7 +120,7 @@ class cnc_plot
         void rapid_move(void);
 
         //-- 
-
+        void show_motion(void);
         void show(void);
         void showgeom(void);
         void showpthids(void);
@@ -156,7 +156,9 @@ class cnc_plot
         //-----------  
         // motion interface 
 
-        // add_motion   (std::string name, Vector3 start, Vector3 end);
+        void add_motion(std::string name, std::string type, 
+                        uint prog_id, uint rapid_in, uint rapid_out); 
+
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);
 
