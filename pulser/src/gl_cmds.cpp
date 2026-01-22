@@ -546,29 +546,29 @@ void parse_cmd_text(std::string *buffer)
         }
         
         //-- 
-        // show motionpath indices 
-        if(a2=="motioninfo")
-        { 
-            //pt_motionplot->show_motionpath_info();             
-        }
         // view motion   
-        if(a2=="motion")
+        if(a2=="mpath"||a2=="mpaths")
         { 
-            pt_motionplot->show_motion(); 
+            pt_motionplot->show_mpath(); 
+        }
+        // show motionpath indices 
+        if(a2=="mpathinfo")
+        { 
+            pt_motionplot->show_mpath_info();             
         }
 
         //-- 
-        // show path indices 
-        if(a2=="pathinfo")
-        { 
-            pt_motionplot->show_path_info();             
-        }
         // stats about plotter 
         if(a2=="path"||a2=="paths")
         { 
             pt_motionplot->show_path();             
         }
-        
+        // show path indices 
+        if(a2=="pathinfo")
+        { 
+            pt_motionplot->show_path_info();             
+        }
+
         //-- 
         // stats about 3D object  (not path polygons)
         if(a2=="obj")
@@ -657,15 +657,15 @@ void parse_cmd_text(std::string *buffer)
         {
             std::cout << "move head cmd " << a2 << " " << a3 << " "<< a4 << "\n";
 
-            v11 = std::stof(a2);
-            v12 = std::stof(a3);
-            v13 = std::stof(a4);
+            v11 = std::stoi(a2);
+            v12 = std::stoi(a3);
+            v13 = std::stoi(a4);
 
             // add vector (quill) @ retractheight  
             // add vector (Vector3) @ retractheight  
             
             // void add_motion( name, type, prog_id, rapid_in, rapid_out);
-            pt_motionplot->add_motion("mh_cmd", "rapid", 0, 0, 0 );
+            pt_motionplot->add_motion("mh_cmd", "rapid", v11, v12, v13 );
 
 
         }

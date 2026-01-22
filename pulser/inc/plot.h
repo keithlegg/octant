@@ -80,11 +80,14 @@ class motion_idx
 
     public:
         motion_idx(){}
-        motion_idx(std::string name, std::string type, 
-                   uint prog_id, uint rapid_in, uint rapid_out)
+        motion_idx(std::string nam, std::string typ, 
+                   uint progid, uint rapidin, uint rapidout)
         {
-            name = name;
-            type = type;
+            name      = nam;
+            type      = typ;
+            prog_id   = progid;
+            rapid_in  = rapidin;
+            rapid_out = rapidout;
         }
 
 
@@ -132,11 +135,11 @@ class cnc_plot
         void rapid_move(void);
 
         //-- 
-        void show_motion(void);
-        void show_motionpath_info(void);
+        void show_mpath(void);
+        void show_mpath_info(void);
 
-        void show_path_info(void);
         void show_path(void);
+        void show_path_info(void);
 
         void showgeom(void);
         void showpthids(void);

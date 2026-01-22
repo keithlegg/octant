@@ -226,39 +226,68 @@ void cnc_plot::add_motion(std::string name,
                           uint rapid_out 
                           )
 {
-    std::cout << "add_motion: name "<< name << " type "
-              << type <<" prgid " << prog_id << " ri " << rapid_in << " ro "
-              << rapid_out << "\n";
+    
+    bool debug = false;
 
+    if(debug)
+    {
+        std::cout << "add_motion: name "<< name << " type "
+                  << type <<" prgid " << prog_id << " ri " << rapid_in << " ro "
+                  << rapid_out << "\n";
+    }
+    
     //std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
     motion_idx foo = motion_idx(name, type, prog_id, rapid_in, rapid_out);
 
-    motion_prg->push_back(foo);
+
+    //clearly I have more homework to do on C++
+    //https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back
+
+    motion_prg->emplace_back(foo);
     num_motion_ids++;
 
 }
 
 
 //DEBUG NEED TO THINK THIS OUT 
-void cnc_plot::show_motion(void)
+void cnc_plot::show_mpath(void)
 {
-    std::cout << " we have "<< motion_prg->size() << " motion idx objects \n";
+    bool debug = true;
+
+    if(debug)
+    {
+        std::cout << " we have "<< motion_prg->size() << " motion idx objects \n";
+    }
 
     for (uint mp=0;mp<motion_prg->size();mp++)
     {
-        std::cout << "  motion idx obj " << motion_prg->at(mp).name     << " " 
-                                         << motion_prg->at(mp).type     << " "
-                                         << motion_prg->at(mp).prog_id  << " "
-                                         << motion_prg->at(mp).rapid_in << "\n";
+        motion_idx motionobj = motion_prg->at(mp);
+
+        if(debug)
+        {
+            std::cout << "  motion idx obj " << motionobj.name     << " " 
+                                             << motionobj.type     << " "
+                                             << motionobj.prog_id  << " "
+                                             << motionobj.rapid_in << "\n";
+        }
 
     }
 }
 
 
 //DEBUG NEED TO THINK THIS OUT 
-void cnc_plot::show_motionpath_info(void)
+void cnc_plot::show_mpath_info(void)
 {
-  
+      std::cout << " we have "<< motion_prg->size() << " motion idx objects \n";
+
+    for (uint mp=0;mp<motion_prg->size();mp++)
+    {
+        std::cout << "  motion idxobj  " << motion_prg->at(mp).name      << " " 
+                                         << motion_prg->at(mp).type      << " "
+                                         << motion_prg->at(mp).prog_id   << " "
+                                         << motion_prg->at(mp).rapid_in  << " "
+                                         << motion_prg->at(mp).rapid_out << "\n";
+    }
 }
 
 
