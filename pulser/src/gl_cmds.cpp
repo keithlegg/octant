@@ -174,6 +174,8 @@ void unload_vec(void)
     pt_motionplot->rapidmove_vecs.clear();
     pt_motionplot->program_vecs.clear();
     
+    pt_motionplot->num_plys = 0;
+
     for(uint x=0;x<MAX_NUM_PLY;x++)
     {
         pt_motionplot->tp_idxs[x].clear();
@@ -564,7 +566,7 @@ void parse_cmd_text(std::string *buffer)
         // stats about plotter 
         if(a2=="path"||a2=="paths")
         { 
-            pt_motionplot->show_pt_buf_info();             
+            pt_motionplot->show_path();             
         }
         
         //-- 
@@ -662,8 +664,10 @@ void parse_cmd_text(std::string *buffer)
             // add vector (quill) @ retractheight  
             // add vector (Vector3) @ retractheight  
             
-            // void add_motion(std::string name, std::string type, 
-            //                 uint prog_id, uint rapid_in, uint rapid_out); 
+            // void add_motion( name, type, prog_id, rapid_in, rapid_out);
+            pt_motionplot->add_motion("mh_cmd", "rapid", 0, 0, 0 );
+
+
         }
 
     }

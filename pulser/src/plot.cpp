@@ -296,9 +296,10 @@ void cnc_plot::show_path_info(void)
 
 /******************************************/
 
-void cnc_plot::show_pt_buf_info(void)
+void cnc_plot::show_path(void)
 {
-    std::cout << "\n #"  << "foo"                 <<"   motion path   \n"; 
+
+    std::cout << "\n #"  << num_motion_ids        <<"   motion path   \n"; 
     std::cout << "\n #"  << num_plys              <<"   path polygons \n"; 
     std::cout << "  -----------\n"; 
     std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs     \n";   

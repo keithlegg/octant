@@ -136,7 +136,7 @@ class cnc_plot
         void show_motionpath_info(void);
 
         void show_path_info(void);
-        void show_pt_buf_info(void);
+        void show_path(void);
 
         void showgeom(void);
         void showpthids(void);
