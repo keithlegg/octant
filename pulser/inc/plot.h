@@ -79,9 +79,16 @@ class motion_idx
 {
 
     public:
-        motion_idx(){}; 
-        ~motion_idx(){};
+        motion_idx(){}
+        motion_idx(std::string name, std::string type, 
+                   uint prog_id, uint rapid_in, uint rapid_out)
+        {
+            name = name;
+            type = type;
+        }
 
+
+        ~motion_idx(){};
 
         Vector3 origin;
 
@@ -89,9 +96,9 @@ class motion_idx
         std::string type;
 
         //index to objects 
-        uint pre_rapid_id;
-        uint post_rapid_id;
-        uint program_id;
+        uint rapid_in;
+        uint rapid_out;
+        uint prog_id;
 
 };
 

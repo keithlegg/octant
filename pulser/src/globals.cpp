@@ -483,7 +483,7 @@ void cncglobals::load_cfg_file( void )
 
                         /**************************************/ 
                         /**************************************/ 
-                        //MOTION PATH - WIP 
+                        //MOTION PATH - ( WIP )
 
                         //keep track of the polygon index - open a new poly  
                         if (tokenized.at(0).find("op_polygon")!= std::string::npos)
@@ -824,12 +824,23 @@ void cncglobals::load_cfg_file( void )
                     }//if line has at least 2 sections and not commented 
                 }// if line is not commented
             }
-
-            //***************************************/ 
+            //***********/ 
             line_ct ++; 
         }//line by line of file
 
     }//while data in file
+
+    //***************************************/ 
+    /*
+        if polygon load is still open , Houston we have a problem
+        Okay, look, this hardly passes for error che checking but at lest its something
+        im doing my best here
+    */
+    if(active_polygon_load)
+    {
+        std::cout << "IT APPEARS THERE IS AN OPEN POLYGON IN CFG \n";
+        abort();
+    }
 
     //test of explicit file closing 
     // if (cfg_filein.is_open()) 

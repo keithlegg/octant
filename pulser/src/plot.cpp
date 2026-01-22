@@ -230,13 +230,28 @@ void cnc_plot::add_motion(std::string name,
               << type <<" prgid " << prog_id << " ri " << rapid_in << " ro "
               << rapid_out << "\n";
 
+    //std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
+    motion_idx foo = motion_idx(name, type, prog_id, rapid_in, rapid_out);
+
+    motion_prg->push_back(foo);
+    num_motion_ids++;
+
 }
 
 
 //DEBUG NEED TO THINK THIS OUT 
 void cnc_plot::show_motion(void)
 {
-    std::cout << " FOO MOTION\n";
+    std::cout << " we have "<< motion_prg->size() << " motion idx objects \n";
+
+    for (uint mp=0;mp<motion_prg->size();mp++)
+    {
+        std::cout << "  motion idx obj " << motion_prg->at(mp).name     << " " 
+                                         << motion_prg->at(mp).type     << " "
+                                         << motion_prg->at(mp).prog_id  << " "
+                                         << motion_prg->at(mp).rapid_in << "\n";
+
+    }
 }
 
 
