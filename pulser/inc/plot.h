@@ -229,18 +229,18 @@ class cnc_plot
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<Vector3> program_vecs;  
-
-        std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  
+        
+        //-----     
+        uint num_motion_ids;
+        std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
 
         //-----         
-        // the final "baked" path that gets run
-        std::vector<Vector3> toolpath_vecs;
-        //tool path indeces
-        std::vector<uint> tp_idxs[MAX_NUM_PLY];
+        std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
+        std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpaths
+ 
         //-----
-        // original vectors loaded from disk  
         // these get copied to program_vecs and linebuffer1 vecs (for display)
-        std::vector<Vector3> loaded_file_vecs;
+        std::vector<Vector3> loaded_file_vecs; //storage for vectors defined in cfg file
 
     private:
         void show_vecs(std::vector<Vector3> * pt_vec);

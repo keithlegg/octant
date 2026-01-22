@@ -122,23 +122,6 @@ void exit_program(void)
 }
 
 /*******************************************************/
-
-/*
-//the data is loaded in file buffer - copy it to display buffer to render
-void cncglobals::copy_file_vecs_display(void)
-{
-    
-    //std::cout << "called copy_prog_vecs_display " << pt_motionplot->loaded_file_vecs.size() << "\n";
-    for (uint p=0;p<pt_motionplot->loaded_file_vecs.size();p++)
-    {   
-        add_vec_lbuf1(&pt_motionplot->loaded_file_vecs.at(p)); 
-    }
-
-    //pt_motionplot->add_prg_vec(&v);
-}
-*/
-
-/*******************************************************/
 void cncglobals::show_params( void )
 {
     std::cout <<"\n\n";
@@ -499,6 +482,9 @@ void cncglobals::load_cfg_file( void )
                         }
 
                         /**************************************/ 
+                        /**************************************/ 
+                        //MOTION PATH - WIP 
+
                         //keep track of the polygon index - open a new poly  
                         if (tokenized.at(0).find("op_polygon")!= std::string::npos)
                         {
@@ -508,20 +494,21 @@ void cncglobals::load_cfg_file( void )
                                 std::cout << "load_cfg_file - debug - opening new polygon load \n";                         
                                 active_polygon_load=true;
                                 
-                                //----
+
+                                /*********/ 
                                 //DEBUG - still figuring this out 
                                 // create a new motion_idx object for each polygon 
 
                                 //DEBUG check for existing and append number to name if exists 
                                 //DEBUG type is optional?
                                 pt_motionplot->add_motion(tokenized.at(1), tokenized.at(2), 0, 0, 0 );
-                                //----
+                                /*********/ 
 
 
                             };
                         } 
 
-                        /**************************************/                         
+                        /*********/                         
                         //keep track of the polygon index - close a new poly  
                         if (tokenized.at(0).find("end_polygon")!= std::string::npos)
                         {   
@@ -544,7 +531,7 @@ void cncglobals::load_cfg_file( void )
                             };
                         } 
                         
-                        /**************************************/  
+                        /*********/  
                         if(active_polygon_load)
                         { 
                             // LOAD 3D VECTOR (3 floats for a vector display)
@@ -573,6 +560,11 @@ void cncglobals::load_cfg_file( void )
                                 }                            
                             }//load a 3D vector 
                         }//active polygon load 
+
+                        //END MOTION PATH 
+                        /**************************************/ 
+                        /**************************************/ 
+
 
                         //***************************************/ 
                         //** MACHINE HARDWARE SETUP ************//

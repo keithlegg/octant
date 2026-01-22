@@ -215,6 +215,10 @@ void cnc_plot::add_prg_vec(Vector3* nv)
 
 /******************************************/
 /******************************************/
+/*
+
+*/
+
 void cnc_plot::add_motion(std::string name, 
                           std::string type, 
                           uint prog_id,
@@ -279,7 +283,8 @@ void cnc_plot::show_path_info(void)
 
 void cnc_plot::show_pt_buf_info(void)
 {
-    std::cout << "\n #"  << num_plys              <<"   motion path   \n"; 
+    std::cout << "\n #"  << "foo"                 <<"   motion path   \n"; 
+    std::cout << "\n #"  << num_plys              <<"   path polygons \n"; 
     std::cout << "  -----------\n"; 
     std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs     \n";   
     std::cout << " #"  << program_vecs.size()     <<"   program vecs  \n";  
