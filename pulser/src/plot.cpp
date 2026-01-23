@@ -192,35 +192,37 @@ void cnc_plot::timer_init(void)
 
 
 /******************************************/
-/*
-
-    program_vecs     = main part of toolpath construction 
-    tp_idxs          = index to progvectors , per polygon basis - (like faces in .OBJ file)
-
-    loaded_file_vecs = buffer for file loading only 
+/* 
 
 */
-
 void cnc_plot::add_prg_vec(Vector3* nv)
 {
+    std::cout << "adding program vec \n";
+
     program_vecs.push_back(*nv);
 
     //add to display buffer 
-    #if DO_BUILD_GUI == true
-        add_vec_lbuf1(nv); 
-    #endif
+    // //DEBUG need to move this to  : post- dynamic toolpath build
+    // #if DO_BUILD_GUI == true
+    //     add_vec_lbuf1(nv); 
+    // #endif
 
 }
+ 
 
 /******************************************/
 void cnc_plot::add_file_vec(Vector3* nv)
 {
+   std::cout << "adding file vec \n";
+    
    loaded_file_vecs.push_back(*nv);
 }
 
 /******************************************/
 void cnc_plot::add_rapid_vec(Vector3* nv)
 {
+   std::cout << "adding rapid vec \n";
+
    rapidmove_vecs.push_back(*nv);
 }
 
@@ -335,7 +337,7 @@ void cnc_plot::show_path_info(void)
 
 void cnc_plot::show_path(void)
 {
-
+   
     std::cout << "\n #"  << num_motion_ids        <<"   motion path   \n"; 
     std::cout << "\n #"  << num_plys              <<"   path polygons \n"; 
     std::cout << "  -----------\n"; 
@@ -347,7 +349,7 @@ void cnc_plot::show_path(void)
     #if DO_BUILD_GUI == true    
         std::cout << " #"  << linebuffer1.size()  <<"   render1 vecs \n";   
         std::cout << " #"  << linebuffer2.size()  <<"   render2 vecs \n"; 
-    #endif    
+    #endif   
 
 }
 
@@ -812,14 +814,46 @@ void cnc_plot::update_toolpaths(void)
 
 */
 
-void cnc_plot::add_new_tp_polygon(uint numids)
+
+void cnc_plot::mov_fv_to_pv(void)
 {
-    
-    bool debug = false;
+    bool debug = true;
+
+    // incoming data is in file buffer - copy it to program buffer with index 
+    if (loaded_file_vecs.size()==1)
+    {
+        std::cout << "WARNING mov_fv_to_pv - need at least two points for a line."<<"\n";
+    }   
+
+    if (loaded_file_vecs.size()>1)
+    {
+        for (uint p=0;p<loaded_file_vecs.size();p++)
+        {   
+            Vector3 tmpv = loaded_file_vecs.at(p);
+            if(debug)
+            {
+                std::cout << "mov_fv_to_pv file vec data "<< tmpv.x << " "<< tmpv.y << " "<< tmpv.z << "\n";
+            }
+            add_prg_vec(&tmpv);
+        }
+    }
+
+    //clear file buffer so we can load more 
+    loaded_file_vecs.clear();
+
+}
+
+
+void cnc_plot::add_prgvec_ply_tp(void)
+{
+    /*
+    bool debug = true;
+
+    //loaded_file_vecs.size(
 
     if(debug)
     {
-        std::cout << "add ply cont called # "<< num_plys  << " "<<  numids << "\n";
+        std::cout << "add_prgvec_ply_tp called # "<< num_plys  << " "<<  numids << "\n";
     }
   
     //auto increment the indices if data already loaded
@@ -827,7 +861,7 @@ void cnc_plot::add_new_tp_polygon(uint numids)
 
     if(debug)
     {
-        std::cout << "add ply reindex "<< num_prg_exist << "\n";
+        std::cout << "add_prgvec_ply_tp reindex "<< num_prg_exist << "\n";
     }
 
     //dynamically add more indices 
@@ -837,36 +871,10 @@ void cnc_plot::add_new_tp_polygon(uint numids)
         tp_idxs[num_plys].push_back( (num_prg_exist+i) );
     }
 
-    // incoming data is in file buffer - copy it to program buffer with index 
-    if (loaded_file_vecs.size()==1)
-    {
-        std::cout << "WARNING add_new_tp_polygon - need at least two points for a line."<<"\n";
-    }   
 
-    if (loaded_file_vecs.size()>1)
-    {
-        for (uint p=0;p<loaded_file_vecs.size();p++)
-        {   
-            if(debug)
-            {
-                Vector3 foo = loaded_file_vecs.at(p);
-                std::cout << "ADDING "<< foo.x << " "<< foo.y << " "<< foo.z << "\n";
-            }
-
-            //add to program_vecs (toolpath) 
-            add_prg_vec(&loaded_file_vecs.at(p));
-            
-            //add to display buffer 
-            //#if DO_BUILD_GUI == true
-            //    add_vec_lbuf1(&loaded_file_vecs.at(p)); 
-            //#endif
-        }
-    }
-
-    //clear file buffer so we can load more 
-    loaded_file_vecs.clear();
 
     num_plys++;
+    */
 
 }
 

@@ -157,24 +157,27 @@ class cnc_plot
 
         //-----------  
         // motion interface 
-
+        
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
         void add_rapid_vec(Vector3* nv);
 
+        //this gets called post file load - but its not done  
+        void loadpath( std::vector<Vector3>* pt_drawvecs);   
+        void mov_fv_to_pv(void); // move file vec to program vec , clear file vec
+
+
         void add_motion(std::string name, std::string type, 
                         uint prog_id, uint rapid_in, uint rapid_out); 
 
-        void add_new_tp_polygon(uint numids);
+        void add_prgvec_ply_tp(void);
+             
+        //debug these are wip 
+        void update_toolpaths(void); //old update tp
+        void bake_motion(void);      //new WIP update tp 
+
 
         void clear_toolpaths(void);
-
-        void loadpath( std::vector<Vector3>* pt_drawvecs);        
-        
-        //debug these are wip 
-        void update_toolpaths(void); 
-        void bake_motion(void);
-
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);
 
@@ -237,15 +240,20 @@ class cnc_plot
 
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
-        std::vector<Vector3> program_vecs;  
-        
+        //std::vector<uint> rpd_idxs[MAX_NUM_PLY]; // index to rapidmove vecs
+
+        //-----   
+        std::vector<Vector3> program_vecs;          
+        //std::vector<uint> prg_idxs[MAX_NUM_PLY]; // index to program vecs
+
         //-----     
         uint num_motion_ids;
         std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
 
-        //-----         
+        //-----    
+        //toolpaths dont need to be indexed , but I did anyway for.. reasons      
         std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
-        std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpaths
+        std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpath vecs
  
         //-----
         // these get copied to program_vecs and linebuffer1 vecs (for display)

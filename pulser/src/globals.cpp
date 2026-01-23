@@ -515,14 +515,15 @@ void cncglobals::load_cfg_file( void )
                             {
                                 std::cout << "load_cfg_file - error - polygon load already closed. \n";
                             }else{
-                                if(local_vec_idx==0)
+                                if( pt_motionplot->loaded_file_vecs.size()==0 )
                                 {
                                     std::cout << "load_cfg_file - NO DATA TO LOAD - SKIPPING " <<"\n"; 
                                 }else{                          
                                     std::cout << "load_cfg_file - adding new polygon  " << "\n"; 
+                                   
+                                    pt_motionplot->mov_fv_to_pv();
+                                    //pt_motionplot->add_prgvec_ply_tp();
 
-                                    pt_motionplot->add_new_tp_polygon(local_vec_idx);
-                                    local_vec_idx = 0;
                                     
                                 }//if data to load 
 
@@ -547,10 +548,8 @@ void cncglobals::load_cfg_file( void )
                                     c3 = std::stof(tokenized.at(3));
                                     
                                     Vector3 v = Vector3(c1,c2,c3); 
-                                    //std::cout << "adding polygon ct "<< ply_count << " vec idx " << local_vec_idx << "\n"; 
-
                                     pt_motionplot->add_file_vec(&v);
-                                    local_vec_idx++;
+
 
                                 } catch (const std::invalid_argument& e) {  
                                     //std::cerr << "Error: " << e.what() << std::endl; // Handling the error

@@ -127,8 +127,8 @@ void load_py_obj(std::string objfilepath)
         pt_motionplot->add_file_vec(&pt1);
         pt_motionplot->add_file_vec(&pt2);
 
-        //DEBUG - NEED TO FIX add_new_tp_polygon()
-        //pt_motionplot->add_new_tp_polygon(pcount,2);
+        //DEBUG - NEED TO FIX add_prgvec_ply_tp()
+        //pt_motionplot->add_prgvec_ply_tp(pcount,2);
         //pcount++;
     }
 

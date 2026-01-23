@@ -1463,12 +1463,8 @@ void render_loop(void)
         //----
         //Specifies the primitive or primitives that will be created from vertices presented between glBegin and the subsequent glEnd. 
         //Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON. 
-
-        //NEW CODE - USED INDEXED LOOKUP 
+        
        
-
-        // disp_ply_solo  
-        // disp_ply_solo_id = pidx;
         if (disp_ply_solo)
         {
   
@@ -1477,8 +1473,8 @@ void render_loop(void)
                 glBegin(GL_LINES);
                     uint si= pt_motionplot->tp_idxs[disp_ply_solo_id][ii-1];
                     uint ei= pt_motionplot->tp_idxs[disp_ply_solo_id][ii];
-                    sv  = pt_motionplot->program_vecs[si];
-                    ev  = pt_motionplot->program_vecs[ei];
+                    sv  = pt_motionplot->toolpath_vecs[si];
+                    ev  = pt_motionplot->toolpath_vecs[ei];
                     glColor3f(0,1.,0); //hack for now
                     glVertex3f(sv.x, sv.y, sv.z);
                     glColor3f(1.,0,0); //hack for now
@@ -1496,8 +1492,8 @@ void render_loop(void)
                     glBegin(GL_LINES);
                         uint si= pt_motionplot->tp_idxs[p_i][ii-1];
                         uint ei= pt_motionplot->tp_idxs[p_i][ii];
-                        sv  = pt_motionplot->program_vecs[si];
-                        ev  = pt_motionplot->program_vecs[ei];
+                        sv  = pt_motionplot->toolpath_vecs[si];
+                        ev  = pt_motionplot->toolpath_vecs[ei];
                         //rgb = linebuffer1_rgb[p_i];            
                         glColor3f(0,1.,0); //hack for now
                         glVertex3f(sv.x, sv.y, sv.z);
@@ -1508,7 +1504,7 @@ void render_loop(void)
             }//iterate all polygons
            
         }//display all polygons 
-     
+         
         //----
 
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);

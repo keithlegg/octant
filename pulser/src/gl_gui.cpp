@@ -87,9 +87,9 @@ void start_gui(){
 
     // we should now have display vectors to process, 
     // calcluate the 3D quill path from them   
-    pt_motionplot->loadpath(&linebuffer1);
-    pt_motionplot->retract_height = cg.retract_height;
-    pt_motionplot->work_height    = cg.work_height;
+    // pt_motionplot->loadpath(&linebuffer1);
+    // pt_motionplot->retract_height = cg.retract_height;
+    // pt_motionplot->work_height    = cg.work_height;
 
     //------------
     //warnings();
