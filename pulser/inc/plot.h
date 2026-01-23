@@ -115,7 +115,8 @@ class cnc_plot
         {
             timediv    = 1; //speed == simtime divisions == 1 second/divs
             vec_idx    = 0;
-            num_plys   = 0;
+            num_prg_plys   = 0;
+            num_rpd_plys   = 0;
 
             running    = false;
             finished   = true;
@@ -203,7 +204,8 @@ class cnc_plot
         // keep track of number of polygons 
         // a polygon is an indexed array of path vectors 
         // similar to an .OBJ file face, etc
-        uint num_plys;
+        uint num_prg_plys;
+        uint num_rpd_plys;
 
         // index to the current vector processed while running 
         uint vec_idx;
@@ -240,11 +242,11 @@ class cnc_plot
 
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
-        //std::vector<uint> rpd_idxs[MAX_NUM_PLY]; // index to rapidmove vecs
+        std::vector<uint> rpd_idxs[MAX_NUM_PLY]; // index to rapidmove vecs
 
         //-----   
         std::vector<Vector3> program_vecs;          
-        //std::vector<uint> prg_idxs[MAX_NUM_PLY]; // index to program vecs
+        std::vector<uint> prg_idxs[MAX_NUM_PLY]; // index to program vecs
 
         //-----     
         uint num_motion_ids;

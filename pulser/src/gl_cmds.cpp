@@ -175,7 +175,8 @@ void unload_vec(void)
     pt_motionplot->rapidmove_vecs.clear();
     pt_motionplot->program_vecs.clear();
     
-    pt_motionplot->num_plys = 0;
+    pt_motionplot->num_prg_plys = 0;
+    pt_motionplot->num_rpd_plys = 0;
 
     for(uint x=0;x<MAX_NUM_PLY;x++)
     {

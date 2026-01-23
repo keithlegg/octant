@@ -1485,7 +1485,7 @@ void render_loop(void)
         }//single poly display 
         else
         {
-            for (uint p_i=0;p_i<pt_motionplot->num_plys;p_i++)
+            for (uint p_i=0;p_i<pt_motionplot->num_prg_plys;p_i++)
             {   
                 for (uint ii=1;ii<pt_motionplot->tp_idxs[p_i].size();ii++)
                 {

@@ -321,8 +321,8 @@ void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 //show pathinfo 
 void cnc_plot::show_path_info(void)
 {
-    std::cout << "pathinfo: num path polygons: "<< num_plys << "\n";
-    for (uint pi=0;pi<num_plys;pi++)
+    std::cout << "pathinfo: num path polygons: "<< num_prg_plys << "\n";
+    for (uint pi=0;pi<num_prg_plys;pi++)
     {
         std::cout << "poly "<<pi <<" num pts :"<< tp_idxs[0].size() << "\n";        
     }    
@@ -339,7 +339,9 @@ void cnc_plot::show_path(void)
 {
    
     std::cout << "\n #"  << num_motion_ids        <<"   motion path   \n"; 
-    std::cout << "\n #"  << num_plys              <<"   path polygons \n"; 
+    std::cout << "\n #"  << num_prg_plys          <<"   path prg polys \n"; 
+    std::cout << "\n #"  << num_rpd_plys          <<"   path rpd polys \n";
+
     std::cout << "  -----------\n"; 
     std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs     \n";   
     std::cout << " #"  << program_vecs.size()     <<"   program vecs  \n";  
@@ -356,7 +358,7 @@ void cnc_plot::show_path(void)
 /******************************************/
 void cnc_plot::showpthids(void)
 {
-    for(uint x=0;x<num_plys;x++)
+    for(uint x=0;x<num_prg_plys;x++)
     {
         std::cout << " ply id:" << x <<" size:"<< tp_idxs[x].size() << " \n";        
     }
@@ -368,12 +370,12 @@ void cnc_plot::showply(uint pidx)
 {
     std::cout << "------------------------\n";
 
-    if(pidx>num_plys || pidx<0)
+    if(pidx>num_prg_plys || pidx<0)
     {
         std::cout << " # error polygon index out of range \n";
     }
 
-    if(pidx>=0 && pidx<=num_plys)
+    if(pidx>=0 && pidx<=num_prg_plys)
     {
 
         for(uint x=0;x<tp_idxs[pidx].size();x++)
@@ -635,7 +637,7 @@ void cnc_plot::bake_motion(void)
     
     if(debug)
     {
-        std::cout << " num polys " << num_plys << "\n"; 
+        std::cout << " num polys " << num_prg_plys << "\n"; 
     } 
     
     if(finished==true && running==false)
@@ -650,7 +652,7 @@ void cnc_plot::bake_motion(void)
         if(program_vecs.size()>0)
         {
             //iterate all polygons     
-            for (uint pl=0;pl<num_plys;pl++)
+            for (uint pl=0;pl<num_prg_plys;pl++)
             {
 
                 //add each vec3 for the polygon 
@@ -700,7 +702,7 @@ void cnc_plot::update_toolpaths(void)
     
     if(debug)
     {
-        std::cout << " num polys " << num_plys << "\n"; 
+        std::cout << " num polys " << num_prg_plys << "\n"; 
     } 
     
     if(finished==true && running==false)
@@ -740,7 +742,7 @@ void cnc_plot::update_toolpaths(void)
             //toolpath_vecs.push_back(up_vec);
 
             //iterate all polygons     
-            for (uint pl=0;pl<num_plys;pl++)
+            for (uint pl=0;pl<num_prg_plys;pl++)
             {
                 //Vector3 this_st = program_vecs[tp_idxs[pl][0]];
                 //Vector3 hover = Vector3(this_st.x, retract_height, this_st.z);
@@ -846,18 +848,28 @@ void cnc_plot::mov_fv_to_pv(void)
 
 void cnc_plot::add_prgvec_ply_tp(void)
 {
-    /*
+   
     bool debug = true;
+    
+     
+    //auto increment the indices if data already loaded
+    uint num_prg_exist = program_vecs.size();
+    uint num_tp_exist  = toolpath_vecs.size();
+
 
     //loaded_file_vecs.size(
 
     if(debug)
     {
-        std::cout << "add_prgvec_ply_tp called # "<< num_plys  << " "<<  numids << "\n";
+        std::cout << "-------------------------------------\n";
+        std::cout << "add_prgvec_ply_tp called # \n";
+        std::cout << "num plys existing:          " << num_prg_plys  << "\n";
+        std::cout << "num program vecs existing : " << num_prg_exist  << "\n";        
+        std::cout << "num toolpath vecs existing: " << num_tp_exist  << "\n"; 
+
     }
   
-    //auto increment the indices if data already loaded
-    int num_prg_exist = program_vecs.size();
+    /*
 
     if(debug)
     {
@@ -868,13 +880,12 @@ void cnc_plot::add_prgvec_ply_tp(void)
     //we just iterate a sequence of ids up to N verteces
     for (uint i=0;i<numids;i++)
     {   
-        tp_idxs[num_plys].push_back( (num_prg_exist+i) );
+        tp_idxs[num_prg_plys].push_back( (num_prg_exist+i) );
     }
-
-
-
-    num_plys++;
     */
+
+    num_prg_plys++;
+    
 
 }
 

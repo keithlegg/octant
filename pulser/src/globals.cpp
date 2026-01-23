@@ -522,7 +522,7 @@ void cncglobals::load_cfg_file( void )
                                     std::cout << "load_cfg_file - adding new polygon  " << "\n"; 
                                    
                                     pt_motionplot->mov_fv_to_pv();
-                                    //pt_motionplot->add_prgvec_ply_tp();
+                                    pt_motionplot->add_prgvec_ply_tp();
 
                                     
                                 }//if data to load 
