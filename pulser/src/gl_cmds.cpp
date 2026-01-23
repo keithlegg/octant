@@ -127,8 +127,9 @@ void load_py_obj(std::string objfilepath)
         pt_motionplot->add_file_vec(&pt1);
         pt_motionplot->add_file_vec(&pt2);
 
-        pt_motionplot->add_new_tp_polygon(pcount,2);
-        pcount++;
+        //DEBUG - NEED TO FIX add_new_tp_polygon()
+        //pt_motionplot->add_new_tp_polygon(pcount,2);
+        //pcount++;
     }
 
  
@@ -150,7 +151,7 @@ void reload_obj(void)
 }
 
 /***************************************/
-void reload_vec(void)
+void reload_paths(void)
 {
    std::cout << "# reloading toolpaths \n";     
    
@@ -483,7 +484,7 @@ void parse_cmd_text(std::string *buffer)
 
         if(a2=="paths"||a2=="path"||a2=="vec")
         {    
-            reload_vec();
+            reload_paths();
         }          
     }
 

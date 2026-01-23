@@ -486,9 +486,10 @@ void cncglobals::load_cfg_file( void )
                         //MOTION PATH - ( WIP )
 
                         //keep track of the polygon index - open a new poly  
-                        if (tokenized.at(0).find("op_polygon")!= std::string::npos)
+                        if (tokenized.at(0).find("new_polygon")!= std::string::npos)
                         {
-                            if(active_polygon_load==true){
+                            if(active_polygon_load==true)
+                            {
                                 std::cout << "load_cfg_file - error - polygon load already open \n";
                             }else{   
                                 std::cout << "load_cfg_file - debug - opening new polygon load \n";                         
@@ -518,11 +519,11 @@ void cncglobals::load_cfg_file( void )
                                 {
                                     std::cout << "load_cfg_file - NO DATA TO LOAD - SKIPPING " <<"\n"; 
                                 }else{                          
-                                    std::cout << "load_cfg_file - adding new polygon  " << ply_count <<"\n"; 
+                                    std::cout << "load_cfg_file - adding new polygon  " << "\n"; 
 
-                                    pt_motionplot->add_new_tp_polygon(ply_count, local_vec_idx);
+                                    pt_motionplot->add_new_tp_polygon(local_vec_idx);
                                     local_vec_idx = 0;
-                                    ply_count++;
+                                    
                                 }//if data to load 
 
                                 active_polygon_load=false;
@@ -534,7 +535,7 @@ void cncglobals::load_cfg_file( void )
                         { 
                             // LOAD 3D VECTOR (3 floats for a vector display)
                             // load a 3d or 2d object to display as vector lines
-                            if (tokenized.at(0).find("op_toolpath")!= std::string::npos)
+                            if (tokenized.at(0).find("new_ply_vtx")!= std::string::npos)
                             {   
                                 float c1,c2,c3;
                                 //DEBUG - file loader counts blank spaces - need to fix

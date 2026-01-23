@@ -53,8 +53,6 @@ class cncglobals
             GLOBAL_DEBUG           = true;
             ENABLE_LIMIT_SWITCHES  = false;
             ENABLE_MOTOR_DRIVE     = 1;
-
-            ply_count              = 0; 
             active_polygon_load    = false; 
              
             glob_simtime_period    = 1000;
@@ -72,8 +70,7 @@ class cncglobals
         };
 
         ~cncglobals(){};
-        
-        uint ply_count;
+
         uint ENABLE_MOTOR_DRIVE;
 
         bool active_polygon_load;

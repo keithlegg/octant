@@ -98,7 +98,7 @@ void load_line_obj(std::string objfilepath)
         std::cout << pt_obj2d_loader->num_lines << "\n";
     }
 
-    uint pcount = 0;
+    //uint pcount = 0;
     for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
     {
         int pidx1 = pt_obj2d_loader->lines[x][0];
@@ -111,8 +111,9 @@ void load_line_obj(std::string objfilepath)
         pt_motionplot->add_file_vec(&pt1);
         pt_motionplot->add_file_vec(&pt2);
 
-        pt_motionplot->add_new_tp_polygon(pcount,2);
-        pcount++;
+        //DEBUG need to fix add_new_tp_polygon() 
+        //pt_motionplot->add_new_tp_polygon(pcount,2);
+        //pcount++;
     }
 
 
@@ -166,8 +167,7 @@ void load_locs_obj(std::string objfilepath)
 
     // I dont think this is needed, but hey
     delete pt_obj2d_loader;
-
-    pt_motionplot->update_toolpaths();
+    //pt_motionplot->update_toolpaths();
 }
 
 

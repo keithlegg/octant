@@ -165,11 +165,15 @@ class cnc_plot
         void add_motion(std::string name, std::string type, 
                         uint prog_id, uint rapid_in, uint rapid_out); 
 
-        void add_new_tp_polygon(int numply, uint numids);
+        void add_new_tp_polygon(uint numids);
+
         void clear_toolpaths(void);
 
         void loadpath( std::vector<Vector3>* pt_drawvecs);        
-        void update_toolpaths(void);
+        
+        //debug these are wip 
+        void update_toolpaths(void); 
+        void bake_motion(void);
 
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);
@@ -194,7 +198,7 @@ class cnc_plot
         double localsimtime;
 
         // keep track of number of polygons 
-        // a ploygon is an indexed array of path vectors 
+        // a polygon is an indexed array of path vectors 
         // similar to an .OBJ file face, etc
         uint num_plys;
 

@@ -620,8 +620,66 @@ void cnc_plot::update_sim(void)
 
 /******************************************/
 /*
+    derived from update_toolpaths 
+    this is all experimental 
+*/
 
-    This rebuilds the path that moves the head. 
+
+void cnc_plot::bake_motion(void)
+{
+
+    
+    bool debug = false;
+    
+    if(debug)
+    {
+        std::cout << " num polys " << num_plys << "\n"; 
+    } 
+    
+    if(finished==true && running==false)
+    {
+        #if DO_BUILD_GUI == true
+            clear_linebuffers(); //clear display geom 
+        #endif
+        //clear the old data out 
+        toolpath_vecs.clear();
+
+        //---- 
+        if(program_vecs.size()>0)
+        {
+            //iterate all polygons     
+            for (uint pl=0;pl<num_plys;pl++)
+            {
+
+                //add each vec3 for the polygon 
+                for (uint vid=0;vid<tp_idxs[pl].size();vid++)
+                {
+                    Vector3 seg = program_vecs[tp_idxs[pl][vid]];
+                    
+                    if(debug)
+                    {
+                        std::cout << " update debug " << vid << " "<< seg.x << "\n";
+                    }
+
+                    toolpath_vecs.push_back(seg);  
+
+                    #if DO_BUILD_GUI == true
+                        add_vec_lbuf2(&seg);
+                    #endif 
+
+                };
+
+            }//iterate polygons 
+
+        }//if data exists
+      
+    }//if program is NOT running or paused
+    
+}
+
+/*
+
+    This rebuilds the mian tool path (program to run)
     Can be setup and called as much as needed.
 
 
@@ -754,14 +812,14 @@ void cnc_plot::update_toolpaths(void)
 
 */
 
-void cnc_plot::add_new_tp_polygon(int numply, uint numids)
+void cnc_plot::add_new_tp_polygon(uint numids)
 {
     
     bool debug = false;
 
     if(debug)
     {
-        std::cout << "add ply cont called # "<< numply  << " "<<  numids << "\n";
+        std::cout << "add ply cont called # "<< num_plys  << " "<<  numids << "\n";
     }
   
     //auto increment the indices if data already loaded
@@ -776,7 +834,7 @@ void cnc_plot::add_new_tp_polygon(int numply, uint numids)
     //we just iterate a sequence of ids up to N verteces
     for (uint i=0;i<numids;i++)
     {   
-        tp_idxs[numply].push_back( (num_prg_exist+i) );
+        tp_idxs[num_plys].push_back( (num_prg_exist+i) );
     }
 
     // incoming data is in file buffer - copy it to program buffer with index 
