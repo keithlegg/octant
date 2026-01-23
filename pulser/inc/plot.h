@@ -131,10 +131,9 @@ class cnc_plot
         
         ~cnc_plot(){};
 
-        //void old_rapid_move(void);
-        void rapid_move(void);
-
         //-- 
+        //debugging tools 
+
         void show_mpath(void);
         void show_mpath_info(void);
 
@@ -147,36 +146,30 @@ class cnc_plot
         void show_pt(void);
 
         //-- 
+        // simulation control 
 
         void pause(void);
         void stop(void);
         void reset(void);        
-        //void clear_sim(void);
-
-        //-- 
         void run_sim(void);
         void update_sim(void);
         void timer_init(void);
 
-        //----------- 
-        void add_prg_vec(Vector3* nv); 
-        void add_file_vec(Vector3* nv);
-
-
-
-        void add_new_tp_polygon(int numply, uint numids);
-        void clear_toolpaths(void);
-        
-        void update_toolpaths(void);
-        void loadpath( std::vector<Vector3>* pt_drawvecs);
-
-        void process_vec(uint vec_idx);
-
         //-----------  
         // motion interface 
 
+        void add_prg_vec(Vector3* nv); 
+        void add_file_vec(Vector3* nv);
+        void add_rapid_vec(Vector3* nv);
+
         void add_motion(std::string name, std::string type, 
                         uint prog_id, uint rapid_in, uint rapid_out); 
+
+        void add_new_tp_polygon(int numply, uint numids);
+        void clear_toolpaths(void);
+
+        void loadpath( std::vector<Vector3>* pt_drawvecs);        
+        void update_toolpaths(void);
 
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);
@@ -184,7 +177,9 @@ class cnc_plot
         // end motion interface 
         //-----------  
 
-        //-----------         
+   
+        void process_vec(uint vec_idx);
+
         void calc_3d_pulses(Vector3 fr_pt, 
                             Vector3 to_pt,
                             uint numdivx,

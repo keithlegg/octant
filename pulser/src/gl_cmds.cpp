@@ -660,12 +660,19 @@ void parse_cmd_text(std::string *buffer)
             v11 = std::stoi(a2);
             v12 = std::stoi(a3);
             v13 = std::stoi(a4);
+            
+            Vector3 dest = Vector3(v11, v12, v13); 
+            pt_motionplot->add_rapid_vec( &pt_motionplot->quill_pos );
+            pt_motionplot->add_rapid_vec( &dest );
+
+            uint rapid_idx = pt_motionplot->rapidmove_vecs.size();
+
 
             // add vector (quill) @ retractheight  
             // add vector (Vector3) @ retractheight  
             
             // void add_motion( name, type, prog_id, rapid_in, rapid_out);
-            pt_motionplot->add_motion("mh_cmd", "rapid", v11, v12, v13 );
+            pt_motionplot->add_motion("mh_cmd", "rapid", v11, rapid_idx, v13 );
 
 
         }

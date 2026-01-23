@@ -212,6 +212,18 @@ void cnc_plot::add_prg_vec(Vector3* nv)
 
 }
 
+/******************************************/
+void cnc_plot::add_file_vec(Vector3* nv)
+{
+   loaded_file_vecs.push_back(*nv);
+}
+
+/******************************************/
+void cnc_plot::add_rapid_vec(Vector3* nv)
+{
+   rapidmove_vecs.push_back(*nv);
+}
+
 
 /******************************************/
 /******************************************/
@@ -293,10 +305,6 @@ void cnc_plot::show_mpath_info(void)
 
 /******************************************/
 /******************************************/
-void cnc_plot::add_file_vec(Vector3* nv)
-{
-   loaded_file_vecs.push_back(*nv);
-}
 
 /******************************************/
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
@@ -608,13 +616,6 @@ void cnc_plot::update_sim(void)
 
     }//if program is running  
 }
-
-/******************************************/
-// //clear everything 
-// void cnc_plot::clear_sim(void)
-// {
-//     //std::vector<Vector3> pulsetrain;
-// }
 
 
 /******************************************/
