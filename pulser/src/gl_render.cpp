@@ -1464,10 +1464,12 @@ void render_loop(void)
         //Specifies the primitive or primitives that will be created from vertices presented between glBegin and the subsequent glEnd. 
         //Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON. 
         
-       
+        /***********/
+        //turning off motion path rendering until I figure it out 
+             
         if (disp_ply_solo)
         {
-  
+            /*
             for (uint ii=1;ii<pt_motionplot->tp_idxs[disp_ply_solo_id].size();ii++)
             {
                 glBegin(GL_LINES);
@@ -1481,17 +1483,19 @@ void render_loop(void)
                     glVertex3f(ev.x, ev.y, ev.z);
                 glEnd();
            }//iterate all ids in single polygon
-                   
+           */         
         }//single poly display 
         else
         {
-            for (uint p_i=0;p_i<pt_motionplot->num_prg_plys;p_i++)
-            {   
-                for (uint ii=1;ii<pt_motionplot->tp_idxs[p_i].size();ii++)
+            //toolpath is indexed - doest explicitly need to be - but this way 
+            //we can just clone progam vectors and it may offer more flexibilty in the future 
+            for (uint i=1;i<pt_motionplot->num_toolpath_ids;i++)
+            {
+                for (uint ii=1;ii<pt_motionplot->tp_idxs[i].size();ii++)
                 {
                     glBegin(GL_LINES);
-                        uint si= pt_motionplot->tp_idxs[p_i][ii-1];
-                        uint ei= pt_motionplot->tp_idxs[p_i][ii];
+                        uint si= pt_motionplot->tp_idxs[0][ii-1];
+                        uint ei= pt_motionplot->tp_idxs[0][ii];
                         sv  = pt_motionplot->toolpath_vecs[si];
                         ev  = pt_motionplot->toolpath_vecs[ei];
                         //rgb = linebuffer1_rgb[p_i];            
@@ -1501,12 +1505,12 @@ void render_loop(void)
                         glVertex3f(ev.x, ev.y, ev.z);
                     glEnd();
                }//iterate all ids in each polygon
-            }//iterate all polygons
-           
+           }
         }//display all polygons 
-         
-        //----
+      
 
+        /***********/
+  
         glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
 

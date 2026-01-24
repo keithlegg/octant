@@ -300,7 +300,6 @@ void cncglobals::load_objects(void)
         std::cout << "## DEBUG load_objfile resetting obj_file internals \n";
         pt_model_buffer->reset();
 
-
         for( uint x=0;x<obj_filepaths.size();x++)
         {
             //std::cout << "#### load_objects loading  " << (*this).obj_filepaths[x] <<"\n";
@@ -313,7 +312,6 @@ void cncglobals::load_objects(void)
             pt_model_buffer->calc_normals();
             pt_model_buffer->bbox3d();
             pt_model_buffer->bbox3d_pts();
-
 
             //DEBUG - this assumes the last obj loaded (or just 1)
             active_filepath = obj_filepaths[x];
@@ -520,9 +518,11 @@ void cncglobals::load_cfg_file( void )
                                     std::cout << "load_cfg_file - NO DATA TO LOAD - SKIPPING " <<"\n"; 
                                 }else{                          
                                     std::cout << "load_cfg_file - adding new polygon  " << "\n"; 
-                                   
-                                    pt_motionplot->mov_fv_to_pv();
-                                    pt_motionplot->add_prgvec_ply_tp();
+
+                                    pt_motionplot->add_prgvec_ply(); 
+                                    
+                                    //DEBUG this is a stub 
+                                    pt_motionplot->copy_prg_to_toolpath(); //hack to just render something now 
 
                                     
                                 }//if data to load 
@@ -549,8 +549,7 @@ void cncglobals::load_cfg_file( void )
                                     
                                     Vector3 v = Vector3(c1,c2,c3); 
                                     pt_motionplot->add_file_vec(&v);
-
-
+ 
                                 } catch (const std::invalid_argument& e) {  
                                     //std::cerr << "Error: " << e.what() << std::endl; // Handling the error
                                 } catch (...) { // Catch-all for any other unexpected exceptions

@@ -159,19 +159,21 @@ class cnc_plot
         //-----------  
         // motion interface 
         
+        void copy_prg_to_toolpath(void);
+
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
         void add_rapid_vec(Vector3* nv);
 
         //this gets called post file load - but its not done  
         void loadpath( std::vector<Vector3>* pt_drawvecs);   
-        void mov_fv_to_pv(void); // move file vec to program vec , clear file vec
+        //void mov_fv_to_pv(void); // move file vec to program vec , clear file vec
 
 
         void add_motion(std::string name, std::string type, 
                         uint prog_id, uint rapid_in, uint rapid_out); 
 
-        void add_prgvec_ply_tp(void);
+        void add_prgvec_ply(void);
              
         //debug these are wip 
         void update_toolpaths(void); //old update tp
@@ -201,12 +203,6 @@ class cnc_plot
         
         double localsimtime;
 
-        // keep track of number of polygons 
-        // a polygon is an indexed array of path vectors 
-        // similar to an .OBJ file face, etc
-        uint num_prg_plys;
-        uint num_rpd_plys;
-
         // index to the current vector processed while running 
         uint vec_idx;
         double timediv;
@@ -233,6 +229,7 @@ class cnc_plot
         float work_height;
 
         //-----
+
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
         //pulse train indeces (experiment not used?) 
@@ -243,20 +240,26 @@ class cnc_plot
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<uint> rpd_idxs[MAX_NUM_PLY]; // index to rapidmove vecs
+        uint num_rpd_plys;
 
         //-----   
         std::vector<Vector3> program_vecs;          
         std::vector<uint> prg_idxs[MAX_NUM_PLY]; // index to program vecs
+        uint num_prg_plys;
+
 
         //-----     
         uint num_motion_ids;
         std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
 
         //-----    
-        //toolpaths dont need to be indexed , but I did anyway for.. reasons      
+        // toolpaths probably dont need to be indexed , but I did anyway 
+        // I mistakenly wrote it in so I left it     
         std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
         std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpath vecs
- 
+        uint num_toolpath_ids;
+
+
         //-----
         // these get copied to program_vecs and linebuffer1 vecs (for display)
         std::vector<Vector3> loaded_file_vecs; //storage for vectors defined in cfg file

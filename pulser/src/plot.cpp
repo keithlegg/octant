@@ -338,9 +338,9 @@ void cnc_plot::show_path_info(void)
 void cnc_plot::show_path(void)
 {
    
-    std::cout << "\n #"  << num_motion_ids        <<"   motion path   \n"; 
-    std::cout << "\n #"  << num_prg_plys          <<"   path prg polys \n"; 
-    std::cout << "\n #"  << num_rpd_plys          <<"   path rpd polys \n";
+    std::cout << " #"  << num_motion_ids        <<"   motion path obj(s) \n"; 
+    std::cout << " #"  << num_prg_plys          <<"   path prg polys     \n"; 
+    std::cout << " #"  << num_rpd_plys          <<"   path rpd polys     \n";
 
     std::cout << "  -----------\n"; 
     std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs     \n";   
@@ -797,6 +797,39 @@ void cnc_plot::update_toolpaths(void)
     
 }
 
+/******************************************/
+void cnc_plot::copy_prg_to_toolpath(void)
+{
+   
+    bool debug = true;
+    
+    uint num_prg_exist = program_vecs.size();
+
+    if (num_prg_exist<=1)
+    {
+        std::cout << "copy_prg_to_toolpath: need at least two vectors for a line\n";
+    }
+
+    //------------
+    if (num_prg_exist>1)
+    {   
+        toolpath_vecs = program_vecs;  
+
+        for (uint i=0;i<num_prg_plys;i++)
+        {
+            for (uint ii=0;ii<tp_idxs[i].size();ii++)
+            {
+                prg_idxs[ii] = tp_idxs[ii]; 
+                num_toolpath_ids++;           
+            }
+        }
+    }
+
+    //clear file buffer so we can load more 
+    loaded_file_vecs.clear();
+
+}
+
 
 /******************************************/
 /*
@@ -817,10 +850,15 @@ void cnc_plot::update_toolpaths(void)
 */
 
 
-void cnc_plot::mov_fv_to_pv(void)
+void cnc_plot::add_prgvec_ply(void)
 {
+   
     bool debug = true;
+    
+    uint num_prg_exist = program_vecs.size();
+    uint num_filevecs  = loaded_file_vecs.size();
 
+    //------------
     // incoming data is in file buffer - copy it to program buffer with index 
     if (loaded_file_vecs.size()==1)
     {
@@ -839,53 +877,26 @@ void cnc_plot::mov_fv_to_pv(void)
             add_prg_vec(&tmpv);
         }
     }
-
     //clear file buffer so we can load more 
     loaded_file_vecs.clear();
 
-}
-
-
-void cnc_plot::add_prgvec_ply_tp(void)
-{
-   
-    bool debug = true;
-    
-     
-    //auto increment the indices if data already loaded
-    uint num_prg_exist = program_vecs.size();
-    uint num_tp_exist  = toolpath_vecs.size();
-
-
-    //loaded_file_vecs.size(
-
-    if(debug)
-    {
-        std::cout << "-------------------------------------\n";
-        std::cout << "add_prgvec_ply_tp called # \n";
-        std::cout << "num plys existing:          " << num_prg_plys  << "\n";
-        std::cout << "num program vecs existing : " << num_prg_exist  << "\n";        
-        std::cout << "num toolpath vecs existing: " << num_tp_exist  << "\n"; 
-
-    }
-  
-    /*
-
+    //------------
+ 
     if(debug)
     {
         std::cout << "add_prgvec_ply_tp reindex "<< num_prg_exist << "\n";
     }
 
-    //dynamically add more indices 
-    //we just iterate a sequence of ids up to N verteces
-    for (uint i=0;i<numids;i++)
+ 
+    for (uint i=0;i<num_filevecs;i++)
     {   
-        tp_idxs[num_prg_plys].push_back( (num_prg_exist+i) );
+        prg_idxs[num_prg_plys].push_back( (num_prg_exist+i) );
     }
-    */
-
+  
     num_prg_plys++;
     
+    //num_program_ids
+
 
 }
 
