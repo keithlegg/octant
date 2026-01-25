@@ -1489,15 +1489,14 @@ void render_loop(void)
         {
             //toolpath is indexed - doest explicitly need to be - but this way 
             //we can just clone progam vectors and it may offer more flexibilty in the future 
-            for (uint i=1;i<pt_motionplot->num_toolpath_ids;i++)
+            for (uint i=0;i<pt_motionplot->num_toolpath_ids;i++)
             {
                 for (uint ii=1;ii<pt_motionplot->tp_idxs[i].size();ii++)
                 {
-                    std::cout << "we have data\n";
-                     
+
                     glBegin(GL_LINES);
-                        uint si= pt_motionplot->tp_idxs[0][ii-1];
-                        uint ei= pt_motionplot->tp_idxs[0][ii];
+                        uint si= pt_motionplot->tp_idxs[i][ii-1];
+                        uint ei= pt_motionplot->tp_idxs[i][ii];
                         sv  = pt_motionplot->toolpath_vecs[si];
                         ev  = pt_motionplot->toolpath_vecs[ei];
                         //rgb = linebuffer1_rgb[p_i];            

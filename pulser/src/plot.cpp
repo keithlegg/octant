@@ -799,6 +799,7 @@ void cnc_plot::update_toolpaths(void)
 }
 
 /******************************************/
+//DEBUG - NOT TESTED 
 void cnc_plot::copy_prg_to_toolpath(void)
 {
    
@@ -816,9 +817,18 @@ void cnc_plot::copy_prg_to_toolpath(void)
     {   
         toolpath_vecs = program_vecs;  
 
+        // not sure this works in C++
+        //toolpath_vecs = program_vecs; 
+
+        // do this instead for now   
+        for (uint i=0;i<program_vecs.size();i++)
+        {
+            toolpath_vecs[i]==program_vecs[i];
+        }
+
         for (uint i=0;i<num_prg_plys;i++)
         {
-            for (uint ii=0;ii<tp_idxs[i].size();ii++)
+            for (uint ii=0;ii<prg_idxs[i].size();ii++)
             {
                 tp_idxs[ii] = prg_idxs[ii]; 
                 num_toolpath_ids++;           
