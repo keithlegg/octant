@@ -197,8 +197,6 @@ void cnc_plot::timer_init(void)
 */
 void cnc_plot::add_prg_vec(Vector3* nv)
 {
-    std::cout << "adding program vec \n";
-
     program_vecs.push_back(*nv);
 
     //add to display buffer 
@@ -213,17 +211,28 @@ void cnc_plot::add_prg_vec(Vector3* nv)
 /******************************************/
 void cnc_plot::add_file_vec(Vector3* nv)
 {
-   std::cout << "adding file vec \n";
-    
+
+    bool debug = false;
+   
+    if(debug)
+    {  
+        std::cout << "adding file vec \n";
+    }
+
    loaded_file_vecs.push_back(*nv);
 }
 
 /******************************************/
 void cnc_plot::add_rapid_vec(Vector3* nv)
 {
-   std::cout << "adding rapid vec \n";
+    bool debug = true;
+   
+    if(debug)
+    {  
+       std::cout << "adding rapid vec \n";
+    }
 
-   rapidmove_vecs.push_back(*nv);
+    rapidmove_vecs.push_back(*nv);
 }
 
 
@@ -279,10 +288,36 @@ void cnc_plot::show_mpath(void)
 
         if(debug)
         {
-            std::cout << "  motion idx obj " << motionobj.name     << " " 
-                                             << motionobj.type     << " "
-                                             << motionobj.prog_id  << " "
-                                             << motionobj.rapid_in << "\n";
+            std::cout << "  motion " << mp << " " << motionobj.name     << " " 
+                                     << motionobj.type     << " "
+                                     << motionobj.prog_id  << " "
+                                     << motionobj.rapid_in << " "
+                                     << motionobj.rapid_out << "\n";
+
+            if(motionobj.prog_id)
+            {     
+                  
+                std::vector<uint> myply = prg_idxs[motionobj.prog_id];
+                std::cout << " motion index to prgm polygon of "<< myply.size() << " size\n"; 
+                //std::cout << " prog : obj id " <<  prgid   << "\n";   
+                //std::cout << program_vecs[prgid].x  <<"\n";
+
+            }
+
+            if(motionobj.rapid_in)
+            {     
+                  
+                std::vector<uint> myply = rpd_idxs[motionobj.rapid_in];
+                std::cout << " motion index to rpd in polygon of "<< myply.size() << " size\n"; 
+            }
+
+            if(motionobj.rapid_out)
+            {     
+                  
+                std::vector<uint> myply = rpd_idxs[motionobj.rapid_out];
+                std::cout << " motion index to rpd out polygon of "<< myply.size() << " size\n"; 
+            }
+
         }
 
     }
@@ -864,7 +899,7 @@ void cnc_plot::copy_prg_to_toolpath(void)
 void cnc_plot::add_prgvec_ply(void)
 {
    
-    bool debug = true;
+    bool debug = false;
     
     uint num_prg_exist = program_vecs.size();
     uint num_filevecs  = loaded_file_vecs.size();
