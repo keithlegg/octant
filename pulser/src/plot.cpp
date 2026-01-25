@@ -338,19 +338,20 @@ void cnc_plot::show_path_info(void)
 void cnc_plot::show_path(void)
 {
    
-    std::cout << " #"  << num_motion_ids        <<"   motion path obj(s) \n"; 
-    std::cout << " #"  << num_prg_plys          <<"   path prg polys     \n"; 
-    std::cout << " #"  << num_rpd_plys          <<"   path rpd polys     \n";
+
+    std::cout << " #"  << num_motion_ids        <<" motion path obj(s) \n"; 
+    std::cout << " #"  << num_prg_plys          <<" path prg polys     \n"; 
+    std::cout << " #"  << num_rpd_plys          <<" path rpd polys     \n";
 
     std::cout << "  -----------\n"; 
-    std::cout << " #"  << loaded_file_vecs.size() <<"   file vecs     \n";   
-    std::cout << " #"  << program_vecs.size()     <<"   program vecs  \n";  
-    std::cout << " #"  << rapidmove_vecs.size()   <<"   rapid vecs    \n";
-    std::cout << " #"  << toolpath_vecs.size()    <<"   toolpath vecs \n";    
+    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs     \n";   
+    std::cout << " #"  << program_vecs.size()     <<" program vecs  # " << num_prg_plys <<" ids \n";    
+    std::cout << " #"  << rapidmove_vecs.size()   <<" rapid vecs    # " << num_rpd_plys <<" ids \n";  
+    std::cout << " #"  << toolpath_vecs.size()    <<" toolpath vecs # " << num_toolpath_ids <<" ids \n";    
 
     #if DO_BUILD_GUI == true    
-        std::cout << " #"  << linebuffer1.size()  <<"   render1 vecs \n";   
-        std::cout << " #"  << linebuffer2.size()  <<"   render2 vecs \n"; 
+        std::cout << " #"  << linebuffer1.size()  <<" render1 vecs \n";   
+        std::cout << " #"  << linebuffer2.size()  <<" render2 vecs \n"; 
     #endif   
 
 }
@@ -819,7 +820,7 @@ void cnc_plot::copy_prg_to_toolpath(void)
         {
             for (uint ii=0;ii<tp_idxs[i].size();ii++)
             {
-                prg_idxs[ii] = tp_idxs[ii]; 
+                tp_idxs[ii] = prg_idxs[ii]; 
                 num_toolpath_ids++;           
             }
         }
@@ -881,12 +882,10 @@ void cnc_plot::add_prgvec_ply(void)
     loaded_file_vecs.clear();
 
     //------------
- 
     if(debug)
     {
         std::cout << "add_prgvec_ply_tp reindex "<< num_prg_exist << "\n";
     }
-
  
     for (uint i=0;i<num_filevecs;i++)
     {   

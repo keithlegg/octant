@@ -1493,6 +1493,8 @@ void render_loop(void)
             {
                 for (uint ii=1;ii<pt_motionplot->tp_idxs[i].size();ii++)
                 {
+                    std::cout << "we have data\n";
+                     
                     glBegin(GL_LINES);
                         uint si= pt_motionplot->tp_idxs[0][ii-1];
                         uint ei= pt_motionplot->tp_idxs[0][ii];
