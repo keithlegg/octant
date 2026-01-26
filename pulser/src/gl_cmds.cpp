@@ -346,12 +346,27 @@ void parse_cmd_text(std::string *buffer)
     
     /**********************************************************************/
   
-    if (a1=="savemotion")
+    if (a1=="save")
     {
-    
+        if(a2=="motion")
+        {
+            pt_motionplot->save_motionfile();
+        }         
+
     }
 
-         
+
+    if (a1=="load")
+    {
+        if(a2=="motion")
+        {
+            pt_motionplot->load_motionfile();
+        }         
+
+    }
+
+ 
+
 
     if (a1=="extent"||a1=="extents")
     {

@@ -185,9 +185,17 @@ class cnc_plot
         // link_motions (std::string name, Vector3 start, Vector3 end);
 
         // end motion interface 
+        
+        //-----------  
+        // file operations  
+
+        void save_motionfile(void);
+        void load_motionfile(void);
+
+
+
         //-----------  
 
-   
         void process_vec(uint vec_idx);
 
         void calc_3d_pulses(Vector3 fr_pt, 
