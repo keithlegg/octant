@@ -346,6 +346,12 @@ void parse_cmd_text(std::string *buffer)
     
     /**********************************************************************/
   
+    if (a1=="savemotion")
+    {
+    
+    }
+
+         
 
     if (a1=="extent"||a1=="extents")
     {

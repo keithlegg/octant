@@ -1,6 +1,11 @@
 /*************************************************************/
 /*
-    cnc_plot.cpp 
+    plot.cpp 
+
+    has two associated cpp files:  
+        plot.cpp (this file)
+        plot_fio.cpp 
+
     
     General motion control and path plotting.
     

@@ -7,8 +7,8 @@
 
     
     "obj_model" is defined in a single header but split among 3 cpp files
+    the three associated cpp files:  
     
-    the files are:
         obj_model - (this file) - container for top level attributes, etc
         obj_geom  - the core of geometry processing 
         obj_fio   - file in/out operations like load, save etc 
