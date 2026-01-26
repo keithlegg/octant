@@ -1,8 +1,8 @@
 
 
-from chopper.pygfx.math_ops import  *
-from chopper.pygfx.point_ops import *
-from chopper.pygfx.obj3d import  *
+from pygfx.math_ops import  *
+from pygfx.point_ops import *
+from pygfx.obj3d import  *
 
 
 """ 

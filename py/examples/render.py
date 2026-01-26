@@ -12,10 +12,10 @@ from pygfx.obj3d import  *
 from pygfx import NUMPY_IS_LOADED
 
 if NUMPY_IS_LOADED:
-    from chopper.tools.raytrace import  *
+    from tools.raytrace import  *
 
 
-from chopper.pygfx.vector_ops import *
+from pygfx.vector_ops import *
 
 
 

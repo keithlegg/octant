@@ -203,13 +203,6 @@ void cnc_plot::timer_init(void)
 void cnc_plot::add_prg_vec(Vector3* nv)
 {
     program_vecs.push_back(*nv);
-
-    //add to display buffer 
-    // //DEBUG need to move this to  : post- dynamic toolpath build
-    // #if DO_BUILD_GUI == true
-    //     add_vec_lbuf1(nv); 
-    // #endif
-
 }
  
 
@@ -277,6 +270,7 @@ void cnc_plot::add_motion(std::string name,
 }
 
 
+/******************************************/
 //DEBUG NEED TO THINK THIS OUT 
 void cnc_plot::show_mpath(void)
 {

@@ -1,5 +1,5 @@
 
-from chopper.pygfx.vector_ops import *
+from pygfx.vector_ops import *
 
 
 

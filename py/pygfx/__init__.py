@@ -1,4 +1,18 @@
 
+"""
+# attempt to list all dependecies 
+
+imageio
+numpy
+scipy 
+geojson
+shapely
+networkx
+pillow (PIL) 
+rtree
+
+"""
+
 GLOBAL_PROJ ='PATH_TO_WORK_FOLDER'
 
 
@@ -10,7 +24,7 @@ SHAPELY_IS_LOADED = True
 TRIMESH_IS_LOADED = False 
 NETWORKX_IS_LOADED = True 
 
-IMAGEIO_IS_LOADED = False 
+IMAGEIO_IS_LOADED = True 
 
  
 SKLEARN_IS_LOADED = True 

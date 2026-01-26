@@ -194,8 +194,11 @@ def secondpass(inputimage, outputpath, numbands, fast=False):
 
     ar = np.asarray(im)
     shape = ar.shape
+    
     ##DEBUG - will crash here if num bands exceedes what is in image data 
-    ar = ar.reshape(scipy.product(shape[:2]), shape[2]).astype(float)
+    #ar = ar.reshape(scipy.product(shape[:2]), shape[2]).astype(float)
+    #keith took a wild guess here 
+    ar = ar.reshape(np.prod(shape[:2]), shape[2]).astype(float)
 
     #sort colors  WRONG 
     #np.sort(ar)
@@ -224,7 +227,7 @@ def secondpass(inputimage, outputpath, numbands, fast=False):
 
     c = ar.copy()
     for i, code in enumerate(codes):
-        c[scipy.r_[scipy.where(vecs==i)],:] = code
+        c[np.r_[np.where(vecs==i)],:] = code
 
     print("writing file ", '%s/commonbands.png'%outputpath) 
     imageio.imwrite('%s/commonbands.png'%outputpath, c.reshape(*shape).astype(np.uint8))

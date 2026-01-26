@@ -187,7 +187,7 @@ class cnc_plot
         // end motion interface 
         
         //-----------  
-        // file operations  
+        // file operations  NOT DONE 
 
         void save_motionfile(void);
         void load_motionfile(void);

@@ -54,6 +54,9 @@
 void cnc_plot::save_motionfile(void)
 {
     std::cout << "SAVE MOTION !\n";
+
+
+    
 };
 
 

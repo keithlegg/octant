@@ -61,9 +61,9 @@ import numpy as np
 from pathlib import Path
 
 
-from chopper.pygfx.dag_ops import *
-from chopper.pygfx.milling_ops import *
-from chopper.pygfx.vector_ops import *
+from pygfx.dag_ops import *
+from pygfx.milling_ops import *
+from pygfx.vector_ops import *
 
 
 
@@ -94,19 +94,19 @@ if SHAPELY_IS_LOADED:
 # TOOLS 
 
 
-from chopper.tools.imagecam import *
-from chopper.tools.raytrace import *
-from chopper.tools.milling import * 
+from tools.imagecam import *
+from tools.raytrace import *
+from tools.milling import * 
 
-from chopper.examples.obj_to_cnc import *
-from chopper.examples.geometry import *
-from chopper.examples.objects_2d import *
-from chopper.examples.vector import *
-from chopper.examples.render import *
+from examples.obj_to_cnc import *
+from examples.geometry import *
+from examples.objects_2d import *
+from examples.vector import *
+from examples.render import *
 
-from chopper.pygfx.doc_ops import *
+from pygfx.doc_ops import *
 
-from chopper.unit_tests.ut_matrix import *
+#from unit_tests.ut_matrix import *
 
 
 GLOBAL_PROJ = '/Users/klegg/serv/gnolmec'
@@ -709,7 +709,7 @@ run firstpass -> common bands on each region in color
 ##----------------------------------------------------
 ## (iteration , blur , contrast, bright, scaling(divs) , in, out )
 
-#firstpass_bw(10, 1.2, 1.5, 1, 250, "images/in/terrence.jpg", "images/out", "output")
+#firstpass_bw(10, 1.2, 1.5, 1, 250, "images/mount.jpg", "images/out", "output")
 
 #firstpass(5, .5, 1.1, 1.1, 250, "images/in/cody.jpg", "images/out", "output")
 
@@ -722,8 +722,10 @@ run firstpass -> common bands on each region in color
 ##----------------------------------------------------
 ##----------------------------------------------------
 ##   /usr/local/opt/python@3.10/bin/python3.10 ./imagecam.py  
-## secondpass("images/in/foo.jpg", "images/out" , 4, False)
-## secondpass("images/out/output_3.bmp", "images/out" , 4, False)
+
+#secondpass("images/in/foo.jpg", "images/out" , 4, False)
+
+secondpass("images/out/output_3.bmp", "images/out" , 2, False)
 
 #secondpass("images/out/output_0.bmp", "images/out" , 4, False)
 #secondpass("images/in/robot.png", "images/out" , 12, False)

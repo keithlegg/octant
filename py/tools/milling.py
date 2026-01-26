@@ -1,8 +1,7 @@
 
 
-from chopper.pygfx.obj3d import  *
-
-from chopper.pygfx.milling_ops import *
+from pygfx.obj3d import  *
+from pygfx.milling_ops import *
 
 
 

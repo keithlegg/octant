@@ -15,12 +15,12 @@ import numpy as np
 
 
 #required for framebuffer 
-from chopper.pygfx.raster_ops import *
+from pygfx.raster_ops import *
 
 #not required, but FUN! 
-#from chopper.pygfx.point_ops import *
-#from chopper.pygfx.math_ops import  *
-from chopper.pygfx.obj3d import  *
+#from pygfx.point_ops import *
+#from pygfx.math_ops import  *
+from pygfx.obj3d import  *
 
 export = object3d() 
 
