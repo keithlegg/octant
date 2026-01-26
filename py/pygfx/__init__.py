@@ -2,21 +2,29 @@
 """
 # attempt to list all dependecies 
 
-imageio
-numpy
-scipy 
-geojson
-shapely
-networkx
-pillow (PIL) 
-rtree
+    - imageio
+    - numpy
+    - scipy 
+    - geojson
+    - shapely
+    - networkx
+    - pillow (PIL) 
+    - rtree
+    - trimesh 
 
 """
+
+
+################
+
 
 GLOBAL_PROJ ='PATH_TO_WORK_FOLDER'
 
 
-# kill switch for numpy integration 
+################
+# kill switches for module integration 
+
+
 NUMPY_IS_LOADED = True 
 SCIPY_IS_LOADED = True
 GEOJSON_IS_LOADED = True 

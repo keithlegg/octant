@@ -402,10 +402,22 @@ def tesselation_to_strokes():
 
 
 
+def its_alive(): 
+    vflo = vectorflow()
+    vflo.load_geojson('images/out/0.json')
+    vflo.cvt_grpoly_obj3d()
+    vflo.save('l0.obj', as_lines=True)
+    #vflo.export_geojson_lines('foo.json')
 
 
-#DEBUG fix this - calibrate machine 
-#vflo = vectorflow()
+vflo = vectorflow()
+vflo.load('objects/monkey.obj')
+vflo.save('flatball.obj', as_lines=True)
+#vflo.export_geojson_lines('foo.json')
+
+
+
+
 #vflo.export_machine_size(GLOBAL_PROJ, 'cuttylaser') 
 
 
@@ -694,24 +706,16 @@ run firstpass -> common bands on each region in color
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ##----------------------------------------------------
 ##----------------------------------------------------
 ## (iteration , blur , contrast, bright, scaling(divs) , in, out )
 
-#firstpass_bw(10, 1.2, 1.5, 1, 250, "images/mount.jpg", "images/out", "output")
+#color version 
+#firstpass(5, .5, 1.1, 1.1, 250, "images/forest.jpg", "images/out", "output")
 
-#firstpass(5, .5, 1.1, 1.1, 250, "images/in/cody.jpg", "images/out", "output")
+
+#black and white version 
+#firstpass_bw(10, 1.2, 1.5, 1, 250, "images/mount.jpg", "images/out", "output")
 
 #no bright 
 #firstpass(4, 1.2, 1.2, None, 250, "images/in/image.png", "images/out", "output")
@@ -723,11 +727,10 @@ run firstpass -> common bands on each region in color
 ##----------------------------------------------------
 ##   /usr/local/opt/python@3.10/bin/python3.10 ./imagecam.py  
 
+#secondpass("images/out/output_0.bmp", "images/out" , 6, False)
+
 #secondpass("images/in/foo.jpg", "images/out" , 4, False)
-
-secondpass("images/out/output_3.bmp", "images/out" , 2, False)
-
-#secondpass("images/out/output_0.bmp", "images/out" , 4, False)
+#secondpass("images/out/output_0.bmp", "images/out" , 10, False)
 #secondpass("images/in/robot.png", "images/out" , 12, False)
 
 ##----------------------------------------------------
@@ -740,7 +743,7 @@ secondpass("images/out/output_3.bmp", "images/out" , 2, False)
 #thirdpass( "images/out/commonbands.png",  "images/out" , "geojson", bmpinvert=False, po_invert=False)
 
 
-#thirdpass( "images/out/foo.bmp",  "images/out" , "geojson", po_invert=False)
+#thirdpass( "images/out/commonbands.png",  "images/out" , "geojson", po_invert=False)
 
 
 #GEOJSON

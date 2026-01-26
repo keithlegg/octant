@@ -92,6 +92,7 @@ int last_cmd = 0;
 
 /***************************************/
 
+//DEBUG - WIP 
 //callback from python link
 //load the results back  
 void load_py_obj(std::string objfilepath)
@@ -126,14 +127,13 @@ void load_py_obj(std::string objfilepath)
         //copy the object3d vectors into a toolpath 
         pt_motionplot->add_file_vec(&pt1);
         pt_motionplot->add_file_vec(&pt2);
-
-        //DEBUG - NEED TO FIX add_prgvec_ply_tp()
-        //pt_motionplot->add_prgvec_ply_tp(pcount,2);
-        //pcount++;
     }
 
+
+    pt_motionplot->add_prgvec_ply(); 
+    pt_motionplot->copy_prg_to_toolpath();
  
-    pt_motionplot->update_toolpaths();
+    //pt_motionplot->update_toolpaths();
 }
 
 
@@ -515,11 +515,14 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="python")
     {
+        /* 
         exe_python(a2);    
         std::string path = "3d_obj/PYCORE.obj";
-        
         load_py_obj(path);
+        */
 
+        std::string path = "3d_obj/flatball.obj";
+        load_py_obj(path);                  
     }
 
     /*

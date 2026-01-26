@@ -196,8 +196,6 @@ def secondpass(inputimage, outputpath, numbands, fast=False):
     shape = ar.shape
     
     ##DEBUG - will crash here if num bands exceedes what is in image data 
-    #ar = ar.reshape(scipy.product(shape[:2]), shape[2]).astype(float)
-    #keith took a wild guess here 
     ar = ar.reshape(np.prod(shape[:2]), shape[2]).astype(float)
 
     #sort colors  WRONG 
@@ -215,8 +213,6 @@ def secondpass(inputimage, outputpath, numbands, fast=False):
         f.write("%s %s %s %s \n"%(i, int(clr[0]), int(clr[1]), int(clr[2])) )
     f.close()
 
-    print(codes)
-
     vecs, dist = scipy.cluster.vq.vq(ar, codes)         # assign codes
 
     # counts, bins = scipy.histogram(vecs, len(codes))    # count occurrences
@@ -228,6 +224,8 @@ def secondpass(inputimage, outputpath, numbands, fast=False):
     c = ar.copy()
     for i, code in enumerate(codes):
         c[np.r_[np.where(vecs==i)],:] = code
+
+    #print(c.reshape(*shape).astype(np.uint8))
 
     print("writing file ", '%s/commonbands.png'%outputpath) 
     imageio.imwrite('%s/commonbands.png'%outputpath, c.reshape(*shape).astype(np.uint8))

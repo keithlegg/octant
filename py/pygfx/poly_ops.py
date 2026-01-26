@@ -2098,14 +2098,15 @@ class polygon_operator(pop3d):
             this will save points and polygons as a wavefront OBJ file 
             you can save shape or cache data. 
         """    
-        
         ##################
         self._repair()#optional but this will help find/fix problems later
 
 
         buf = [] #array of strings to be written out as the OBJ file
-
-        buf.append("# https://github.com/keithlegg/chopper")
+        buf.append('# built with love using:')
+        buf.append("# https://github.com/keithlegg/octant ")
+        
+        buf.append('\n')        
         buf.append('\n# Define the vertices')
 
         #DEBUG - PUT MORE ERROR CHECKING ON VERTS, I HAD SOME BAD DATA GET THROUGH 
@@ -2139,7 +2140,16 @@ class polygon_operator(pop3d):
 
             if as_lines:
                 # save as lines
-                buf.append('l %s'%plybuf)
+
+                # normal line type
+                #buf.append('l %s'%plybuf)
+
+                #custom obj line type for octant  
+                for i,pl in enumerate (plybuf):
+                    if i>0:
+                        if (plybuf[i] !=' ' and plybuf[i-1] !=' '):
+                            buf.append('f %s %s'%( plybuf[i-1], plybuf[i]) )
+
             else:
                 # save as polygons 
                 # format for f command is : f position_id/texture_coordinates_id/normal_id 
