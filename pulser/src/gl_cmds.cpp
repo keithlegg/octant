@@ -820,8 +820,6 @@ void parse_cmd_text(std::string *buffer)
         if(a2=="p0")      {path_render_mode=0;} 
         if(a2=="p1")      {path_render_mode=1;} 
 
-        
-
         if(a2=="pts")                  {key_cb(36);} 
         if(a2=="wire")                 {key_cb(52);} 
         if(a2=="s1"||a2=="solid")      {key_cb(53);}  

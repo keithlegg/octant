@@ -974,15 +974,21 @@ void animate(void)
 
 /***************************************/
 
+//DEBUG - not done , trying to add up arrow <-> last command 
+//need to implement a ring buffer type thing for all commands :(
+
 void parse_special(int keyint, int x, int y)
 {
     //parse_cmds(&cmd_buffer, 0, &keyint);
     //glutPostRedisplay();
-        
+    
+    std::string foo = "help";
+
     switch(keyint)
     {
         case GLUT_KEY_UP:
-            std::cout << "up arrow\n";
+            //cmd_buffer.push_back( *foo.c_str() ); 
+            cmd_buffer = cmd_buffer + foo;
         break;
 
         case GLUT_KEY_DOWN:
