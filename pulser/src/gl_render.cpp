@@ -70,9 +70,10 @@ bool mouseRightDown = false;
 
 /***************************************/
 
-// toggle - view prefs - state vars dont change  
+// user controlled view prefs   
 bool DRAW_POLYS       = true; // state for toggle command
 bool DRAW_GEOM        = true; // state for toggle command
+
 bool draw_cntrgrid    = true;
 bool tog_grid         = true; 
 bool tog_vtxrgb       = false; 
@@ -80,8 +81,17 @@ bool tog_testport     = false;
 
 bool toglr_flatshaded = true; //DEBUG 
 
-/***************************************/
-// single view prefs - use for debugging 
+//bool draw_bbox              = false;
+
+bool disp_ply_solo          = false;
+uint disp_ply_solo_id       = 0;
+
+//0 - solid, 1 - multicolor  
+uint path_render_mode         = 1; //0 - solid, 1- multi 
+
+//------
+
+//less used view prefs for debugging 
 
 bool draw_lines      = false;
 bool draw_normals    = false;
@@ -90,14 +100,14 @@ bool draw_triangles  = true;
 bool render_text     = true;
 
 
-//DEBUG - figure the VBO crap out 
+//---- 
+//DEBUG - figure the VBO stuff out
+//I want to render points eventually 
+
 bool draw_points     = true;  
 bool draw_points_vbo = false; 
 
-//bool draw_bbox       = true;
 
-bool disp_ply_solo            = false;
-uint disp_ply_solo_id = 0;
 
 /***************************************/
 //I think this was from a test of the VBO 
@@ -256,10 +266,14 @@ extern RGBType *pt_gridcolor2;
 #define text_clr glColor3f(0.6f, 1.0f, 0.0f)
 
 #define green_clr glColor3f(0.0f, 1.0f, 0.0f)
-#define red_clr glColor3f(1.0f, 0.0f, 0.0f)
-#define enabled_txt_clr glColor3f(.3f, 0.5f, 0.4f)
+#define red_clr glColor3f(  1.0f, 0.0f, 0.0f)
+#define enabled_txt_clr glColor3f( .3f, 0.5f, 0.4f)
 #define enabled_txt_clr2 glColor3f(.5f, 0.7f, 0.6f)
 
+
+#define path_sld_clr glColor3f(0.4f , 0.6f, 0.8f)
+#define path_strt_clr glColor3f(1.0f, 0.0f, 0.0f)
+#define path_end_clr glColor3f(0.0f , 1.0f, 0.0f)
 
 /***************************************/
 
@@ -1499,11 +1513,17 @@ void render_loop(void)
                         uint ei= pt_motionplot->tp_idxs[i][ii];
                         sv  = pt_motionplot->toolpath_vecs[si];
                         ev  = pt_motionplot->toolpath_vecs[ei];
-                        //rgb = linebuffer1_rgb[p_i];            
-                        glColor3f(0,1.,0); //hack for now
+                        //rgb = linebuffer1_rgb[p_i];     
+
+
+                        if(path_render_mode==0){ path_sld_clr;}
+                        if(path_render_mode==1){path_strt_clr;}
                         glVertex3f(sv.x, sv.y, sv.z);
-                        glColor3f(1.,0,0); //hack for now
+
+                        if(path_render_mode==0){path_sld_clr; }                        
+                        if(path_render_mode==1){path_end_clr;}
                         glVertex3f(ev.x, ev.y, ev.z);
+
                     glEnd();
                }//iterate all ids in each polygon
            }

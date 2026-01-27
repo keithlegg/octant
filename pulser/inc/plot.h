@@ -160,7 +160,7 @@ class cnc_plot
         
         void copy_prg_to_toolpath(void);
         
-        void import_line_from_obj(std::string filepath);
+        void import_path_from_obj(std::string filepath);
 
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);

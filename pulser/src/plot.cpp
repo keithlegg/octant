@@ -102,7 +102,7 @@ std::mutex mtx_p; //you can use std::lock_guard if you want to be exception safe
 
 
 
-void cnc_plot::import_line_from_obj(std::string filepath)
+void cnc_plot::import_path_from_obj(std::string filepath)
 {
     bool debug = true;
 
@@ -135,8 +135,8 @@ void cnc_plot::import_line_from_obj(std::string filepath)
     }
 
 
-    // add_prgvec_ply(); 
-    // copy_prg_to_toolpath();
+    add_prgvec_ply(); 
+    copy_prg_to_toolpath();
     // update_toolpaths();
 }
 
@@ -907,9 +907,6 @@ void cnc_plot::copy_prg_to_toolpath(void)
             }
         }
     }
-
-    //clear file buffer so we can load more 
-    loaded_file_vecs.clear();
 
 }
 

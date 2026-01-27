@@ -2141,9 +2141,10 @@ class polygon_operator(pop3d):
             if as_lines:
                 # save as lines
 
-                # normal line type
+                # DEBUG - THIS IS NORMAL EXPORT 
                 #buf.append('l %s'%plybuf)
 
+                # DEBUG THIS IS A TEST FOR OCTANT 
                 #custom obj line type for octant  
                 for i,pl in enumerate (plybuf):
                     if i>0:

@@ -73,6 +73,7 @@
 //idx of text that invisible "cursor" sits on
 int cursor = 0;
 
+extern uint path_render_mode;
 extern bool debug_onscreen;
 extern bool tog_testport; 
 extern bool disp_ply_solo;
@@ -97,16 +98,9 @@ int last_cmd = 0;
 //load the results back  
 void load_py_obj(std::string objfilepath)
 {
+    std::cout << "importing obj as paths "<< objfilepath << "\n";
 
-    //char char_array[100];
-
-    // obj_model* pt_obj2d_loader  = new obj_model;
-    // //may not be needed on a new object?? DEBUG 
-    // pt_obj2d_loader->reset();
-    // strcpy(char_array, objfilepath.c_str()); 
-
-    pt_motionplot->import_line_from_obj( objfilepath);
-
+    pt_motionplot->import_path_from_obj( objfilepath);
 }
 
 
@@ -784,6 +778,11 @@ void parse_cmd_text(std::string *buffer)
         if(a2=="top")    {key_cb(64);} 
         if(a2=="front")  {key_cb(51);} 
         
+        if(a2=="p0")      {path_render_mode=0;} 
+        if(a2=="p1")      {path_render_mode=1;} 
+
+        
+
         if(a2=="pts")     {key_cb(36);} 
         if(a2=="wire")    {key_cb(52);} 
         if(a2=="s1")      {key_cb(53);}  
@@ -818,7 +817,7 @@ void parse_cmd_text(std::string *buffer)
 
 void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
-    bool show_debug = false;
+    bool debug = false;
 
     int i = static_cast<int>(*pt_key);
     
@@ -830,7 +829,7 @@ void parse_cmds(std::string *buffer, unsigned char *pt_key )
 
     last_cmd=i;
 
-    if(show_debug)
+    if(debug)
     {
         std::cout << "cursor "<< cursor << " key val " << i  << "buf size: " << buffer->size() << std::endl;
         std::cout << " key val " << i  << std::endl;
