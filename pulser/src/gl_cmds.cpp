@@ -822,12 +822,12 @@ void parse_cmd_text(std::string *buffer)
 
         
 
-        if(a2=="pts")     {key_cb(36);} 
-        if(a2=="wire")    {key_cb(52);} 
-        if(a2=="s1")      {key_cb(53);}  
-        if(a2=="s2")      {key_cb(5);}
-        if(a2=="s3")      {key_cb(6);}
-        if(a2=="s4")      {key_cb(7);}          
+        if(a2=="pts")                  {key_cb(36);} 
+        if(a2=="wire")                 {key_cb(52);} 
+        if(a2=="s1"||a2=="solid")      {key_cb(53);}  
+        if(a2=="s2")                   {key_cb(5);}
+        if(a2=="s3")                   {key_cb(6);}
+        if(a2=="s4")                   {key_cb(7);}          
 
     }
 
@@ -854,31 +854,13 @@ void parse_cmd_text(std::string *buffer)
 
 */
 
+//parse_cmds(&cmd_buffer, &key);
 
-void parse_special(int key, int x, int y)
+
+
+void parse_cmds(std::string *buffer, unsigned char *pt_key, int* keyint )
 {
-    switch(key)
-    {
-        case GLUT_KEY_UP:
-            //do something here
-            std::cout << "up arrow\n";
-        break;
-        case GLUT_KEY_DOWN:
-            //do something here
-        break;
-        case GLUT_KEY_LEFT:
-            //do something here
-        break;
-        case GLUT_KEY_RIGHT:
-            //do something here
-        break;
-    }
-}
-
-
-void parse_cmds(std::string *buffer, unsigned char *pt_key )
-{
-    bool debug = true;
+    bool debug = false;
 
     int i = static_cast<int>(*pt_key);
     

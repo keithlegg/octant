@@ -8,8 +8,7 @@ void load_2d_obj(std::string objfilepath);
 
 void parse_cmd_text(std::string*);
 
-void parse_special(int key, int x, int y);
-void parse_cmds(std::string*, unsigned char *);
+void parse_cmds(std::string*, unsigned char *, int *keyint);
 
 
 

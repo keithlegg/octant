@@ -158,6 +158,10 @@ float mouse_orbit_speed   = 2.1f;
 
 
 
+//container for onscreen text command 
+std::string cmd_buffer;
+
+
 /***************************************/
 
 char cs[100];
@@ -970,11 +974,37 @@ void animate(void)
 
 /***************************************/
 
-std::string cmd_buffer;
+void parse_special(int keyint, int x, int y)
+{
+    //parse_cmds(&cmd_buffer, 0, &keyint);
+    //glutPostRedisplay();
+        
+    switch(keyint)
+    {
+        case GLUT_KEY_UP:
+            std::cout << "up arrow\n";
+        break;
+
+        case GLUT_KEY_DOWN:
+            //do something here
+        break;
+
+        case GLUT_KEY_LEFT:
+            //do something here
+        break;
+
+        case GLUT_KEY_RIGHT:
+            //do something here
+        break;
+    }
+
+}
+
+
 
 void parser_cb(unsigned char key, int x, int y)
 {
-    parse_cmds(&cmd_buffer, &key);
+    parse_cmds(&cmd_buffer, &key, 0);
     glutPostRedisplay();
 };
 
@@ -1145,9 +1175,9 @@ void render_loop(void)
         //-----------------------------------------
         if(debug_onscreen)
         {
-            glColor3d(1.0, 1.0, 1.0);
+            green_clr;
             sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
-            renderBitmapString( ((int)(scr_size_x/2)-550), 15  ,(void *)fontsm, s );
+            renderBitmapString( scr_size_x-400, scr_size_y-15  ,(void *)fontsm, s );
         }
         //-----------------------------
 
