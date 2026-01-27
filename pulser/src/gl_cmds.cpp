@@ -224,15 +224,15 @@ void parse_cmd_text(std::string *buffer)
     std::vector <std::string> tokens;
     std::vector <std::string> subtokens;
 
-
-    //--------------
     std::stringstream check1(*buffer);
     std::string intermediate;
+
     while(getline(check1, intermediate, ' '))
     {
         tokens.push_back(intermediate);
     }
 
+    /**********************************************************************/
     for(uint i = 0; i < tokens.size(); i++)
     {
         if(i==0){ a1  = tokens[i]; }
@@ -248,6 +248,7 @@ void parse_cmd_text(std::string *buffer)
 
     }
 
+    /**********************************************************************/
     //toggle grid
     if (a1=="help")
     {   
@@ -257,43 +258,25 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n";
         std::cout << "-------- SETUP COMMANDS ------------------        \n"; 
         std::cout << "dm : (display operations)                         \n";
-        std::cout << "  wire, persp, top, side                          \n";
         std::cout << "                                                  \n";
-
         std::cout << "togg, toggle                                      \n";
-        std::cout << " tris, grid, gnomon, normals, vtxrgb              \n";
         std::cout << "                                                  \n";
-
+        
         std::cout << "-------- PROGRAM COMMANDS ----------------        \n"; 
-        std::cout << "mtr : (motor enable)                              \n";
-        std::cout << "  on,off                                          \n";
-        std::cout << "                                                  \n";
         std::cout << "run, stop, reset                                  \n";
-        std::cout << "                                                  \n";        
+        std::cout << "                                                  \n";   
         std::cout << "unload  (path,obj)                                \n";
         std::cout << "reload  (path,obj)                                \n";
         std::cout << "                                                  \n";
+
+        std::cout << "show (sho)                                        \n";
+        std::cout << "mtr : (motor enable)                              \n";
 
         std::cout << "-------- DEBUGGING COMMANDS --------------        \n";               
 
         std::cout << "mh - move head(quill)                             \n";          
         std::cout << "am - addmotion                                    \n";        
         std::cout << "                                                  \n";
-
-        std::cout << "show (sho)                                        \n";
-        std::cout << "  cfg      - view important globals               \n";
-        std::cout << "  motion   - show motion index objs               \n";
-        std::cout << "  pt       - pulsetrain info                      \n";
-        std::cout << "  obj      - stats about loaded 3d object         \n";
-        
-        std::cout << "  path     - stats about toolpath                 \n";
-        std::cout << "  path     - stats about toolpath                 \n";
-
-        std::cout << "  pathids  -                                      \n";
-        std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
-        std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
-        std::cout << "  debug    -camera stats HUD                      \n";
-        std::cout << "                                                  \n";        
 
         std::cout << "lup (lookup by ID)                                \n";
         std::cout << "   pathid (int),                                  \n";
@@ -308,11 +291,93 @@ void parse_cmd_text(std::string *buffer)
         std::cout << "                                                  \n";
 
 
+         
+        /*****************/
+        if(a2=="dm")
+        {
+            std::cout << "dm : (display operations)                        \n";
+            std::cout << "  wire                                           \n";
+            std::cout << "  persp                                          \n";
+            std::cout << "  top                                            \n";
+            std::cout << "  side                                           \n";                        
+            std::cout << "  p0                                             \n";
+            std::cout << "  p1                                             \n";            
+        }
+
+        /*****************/
+        if(a2=="togg")
+        {
+            std::cout << "togg, toggle                                      \n";
+            std::cout << " tris,                                            \n";        
+            std::cout << " grid      (alias command - tg)                   \n";  
+            std::cout << " gnomon    (alias command - tgg)                  \n";  
+            std::cout << " normals                                          \n";                          
+            std::cout << " vtxrgb                                           \n";  
+        }
+
+        /*****************/
+        if(a2=="mtr")
+        {
+            std::cout << "mtr : (motor enable)                              \n";
+            std::cout << "  on,off                                          \n";
+            std::cout << "                                                  \n";
+        }
+
+        /*****************/
+        if(a2=="show")
+        {
+            std::cout << "show (sho)                                        \n";
+            std::cout << "  cfg      - view important globals               \n";
+            std::cout << "  motion   - show motion index objs               \n";
+            std::cout << "  pt       - pulsetrain info                      \n";
+            std::cout << "  obj      - stats about loaded 3d object         \n";
+            
+            std::cout << "  path     - stats about toolpath                 \n";
+            std::cout << "  path     - stats about toolpath                 \n";
+
+            std::cout << "  pathids  -                                      \n";
+            std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
+            std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
+            std::cout << "  debug    -camera stats HUD                      \n";
+            std::cout << "                                                  \n";  
+        }   
 
     }    
     
     /**********************************************************************/
-  
+
+
+    //run external tools 
+    if (a1=="python")
+    {
+         
+        exe_python(a2);    
+        std::string path = "3d_obj/PYCORE.obj";
+        load_py_obj(path);
+
+    }
+
+    //------------------
+
+    //run external tools 
+    if (a1=="test")
+    {
+        //std::string path = "3d_obj/flatball.obj";
+        load_py_obj(a2);                  
+    }
+
+    //------------------
+    /*
+    if (a1=="readbyte")
+    { 
+    }
+ 
+    if (a1=="sendbyte")
+    { 
+    }
+    */
+
+    //------------------
     if (a1=="save")
     {
         if(a2=="motion")
@@ -322,7 +387,7 @@ void parse_cmd_text(std::string *buffer)
 
     }
 
-
+    //------------------
     if (a1=="load")
     {
         if(a2=="motion")
@@ -331,10 +396,8 @@ void parse_cmd_text(std::string *buffer)
         }         
 
     }
-
  
-
-
+    //------------------
     if (a1=="extent"||a1=="extents")
     {
                 
@@ -477,30 +540,6 @@ void parse_cmd_text(std::string *buffer)
         }          
     }
 
-
-    //------------------
-    //run external tools 
-    if (a1=="python")
-    {
-        /* 
-        exe_python(a2);    
-        std::string path = "3d_obj/PYCORE.obj";
-        load_py_obj(path);
-        */
-
-        std::string path = "3d_obj/flatball.obj";
-        load_py_obj(path);                  
-    }
-
-    /*
-    if (a1=="readbyte")
-    { 
-    }
- 
-    if (a1=="sendbyte")
-    { 
-    }
-    */
 
     //--------------
     //not really used - the preferred method is the '``' key 
@@ -815,9 +854,31 @@ void parse_cmd_text(std::string *buffer)
 
 */
 
+
+void parse_special(int key, int x, int y)
+{
+    switch(key)
+    {
+        case GLUT_KEY_UP:
+            //do something here
+            std::cout << "up arrow\n";
+        break;
+        case GLUT_KEY_DOWN:
+            //do something here
+        break;
+        case GLUT_KEY_LEFT:
+            //do something here
+        break;
+        case GLUT_KEY_RIGHT:
+            //do something here
+        break;
+    }
+}
+
+
 void parse_cmds(std::string *buffer, unsigned char *pt_key )
 {
-    bool debug = false;
+    bool debug = true;
 
     int i = static_cast<int>(*pt_key);
     

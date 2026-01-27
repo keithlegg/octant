@@ -101,7 +101,26 @@ std::mutex mtx_p; //you can use std::lock_guard if you want to be exception safe
 /***************************************/
 
 
+/*
+    DEBUG NOT DONE 
+    generate points to show the extents of the toolpaths
+    use a "throw away" obj_model to do geometric calculations 
+*/
+void cnc_plot::toolpath_extents(void)
+{
 
+    obj_model* pt_obj2d_loader  = new obj_model;
+    pt_obj2d_loader->reset();
+
+}
+
+
+/***************************************/
+
+/*
+   DEBUG NOT DONE 
+   use a "throw away" obj_model to do geometric calculations 
+*/
 void cnc_plot::import_path_from_obj(std::string filepath)
 {
     bool debug = true;

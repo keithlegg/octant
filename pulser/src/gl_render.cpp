@@ -989,6 +989,7 @@ void *font   = GLUT_BITMAP_TIMES_ROMAN_24;
 bool debug_onscreen = false;
 
 
+
 void render_loop(void)
 {
     // updates when screen size changes 
@@ -1003,6 +1004,11 @@ void render_loop(void)
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
     glutKeyboardFunc(parser_cb);
+
+    //arrow keys use a different cb .. grr
+    glutSpecialFunc(parse_special);
+ 
+
 
     //------------ 
 

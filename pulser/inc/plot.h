@@ -186,7 +186,9 @@ class cnc_plot
         // link_motions (std::string name, Vector3 start, Vector3 end);
 
         // end motion interface 
-        
+
+        void toolpath_extents(void);
+
         //-----------  
         // file operations  NOT DONE 
 
