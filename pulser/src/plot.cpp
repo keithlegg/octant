@@ -56,6 +56,7 @@
 #include <unistd.h> //sleep()
 #include <sys/io.h> //outb() ioperm()
 #include <math.h>
+#include <cstring>
 
 #include <iomanip>
 #include <iostream>
@@ -101,6 +102,43 @@ std::mutex mtx_p; //you can use std::lock_guard if you want to be exception safe
 
 
 
+void cnc_plot::import_line_from_obj(std::string filepath)
+{
+    bool debug = true;
+
+    char char_array[100];
+
+    obj_model* pt_obj2d_loader  = new obj_model;
+    pt_obj2d_loader->reset();
+    strcpy(char_array, filepath.c_str()); 
+
+    pt_obj2d_loader->load(char_array);
+    
+    //DEBUG - put this in object 3d as a class method 
+    if(debug)
+    {
+        std::cout << pt_obj2d_loader->num_lines << "\n";
+    }
+
+    uint pcount = 0;
+    for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
+    {
+        int pidx1 = pt_obj2d_loader->lines[x][0];
+        int pidx2 = pt_obj2d_loader->lines[x][0];
+        
+        Vector3 pt1 = pt_obj2d_loader->points[pidx1];
+        Vector3 pt2 = pt_obj2d_loader->points[pidx2];
+
+        //copy the object3d vectors into a toolpath 
+        add_file_vec(&pt1);
+        add_file_vec(&pt2);
+    }
+
+
+    // add_prgvec_ply(); 
+    // copy_prg_to_toolpath();
+    // update_toolpaths();
+}
 
 /***************************************/
 // just a self contained example to launch the pulser 

@@ -410,10 +410,11 @@ def its_alive():
     #vflo.export_geojson_lines('foo.json')
 
 
-vflo = vectorflow()
-vflo.load('objects/monkey.obj')
-vflo.save('flatball.obj', as_lines=True)
-#vflo.export_geojson_lines('foo.json')
+ 
+# vflo = vectorflow()
+# vflo.load('objects/monkey.obj')
+# vflo.save('flatball.obj', as_lines=True)
+# #vflo.export_geojson_lines('foo.json')
 
 
 

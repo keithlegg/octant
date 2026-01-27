@@ -137,7 +137,6 @@ class cnc_plot
 
         void show_mpath(void);
         void show_mpath_info(void);
-
         void show_path(void);
         void show_path_info(void);
 
@@ -157,9 +156,11 @@ class cnc_plot
         void timer_init(void);
 
         //-----------  
-        // motion interface 
+        // motion path interface backend
         
         void copy_prg_to_toolpath(void);
+        
+        void import_line_from_obj(std::string filepath);
 
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
