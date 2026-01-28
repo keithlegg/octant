@@ -109,7 +109,7 @@ from pygfx.doc_ops import *
 #from unit_tests.ut_matrix import *
 
 
-GLOBAL_PROJ = '/Users/klegg/serv/gnolmec'
+GLOBAL_PROJ = '/FIX/ME'
 
 
 ##---------------------------------
@@ -395,12 +395,38 @@ def tesselation_to_strokes():
 
 
 
-#break_into_many_ngc('/Users/klegg/serv/gnolmec/images/out/1.json')
+#break_into_many_ngc('XXXX')
+
 
 
 #test_streamline(GLOBAL_PROJ, 3,'girl.png' , dopass='all') 
 
 
+##-------------------------##
+def test_slicer():
+    kam = cam_op()
+    kam.load('../pulser/3d_obj/head.obj')
+    #kam.show()
+    p = kam.slice_example('../pulser/3d_obj/', 'head.obj', [0,1])
+    print(p)
+
+# def slice_example( self, path, infile, heights, scan_axis ='z', reindex=True):
+# def tm_meshplane_test(self, origin, normal, path, infile):
+# def batch_slicer( self, path , infile, heights, scan_axis ='z'):
+
+##-------------------------##
+
+def test_slicer2():
+    kam = cam_op()
+    kam.load('../pulser/3d_obj/head.obj')
+    #kam.show()
+    #kam.batch_slicer( path , infile, heights, scan_axis ='z'):
+    p = kam.batch_slicer( '../pulser/3d_obj/', 'head.obj', [], scan_axis ='z')
+
+
+ 
+
+##-------------------------##
 
 def its_alive(): 
     vflo = vectorflow()
@@ -408,8 +434,6 @@ def its_alive():
     vflo.cvt_grpoly_obj3d()
     vflo.save('l0.obj', as_lines=True)
     #vflo.export_geojson_lines('foo.json')
-
-
  
 # vflo = vectorflow()
 # vflo.load('objects/monkey.obj')
@@ -425,7 +449,7 @@ def its_alive():
 #gn_dir_type(vectorflow)
 
 
-#json_to_ngc('/Users/klegg/serv/gnolmec/images/out', 'astro',.5, 4)
+#json_to_ngc('XXX', 'astro',.5, 4)
 
 
 
@@ -546,16 +570,18 @@ def kmeans():
     from sklearn.datasets import make_blobs
     import matplotlib.pyplot as plt
     #from itertools import cycle
+    
+    filepath = 'PUT/PATH/HERE'
 
     #from sklearn.cluster import AffinityPropagation
     #from sklearn import metrics
 
     vflo = vectorflow()
-    vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/0.json')
-    #vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/1.json')
-    #vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/2.json')
-    #vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/3.json')
-    #vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/4.json')
+    vflo.load_geojson('%s/out/0.json')%(filepath)
+    # vflo.load_geojson('%s/out/1.json')%(filepath)
+    # vflo.load_geojson('%s/out/2.json')%(filepath)
+    # vflo.load_geojson('%s/out/3.json')%(filepath)
+    # vflo.load_geojson('%s/out/4.json')%(filepath)
 
     vflo.gr_sort = vflo.filter_by_bbox(2, 2, underover='smaller')
     vflo.gl_scale(.2)
@@ -673,12 +699,8 @@ def loadkicad(infilepath, outfilename):
     kip.export_ngc(1, 0, .1, 2, '%s/images/out/%s.ngc'%(GLOBAL_PROJ, outfilename) , do3d=True)
 
 
-#loadkicad('/Users/klegg/serv/kicadload/test/test.kicad_pcb', 'kicadgrply')
+#loadkicad('XXXX', 'kicadgrply')
 
-#loadkicad('0', 'fuckyou')
-
-
- 
 
 
 

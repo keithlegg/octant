@@ -797,8 +797,8 @@ def extract():
 
 def kicad_test():
     """ experiment to parse a kicad pcb file and export it to gcode """
-    kicadproj = '/Users/klegg/serv/camtest'
-    #kicadproj = '/Users/klegg/serv/SID_DUINO3'
+    kicadproj = '/camtest'
+    #kicadproj = '/SID_DUINO3'
 
     tokens = kicadproj.split(os.sep) 
     projname = tokens[len(tokens)-1]

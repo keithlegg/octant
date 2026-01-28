@@ -893,7 +893,7 @@ class streamline(object):
         out.append('## sample worfarts script ')
         out.append(' ')
         out.append('## SETUP PARAMETERS  ')        
-        out.append('set path $global /Users/klegg/serv/gnolmec/images')
+        out.append('set path $global XXXX/gnolmec/images')
         out.append(' ')
 
         out.append('## IMAGE $input ')                
@@ -1141,8 +1141,8 @@ def optimize_gcode(size, path, jsonfile, outname='processed'):
     filter_small_polys = True
     reorient           = False
     
-    #vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/1.json') 
-    #vflo.load_geojson('/Users/klegg/serv/gnolmec/images/out/2.json') 
+    #vflo.load_geojson('XXX/1.json') 
+    #vflo.load_geojson('XXX/2.json') 
            
     #vflo.polysize_info()
     
@@ -1220,7 +1220,7 @@ def json_to_laser(jsonfile, outpath, outname):
 
 #def batch_laser(folder, name):
 #    for a in range(5):
-#        json_to_laser('/Users/klegg/serv/gnolmec/images/out/%s.json'%a, folder, 'holez%s'%a)
+#        json_to_laser('XXX/images/out/%s.json'%a, folder, 'holez%s'%a)
 
 ##----------------------------------------------------
 ##----------------------------------------------------

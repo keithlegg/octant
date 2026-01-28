@@ -1748,6 +1748,8 @@ class cam_op(cnc_op):
             #self.cam_dc.meshname     = infile
 
         else:
+            print( "## batch_slicer: cache files does not exist. ")
+
             #cache the mesh object
             self.cam_dc.folderpath   = path
             self.cam_dc.meshname     = infile
@@ -2229,10 +2231,10 @@ class cam_op(cnc_op):
 
         return hits in the following order:
            1_______2              1_______2
-          /        \             /        \   
+          /        \\             /        \\   
         3/__________\4         6/__________\3 
-         \           /          \           /     
-         5\_________/6          5\_________/4 
+         \\           /          \\           /     
+         5\\_________/6          5\\_________/4 
 
         """
         #self.triangulate()
