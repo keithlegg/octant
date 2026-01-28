@@ -94,7 +94,7 @@ void obj_model::load(char *filepath)
     bool debug     = false;
     bool debugfile = false;
 
-    int fidx = 0;
+
     uint pt1, pt2, pt3, pt4, ptn, ptn1 = 0;
     int vn1, vn2, vn3, vn4 = 0;
 
@@ -262,7 +262,7 @@ void obj_model::load(char *filepath)
                     if ( tokenized.at(0).find("f") != std::string::npos || 
                          tokenized.at(0).find("l") != std::string::npos)
                     {
-                        
+                        int fidx = 0;
                         bool poly_is_linetype = false;
 
                         if(tokenized.at(0).find("l") != std::string::npos)
@@ -402,7 +402,7 @@ void obj_model::load(char *filepath)
 
                         ///////////////////////////////////////////////////
                         ///////////////////////////////////////////////////
-
+ 
                         //if only one face index - its a point  
                         if (fidx==1)
                         {
@@ -451,22 +451,19 @@ void obj_model::load(char *filepath)
                             std::cout << " pt2 is " << pt2 << "\n";
                             std::cout << " pt3 is " << pt3 << "\n";
                             std::cout << " pt4 is " << pt4 << "\n";
-                            
                             //DEBUG THIS IS BLOWING UP     
                             // quads[num_quads][0] = pt1;
                             // quads[num_quads][1] = pt2;                          
                             // quads[num_quads][2] = pt3;
                             // quads[num_quads][3] = pt4;
                             //num_quads++;
-
-
                         }//end quad loader 
                         
-                        //---------------//
-
-                        //N number of points loader - faces and line geom 
-                        if (fidx>4)
-                        {
+                       //---------------//
+                       /*
+                       //N number of points loader - faces and line geom 
+                       if (fidx>4)
+                       {
                             if(poly_is_linetype)
                             {
                                 std::cout << "line type!!\n";
@@ -492,17 +489,8 @@ void obj_model::load(char *filepath)
                                 num_lines++;
 
                             }
-
-
-
-
-                            // std::cout << " pt1 is " << pt1 << "\n";
-                            // std::cout << " pt2 is " << pt2 << "\n";
-                            // std::cout << " pt3 is " << pt3 << "\n";
-                            // std::cout << " pt4 is " << pt4 << "\n";
-
                         }//end N sides loader 
-
+                        */    
                     }//end face loader
 
                     //-----------------------------//
