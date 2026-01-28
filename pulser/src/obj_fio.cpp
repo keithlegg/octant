@@ -94,6 +94,11 @@ void obj_model::load(char *filepath)
     bool debug     = false;
     bool debugfile = false;
 
+    int fidx = 0;
+    uint pt1, pt2, pt3, pt4, ptn, ptn1 = 0;
+    int vn1, vn2, vn3, vn4 = 0;
+
+
     std::cout << "## obj_model::load loading file "<< filepath << "\n";
     
     int pofst   = 0; //DEBUG point offset indices to points if geom exists already 
@@ -253,12 +258,19 @@ void obj_model::load(char *filepath)
                     
                     //-----------------------------//
                      
-                    //  look for F / faces
-                    if ( tokenized.at(0).find("f") != std::string::npos )
+                    //  look for f/faces or l/lines
+                    if ( tokenized.at(0).find("f") != std::string::npos || 
+                         tokenized.at(0).find("l") != std::string::npos)
                     {
-                        int fidx = 0;
-                        uint pt1,pt2,pt3,pt4 = 0;
-                        int vn1,vn2,vn3,vn4 = 0;
+                        
+                        bool poly_is_linetype = false;
+
+                        if(tokenized.at(0).find("l") != std::string::npos)
+                        {
+                            poly_is_linetype = true;
+                        }
+
+
 
                         //walk the space delineated tokens per each line
                         for (int a=1;a<tokenized.size();a++)
@@ -386,9 +398,11 @@ void obj_model::load(char *filepath)
                             }//space delineated line 
  
 
-                        }
+                        }//walk the line tokenized by spaces 
 
-                        //-------                  
+                        ///////////////////////////////////////////////////
+                        ///////////////////////////////////////////////////
+
                         //if only one face index - its a point  
                         if (fidx==1)
                         {
@@ -410,6 +424,7 @@ void obj_model::load(char *filepath)
 
                         }//end line loader
 
+                        //if 3 indices, its a triangle    
                         //-------
                         if (fidx==3)
                         {
@@ -428,6 +443,7 @@ void obj_model::load(char *filepath)
 
                         }//end triangle loader
 
+                        //if 4 indices, its a quad (4 sided polygon - duh) 
                         //------- 
                         if (fidx==4)
                         {
@@ -445,6 +461,48 @@ void obj_model::load(char *filepath)
 
 
                         }//end quad loader 
+                        
+                        //---------------//
+
+                        //N number of points loader - faces and line geom 
+                        if (fidx>4)
+                        {
+                            if(poly_is_linetype)
+                            {
+                                std::cout << "line type!!\n";
+                            }else{
+                                std::cout << "face type!!\n";
+                            } 
+
+                            //if we made it here, 
+                            //we know what type of geom we are looking for 
+                            //but we dont know how many indices, lets walk it again to find out 
+
+                            //DEBUG starting at 2 is a bad hack it skips the "l" and the " " (space)
+                            for (int a=3;a<tokenized.size();a++)
+                            {   
+                                //debug add better error checking 
+                                //if( tokenized.at(a)[0] ) {}
+
+                                ptn  = std::stoi( tokenized.at(a) );
+                                ptn1 = std::stoi( tokenized.at(a-1) );
+
+                                lines[num_lines].push_back(ptn);
+                                lines[num_lines].push_back(ptn1);
+                                num_lines++;
+
+                            }
+
+
+
+
+                            // std::cout << " pt1 is " << pt1 << "\n";
+                            // std::cout << " pt2 is " << pt2 << "\n";
+                            // std::cout << " pt3 is " << pt3 << "\n";
+                            // std::cout << " pt4 is " << pt4 << "\n";
+
+                        }//end N sides loader 
+
                     }//end face loader
 
                     //-----------------------------//

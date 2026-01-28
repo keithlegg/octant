@@ -1,4 +1,4 @@
-# Octant - Multi axis motion control   
+# FlowState - Multi axis motion control   
    
 "If you're thinking of writing your own controller software and hoping it's more reliable than open source or commercially available products, you're truly out to lunch."
 
