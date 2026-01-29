@@ -1748,7 +1748,7 @@ class cam_op(cnc_op):
             #self.cam_dc.meshname     = infile
 
         else:
-            print( "## batch_slicer: cache files does not exist. ")
+            print( "## batch_slicer: cache files do not exist. ")
 
             #cache the mesh object
             self.cam_dc.folderpath   = path

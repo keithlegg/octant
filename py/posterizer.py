@@ -405,7 +405,7 @@ def tesselation_to_strokes():
 ##-------------------------##
 def test_slicer():
     kam = cam_op()
-    kam.load('../pulser/3d_obj/head.obj')
+    kam.load('../pulser/3d_obj/head_vn.obj')
     #kam.show()
     p = kam.slice_example('../pulser/3d_obj/', 'head.obj', [0,1])
     print(p)
@@ -418,13 +418,14 @@ def test_slicer():
 
 def test_slicer2():
     kam = cam_op()
-    kam.load('../pulser/3d_obj/head.obj')
+    #kam.load('../pulser/3d_obj/head_vn.obj')
     #kam.show()
     #kam.batch_slicer( path , infile, heights, scan_axis ='z'):
-    p = kam.batch_slicer( '../pulser/3d_obj/', 'head.obj', [], scan_axis ='z')
+    p = kam.batch_slicer( '../pulser/3d_obj/', 'head_vn.obj', [0,1], scan_axis ='z')
 
 
- 
+test_slicer2()
+
 
 ##-------------------------##
 

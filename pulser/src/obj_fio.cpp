@@ -460,7 +460,7 @@ void obj_model::load(char *filepath)
                         }//end quad loader 
                         
                        //---------------//
-                       /*
+                        
                        //N number of points loader - faces and line geom 
                        if (fidx>4)
                        {
@@ -490,7 +490,7 @@ void obj_model::load(char *filepath)
 
                             }
                         }//end N sides loader 
-                        */    
+                          
                     }//end face loader
 
                     //-----------------------------//

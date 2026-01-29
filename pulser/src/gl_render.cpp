@@ -167,19 +167,14 @@ std::string cmd_buffer;
 char cs[100];
 char s[100];
 
+extern cncglobals   cg;
+extern point_ops    PG;
+extern cnc_plot     motionplot;
+extern cnc_parport  parport;
 
-//extern timer mtime;
-extern timer* pt_mtime;
 
-extern point_ops PG;
-
-
-extern cnc_plot motionplot;
+extern timer*    pt_mtime;
 extern cnc_plot* pt_motionplot;
-
-extern cnc_parport parport;
-
-extern cncglobals cg;
 
 //quadrature experiment 
 unsigned char portdata;
@@ -255,16 +250,16 @@ extern RGBType *pt_gridcolor2;
 //color palette 
 
 //wireframe colors
-#define pt_clr1 glColor3f(1,.3,.6)
-#define pt_clr2 glColor3f(1,.3,.6)
-#define pt_clr3 glColor3f(1,.3,.6)
+#define pt_clr1 glColor3f(0.5, 0.3, 0.6)
+#define pt_clr2 glColor3f(0.5, 0.3, 0.6)
+#define pt_clr3 glColor3f(0.0, 0.0, 0.6)
 
 //face normals
 #define nrml_clr glColor3f(1,.3,.6)
 
 //quill locator color
-#define loc_active_clr glColor3f(1.f,.3f,.6f)
-#define loc_idle_clr glColor3f(.3f,.6f,.8f)
+#define loc_active_clr glColor3f(0.5f, 0.9f, 0.6f)
+#define loc_idle_clr glColor3f(   .3f, 0.6f, 0.8f)
 
 //text color
 #define text_clr glColor3f(0.6f, 1.0f, 0.0f)
@@ -275,7 +270,7 @@ extern RGBType *pt_gridcolor2;
 #define enabled_txt_clr2 glColor3f(.5f, 0.7f, 0.6f)
 
 
-#define path_sld_clr glColor3f(0.4f , 0.6f, 0.8f)
+#define path_sld_clr glColor3f(0.4f , 0.9f, 0.7f)
 #define path_strt_clr glColor3f(1.0f, 0.0f, 0.0f)
 #define path_end_clr glColor3f(0.0f , 1.0f, 0.0f)
 
@@ -1317,11 +1312,12 @@ void render_loop(void)
         //glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
         //glBindTexture(GL_TEXTURE_2D, texture[2]);   // choose the texture to use.
 
-        GLfloat ke[] = { 0.0, 0.0, 0.00, 1.0 };
+        GLfloat ke[] = { 0.0, 0.0, 0.0, 1.0 };
         GLfloat ka[] = { 0.0, 0.0, 0.0, 1.0 };
         GLfloat kd[] = { 0.5, 0.5, 0.3, 1.0 };
         GLfloat ks[] = { 0.2, 0.2, 0.2, 1.0 };
         GLfloat ns[] = { 80.0 };
+
         glMaterialfv(GL_FRONT, GL_EMISSION, ke);
         glMaterialfv(GL_FRONT, GL_AMBIENT, ka);
         glMaterialfv(GL_FRONT, GL_DIFFUSE, kd);
@@ -1334,7 +1330,6 @@ void render_loop(void)
         }
         
         //std::cout << " num tris " << pt_model_buffer->num_tris << "\n";
-
   
         glBegin(GL_TRIANGLES);  
             for (uint p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
@@ -1365,7 +1360,7 @@ void render_loop(void)
                 {
                     glColor3f(rgb1.x,rgb1.y,rgb1.z); 
                 }else{
-                    glColor3f(.3,.3,.6);
+                    pt_clr1;
                 };
 
                 //Vector2 uv = pt_model_buffer->uvs[tri1];
@@ -1384,7 +1379,7 @@ void render_loop(void)
                 {                
                     glColor3f(rgb2.x,rgb2.y,rgb2.z); 
                 }else{
-                    glColor3f(1,.3,.6);
+                    pt_clr2;
                 };
 
                 //Vector2 uv = pt_model_buffer->uvs[tri2];
@@ -1406,6 +1401,7 @@ void render_loop(void)
                     glColor3f(rgb3.x,rgb3.y,rgb3.z); 
                 }else{
                     //glColor3f(.3,.3,.6);
+                    pt_clr3;
                 };                
                 //Vector2 uv = pt_model_buffer->uvs[tri3];
                 //glTexCoord2f(uv.x, uv.y);

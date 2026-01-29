@@ -606,14 +606,13 @@ void cnc_plot::run_sim(void)
 
 void cnc_plot::process_vec(uint window_idx)
 {
-    bool debug = false;
+    bool debug = true;
+    float low_thresh = .0001;
 
     if(debug)
     {   
         std::cout << " ------------------- \n";
         std::cout << " called prcess vec \n";
-        std::cout << " pplu  x:" << cg.pp1u_x << " y:"<< cg.pp1u_x << " z:"<< cg.pp1u_x << "\n";
-     
     }
 
     //set up the vector to process 
@@ -623,21 +622,49 @@ void cnc_plot::process_vec(uint window_idx)
     //calculate length of the vector 
     Vector3 offset = e_p - s_p;
     
-    uint numx = 0;
-    uint numy = 0;
-    uint numz = 0;
+    float veclen = offset.length();
+            
+    if(veclen!=0)
+    {
 
-    numx = offset.length()*cg.pp1u_x;
-    numy = offset.length()*cg.pp1u_y;
-    numz = offset.length()*cg.pp1u_z;
-    
-    if(debug)
-    {    
-        //std::cout << "num calc " << offset.length() <<" "<< cg.pp1u_x << " " << cg.pp1u_y << " " << cg.pp1u_z << "\n";    
-        std::cout << " num calc " << numx << " " << numy << " " << numz << "\n";
-    }
+        if(debug)
+        {   
+            std::cout << " pplu          x:" << cg.pp1u_x << " y:"<< cg.pp1u_x << " z:"<< cg.pp1u_x << "\n";
+         
+        }
 
-    pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
+        uint numx = 0;
+        uint numy = 0;
+        uint numz = 0;
+        
+        //uint dyn_divs_x = cg.pp1u_x;
+        //uint dyn_divs_y = cg.pp1u_y;
+        //uint dyn_divs_z = cg.pp1u_z;
+
+        numx = veclen * cg.pp1u_x;
+        numy = veclen * cg.pp1u_y;
+        numz = veclen * cg.pp1u_z;
+ 
+        //yes I know we already checked 0 length, I dont care 
+        if(veclen!=0 && veclen>low_thresh)
+        {
+            if(debug)
+            {    
+                std::cout << " length, divs  " << offset.length() <<" "<< cg.pp1u_x << " " << cg.pp1u_y << " " << cg.pp1u_z << "\n";    
+                std::cout << " num calc      " << numx << " " << numy << " " << numz << "\n";
+            }
+
+            pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
+        }else{
+            std::cout << "vector length too low, skipping \n";
+        }
+
+    }else{
+        if(debug)
+        { 
+            //std::cout << "  skipping zero length vector\n"; 
+        }
+    }//if zero length 
 
 }
 

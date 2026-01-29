@@ -411,6 +411,19 @@ void cncglobals::load_cfg_file( void )
                         }
     
                         /**************************************/  
+
+                        
+                        if (tokenized.at(0).find("op_loadpathobj")!= std::string::npos)
+                        {   
+                            std::string buffer;
+                            buffer = tokenized.at(1);
+                            std::cout << "DEBUG LOAD 3D OBJECT PATH OBJECT  \n";
+                            
+                            pt_motionplot->import_path_from_obj( buffer );
+
+                        }
+
+                        /**************************************/  
                         // DEBUG - NOT DONE -
                         // location - OBJ file   
                         if (tokenized.at(0).find("op_loadlocs")!= std::string::npos)
