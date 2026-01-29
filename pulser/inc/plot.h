@@ -154,6 +154,12 @@ class cnc_plot
         void run_sim(void);
         void update_sim(void);
         void timer_init(void);
+        
+        //-----------  
+        // experimental tools
+
+        void prim_shape(uint shape);
+        
 
         //-----------  
         // motion path interface backend

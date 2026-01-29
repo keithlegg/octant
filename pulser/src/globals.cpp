@@ -112,6 +112,31 @@ const int MAX_TOKENS_PER_LINE = 20;
 
 
 /*******************************************************/
+
+//DEBUG not done - generate a square polygon basically 
+
+//use a throw away object to build a cube 
+//a lot of memory wasted for a simple task... hmm 
+
+void cncglobals::get_machine_xtntx(void)
+{
+    //always assume a 2D rectangle on Z positive up axis 
+    
+    //obj_model* pt_obj2d_loader  = new obj_model;
+    //pt_obj2d_loader->reset();
+
+    //void cnc_plot::prim_shape(uint shape)
+
+    // xtnx_maxx = Vector3(x_xtntx, x_xtntx, 0); 
+    // xtnx_minx = Vector3(x_xtntx, x_xtntx, 0); 
+    // xtnx_maxy = Vector3(x_xtntx, x_xtntx, 0); 
+    // xtnx_miny = Vector3(x_xtntx, x_xtntx, 0); 
+
+
+}
+
+
+/*******************************************************/
 //DEBUG this may be pointless 
 //trying to do memory housekeeping 
 void exit_program(void)

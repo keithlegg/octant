@@ -363,7 +363,7 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="test")
     {
         //std::string path = "3d_obj/flatball.obj";
-        load_py_obj(a2);                  
+        //load_py_obj(a2);                  
     }
 
     //------------------

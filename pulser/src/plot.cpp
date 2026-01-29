@@ -116,6 +116,37 @@ void cnc_plot::toolpath_extents(void)
 
 
 /***************************************/
+/*
+    DEBUG NOT DONE 
+    generate primitive shapes and make into pts to use 
+*/
+
+void cnc_plot::prim_shape(uint shape)
+{
+
+    obj_model* pt_obj2d_loader  = new obj_model;
+    pt_obj2d_loader->reset();
+
+    pt2d mypt;
+
+    // void point_ops::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_orig, float dia, int *num)
+    //pt_obj2d_loader->calc_circle(pt2d &mypt, 3, 0, 0, 1.0, int *num)
+
+    //--
+
+    // void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
+
+    //--    
+    // int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y, 
+    //     float p2_x, float p2_y, float p3_x, float p3_y, float *i_x, float *i_y)
+
+    //--
+    
+}
+
+
+
+/***************************************/
 
 /*
    DEBUG NOT DONE 

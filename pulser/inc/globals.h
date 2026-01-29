@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Vectors.h"
+
 
 
 //**********************************//
@@ -213,7 +215,18 @@ class cncglobals
         bool z_limitsw_pin_inv = false;
 
 
+
+        //DEBUG - RENAME THESE - styled after object bbox 
+        //2D bbox - 4 points of square - dynamically generated from origin point  
+        Vector3 xtnx_maxx; 
+        Vector3 xtnx_minx; 
+        Vector3 xtnx_maxy; 
+        Vector3 xtnx_miny; 
+ 
+
         /*******************/
+        void get_machine_xtntx(void);
+
         std::vector<std::string> tokenizer( const std::string&, char);
         int cvt_int( const std::string&);
 
