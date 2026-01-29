@@ -71,7 +71,9 @@ class point_ops
     int get_line_intersection(float, float, float, float, float, float, float, float, float*, float *);
 
     void calc_circle ( std::vector<Vector3> *out_coords, 
-                       uint numdiv, float x_orig, float y_orig, float dia );    
+                       uint numdiv, uint axis, 
+                       float x_orig, float y_orig, float dia );
+                          
 
     void calc_line(  pt2d *out_coords, int *pt1, int *pt2, int *num);
 

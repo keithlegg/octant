@@ -282,8 +282,6 @@ void parse_cmd_text(std::string *buffer)
         //std::cout << "tp_in        -debug   build a pulsetrain cache    \n";  
         //std::cout << "------------------------------------------        \n";  
         std::cout << "                                                  \n";
-
-
          
         /*****************/
         if(a2=="dm")
@@ -339,7 +337,26 @@ void parse_cmd_text(std::string *buffer)
     
     /**********************************************************************/
 
+ 
+    if(a1=="prim")
+    {
+        std::cout << "TEST! running prim generator \n";
 
+        if(a2=="circle")
+        {
+            if(a3!="")
+            {  
+                v11 = std::stof(a3);
+
+                if(a4=="x"||a4=="0"){pt_motionplot->prim_shape(0, 0, v11);}    
+                if(a4=="y"||a4=="1"){pt_motionplot->prim_shape(0, 1, v11);}  
+                if(a4=="z"||a4=="2"){pt_motionplot->prim_shape(0, 2, v11);}                                                 
+            }
+        } 
+
+    }
+    
+    //------------------
     //run external tools 
     if (a1=="python")
     {
@@ -355,8 +372,7 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="test")
     {
-        std::cout << "TEST! running prim generator \n";
-        pt_motionplot->prim_shape(0);
+
 
     }
 

@@ -129,27 +129,42 @@ void cnc_plot::toolpath_extents(void)
 
 */
 
-void cnc_plot::prim_shape(uint shape)
+void cnc_plot::prim_shape(uint shape, uint axis, float size)
 {
 
     obj_model* pt_obj2d_loader  = new obj_model;
     pt_obj2d_loader->reset();
-
     
     std::vector<Vector3> output_pts;
-    output_pts.reserve( 200 );      
+    output_pts.reserve( 400 );      
+     
+
+    uint divs      = 8;
+    float ox,oy,oz = 0;
 
     //-----------//
+    
+    // calc_circle ( std::vector<Vector3> *out_coords, 
+    //               uint numdiv, uint axis, 
+    //               float x_orig, float y_orig, float dia )
 
     if(shape==0)
     {
-        pt_obj2d_loader->calc_circle(&output_pts, 8, 0, 0, 1.0);
+        if(axis==0){ pt_obj2d_loader->calc_circle(&output_pts, divs, 0, ox, oy, size); }
+        if(axis==1){ pt_obj2d_loader->calc_circle(&output_pts, divs, 1, ox, oy, size); }
+        if(axis==2){ pt_obj2d_loader->calc_circle(&output_pts, divs, 2, ox, oy, size); }                
 
-        std::cout << "done making "<< output_pts.size() << " points \n";
+        for (uint v=0;v<output_pts.size();v++)
+        {
+            Vector3 pt = output_pts[v];
+            add_file_vec(&pt);
+        }
+        
+        add_prgvec_ply(); 
+        copy_prg_to_toolpath();
+    
+    }//circle prim 
 
-        Vector3 pt = output_pts[0];
-        std::cout << pt.x << " " << pt.y << " " << pt.z << "\n";
-    }
 
     //-----------//
 

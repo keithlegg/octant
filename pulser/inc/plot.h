@@ -158,7 +158,7 @@ class cnc_plot
         //-----------  
         // experimental tools
 
-        void prim_shape(uint shape);
+        void prim_shape(uint shape, uint axis, float size);
         
 
         //-----------  

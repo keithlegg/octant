@@ -367,7 +367,8 @@ int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p
 //DEBUG - FIX THIS 
 
 void point_ops::calc_circle ( std::vector<Vector3> *out_coords, 
-                              uint numdiv, float x_orig, float y_orig, float dia )
+                              uint numdiv, uint axis, 
+                              float x_orig, float y_orig, float dia )
 {
 
     //check for null pointer 
@@ -375,25 +376,34 @@ void point_ops::calc_circle ( std::vector<Vector3> *out_coords,
     {
 
         uint divamt = (uint)(360/numdiv);
-        int rotation_offset = 45;
+        float rotation_offset = 0;
+
         //std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
         // uint num_toolpath_ids;
      
        
         uint npts = 0;
 
-         
-        for (uint i = 0; i <=360; i++)
-        {  
-           float px = 0;
-           float py = 0;
+        float px = 0;
+        float py = 0;
 
-           // px = x_orig + (sin(deg_to_rad(i))*dia) ;
-           // py = y_orig + (cos(deg_to_rad(i))*dia) ;
+        for (uint i = 0; i<=360; i++)
+        {  
+           px = x_orig + sin(deg_to_rad(i))*dia ;
+           py = y_orig + cos(deg_to_rad(i))*dia ;
            
-           //std::cout << "point gen is " << x_orig << " "<< y_orig << "\n";
+           std::cout << "point gen is " << axis << " " << px << " "<< py << "\n";
            
-           Vector3 tmp = Vector3(px, py, 0);
+           Vector3 tmp = Vector3(0, 0, 0);
+
+           if(axis==0){ tmp.set(0,  px , py); }
+           if(axis==1){ tmp.set(px, 0  , py); }
+           if(axis==2){ tmp.set(px, py , 0 ); }                      
+
+           // if(axis==1){tmp = Vector3(px, 0, py); }
+           // if(axis==2){tmp = Vector3(px, py, 0); }
+           
+
 
            out_coords->push_back( tmp );
         }  
