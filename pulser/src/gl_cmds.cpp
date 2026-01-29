@@ -362,8 +362,9 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="test")
     {
-        //std::string path = "3d_obj/flatball.obj";
-        //load_py_obj(a2);                  
+        std::cout << "TEST! running prim generator \n";
+        pt_motionplot->prim_shape(0);
+
     }
 
     //------------------

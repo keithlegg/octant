@@ -364,24 +364,47 @@ int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p
 }
 
 /***************************************/
-//DEBUG - old code that needs to be updated 
+//DEBUG - FIX THIS 
 
-//not convinced this totally works due to roundoff error, but its close enough
-void point_ops::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_orig, float dia, int *num)
+void point_ops::calc_circle ( std::vector<Vector3> *out_coords, 
+                              uint numdiv, float x_orig, float y_orig, float dia )
 {
-    int divamt = (int)(360/numdiv);
-    int rotation_offset = 45;
 
-    for (int i = 0; i <360; i=i+divamt)
-    {  
-        //DEBUG DTR was in math_ops
-        //out_coords[*num].x = x_orig + (sin(dtr(i-rotation_offset))*dia);
-        //out_coords[*num].y = y_orig + (cos(dtr(i-rotation_offset))*dia);
-        out_coords[*num].x = x_orig + (sin(i-rotation_offset)*dia);
-        out_coords[*num].y = y_orig + (cos(i-rotation_offset)*dia);
+    //check for null pointer 
+    if( out_coords != 0) 
+    {
 
-        *num = *num+1;
-    }
+        uint divamt = (uint)(360/numdiv);
+        int rotation_offset = 45;
+        //std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
+        // uint num_toolpath_ids;
+     
+       
+        uint npts = 0;
+
+         
+        for (uint i = 0; i <=360; i++)
+        {  
+           float px = 0;
+           float py = 0;
+
+           // px = x_orig + (sin(deg_to_rad(i))*dia) ;
+           // py = y_orig + (cos(deg_to_rad(i))*dia) ;
+           
+           //std::cout << "point gen is " << x_orig << " "<< y_orig << "\n";
+           
+           Vector3 tmp = Vector3(px, py, 0);
+
+           out_coords->push_back( tmp );
+        }  
+
+
+
+     
+   
+    
+    }//check null pointer 
+
 
 }
 

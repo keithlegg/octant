@@ -119,6 +119,14 @@ void cnc_plot::toolpath_extents(void)
 /*
     DEBUG NOT DONE 
     generate primitive shapes and make into pts to use 
+
+    Args:
+    
+        shape:
+            0 - circle 
+            1 - box
+
+
 */
 
 void cnc_plot::prim_shape(uint shape)
@@ -127,21 +135,33 @@ void cnc_plot::prim_shape(uint shape)
     obj_model* pt_obj2d_loader  = new obj_model;
     pt_obj2d_loader->reset();
 
-    pt2d mypt;
+    
+    std::vector<Vector3> output_pts;
+    output_pts.reserve( 200 );      
 
-    // void point_ops::calc_circle ( pt2d *out_coords, int numdiv, int x_orig, int y_orig, float dia, int *num)
-    //pt_obj2d_loader->calc_circle(pt2d &mypt, 3, 0, 0, 1.0, int *num)
+    //-----------//
 
-    //--
+    if(shape==0)
+    {
+        pt_obj2d_loader->calc_circle(&output_pts, 8, 0, 0, 1.0);
+
+        std::cout << "done making "<< output_pts.size() << " points \n";
+
+        Vector3 pt = output_pts[0];
+        std::cout << pt.x << " " << pt.y << " " << pt.z << "\n";
+    }
+
+    //-----------//
 
     // void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
 
-    //--    
+    //-----------//
+      
     // int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y, 
     //     float p2_x, float p2_y, float p3_x, float p3_y, float *i_x, float *i_y)
 
-    //--
-    
+    //-----------//
+
 }
 
 
