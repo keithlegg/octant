@@ -132,11 +132,10 @@ void reload_paths(void)
 void unload_vec(void)
 {
     std::cout << "# dumping cached vectors \n";  
-
-    //-- 
-    //std::vector<motion_idx> motion_prg[MAX_MOTION_NUM]; 
-    //std::cout << pt_motionplot->motion_prg.at(0).name << "\n";
     
+    //stop the runing simulation
+    pt_motionplot->reset();
+
     //---
     pt_motionplot->clear_toolpaths();
     pt_motionplot->rapidmove_vecs.clear();
@@ -151,17 +150,11 @@ void unload_vec(void)
     }
 
     clear_linebuffers();
-
-
-
 }
-
-
 
 /***************************************/
 void unload_obj(void)
 {
-    std::cout << "# dumping cached 3D object(s) \n";  
     pt_model_buffer->reset();
 }
 

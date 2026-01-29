@@ -49,19 +49,19 @@
 
 
 
-
 /******************************************/
+
+//DEBUG not done 
 void cnc_plot::save_motionfile(void)
 {
     std::cout << "SAVE MOTION !\n";
-
-
-    
 };
 
 
 
 /******************************************/
+
+//DEBUG not done 
 void cnc_plot::load_motionfile(void)
 {
     std::cout << "LOAD MOTION !\n";

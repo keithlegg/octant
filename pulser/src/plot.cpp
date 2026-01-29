@@ -589,7 +589,6 @@ void cnc_plot::reset(void)
     // Vector3 up_vec   = Vector3(quill_pos.x, retract_height, quill_pos.z);
     // rapidmove_vecs.push_back(quill_pos);
     // update_toolpaths();
-    
 
     //this resets the internals 
     mtime.stop(); 
