@@ -118,6 +118,9 @@ void cnc_plot::toolpath_extents(void)
 /***************************************/
 /*
     DEBUG NOT DONE 
+
+    ITS BUGGY - WORKS SOIMETIMES... CHRIST THIS IS ANNOYING 
+
     generate primitive shapes and make into pts to use 
 
     Args:
@@ -125,9 +128,8 @@ void cnc_plot::toolpath_extents(void)
         shape:
             0 - circle 
             1 - box
-
-
 */
+
 
 void cnc_plot::prim_shape(uint shape, uint axis, float size)
 {
@@ -144,9 +146,7 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
 
     //-----------//
     
-    // calc_circle ( std::vector<Vector3> *out_coords, 
-    //               uint numdiv, uint axis, 
-    //               float x_orig, float y_orig, float dia )
+    // calc_circle args = (numdiv axis x_orig y_orig dia )
 
     if(shape==0)
     {
@@ -167,6 +167,28 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
 
 
     //-----------//
+    if(shape==1)
+    {
+
+        //void point_ops::calc_square ( std::vector<Vector3> *out_coords, 
+        //                      Vector3* origin, float size) 
+
+        Vector3 orig = Vector3(0,0,0);
+
+        pt_obj2d_loader->calc_square(&output_pts, &orig, size); 
+     
+        for (uint v=0;v<output_pts.size();v++)
+        {
+            std::cout << "HEY \n";
+            Vector3 pt = output_pts[v];
+            add_file_vec(&pt);
+        }
+        
+        add_prgvec_ply(); 
+        copy_prg_to_toolpath();
+    }
+
+    //-----------//
 
     // void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
 
@@ -175,7 +197,7 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
     // int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y, 
     //     float p2_x, float p2_y, float p3_x, float p3_y, float *i_x, float *i_y)
 
-    //-----------//
+ 
 
 }
 

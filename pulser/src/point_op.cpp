@@ -363,6 +363,40 @@ int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p
     return 1;
 }
 
+
+void point_ops::calc_square ( std::vector<Vector3> *out_coords, 
+                              Vector3* origin, float size) 
+{
+
+    Vector3 tmp = Vector3(0, 0, 0);
+
+    tmp.set(origin->x-size, origin->y+size, 0); //#tl
+    out_coords->push_back( tmp ); 
+
+    tmp.set(origin->x+size, origin->y+size, 0); //#tr
+    out_coords->push_back( tmp ); 
+
+    tmp.set(origin->x+size, origin->y-size, 0); //#br
+    out_coords->push_back( tmp ); 
+
+    tmp.set(origin->x-size, origin->y-size, 0); //#bl        
+    out_coords->push_back( tmp ); 
+
+
+    //make periodic - append first point back  
+    tmp.set(origin->x-size, origin->y+size, 0); //#tl       
+    out_coords->push_back( tmp ); 
+
+    //else:
+    //    out.append( ( -size,  size)  )
+    //    out.append( (  size,  size)  )
+    //    out.append( (  size, -size)  )
+    //    out.append( ( -size, -size)  )
+ 
+    
+
+}
+
 /***************************************/
 //DEBUG - FIX THIS 
 
@@ -375,44 +409,34 @@ void point_ops::calc_circle ( std::vector<Vector3> *out_coords,
     if( out_coords != 0) 
     {
 
-        uint divamt = (uint)(360/numdiv);
-        float rotation_offset = 0;
+        //float rot_offset = 0;
+        
 
-        //std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
-        // uint num_toolpath_ids;
-     
-       
-        uint npts = 0;
+        uint divamt = (uint)(360/numdiv);
 
         float px = 0;
         float py = 0;
 
-        for (uint i = 0; i<=360; i++)
+        //for (uint i = 0; i<=360; i++)
+        for (uint i = 0; i<=360; i=(i+divamt) )
         {  
-           px = x_orig + sin(deg_to_rad(i))*dia ;
-           py = y_orig + cos(deg_to_rad(i))*dia ;
+           // this is - orig vars not initializing properly 
+           // px = x_orig + sin(deg_to_rad(i))*dia ;
+           // py = y_orig + cos(deg_to_rad(i))*dia ;
            
-           std::cout << "point gen is " << axis << " " << px << " "<< py << "\n";
-           
+           px = sin(deg_to_rad(i))*dia ;
+           py = cos(deg_to_rad(i))*dia ;
+
            Vector3 tmp = Vector3(0, 0, 0);
 
            if(axis==0){ tmp.set(0,  px , py); }
            if(axis==1){ tmp.set(px, 0  , py); }
            if(axis==2){ tmp.set(px, py , 0 ); }                      
-
-           // if(axis==1){tmp = Vector3(px, 0, py); }
-           // if(axis==2){tmp = Vector3(px, py, 0); }
-           
-
-
+        
+           //std::cout << "adding pt  " << i << "\n";
            out_coords->push_back( tmp );
         }  
 
-
-
-     
-   
-    
     }//check null pointer 
 
 

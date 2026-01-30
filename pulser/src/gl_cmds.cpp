@@ -337,20 +337,38 @@ void parse_cmd_text(std::string *buffer)
     
     /**********************************************************************/
 
- 
+
     if(a1=="prim")
     {
-        std::cout << "TEST! running prim generator \n";
-
+        
+        //args - prim circle [size] [axis]
         if(a2=="circle")
         {
             if(a3!="")
             {  
                 v11 = std::stof(a3);
+        
+                //std::cout << " args "<< a2<<" "<< a3<< " " << a4<<"\n";
 
                 if(a4=="x"||a4=="0"){pt_motionplot->prim_shape(0, 0, v11);}    
                 if(a4=="y"||a4=="1"){pt_motionplot->prim_shape(0, 1, v11);}  
                 if(a4=="z"||a4=="2"){pt_motionplot->prim_shape(0, 2, v11);}                                                 
+            }
+        } 
+        
+        //-----------------
+        //args - prim square [size]          
+        if(a2=="square")
+        {
+            if(a3!="")
+            {  
+                v11 = std::stof(a3);
+        
+                //std::cout << " args "<< a2<<" "<< a3<< " " << a4<<"\n";
+                pt_motionplot->prim_shape(1, 0, v11);
+                
+                //if(a4=="x"||a4=="0"){pt_motionplot->prim_shape(1, 0, v11);}    
+                                                
             }
         } 
 
