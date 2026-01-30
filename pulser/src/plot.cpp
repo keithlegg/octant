@@ -83,6 +83,10 @@
     extern std::vector<Vector3> linebuffer2_rgb; 
 #endif 
 
+#if DO_BUILD_GUI == false
+    #include "obj_model.h"   
+#endif 
+
 
 point_ops PG;
 

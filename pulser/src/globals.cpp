@@ -142,8 +142,10 @@ void cncglobals::get_machine_xtntx(void)
     //periodic    
     pt_motionplot->add_file_vec(&pt1);  
 
+    //this makes a toolpath - we dont really want that 
     pt_motionplot->add_prgvec_ply(); 
     pt_motionplot->copy_prg_to_toolpath();
+    
 
 
 }
