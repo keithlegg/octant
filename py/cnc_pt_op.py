@@ -590,8 +590,6 @@ class pop3d(object):
             else:
                 self.linegeom_fr_points( curvepts ) 
 
- 
-
     ##-------------------------------------------##            
     def bbox_buffer_2d(self, bbox, size):
         """ was called add_margin_bbox 
@@ -617,7 +615,6 @@ class pop3d(object):
             args:
                bbox   - iterable of 4 numbers (PIL bbox [left, top, right, bottom]) 
                offset - (int) adds a margin to the size of the page edges 
-
         """
         
         out = []

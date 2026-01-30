@@ -425,6 +425,12 @@ void parse_cmd_text(std::string *buffer)
     }
  
     //------------------
+    if (a1=="mx")
+    {
+        cg.get_machine_xtntx();
+    }
+
+    //------------------
     if (a1=="extent"||a1=="extents")
     {
                 

@@ -119,33 +119,30 @@ const int MAX_TOKENS_PER_LINE = 20;
 //a lot of memory wasted for a simple task... hmm 
 
 void cncglobals::get_machine_xtntx(void)
-{
+{   
+    std::cout << " machine extnts called \n";
+
     //always assume a 2D rectangle on Z positive up axis 
     
-    obj_model* pt_obj2d_loader  = new obj_model;
-    pt_obj2d_loader->reset();
-
-    std::vector<Vector3> output_pts;
-    output_pts.reserve( 400 );  
+    // obj_model* pt_obj2d_loader  = new obj_model;
+    // pt_obj2d_loader->reset();
+    // std::vector<Vector3> output_pts;
+    // output_pts.reserve( 400 );  
     
-    /*
-    Vector3 orig = Vector3(0,0,0);
-    pt_obj2d_loader->calc_square(&output_pts, &orig, 0, size);  
+    Vector3 pt1 = Vector3( xmax_xtntx, ymin_xtntx, 0); 
+    Vector3 pt2 = Vector3( xmin_xtntx, ymax_xtntx, 0); 
+    Vector3 pt3 = Vector3( xmin_xtntx, ymin_xtntx, 0); 
+    Vector3 pt4 = Vector3( xmax_xtntx, ymax_xtntx, 0); 
+    
+    //DEBUG not what we really want, just for testing 
+    pt_motionplot->add_file_vec(&pt1);
+    pt_motionplot->add_file_vec(&pt2);
+    pt_motionplot->add_file_vec(&pt3);
+    pt_motionplot->add_file_vec(&pt4);    
 
-  
-    for (uint v=0;v<output_pts.size();v++)
-    {
-        Vector3 pt = output_pts[v];
-        add_file_vec(&pt);
-    }
-    add_prgvec_ply(); 
-    copy_prg_to_toolpath();
+    pt_motionplot->add_prgvec_ply(); 
+    pt_motionplot->copy_prg_to_toolpath();
 
-    // xtnx_maxx = Vector3(x_xtntx, x_xtntx, 0); 
-    // xtnx_minx = Vector3(x_xtntx, x_xtntx, 0); 
-    // xtnx_maxy = Vector3(x_xtntx, x_xtntx, 0); 
-    // xtnx_miny = Vector3(x_xtntx, x_xtntx, 0); 
-    */
 
 }
 
