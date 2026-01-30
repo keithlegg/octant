@@ -270,6 +270,8 @@ extern RGBType *pt_gridcolor2;
 #define enabled_txt_clr2 glColor3f(.5f, 0.7f, 0.6f)
 
 
+#define dispvec_clr glColor3f(0.0f , 0.9f, 0.3f)
+
 #define path_sld_clr glColor3f(0.4f , 0.9f, 0.7f)
 #define path_strt_clr glColor3f(1.0f, 0.0f, 0.0f)
 #define path_end_clr glColor3f(0.0f , 1.0f, 0.0f)
@@ -1336,9 +1338,7 @@ void render_loop(void)
         {
             glColor3f(1.,1.,1.);
         }
-        
-        //std::cout << " num tris " << pt_model_buffer->num_tris << "\n";
-  
+
         glBegin(GL_TRIANGLES);  
             for (uint p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             { 
@@ -1356,12 +1356,6 @@ void render_loop(void)
                 Vector3 rgb1 = pt_model_buffer->vtxrgb[tri1-1];
                 Vector3 rgb2 = pt_model_buffer->vtxrgb[tri2-1];
                 Vector3 rgb3 = pt_model_buffer->vtxrgb[tri3-1];
-                
-
-                //use one color for now
-                //glColor3f(.7,.7,.5);   //use one color for now 
-
-                //std::cout << "plyidx " << tri1 << " " << tri2 << " " << tri3 << "\n";
 
                 //------------------------------//
                 if (tog_vtxrgb)
@@ -1408,7 +1402,6 @@ void render_loop(void)
                 {
                     glColor3f(rgb3.x,rgb3.y,rgb3.z); 
                 }else{
-                    //glColor3f(.3,.3,.6);
                     pt_clr3;
                 };                
                 //Vector2 uv = pt_model_buffer->uvs[tri3];
@@ -1461,7 +1454,6 @@ void render_loop(void)
                     glColor3f(1.,1.,0); //hack for now
                     glVertex3f(mv.x, mv.y, mv.z);
                 glEnd();
-
 
                 glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full);  
@@ -1525,11 +1517,10 @@ void render_loop(void)
         //Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON. 
         
         /***********/
-        //turning off motion path rendering until I figure it out 
-             
         if (disp_ply_solo)
         {
-            /*
+            //std::cout << "solo display "<< pt_motionplot->tp_idxs[disp_ply_solo_id].size() << " vectors in ply \n";
+             
             for (uint ii=1;ii<pt_motionplot->tp_idxs[disp_ply_solo_id].size();ii++)
             {
                 glBegin(GL_LINES);
@@ -1543,7 +1534,8 @@ void render_loop(void)
                     glVertex3f(ev.x, ev.y, ev.z);
                 glEnd();
            }//iterate all ids in single polygon
-           */         
+                   
+
         }//single poly display 
         else
         {
@@ -1561,7 +1553,6 @@ void render_loop(void)
                         ev  = pt_motionplot->toolpath_vecs[ei];
                         //rgb = linebuffer1_rgb[p_i];     
 
-
                         if(path_render_mode==0){ path_sld_clr;}
                         if(path_render_mode==1){path_strt_clr;}
                         glVertex3f(sv.x, sv.y, sv.z);
@@ -1577,12 +1568,37 @@ void render_loop(void)
       
 
         /***********/
-  
-        glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
+        // not sure why these were here
+        //glMaterialfv(GL_FRONT, GL_EMISSION, emis_off);
+        //glMaterialfv(GL_FRONT, GL_DIFFUSE, emis_full); 
 
     }
 
+    //-----------------------
+    
+    //static display vectors 
+    if (DRAW_GEOM)
+    {
+        for (uint i=0;i<pt_motionplot->num_disp_ids;i++)
+        {
+            for (uint ii=1;ii<pt_motionplot->disp_idxs[i].size();ii++)
+            {
+
+                glBegin(GL_LINES);
+                    uint si= pt_motionplot->disp_idxs[i][ii-1];
+                    uint ei= pt_motionplot->disp_idxs[i][ii];
+                    sv  = pt_motionplot->disp_vecs[si];
+                    ev  = pt_motionplot->disp_vecs[ei];
+                   
+                    dispvec_clr;
+                    glVertex3f(sv.x, sv.y, sv.z);
+                    //dispvec_clr
+                    glVertex3f(ev.x, ev.y, ev.z);
+
+                glEnd();
+           }//iterate all ids in each polygon
+       }
+    }//display vectors in plot 
 
     //-----------------------
     //draw linebuffer2

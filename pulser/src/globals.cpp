@@ -146,9 +146,13 @@ void cncglobals::get_machine_xtntx(void)
     pt_motionplot->add_file_vec(&pt1);  
 
     //this makes a toolpath - we dont really want that 
-    pt_motionplot->add_prgvec_ply(); 
-    pt_motionplot->copy_prg_to_toolpath();
+    //pt_motionplot->add_prgvec_ply(); 
+    //pt_motionplot->copy_prg_to_toolpath();
     
+    //new test of display vectors 
+    pt_motionplot->add_dispvec_ply(); 
+    //pt_motionplot->add_dispvec_ply();
+
 
 
 }

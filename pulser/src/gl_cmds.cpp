@@ -397,10 +397,6 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="test")
     {
-        Matrix4 m44;
-        grab_camera_matrix(&m44);
-        
-        std::cout << m44;
 
     }
 

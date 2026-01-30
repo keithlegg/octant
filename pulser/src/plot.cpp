@@ -510,32 +510,23 @@ void cnc_plot::show_path_info(void)
     {
         std::cout << "poly "<<pi <<" num pts :"<< tp_idxs[0].size() << "\n";        
     }    
-
-
-    // std::vector<Vector3> toolpath_vecs;
-    // std::vector<uint> tp_idxs[MAX_NUM_PLY];
-  
 }
 
 /******************************************/
 
 void cnc_plot::show_path(void)
 {
-   
+    std::cout << " #"  << num_motion_ids          <<" motion path obj(s) \n"; 
+    std::cout << " #"  << num_prg_plys            <<" path prg polys     \n"; 
+    std::cout << " #"  << num_rpd_plys            <<" path rpd polys     \n";
+    std::cout << " #"  << num_disp_ids            <<" display polys     \n";
 
-    std::cout << " #"  << num_motion_ids        <<" motion path obj(s) \n"; 
-    std::cout << " #"  << num_prg_plys          <<" path prg polys     \n"; 
-    std::cout << " #"  << num_rpd_plys          <<" path rpd polys     \n";
-    
-    std::cout << " #"  << num_disp_ids          <<" display vecs \n"; 
-
-    std::cout << "  -----------\n"; 
+    std::cout << "  ---------------------------------------------------  \n"; 
+    std::cout << " #"  << disp_vecs.size()        <<" display vecs       \n"; 
     std::cout << " #"  << loaded_file_vecs.size() <<" file vecs     \n";   
     std::cout << " #"  << program_vecs.size()     <<" program vecs  # " << num_prg_plys <<" ids \n";    
     std::cout << " #"  << rapidmove_vecs.size()   <<" rapid vecs    # " << num_rpd_plys <<" ids \n";  
     std::cout << " #"  << toolpath_vecs.size()    <<" toolpath vecs # " << num_toolpath_ids <<" ids \n";    
-
-
 
     #if DO_BUILD_GUI == true    
         std::cout << " #"  << linebuffer1.size()  <<" render1 vecs \n";   
@@ -1055,9 +1046,7 @@ void cnc_plot::copy_prg_to_toolpath(void)
 
 /******************************************/
 /*
-    add a new polygon from loaded_file_vecs buffer.
-
-    This dumps the file buffer into a new polygon, or set of line vectors.
+    This dumps the file buffer into a new (line) polygon from loaded_file_vecs buffer.
 
     Polygons (line polygons, not to be confused with 3D object faces ) are stored in 
 
@@ -1114,10 +1103,6 @@ void cnc_plot::add_prgvec_ply(void)
     }
   
     num_prg_plys++;
-    
-    //num_program_ids
-
-
 }
 
 
@@ -1126,20 +1111,12 @@ void cnc_plot::add_prgvec_ply(void)
 /*
     add a new polygon from loaded_file_vecs buffer.
     
-    copied from add_prgvec_ply , but for display vectors (disp_vecs)
-
-    This dumps the file buffer into a new polygon, or set of line vectors.
-
+    copied from add_prgvec_ply, but for display vectors (disp_vecs)
 */
 
 
 void cnc_plot::add_dispvec_ply(void)
 {
-     
-    // std::vector<Vector3> disp_vecs;     
-    // std::vector<uint> disp_idxs[MAX_DISP_VECTORS];  
-    // uint num_disp_ids;
-
     bool debug = false;
     
     uint num_disp_exist = disp_vecs.size();
@@ -1175,10 +1152,10 @@ void cnc_plot::add_dispvec_ply(void)
  
     for (uint i=0;i<num_filevecs;i++)
     {   
-        disp_idxs[num_disp_exist].push_back( (num_disp_exist+i) );
+        disp_idxs[num_disp_ids].push_back( (num_disp_exist+i) );
     }
   
-    num_disp_exist++;
+    num_disp_ids++;
 
 
 }
