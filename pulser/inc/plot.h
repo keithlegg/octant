@@ -8,6 +8,7 @@
 
 #define MAX_NUM_PLY 100000
 #define MAX_MOTION_NUM 100000
+#define MAX_DISP_VECTORS 100000
 
 /*
     WIP - OVERVIEW OF DATA SCTRUCTUREMAX_MOTION_NUM
@@ -132,7 +133,7 @@ class cnc_plot
         
         ~cnc_plot(){};
 
-        //-- 
+        //--------------------------// 
         //debugging tools 
 
         void show_mpath(void);
@@ -145,7 +146,7 @@ class cnc_plot
         void showply(uint vec_idx);
         void show_pt(void);
 
-        //-- 
+        //--------------------------// 
         // simulation control 
 
         void pause(void);
@@ -155,19 +156,19 @@ class cnc_plot
         void update_sim(void);
         void timer_init(void);
         
-        //-----------  
+        //##########################//
         // experimental tools
 
         void prim_shape(uint shape, uint axis, float size);
-        
-
-        //-----------  
-        // motion path interface backend
-        
-        void copy_prg_to_toolpath(void);
-        
+        //void copy_prg_to_dispvec(void);
         void import_path_from_obj(std::string filepath);
 
+        //##########################//
+
+        // motion path interface backend
+        void copy_prg_to_toolpath(void);
+    
+        void add_disp_vec(Vector3* nv);
         void add_prg_vec(Vector3* nv); 
         void add_file_vec(Vector3* nv);
         void add_rapid_vec(Vector3* nv);
@@ -181,7 +182,9 @@ class cnc_plot
                         uint prog_id, uint rapid_in, uint rapid_out); 
 
         void add_prgvec_ply(void);
-             
+        void add_dispvec_ply(void);
+   
+
         //debug these are wip 
         void update_toolpaths(void); //old update tp
         void bake_motion(void);      //new WIP update tp 
@@ -195,15 +198,15 @@ class cnc_plot
 
         void toolpath_extents(void);
 
-        //-----------  
+        //--------------------------//   
         // file operations  NOT DONE 
 
         void save_motionfile(void);
         void load_motionfile(void);
 
 
-
-        //-----------  
+        //--------------------------//  
+        // simulation backend 
 
         void process_vec(uint vec_idx);
 
@@ -212,11 +215,6 @@ class cnc_plot
                             uint numdivx,
                             uint numdivy,
                             uint numdivz);
-
-        void run_send_pulses(cncglobals* pt_cg,
-                             float f_x, float f_y, float f_z,
-                             float s_x, float s_y, float s_z,
-                             int divs);          
         
         double localsimtime;
 
@@ -228,12 +226,12 @@ class cnc_plot
         float rapid_dist;
         float program_dist;     
 
-        //-----
+        //--------------------------// 
         Vector3 quill_pos;
         Vector3 prg_origin;
         Vector3 prg_end;
 
-        //-----    
+        //--------------------------//     
         bool running;
         bool finished;
 
@@ -245,37 +243,40 @@ class cnc_plot
         float retract_height;
         float work_height;
 
-        //-----
-
+        //--------------------------// 
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
         //pulse train indeces (experiment not used?) 
         //std::vector<uint> pt_idxs[MAX_NUM_PLY];
 
-        //-----        
-
+        //--------------------------//         
         // cache of toolpath component vectors 
         std::vector<Vector3> rapidmove_vecs;    
         std::vector<uint> rpd_idxs[MAX_NUM_PLY]; // index to rapidmove vecs
         uint num_rpd_plys;
 
-        //-----   
+        //--------------------------//    
         std::vector<Vector3> program_vecs;          
         std::vector<uint> prg_idxs[MAX_NUM_PLY]; // index to program vecs
         uint num_prg_plys;
 
 
-        //-----     
+        //--------------------------//     
         uint num_motion_ids;
         std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
 
-        //-----    
+        //--------------------------//    
         // toolpaths probably dont need to be indexed , but I did anyway 
         // I mistakenly wrote it in so I left it     
         std::vector<Vector3> toolpath_vecs;     // toolpath data (dynamically constructed)
         std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpath vecs
         uint num_toolpath_ids;
 
+        //--------------------------//    
+        // indexed static display geom - just for viewing (and possible storing) vectors      
+        std::vector<Vector3> disp_vecs;     
+        std::vector<uint> disp_idxs[MAX_DISP_VECTORS];  
+        uint num_disp_ids;
 
         //-----
         // these get copied to program_vecs and linebuffer1 vecs (for display)

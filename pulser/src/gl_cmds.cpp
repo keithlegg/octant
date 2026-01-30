@@ -328,8 +328,8 @@ void parse_cmd_text(std::string *buffer)
 
             std::cout << "  pathids  -                                      \n";
             std::cout << "  pathgeom - show coordinates for toolpaths       \n";                
-            std::cout << "  objgeom  - show coords for polygonsm etc        \n"; 
-            std::cout << "  debug    -camera stats HUD                      \n";
+            std::cout << "  objgeom  - show coords for polygons etc         \n"; 
+            std::cout << "  debug    - camera stats HUD                     \n";
             std::cout << "                                                  \n";  
         }   
 
@@ -392,7 +392,7 @@ void parse_cmd_text(std::string *buffer)
         grab_camera_matrix(&m44);
         std::cout << m44;
     }
-    
+
     //------------------
     //run external tools 
     if (a1=="test")

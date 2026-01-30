@@ -343,9 +343,13 @@ void cnc_plot::timer_init(void)
 
 
 /******************************************/
-/* 
+void cnc_plot::add_disp_vec(Vector3* nv)
+{
+    disp_vecs.push_back(*nv);
+}
 
-*/
+/******************************************/
+ 
 void cnc_plot::add_prg_vec(Vector3* nv)
 {
     program_vecs.push_back(*nv);
@@ -522,12 +526,16 @@ void cnc_plot::show_path(void)
     std::cout << " #"  << num_motion_ids        <<" motion path obj(s) \n"; 
     std::cout << " #"  << num_prg_plys          <<" path prg polys     \n"; 
     std::cout << " #"  << num_rpd_plys          <<" path rpd polys     \n";
+    
+    std::cout << " #"  << num_disp_ids          <<" display vecs \n"; 
 
     std::cout << "  -----------\n"; 
     std::cout << " #"  << loaded_file_vecs.size() <<" file vecs     \n";   
     std::cout << " #"  << program_vecs.size()     <<" program vecs  # " << num_prg_plys <<" ids \n";    
     std::cout << " #"  << rapidmove_vecs.size()   <<" rapid vecs    # " << num_rpd_plys <<" ids \n";  
     std::cout << " #"  << toolpath_vecs.size()    <<" toolpath vecs # " << num_toolpath_ids <<" ids \n";    
+
+
 
     #if DO_BUILD_GUI == true    
         std::cout << " #"  << linebuffer1.size()  <<" render1 vecs \n";   
@@ -1113,6 +1121,67 @@ void cnc_plot::add_prgvec_ply(void)
 }
 
 
+/******************************************/
+
+/*
+    add a new polygon from loaded_file_vecs buffer.
+    
+    copied from add_prgvec_ply , but for display vectors (disp_vecs)
+
+    This dumps the file buffer into a new polygon, or set of line vectors.
+
+*/
+
+
+void cnc_plot::add_dispvec_ply(void)
+{
+     
+    // std::vector<Vector3> disp_vecs;     
+    // std::vector<uint> disp_idxs[MAX_DISP_VECTORS];  
+    // uint num_disp_ids;
+
+    bool debug = false;
+    
+    uint num_disp_exist = disp_vecs.size();
+    uint num_filevecs  = loaded_file_vecs.size();
+
+    //------------
+    // incoming data is in file buffer - copy it to program buffer with index 
+    if (loaded_file_vecs.size()==1)
+    {
+        std::cout << "WARNING add_dispvec_ply - need at least two points for a line."<<"\n";
+    }   
+
+    if (loaded_file_vecs.size()>1)
+    {
+        for (uint p=0;p<loaded_file_vecs.size();p++)
+        {   
+            Vector3 tmpv = loaded_file_vecs.at(p);
+            if(debug)
+            {
+                std::cout << "mov_fv_to_pv file vec data "<< tmpv.x << " "<< tmpv.y << " "<< tmpv.z << "\n";
+            }
+            add_disp_vec(&tmpv);
+        }
+    }
+    //clear file buffer so we can load more 
+    loaded_file_vecs.clear();
+
+    //------------
+    if(debug)
+    {
+        std::cout << "add_dispvec_ply_tp reindex "<< num_disp_exist << "\n";
+    }
+ 
+    for (uint i=0;i<num_filevecs;i++)
+    {   
+        disp_idxs[num_disp_exist].push_back( (num_disp_exist+i) );
+    }
+  
+    num_disp_exist++;
+
+
+}
 
 
 /******************************************/

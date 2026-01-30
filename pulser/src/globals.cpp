@@ -121,6 +121,9 @@ const int MAX_TOKENS_PER_LINE = 20;
 void cncglobals::get_machine_xtntx(void)
 {   
     std::cout << " machine extnts called \n";
+    
+    //hover it just slightly over the grid 
+    float zheight = 0.1;
 
     //always assume a 2D rectangle on Z positive up axis 
     
@@ -129,17 +132,17 @@ void cncglobals::get_machine_xtntx(void)
     // std::vector<Vector3> output_pts;
     // output_pts.reserve( 400 );  
     
-    Vector3 pt1 = Vector3( xmax_xtntx, 0, ymin_xtntx); 
-    Vector3 pt2 = Vector3( xmin_xtntx, 0, ymin_xtntx); 
-    Vector3 pt3 = Vector3( xmin_xtntx, 0, ymax_xtntx); 
-    Vector3 pt4 = Vector3( xmax_xtntx, 0, ymax_xtntx); 
+    Vector3 pt1 = Vector3( xmax_xtntx, zheight, ymin_xtntx); 
+    Vector3 pt2 = Vector3( xmin_xtntx, zheight, ymin_xtntx); 
+    Vector3 pt3 = Vector3( xmin_xtntx, zheight, ymax_xtntx); 
+    Vector3 pt4 = Vector3( xmax_xtntx, zheight, ymax_xtntx); 
 
     //DEBUG not what we really want, just for testing 
     pt_motionplot->add_file_vec(&pt1);
     pt_motionplot->add_file_vec(&pt2);
     pt_motionplot->add_file_vec(&pt3);
     pt_motionplot->add_file_vec(&pt4);
-    //periodic    
+    //close the loop and make it periodic    
     pt_motionplot->add_file_vec(&pt1);  
 
     //this makes a toolpath - we dont really want that 
