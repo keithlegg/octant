@@ -129,16 +129,18 @@ void cncglobals::get_machine_xtntx(void)
     // std::vector<Vector3> output_pts;
     // output_pts.reserve( 400 );  
     
-    Vector3 pt1 = Vector3( xmax_xtntx, ymin_xtntx, 0); 
-    Vector3 pt2 = Vector3( xmin_xtntx, ymax_xtntx, 0); 
-    Vector3 pt3 = Vector3( xmin_xtntx, ymin_xtntx, 0); 
-    Vector3 pt4 = Vector3( xmax_xtntx, ymax_xtntx, 0); 
-    
+    Vector3 pt1 = Vector3( xmax_xtntx, 0, ymin_xtntx); 
+    Vector3 pt2 = Vector3( xmin_xtntx, 0, ymin_xtntx); 
+    Vector3 pt3 = Vector3( xmin_xtntx, 0, ymax_xtntx); 
+    Vector3 pt4 = Vector3( xmax_xtntx, 0, ymax_xtntx); 
+
     //DEBUG not what we really want, just for testing 
     pt_motionplot->add_file_vec(&pt1);
     pt_motionplot->add_file_vec(&pt2);
     pt_motionplot->add_file_vec(&pt3);
-    pt_motionplot->add_file_vec(&pt4);    
+    pt_motionplot->add_file_vec(&pt4);
+    //periodic    
+    pt_motionplot->add_file_vec(&pt1);  
 
     pt_motionplot->add_prgvec_ply(); 
     pt_motionplot->copy_prg_to_toolpath();
