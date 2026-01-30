@@ -365,8 +365,8 @@ void parse_cmd_text(std::string *buffer)
                 //std::cout << " args "<< a2<<" "<< a3<< " " << a4<<"\n";
         
                 if(a4=="x"||a4=="0"){ pt_motionplot->prim_shape(1, 0, v11); }   
-                if(a4=="x"||a4=="1"){ pt_motionplot->prim_shape(1, 1, v11); }  
-                if(a4=="x"||a4=="2"){ pt_motionplot->prim_shape(1, 2, v11); }                                                                  
+                if(a4=="y"||a4=="1"){ pt_motionplot->prim_shape(1, 1, v11); }  
+                if(a4=="z"||a4=="2"){ pt_motionplot->prim_shape(1, 2, v11); }                                                                  
             }
         } 
 

@@ -771,32 +771,6 @@ void model::prim_cube(float scale){
     model::vertex_count = vcnt;
  }     
 
-////
- //sample 3d object - may not be the "proper" way to do it
- void model::prim_square(float scale)
- {
-    fac_tmp.clear();
-
-    // vertices - (3d vectors)
-    
-    // obj_pts[vcnt].set( sin(deg_to_rad(a))*scale, cos(deg_to_rad(a))*scale, 0 ); 
-
-    obj_pts[0].set(-scale, 1,  scale);
-    obj_pts[1].set( scale, 1,  scale);
-    obj_pts[2].set( scale, 1, -scale);
-    obj_pts[3].set(-scale, 1, -scale);
-
-    // face indices are NOT zero indexed 
-    
-    // faces[0] = {1,2,3,4};
-    // face_count = 1;
-
-    quads[0] = {1,2,3,4};
-    quad_count = 1;
-
-    vertex_count =4;
- }    
-
 
 ////
  //sample 3d object - may not be the "proper" way to do it

@@ -94,12 +94,12 @@ class obj_model: public polygon_ops
 
         //------
         //prim geometry functions 
+        //dont forget the calc_ functions in point_op         
         
         void sample_data(void);
+
         void prim_line(float scale); 
         void prim_triangle(float scale); 
-        void prim_circle(int divs, float scale);
-        void prim_square(float scale);  
         void prim_cube(float scale);
 
         //------
