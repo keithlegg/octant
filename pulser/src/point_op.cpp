@@ -364,28 +364,73 @@ int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p
 }
 
 
+/***************************************/
 void point_ops::calc_square ( std::vector<Vector3> *out_coords, 
-                              Vector3* origin, float size) 
+                              Vector3* origin, uint axis, float size) 
 {
 
     Vector3 tmp = Vector3(0, 0, 0);
 
-    tmp.set(origin->x-size, origin->y+size, 0); //#tl
-    out_coords->push_back( tmp ); 
+    if(axis==0)
+    {
+        tmp.set(0, origin->x-size, origin->y+size); //#tl
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(0, origin->x+size, origin->y+size); //#tr
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(0, origin->x+size, origin->y-size); //#br
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(0, origin->x-size, origin->y-size); //#bl        
+        out_coords->push_back( tmp ); 
+        
+        //make periodic - append first point back  
+        tmp.set(0, origin->x-size, origin->y+size);         
+        out_coords->push_back( tmp ); 
 
-    tmp.set(origin->x+size, origin->y+size, 0); //#tr
-    out_coords->push_back( tmp ); 
+    }
 
-    tmp.set(origin->x+size, origin->y-size, 0); //#br
-    out_coords->push_back( tmp ); 
+    if(axis==1)
+    {
+        tmp.set(origin->x-size, 0, origin->y+size); //#tl
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(origin->x+size, 0, origin->y+size); //#tr
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(origin->x+size, 0, origin->y-size); //#br
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(origin->x-size, 0, origin->y-size); //#bl        
+        out_coords->push_back( tmp ); 
+        
+        //make periodic - append first point back  
+        tmp.set(origin->x-size, 0, origin->y+size);         
+        out_coords->push_back( tmp ); 
 
-    tmp.set(origin->x-size, origin->y-size, 0); //#bl        
-    out_coords->push_back( tmp ); 
+    }
 
 
-    //make periodic - append first point back  
-    tmp.set(origin->x-size, origin->y+size, 0); //#tl       
-    out_coords->push_back( tmp ); 
+    if(axis==2)
+    {
+        tmp.set(origin->x-size, origin->y+size, 0); //#tl
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(origin->x+size, origin->y+size, 0); //#tr
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(origin->x+size, origin->y-size, 0); //#br
+        out_coords->push_back( tmp ); 
+        
+        tmp.set(origin->x-size, origin->y-size, 0); //#bl        
+        out_coords->push_back( tmp ); 
+        
+        //make periodic - append first point back  
+        tmp.set(origin->x-size, origin->y+size, 0);         
+        out_coords->push_back( tmp ); 
+
+    }
 
     //else:
     //    out.append( ( -size,  size)  )
@@ -396,6 +441,7 @@ void point_ops::calc_square ( std::vector<Vector3> *out_coords,
     
 
 }
+
 
 /***************************************/
 //DEBUG - FIX THIS 

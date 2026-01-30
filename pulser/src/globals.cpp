@@ -122,16 +122,30 @@ void cncglobals::get_machine_xtntx(void)
 {
     //always assume a 2D rectangle on Z positive up axis 
     
-    //obj_model* pt_obj2d_loader  = new obj_model;
-    //pt_obj2d_loader->reset();
+    obj_model* pt_obj2d_loader  = new obj_model;
+    pt_obj2d_loader->reset();
 
-    //void cnc_plot::prim_shape(uint shape)
+    std::vector<Vector3> output_pts;
+    output_pts.reserve( 400 );  
+    
+    /*
+    Vector3 orig = Vector3(0,0,0);
+    pt_obj2d_loader->calc_square(&output_pts, &orig, 0, size);  
+
+  
+    for (uint v=0;v<output_pts.size();v++)
+    {
+        Vector3 pt = output_pts[v];
+        add_file_vec(&pt);
+    }
+    add_prgvec_ply(); 
+    copy_prg_to_toolpath();
 
     // xtnx_maxx = Vector3(x_xtntx, x_xtntx, 0); 
     // xtnx_minx = Vector3(x_xtntx, x_xtntx, 0); 
     // xtnx_maxy = Vector3(x_xtntx, x_xtntx, 0); 
     // xtnx_miny = Vector3(x_xtntx, x_xtntx, 0); 
-
+    */
 
 }
 
@@ -187,9 +201,13 @@ void cncglobals::show_params( void )
     std::cout << " retract height : " << retract_height<< "\n";
     std::cout << " work height    : " << work_height   << "\n";
 
-    std::cout << " x_xtntx        : " << x_xtntx<< "\n";
-    std::cout << " y_xtntx        : " << y_xtntx<< "\n";
-    std::cout << " z_xtntx        : " << z_xtntx<< "\n";
+    std::cout << " xmin_xtntx        : " << xmin_xtntx<< "\n";
+    std::cout << " xmax_xtntx        : " << xmax_xtntx<< "\n";
+    std::cout << " ymin_xtntx        : " << ymin_xtntx<< "\n";
+    std::cout << " ymax_xtntx        : " << ymax_xtntx<< "\n";
+    std::cout << " zmin_xtntx        : " << zmin_xtntx<< "\n";
+    std::cout << " zmax_xtntx        : " << zmax_xtntx<< "\n";
+    
     std::cout <<"\n";
 
     //--------------------------
@@ -649,19 +667,32 @@ void cncglobals::load_cfg_file( void )
                         //***************************************/ 
                         //**  MACHINE PARAMETERS SETUP *********//
 
-                        if (tokenized.at(0).find("X_XTNX") != std::string::npos)
+                        if (tokenized.at(0).find("XMIN_XTNX") != std::string::npos)
                         {        
-                            x_xtntx = std::stof( tokenized.at(1) );                            
+                            xmin_xtntx = std::stof( tokenized.at(1) );                            
                         }
-                        if (tokenized.at(0).find("Y_XTNX") != std::string::npos)
+                        if (tokenized.at(0).find("XMAX_XTNX") != std::string::npos)
                         {        
-                            y_xtntx = std::stof( tokenized.at(1) );  
-                        }
-                        if (tokenized.at(0).find("Z_XTNX") != std::string::npos)
-                        {        
-                            z_xtntx = std::stof( tokenized.at(1) );  
+                            xmax_xtntx = std::stof( tokenized.at(1) );                            
                         }
 
+                        if (tokenized.at(0).find("YMIN_XTNX") != std::string::npos)
+                        {        
+                            ymin_xtntx = std::stof( tokenized.at(1) );  
+                        }
+                        if (tokenized.at(0).find("YMAX_XTNX") != std::string::npos)
+                        {        
+                            ymax_xtntx = std::stof( tokenized.at(1) );  
+                        }
+
+                        if (tokenized.at(0).find("ZMIN_XTNX") != std::string::npos)
+                        {        
+                            zmin_xtntx = std::stof( tokenized.at(1) );  
+                        }
+                        if (tokenized.at(0).find("ZMAX_XTNX") != std::string::npos)
+                        {        
+                            zmax_xtntx = std::stof( tokenized.at(1) );  
+                        }
                         //-------------------------------------------
                         
                         //-- GLOBAL SIM TIME PERIOD  ----------------

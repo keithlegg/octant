@@ -71,10 +71,10 @@ class point_ops
     int get_line_intersection(float, float, float, float, float, float, float, float, float*, float *);
 
     void calc_square ( std::vector<Vector3> *out_coords, 
-                       Vector3* origin, float size); 
+                      Vector3* origin, uint axis, float size); 
 
     void calc_circle ( std::vector<Vector3> *out_coords, 
-                       uint numdiv, uint axis, 
+                       uint axis, uint numdiv, 
                        float x_orig, float y_orig, float dia );
                           
 

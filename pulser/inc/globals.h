@@ -65,9 +65,12 @@ class cncglobals
             pp1u_y                 = 100;
             pp1u_z                 = 100;
 
-            x_xtntx = 20;
-            y_xtntx = 20;
-            z_xtntx = 20;
+            xmin_xtntx = 2;
+            xmax_xtntx = 2;
+            ymin_xtntx = 2;
+            ymax_xtntx = 2;
+            zmin_xtntx = 2;
+            zmax_xtntx = 2;
 
         };
 
@@ -108,9 +111,12 @@ class cncglobals
         float work_height    = 0;
 
         //machine extents (in linear units)
-        float x_xtntx;
-        float y_xtntx;
-        float z_xtntx;
+        float xmin_xtntx;
+        float xmax_xtntx;
+        float ymin_xtntx;
+        float ymax_xtntx;
+        float zmin_xtntx;
+        float zmax_xtntx;
 
         //----------
         //waveform generation parameters

@@ -118,16 +118,15 @@ void cnc_plot::toolpath_extents(void)
 /***************************************/
 /*
     DEBUG NOT DONE 
-
-    ITS BUGGY - WORKS SOIMETIMES... CHRIST THIS IS ANNOYING 
-
+    
     generate primitive shapes and make into pts to use 
 
     Args:
     
         shape:
             0 - circle 
-            1 - box
+            1 - square
+
 */
 
 
@@ -145,11 +144,11 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
     float ox,oy,oz = 0;
 
     //-----------//
-    
-    // calc_circle args = (numdiv axis x_orig y_orig dia )
 
     if(shape==0)
     {
+        // calc_circle args = (numdiv axis x_orig y_orig dia )
+        //DEBUG convert origin to Vector3*
         if(axis==0){ pt_obj2d_loader->calc_circle(&output_pts, divs, 0, ox, oy, size); }
         if(axis==1){ pt_obj2d_loader->calc_circle(&output_pts, divs, 1, ox, oy, size); }
         if(axis==2){ pt_obj2d_loader->calc_circle(&output_pts, divs, 2, ox, oy, size); }                
@@ -169,24 +168,22 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
     //-----------//
     if(shape==1)
     {
-
-        //void point_ops::calc_square ( std::vector<Vector3> *out_coords, 
-        //                      Vector3* origin, float size) 
-
         Vector3 orig = Vector3(0,0,0);
-
-        pt_obj2d_loader->calc_square(&output_pts, &orig, size); 
+        
+        // calc_square args = (origin,  dia )
+        if(axis==0){ pt_obj2d_loader->calc_square(&output_pts, &orig, 0, size); }
+        if(axis==1){ pt_obj2d_loader->calc_square(&output_pts, &orig, 1, size); }
+        if(axis==2){ pt_obj2d_loader->calc_square(&output_pts, &orig, 2, size); }  
      
         for (uint v=0;v<output_pts.size();v++)
         {
-            std::cout << "HEY \n";
             Vector3 pt = output_pts[v];
             add_file_vec(&pt);
         }
         
         add_prgvec_ply(); 
         copy_prg_to_toolpath();
-    }
+    }//square prim
 
     //-----------//
 
