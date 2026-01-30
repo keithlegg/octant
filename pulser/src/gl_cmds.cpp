@@ -385,11 +385,22 @@ void parse_cmd_text(std::string *buffer)
     }
 
     //------------------
-
+    
+    if (a1=="m44")
+    {
+        Matrix4 m44;
+        grab_camera_matrix(&m44);
+        std::cout << m44;
+    }
+    
+    //------------------
     //run external tools 
     if (a1=="test")
     {
-
+        Matrix4 m44;
+        grab_camera_matrix(&m44);
+        
+        std::cout << m44;
 
     }
 
@@ -487,7 +498,6 @@ void parse_cmd_text(std::string *buffer)
     if (a1=="reset")
     {
         std::cout << " resetting simulation \n";
-
         reset_machine();
     }
 

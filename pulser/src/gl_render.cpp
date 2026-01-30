@@ -334,6 +334,14 @@ void grab_camera_matrix( Matrix4 *pt_mmm)
 
 }
 
+
+
+// attach object to camera 
+// glm::mat4 mtx_trans = glm::mat4(1.0f);
+// mtx_trans = glm::translate(mtx_trans, glm::vec3(0.0f, 0.0f, -3.0f));
+
+
+
 //DEBUG - GL_MODELVIEW_MATRIX and GL_PROJECTION_MATRIX seem to be the same 
 /*
 void grab_projection_matrix(m44 *pt_mpm )
