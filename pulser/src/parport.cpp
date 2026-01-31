@@ -746,36 +746,47 @@ void cnc_parport::test_port_output(cncglobals* cg, int number)
 /***************************************/
 void cnc_parport::test_inputs(cncglobals* cg, unsigned char* data)
 {
+    bool debug = false;
 
-    check_ports_available(cg->parport1_addr+1);
-
-    unsigned char pin_10_mask = 0b11000000;
-    unsigned char pin_12_mask = 0b10100000;
-    unsigned char pin_13_mask = 0b00010000;
-
-    //unsigned char data_read;
-    *data = inb(cg->parport1_addr+1); 
-    
-    //printf("Data read from parallel port: 0x%x\n", data_read);
-    /*
-    //X
-    if ((data_read & pin_10_mask)==pin_10_mask)
+    if (cg->ENABLE_MOTOR_DRIVE==0)
     {
-        std::cout << "X limit triggered (p10) \n";  
-    };
-
-    //Z
-    if ((data_read & pin_12_mask)==pin_12_mask)
+        std::cout << " activate motor enable to read data on parallel port.\n";
+    }else
     {
-        std::cout << "Z limit triggered (p12) \n";  
-    };
+        if (debug)
+        {
+            std::cout << "reading data on parport address " << cg->parport1_addr+1 << "\n";
+        }
 
-    //Y 
-    if ((data_read & pin_13_mask)==pin_13_mask)
-    {
-        std::cout << "Y limit triggered (p13) \n";  
-    };*/
+        check_ports_available(cg->parport1_addr+1);
 
+        unsigned char pin_10_mask = 0b11000000;
+        unsigned char pin_12_mask = 0b10100000;
+        unsigned char pin_13_mask = 0b00010000;
+
+        //unsigned char data_read;
+        *data = inb(cg->parport1_addr+1); 
+        
+        //printf("Data read from parallel port: 0x%x\n", data_read);
+        /*
+        //X
+        if ((data_read & pin_10_mask)==pin_10_mask)
+        {
+            std::cout << "X limit triggered (p10) \n";  
+        };
+
+        //Z
+        if ((data_read & pin_12_mask)==pin_12_mask)
+        {
+            std::cout << "Z limit triggered (p12) \n";  
+        };
+
+        //Y 
+        if ((data_read & pin_13_mask)==pin_13_mask)
+        {
+            std::cout << "Y limit triggered (p13) \n";  
+        };*/
+    }
 
 }
 

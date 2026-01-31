@@ -66,7 +66,14 @@
 extern obj_model* pt_model_buffer;
 
 
-
+//refresh all calculated attributes 
+void obj_model::refresh(void)
+{
+    calc_normals();
+    bbox3d();
+    bbox3d_pts();
+}
+            
 /***************************************/
 
 void obj_model::add_locator(Vector3 pos)
@@ -140,46 +147,57 @@ void obj_model::show_geom(void)
     int i;
 
     std::cout << "\n";
-
+    if(num_pts)
+    {
     //std::cout << "\n# point indices  ---------------- %d \n", (*this).num_pts);
     for (i=0;i<num_pts;i++)
     {
         std::cout << " pt idx "<< i  << " is : ";
         std::cout << points[i].x << " " << points[i].y << " "<< points[i].z ; 
-        
         std::cout << "\n";
     }
-
-    // std::cout << "\n# line indices  ------------------- %d \n", (*this).num_lines);
-    for (i=0;i<num_lines;i++)
-    {
-        std::cout << " line idx "<< i  << " is :";
-        //std::cout << lines[i][0] << " " << lines[i][1] << "\n";  
-        std::cout << "\n";        
+        std::cout << "------------------------------\n";
     }
 
-    //std::cout << "\n# triangle indices ----------------- %d \n", (*this).num_tris);
-    for (i=0;i<num_tris;i++)
+    if(num_lines)
     {
-        std::cout << " tri idx "<< i  << " is :";
-        std::cout << tris[i][0] << " " << tris[i][1] << " "<< tris[i][2];
-        std::cout << "\n";
-
-
+        // std::cout << "\n# line indices  ------------------- %d \n", (*this).num_lines);
+        for (i=0;i<num_lines;i++)
+        {
+            std::cout << " line idx "<< i  << " is :";
+            //std::cout << lines[i][0] << " " << lines[i][1] << "\n";  
+            std::cout << "\n";        
+        }
+        std::cout << "------------------------------\n";
     }
 
-    //std::cout << "\n# quad indices ------------------   %d \n", (*this).num_quads);
-    for (i=0;i<num_quads;i++)
+    if(num_tris)
     {
-        std::cout << " quad idx "<< i  << " is :";
-        //std::cout << quads[i][0] << " " << quads[i][1] << " "<< quads[i][2] << " "<< quads[i][3];
-        std::cout << "\n";
+        //std::cout << "\n# triangle indices ----------------- %d \n", (*this).num_tris);
+        for (i=0;i<num_tris;i++)
+        {
+            std::cout << " tri idx "<< i  << " is :";
+            std::cout << tris[i][0] << " " << tris[i][1] << " "<< tris[i][2];
+            std::cout << "\n";
+        }
+        std::cout << "------------------------------\n";
     }
+
+    if(num_quads)
+    {
+        //std::cout << "\n# quad indices ------------------   %d \n", (*this).num_quads);
+        for (i=0;i<num_quads;i++)
+        {
+            std::cout << " quad idx "<< i  << " is :";
+            //std::cout << quads[i][0] << " " << quads[i][1] << " "<< quads[i][2] << " "<< quads[i][3];
+            std::cout << "\n";
+        }
+        std::cout << "------------------------------\n";
+    }
+
 
     //printf("\n# Normals   --------  \n");
-
     //printf("\n# UVs   --------  \n");
-
     //printf("\n# Colors   --------  \n");
 
 }

@@ -65,7 +65,7 @@ extern obj_model* pt_model_buffer;
 
 /*
     COPIED HERE FOR REFERENCE 
-    
+
     uint num_pts;
     uint num_vtxrgb;
     uint num_vnrmls;    
@@ -96,22 +96,21 @@ extern obj_model* pt_model_buffer;
 */
 
 /**********************************************************/
-// DEBUG - NOT WORKING?? 
 // add a new 3D triangle using 3 vector3 
 void obj_model::add_triangle(Vector3* pt1, Vector3* pt2, Vector3* pt3)
 {
     std::cout << "starting pts " << num_tris<< " "<< num_pts << "\n";
 
     points[num_pts] = *pt1;
-    tris[num_tris].push_back(num_pts);
+    tris[num_tris].push_back(num_pts+1);
     num_pts++;
     
     points[num_pts] = *pt2;
-    tris[num_tris].push_back(num_pts);
+    tris[num_tris].push_back(num_pts+1);
     num_pts++;
     
     points[num_pts] = *pt3;
-    tris[num_tris].push_back(num_pts);
+    tris[num_tris].push_back(num_pts+1);
     num_pts++;
 
     std::cout << "ending pts " << num_tris << " " << num_pts << "\n";
@@ -120,6 +119,7 @@ void obj_model::add_triangle(Vector3* pt1, Vector3* pt2, Vector3* pt3)
 }
 
 /**********************************************************/
+// DEBUG - NOT TESTED 
 // add a new triangle INDEX ONLY -using existing vertices
 void obj_model::add_triangle(uint vid1, uint vid2, uint vid3)
 {

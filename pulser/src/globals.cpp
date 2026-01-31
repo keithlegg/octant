@@ -360,9 +360,7 @@ void cncglobals::load_objects(void)
             pt_model_buffer->load(char_array);
  
             // -- post load setup functions --
-            pt_model_buffer->calc_normals();
-            pt_model_buffer->bbox3d();
-            pt_model_buffer->bbox3d_pts();
+            pt_model_buffer->refresh();
 
             //DEBUG - this assumes the last obj loaded (or just 1)
             active_filepath = obj_filepaths[x];

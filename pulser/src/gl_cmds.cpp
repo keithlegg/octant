@@ -397,13 +397,15 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="test")
     {
-        Vector3 p1 = Vector3(0,0,0);
+        Vector3 p1 = Vector3(0,1,0);
         Vector3 p2 = Vector3(1,0,0);
         Vector3 p3 = Vector3(-1,0,0);
-        
         pt_model_buffer->add_triangle(&p1, &p2, &p3);
                          
-        //void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
+        p1 = Vector3(1,1,0);
+        p2 = Vector3(-2,0,0);
+        p3 = Vector3(1,0,1);
+        pt_model_buffer->add_triangle(&p1, &p2, &p3); 
     
     }
 
@@ -455,6 +457,8 @@ void parse_cmd_text(std::string *buffer)
         */
 
         //DEBUG - IF NO OBJECT - USE TOOLPATHS INSTEAD 
+        
+        pt_model_buffer->refresh();
 
         //  BBOX (WIP)
         pt_model_buffer->add_locator(pt_model_buffer->t_maxx);
@@ -534,11 +538,15 @@ void parse_cmd_text(std::string *buffer)
     //test port in (quadrature decode) 
     if (a1=="tp_in")
     {
-        if(tog_testport){
-            std::cout << "PARPORT TESTER\n";
-            tog_testport = false;
+        if (cg.ENABLE_MOTOR_DRIVE==0)
+        {
+            if(tog_testport){
+                tog_testport = false;
+            }else{
+                tog_testport = true;
+            }
         }else{
-            tog_testport = true;
+            std::cout << "parport input requires motors enabled.\n";  
         }
     }
 

@@ -49,6 +49,10 @@ class obj_model: public polygon_ops
         //-----------------------------------------//
 
         void reset(void) override;
+        
+        //recalculate bbox, centroid, etc 
+        void refresh(void);
+
 
         //------
         //buffers to be used as tmp storage 
