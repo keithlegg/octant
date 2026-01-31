@@ -782,7 +782,7 @@ void cnc_plot::update_sim(void)
     
     //update this to display stats in ogl
     //DEBUG - need to display number BETWEEN VECS(PTS) 
-    num_simvecs = toolpath_vecs.size();
+    num_simvecs = toolpath_vecs.size()-1;
 
 
     if (mtime.tm_running)
@@ -916,7 +916,8 @@ void cnc_plot::bake_motion(void)
 
     program_vecs   - vectors loaded from a file 
     rapidmove_vecs - a path to move the head up, over, and back down 
-    toolpath_vecs  - the actual path that will be "cut". This gets rebuilt each time we run.  
+
+    toolpath_vecs  - dynamically built path for head to move - gets rebuilt each time    
 
 */
 
@@ -934,14 +935,19 @@ void cnc_plot::update_toolpaths(void)
         std::cout << " num polys " << num_prg_plys << "\n"; 
     } 
     
+    // toolpath_vecs.clear();
+    // num_toolpath_ids=0;
+
     if(finished==true && running==false)
     {
         #if DO_BUILD_GUI == true
             clear_linebuffers(); //clear display geom 
         #endif
+        
         //clear the old data out 
         toolpath_vecs.clear();
-        
+        num_toolpath_ids=0;
+
         //CHECK FOR MOTION OBJECTS FIRST 
         //IF NONE THEN BUILD TOOLPATHS FROM PRG VECS
         if(num_motion_ids)
@@ -956,24 +962,22 @@ void cnc_plot::update_toolpaths(void)
             for (uint pl=0;pl<num_prg_plys;pl++)
             {
                 //add each vec3 for the polygon 
-                for (uint vid=0;vid<tp_idxs[pl].size();vid++)
+                for (uint vid=0;vid<prg_idxs[pl].size();vid++)
                 {
-                    Vector3 seg = program_vecs[tp_idxs[pl][vid]];
+                    Vector3 seg = program_vecs[prg_idxs[pl][vid]];
                     
                     if(debug)
                     {
                         std::cout << " update debug " << vid << " "<< seg.x << "\n";
                     }
 
-                    toolpath_vecs.push_back(seg);  
-
-                    #if DO_BUILD_GUI == true
-                        add_vec_lbuf2(&seg);
-                    #endif 
-
+                      
                 };
 
             }//iterate polygons 
+            
+            copy_prg_to_toolpath();
+
         }//if data exists
       
     }//if program is NOT running or paused

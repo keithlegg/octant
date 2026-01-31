@@ -460,8 +460,8 @@ void cncglobals::load_cfg_file( void )
                         }
     
                         /**************************************/  
-
-                        
+                        // DEBUG - NOT DONE -
+                        //this loads an .obj file that is linetype - DEBUG NOT WORKING YET 
                         if (tokenized.at(0).find("op_loadpathobj")!= std::string::npos)
                         {   
                             std::string buffer;
@@ -474,7 +474,7 @@ void cncglobals::load_cfg_file( void )
 
                         /**************************************/  
                         // DEBUG - NOT DONE -
-                        // location - OBJ file   
+                        //this loads an .obj file that is treated at points only - DEBUG NOT WORKING YET  
                         if (tokenized.at(0).find("op_loadlocs")!= std::string::npos)
                         {   
                             std::string buffer;

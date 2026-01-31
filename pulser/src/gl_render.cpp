@@ -1195,7 +1195,7 @@ void render_loop(void)
             renderBitmapString( scr_size_x-400, scr_size_y-40  ,(void *)fontsm, s );
             
             yellow_clr;
-            sprintf(s, "vec :%d of :%d ", pt_motionplot->vec_idx+1, pt_motionplot->num_simvecs);
+            sprintf(s, "vec :%d of :%d ", pt_motionplot->vec_idx, pt_motionplot->num_simvecs);
             renderBitmapString( scr_size_x-400, scr_size_y-27  ,(void *)fontsm, s );
             
             green_clr;

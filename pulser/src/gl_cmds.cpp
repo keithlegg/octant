@@ -395,6 +395,13 @@ void parse_cmd_text(std::string *buffer)
         grab_camera_matrix(&m44);
         std::cout << m44;
     }
+    //------------------
+    //run external tools 
+    if (a1=="up"||a1=="update")
+    {
+        std::cout << "DEBUG calling update paths\n";
+        pt_motionplot->update_toolpaths();
+    }
 
     //------------------
     //run external tools 
