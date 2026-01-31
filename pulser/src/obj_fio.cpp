@@ -473,9 +473,9 @@ void obj_model::load(char *filepath)
                        {
                             if(poly_is_linetype)
                             {
-                                std::cout << "line type!!\n";
+                                std::cout << "obj_model.load line type!!\n";
                             }else{
-                                std::cout << "face type!!\n";
+                                std::cout << "obj_model.load face type!!\n";
                             } 
 
                             //if we made it here, 

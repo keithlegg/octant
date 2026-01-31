@@ -264,8 +264,12 @@ extern RGBType *pt_gridcolor2;
 //text color
 #define text_clr glColor3f(0.6f, 1.0f, 0.0f)
 
+#define cyan_clr glColor3f(0.0f, 0.8f, 1.0f)
+#define blue_clr glColor3f(0.0f, 0.0f, 1.0f)
 #define green_clr glColor3f(0.0f, 1.0f, 0.0f)
 #define red_clr glColor3f(  1.0f, 0.0f, 0.0f)
+#define yellow_clr glColor3f(  1.0f, 1.0f, 0.0f)
+
 #define enabled_txt_clr glColor3f( .3f, 0.5f, 0.4f)
 #define enabled_txt_clr2 glColor3f(.5f, 0.7f, 0.6f)
 
@@ -1186,6 +1190,14 @@ void render_loop(void)
         //-----------------------------------------
         if(debug_onscreen)
         {
+            cyan_clr;
+            sprintf(s, "simulation time :%f ", pt_motionplot->localsimtime);
+            renderBitmapString( scr_size_x-400, scr_size_y-40  ,(void *)fontsm, s );
+            
+            yellow_clr;
+            sprintf(s, "vec :%d of :%d ", pt_motionplot->vec_idx+1, pt_motionplot->num_simvecs);
+            renderBitmapString( scr_size_x-400, scr_size_y-27  ,(void *)fontsm, s );
+            
             green_clr;
             sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
             renderBitmapString( scr_size_x-400, scr_size_y-15  ,(void *)fontsm, s );

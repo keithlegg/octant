@@ -82,7 +82,7 @@ class motion_idx
     public:
         motion_idx(){}
         motion_idx(std::string nam, std::string typ, 
-                   uint progid, uint rapidin, uint rapidout)
+                   int progid, int rapidin, int rapidout)
         {
             name      = nam;
             type      = typ;
@@ -100,9 +100,11 @@ class motion_idx
         std::string type;
 
         //index to objects 
-        uint rapid_in;
-        uint rapid_out;
-        uint prog_id;
+        //this is silly but I have to use "int" instead of "uint"
+        //-1 is a flag no index exists , its zero indexed - doh! 
+        int rapid_in;
+        int rapid_out;
+        int prog_id;
 
 };
 
@@ -168,18 +170,22 @@ class cnc_plot
         // motion path interface backend
         void copy_prg_to_toolpath(void);
     
+
+        //add single vector to NON INDEXED 
+        void add_file_vec(Vector3* nv);
+
+        //add single vector TO INDEXED (you need to update idx)
         void add_disp_vec(Vector3* nv);
         void add_prg_vec(Vector3* nv); 
-        void add_file_vec(Vector3* nv);
         void add_rapid_vec(Vector3* nv);
 
         //this gets called post file load - but its not done  
-        void loadpath( std::vector<Vector3>* pt_drawvecs);   
+        void init_paths( std::vector<Vector3>* pt_drawvecs);   
         //void mov_fv_to_pv(void); // move file vec to program vec , clear file vec
 
 
         void add_motion(std::string name, std::string type, 
-                        uint prog_id, uint rapid_in, uint rapid_out); 
+                        int prog_id, int rapid_in, int rapid_out); 
 
         void add_prgvec_ply(void);
         void add_dispvec_ply(void);
@@ -220,6 +226,8 @@ class cnc_plot
 
         // index to the current vector processed while running 
         uint vec_idx;
+        uint num_simvecs;
+
         double timediv;
         
         // calculated values - length of travel for vectors

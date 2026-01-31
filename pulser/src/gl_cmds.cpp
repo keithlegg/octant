@@ -129,7 +129,6 @@ void reload_paths(void)
    //DEBUG hmm obj and vecs live in same file - decouple?
    cg.load_cfg_file();
 
-   pt_motionplot->update_toolpaths(); 
 }
 
 /***************************************/
@@ -756,23 +755,33 @@ void parse_cmd_text(std::string *buffer)
         {
             std::cout << "move head cmd " << a2 << " " << a3 << " "<< a4 << "\n";
 
-            v11 = std::stoi(a2);
-            v12 = std::stoi(a3);
-            v13 = std::stoi(a4);
-            
+            v11 = std::stof(a2);
+            v12 = std::stof(a3);
+            v13 = std::stof(a4);
+  
+
+            //build the rapid move vector
             Vector3 dest = Vector3(v11, v12, v13); 
+            
+            //store existing rapid vectors 
+            uint num_rpd_vecs = pt_motionplot->rapidmove_vecs.size();
+            // num_rpd_plys  - will tell us the number of polygons           
+
+            //add two rapid move vecctor points, we still need to update the index  
             pt_motionplot->add_rapid_vec( &pt_motionplot->quill_pos );
             pt_motionplot->add_rapid_vec( &dest );
 
-            uint rapid_idx = pt_motionplot->rapidmove_vecs.size();
+            //add new index to two rapid points, indexed from existing num
+            std::vector<uint> newply;
+            newply.push_back(num_rpd_vecs+1);
+            newply.push_back(num_rpd_vecs+2);            
+            pt_motionplot->rpd_idxs[ pt_motionplot->num_rpd_plys] = newply;
+            pt_motionplot->num_rpd_plys++;
 
-
-            // add vector (quill) @ retractheight  
-            // add vector (Vector3) @ retractheight  
-            
-            // void add_motion( name, type, prog_id, rapid_in, rapid_out);
-            pt_motionplot->add_motion("mh_cmd", "rapid", v11, rapid_idx, v13 );
-
+            //finally , set the top level "motion index object" that stores links to other indices 
+            //-1 indicates a NULL index  
+            // void add_motion(       name,     type,    prog_id, rapid_in   , rapid_out );
+            pt_motionplot->add_motion("mh_cmd", "rapid", -1      , pt_motionplot->num_rpd_plys-1, -1 );
 
         }
 

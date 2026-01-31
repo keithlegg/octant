@@ -80,7 +80,7 @@ extern obj_model* pt_model_buffer;
 
 void load_line_obj(std::string objfilepath)
 {
-    bool debug = true;
+    bool debug = false;
 
     char char_array[100];
 
@@ -92,7 +92,7 @@ void load_line_obj(std::string objfilepath)
     strcpy(char_array, objfilepath.c_str()); 
     pt_obj2d_loader->load(char_array);
     
-    //DEBUG - put this in object 3d as a class method ?
+
     if(debug)
     {
         std::cout << pt_obj2d_loader->num_lines << "\n";
@@ -120,7 +120,7 @@ void load_line_obj(std::string objfilepath)
     // I dont think this is needed, but hey
     delete pt_obj2d_loader;
 
-    pt_motionplot->update_toolpaths();
+    //pt_motionplot->update_toolpaths();
 }
 
 
@@ -164,10 +164,9 @@ void load_locs_obj(std::string objfilepath)
         //point_buffer1
     }
 
-
     // I dont think this is needed, but hey
     delete pt_obj2d_loader;
-    //pt_motionplot->update_toolpaths();
+
 }
 
 
