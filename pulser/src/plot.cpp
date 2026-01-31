@@ -210,12 +210,10 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
    DEBUG NOT DONE 
    use a "throw away" obj_model to do geometric calculations 
    load a model from disk (l type obj ) and convert it to toolpaths
-    
+
 */
 void cnc_plot::import_path_from_obj(std::string filepath)
 {
- 
-
     char char_array[100];
 
     obj_model* pt_obj2d_loader  = new obj_model;
@@ -385,9 +383,8 @@ void cnc_plot::add_rapid_vec(Vector3* nv)
 
 /******************************************/
 /******************************************/
-/*
-
-*/
+/******************************************/
+//START MOTION INDEX TOOLS (WIP)
 
 void cnc_plot::add_motion(std::string name, 
                           std::string type, 
@@ -487,9 +484,11 @@ void cnc_plot::show_mpath_info(void)
     }
 }
 
+//END MOTION INDEX TOOLS (WIP)
+/******************************************/
+/******************************************/
+/******************************************/
 
-/******************************************/
-/******************************************/
 
 /******************************************/
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
@@ -694,21 +693,26 @@ void cnc_plot::process_vec(uint window_idx)
 {
     bool debug = true;
     float low_thresh = .0001;
-
-    if(debug)
-    {   
-        std::cout << " ------------------- \n";
-        std::cout << " called prcess vec \n";
-    }
-
+    
     //set up the vector to process 
     Vector3 s_p = toolpath_vecs[window_idx];
     Vector3 e_p = toolpath_vecs[window_idx+1];  
 
-    //calculate length of the vector 
+    //build the path vector 
     Vector3 offset = e_p - s_p;
-    
+
+    //calculate length of the vector 
     float veclen = offset.length();
+
+    if(debug)
+    {   
+        std::cout << " ------------------- \n";
+        std::cout << " called prcess vec [" << offset.x << ", " << offset.y << ", "<< offset.z<< "]\n";
+    }
+
+
+    
+
             
     if(veclen!=0)
     {

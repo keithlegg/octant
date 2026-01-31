@@ -61,8 +61,17 @@ using namespace std;
 
 
 
+
 #define DEG_TO_RAD 0.0174532925
 #define RAD_TO_DEG 57.29577951
+
+
+/***************************************/
+
+
+float test ( float & deg){
+   return deg * DEG_TO_RAD;
+}
 
 
 float deg_to_rad ( float deg){
@@ -73,7 +82,81 @@ float rad_to_deg ( float rad){
    return rad * RAD_TO_DEG;
 }
 
+/***************************************/
+//taken from 
+//https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution.html
 
+template <typename T>  //used for epsilon 
+
+//DEBUG - wont let me add to a class - why?
+bool ray_tri_intersect(
+     Vector3& orig, Vector3& dir,
+     Vector3& v0, Vector3& v1,  Vector3& v2,
+     float& t)
+{
+
+    // Compute the plane's normal
+    Vector3 v0v1 = v1 - v0;
+    Vector3 v0v2 = v2 - v0;
+    // No need to normalize
+    Vector3 N = v0v1.cross(v0v2); // N
+ 
+    // Step 1: Finding P
+    
+    // Check if the ray and plane are parallel
+    float NdotRayDirection = N.dot(dir);
+    if (fabs(NdotRayDirection) < std::numeric_limits<T>::epsilon) // Almost 0
+        return false; // They are parallel, so they don't intersect!
+
+    // Compute d parameter using equation 2
+    float d = -N.dot(v0);
+    
+    // Compute t (equation 3)
+    t = -(N.dot(orig) + d) / NdotRayDirection;
+    
+    // Check if the triangle is behind the ray
+    if (t < 0) return false; // The triangle is behind
+ 
+    // Compute the intersection point using equation 1
+    Vector3 P = orig + t * dir;
+ 
+    // Step 2: Inside-Outside Test
+    Vector3 Ne; // Vector perpendicular to triangle's plane
+ 
+    // Test sidedness of P w.r.t. edge v0v1
+    Vector3 v0p = P - v0;
+    Ne = v0v1.cross(v0p);
+    if (N.dot(Ne) < 0) return false; // P is on the right side
+ 
+    // Test sidedness of P w.r.t. edge v2v1
+    Vector3 v2v1 = v2 - v1;
+    Vector3 v1p = P - v1;
+    Ne = v2v1.cross(v1p);
+    if (N.dot(Ne) < 0) return false; // P is on the right side
+ 
+    // Test sidedness of P w.r.t. edge v2v0
+    Vector3 v2v0 = v0 - v2;
+    Vector3 v2p = P - v2;
+    Ne = v2v0.cross(v2p);
+    if (N.dot(Ne) < 0) return false; // P is on the right side
+
+    return true; // The ray hits the triangle
+}
+
+/*
+void test(void)
+{
+    Vector3 p1 = Vector3(0,1,0);
+    Vector3 p2 = Vector3(1,0,0);
+    Vector3 p3 = Vector3(-1,0,0);
+        
+    Vector3 ray = Vector3(0, 0, 1); 
+    Vector3 dir = Vector3(0, 0, -1);
+    float t = 1.0;
+    
+    ray_tri_intersect(ray, dir, p1, p2, p3, t);
+}
+*/
 /***************************************/
 
 //test of inheritance 
@@ -184,6 +267,7 @@ void point_ops::lerp_along( Vector3* output,
 
 
 };
+
 
 
 /***************************************/

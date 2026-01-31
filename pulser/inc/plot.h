@@ -279,8 +279,8 @@ class cnc_plot
         uint num_disp_ids;
 
         //-----
-        // these get copied to program_vecs and linebuffer1 vecs (for display)
-        std::vector<Vector3> loaded_file_vecs; //storage for vectors defined in cfg file
+        // temp buffer for incoming vector data , typically from a file but not always 
+        std::vector<Vector3> loaded_file_vecs;  
 
     private:
         void show_vecs(std::vector<Vector3> * pt_vec);

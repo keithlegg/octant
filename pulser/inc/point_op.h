@@ -23,8 +23,21 @@ struct pt2d {
 /***************************************/
 /***************************************/
 
+float test (float& deg);
+
 float deg_to_rad (float);
 
+
+
+//bool ray_tri_intersect(
+//          Vector3 orig,  Vector3 dir,
+//          Vector3 v0,  Vector3 v1,  Vector3 v2,
+//         float t);
+
+bool ray_tri_intersect(
+     Vector3& orig, Vector3& dir,
+     Vector3& v0, Vector3& v1,  Vector3& v2,
+     float& t);
 
 /***************************************/
 
@@ -45,10 +58,12 @@ class point_ops
 
     ~point_ops(){};
 
+
+
     void lerp_along( Vector3* output,
-                            Vector3 fpos, 
-                            Vector3 spos, 
-                            float dist );
+                     Vector3 fpos, 
+                     Vector3 spos, 
+                     float dist );
 
 
     void locate_pt_along3d(std::vector<Vector3>*,

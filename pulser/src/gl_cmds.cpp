@@ -60,6 +60,10 @@
 #include "pylink.h"
 #include "octant.h"
 
+#include "point_op.h"
+
+
+
 //GUI LAYER 
 #if DO_BUILD_GUI == true
     #include "gl_cmds.h"
@@ -401,12 +405,13 @@ void parse_cmd_text(std::string *buffer)
         Vector3 p2 = Vector3(1,0,0);
         Vector3 p3 = Vector3(-1,0,0);
         pt_model_buffer->add_triangle(&p1, &p2, &p3);
-                         
-        p1 = Vector3(1,1,0);
-        p2 = Vector3(-2,0,0);
-        p3 = Vector3(1,0,1);
-        pt_model_buffer->add_triangle(&p1, &p2, &p3); 
-    
+            
+        Vector3 ray = Vector3(0, 0, 1); 
+        Vector3 dir = Vector3(0, 0, -1);
+        float t = 1.0;
+        
+        // ray_tri_intersect(ray, dir, p1, p2, p3, t);
+
     }
 
     //------------------
