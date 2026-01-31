@@ -209,6 +209,8 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
 /*
    DEBUG NOT DONE 
    use a "throw away" obj_model to do geometric calculations 
+   load a model from disk (l type obj ) and convert it to toolpaths
+    
 */
 void cnc_plot::import_path_from_obj(std::string filepath)
 {

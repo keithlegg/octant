@@ -72,6 +72,9 @@ void obj_model::refresh(void)
     calc_normals();
     bbox3d();
     bbox3d_pts();
+
+    //std::cout << bb_min_x << " "<< bb_max_x << "\n";
+
 }
             
 /***************************************/

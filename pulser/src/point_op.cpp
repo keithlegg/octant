@@ -722,6 +722,7 @@ void polygon_ops::bbox3d_pts(void)
     b_miny = Vector3( bb_max_x, bb_max_y, bb_min_z); 
 
 
+    //std::cout << t_maxx.x << " " << t_maxx.y << " "<< t_maxx.z << "\n";
 
 }
 

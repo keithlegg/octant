@@ -440,8 +440,6 @@ void obj_model::calc_normals(void)
 
         fnormals[num_fnrmls]=n;
         num_fnrmls++;
-
-
     }
 
     // calc normals for triangles 
@@ -473,10 +471,10 @@ void obj_model::calc_normals(void)
     // broken experiment to put face normals in vertex normals
     // only do so if nothing was loaded from the model 
     // DEBUG - its wrong !
-     
-    if (obj_model::num_vnrmls==0)
+    /* 
+    if (obj_model::num_vnrmls==0 )
     {
-        for (p_i=0;p_i<obj_model::num_tris;p_i++)
+        for (p_i=0;p_i<num_tris;p_i++)
         {    
             // fetch the pts for a triangle
             Vector3 p1 = points[tris[p_i][0]-1];
@@ -495,18 +493,8 @@ void obj_model::calc_normals(void)
              num_vnrmls++;
              num_vnrmls++;
              num_vnrmls++;
-
-            //doesnt crash, doesnt work 
-            // //set the idx of the lookup
-            // std::vector<int> vnlup;
-            // vnlup.push_back(num_vnrmls-2);
-            // vnlup.push_back(num_vnrmls-1);
-            // vnlup.push_back(num_vnrmls);                
-            // vnids[p_i] = vnlup;
-
-    
         }
-    }   
+    } */  
 
 }
 

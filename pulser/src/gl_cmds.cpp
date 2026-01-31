@@ -466,7 +466,8 @@ void parse_cmd_text(std::string *buffer)
         //DEBUG - IF NO OBJECT - USE TOOLPATHS INSTEAD 
         
         pt_model_buffer->refresh();
-
+        
+         
         //  BBOX (WIP)
         pt_model_buffer->add_locator(pt_model_buffer->t_maxx);
         pt_model_buffer->add_locator(pt_model_buffer->t_minx);
@@ -477,7 +478,7 @@ void parse_cmd_text(std::string *buffer)
         pt_model_buffer->add_locator(pt_model_buffer->b_minx);
         pt_model_buffer->add_locator(pt_model_buffer->b_maxy);
         pt_model_buffer->add_locator(pt_model_buffer->b_miny);
-         
+       
 
     }
 
