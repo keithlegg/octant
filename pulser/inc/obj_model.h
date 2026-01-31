@@ -107,8 +107,9 @@ class obj_model: public polygon_ops
         void triangulate(void);
         void insert(std::vector<int>& );
     
-        void add_triangle(Vector3, Vector3, Vector3 );
-        void add_triangle(int, int, int );
+        void add_triangle(Vector3*, Vector3*, Vector3*);
+
+        void add_triangle(uint, uint, uint );
         void append_tri(Vector3, Vector3, Vector3, int, int, int );
 
         //these look like they should be moved to pointgen, etc 

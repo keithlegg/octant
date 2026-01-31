@@ -91,6 +91,10 @@ std::vector<std::string> tokenizer( const std::string& p_pcstStr, char delim )  
 /*******************************************************************/
 void obj_model::load(char *filepath)
 {
+    //display stats about what we loaded when done 
+    bool showinfo  = false;
+    
+    //debugging tools 
     bool debug     = false;
     bool debugfile = false;
 
@@ -504,15 +508,16 @@ void obj_model::load(char *filepath)
 
     // ---------------------------------------------
     //DEBUG INFO - PHASE THIS OUT 
-    
-    std::cout << "vertices loaded   "<< num_pts    << "\n";
-    std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
-    std::cout << "vnormals loaded   "<< num_vnrmls << "\n"; 
-    std::cout << "fnormals loaded   "<< num_fnrmls << "\n"; 
-    std::cout << "lines loaded      "<< num_lines  << "\n";
-    std::cout << "triangles loaded  "<< num_tris   << "\n";
-    std::cout << "quads loaded      "<< num_quads  << "\n";  
-     
+    if(showinfo)
+    {
+        std::cout << "vertices loaded   "<< num_pts    << "\n";
+        std::cout << "uvs loaded        "<< num_uvs    << "\n"; 
+        std::cout << "vnormals loaded   "<< num_vnrmls << "\n"; 
+        std::cout << "fnormals loaded   "<< num_fnrmls << "\n"; 
+        std::cout << "lines loaded      "<< num_lines  << "\n";
+        std::cout << "triangles loaded  "<< num_tris   << "\n";
+        std::cout << "quads loaded      "<< num_quads  << "\n";  
+    } 
 
 }
 

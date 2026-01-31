@@ -59,48 +59,69 @@ using std::vector;
 
 #include "point_op.h"
 #include "obj_model.h"
-
-
-
  
 
 extern obj_model* pt_model_buffer;
 
+/*
+    COPIED HERE FOR REFERENCE 
+    
+    uint num_pts;
+    uint num_vtxrgb;
+    uint num_vnrmls;    
+    uint num_fnrmls;
+    uint num_uvs;
+    uint num_lines;
+    uint num_tris;
+    uint num_quads;    
+    uint num_faces;
+    uint num_locs;
 
+    Vector3* points     = new Vector3[MAX_NUM_VERTICES];   // vertices of model 
+    Vector3* vtxrgb     = new Vector3[MAX_NUM_VERTICES];   // vextex colors of model  
+    Vector2* uvs        = new Vector2[MAX_NUM_VERTICES];   // UV coords      - storage for lookup  
+    Vector3* vnormals   = new Vector3[MAX_NUM_VERTICES];   // vertex normals - storage for lookup 
+    Vector3* fnormals   = new Vector3[MAX_NUM_FACES];      // face normals   - common ID with faces
+    Vector3* locpos     = new Vector3[MAX_NUM_FACES];      // indexed locators 
 
+    uint* pt_loc               = new uint[MAX_NUM_FACES];                  // 3d "point only" location 
+    std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
+    std::vector<uint>* tris    = new std::vector<uint>[MAX_NUM_FACES];     // 3 sided faces
+    std::vector<uint>* vnids   = new std::vector<uint>[MAX_NUM_VERTICES];  // vertex normal ids
+    std::vector<uint>* quads   = new std::vector<uint>[MAX_NUM_FACES];     // 4 sided faces
+    std::vector<uint>* faces   = new std::vector<uint>[MAX_NUM_FACES];     // >4, N sided faces 
 
-
-
-
-
-
+    Vector3 bfr_pts[MAX_NUM_VERTICES];           // general point buffer   ( tmp work area )
+    std::vector<uint> bfr_faces[MAX_NUM_FACES];  // general polygon buffer ( tmp work area ) 
+*/
 
 /**********************************************************/
-// UNTESTED add a new 3D triangle using 3 vector3 
-void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
+// DEBUG - NOT WORKING?? 
+// add a new 3D triangle using 3 vector3 
+void obj_model::add_triangle(Vector3* pt1, Vector3* pt2, Vector3* pt3)
 {
-    vector<uint> newtri;
+    std::cout << "starting pts " << num_tris<< " "<< num_pts << "\n";
 
-    points[num_pts] = pt1;
-    newtri.push_back(num_pts+1);
+    points[num_pts] = *pt1;
+    tris[num_tris].push_back(num_pts);
     num_pts++;
     
-    points[num_pts] = pt2;
-    newtri.push_back(num_pts+1);
+    points[num_pts] = *pt2;
+    tris[num_tris].push_back(num_pts);
     num_pts++;
     
-    points[num_pts] = pt3;
-    newtri.push_back(num_pts+1);
+    points[num_pts] = *pt3;
+    tris[num_tris].push_back(num_pts);
     num_pts++;
 
-    tris[ num_tris ] = newtri;  
+    std::cout << "ending pts " << num_tris << " " << num_pts << "\n";
     num_tris++;
 
 }
 
 /**********************************************************/
 // add a new triangle INDEX ONLY -using existing vertices
-void obj_model::add_triangle(int vid1, int vid2, int vid3)
+void obj_model::add_triangle(uint vid1, uint vid2, uint vid3)
 {
 
     // debug - use fac_tmp instead? 

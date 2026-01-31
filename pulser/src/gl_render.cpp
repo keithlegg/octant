@@ -1342,15 +1342,28 @@ void render_loop(void)
         glBegin(GL_TRIANGLES);  
             for (uint p_i=0;p_i<pt_model_buffer->num_tris;p_i++)
             { 
-              
+
                 // fetch the triangle indices from vertex list
                 int tri1 = pt_model_buffer->tris[p_i][0];
                 int tri2 = pt_model_buffer->tris[p_i][1];
                 int tri3 = pt_model_buffer->tris[p_i][2];
 
-                int vn1 = pt_model_buffer->vnids[p_i][0];
-                int vn2 = pt_model_buffer->vnids[p_i][1];
-                int vn3 = pt_model_buffer->vnids[p_i][2];
+                //#########################################//
+                //DEBUG THIS  - Dont force data to include vertex normals 
+
+                //well well well - looks like we excpect vertex normals
+                //no wonder it keeps crashing - DEBUG  
+                int vn1 = 0;
+                int vn2 = 0;
+                int vn3 = 0;
+
+                if(pt_model_buffer->num_vnrmls>0)
+                { 
+                    vn1 = pt_model_buffer->vnids[p_i][0];
+                    vn2 = pt_model_buffer->vnids[p_i][1];
+                    vn3 = pt_model_buffer->vnids[p_i][2];
+                }
+                //#########################################//
 
                 // use the same vertex indices to lookup RGB 
                 Vector3 rgb1 = pt_model_buffer->vtxrgb[tri1-1];
@@ -1368,11 +1381,15 @@ void render_loop(void)
                 //Vector2 uv = pt_model_buffer->uvs[tri1];
                 // glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.5, 1.0);                
-              
-                Vector3 nrm1 = pt_model_buffer->vnormals[vn1-1];
-                glNormal3f( nrm1.x, nrm1.y, nrm1.z);
-                //std::cout <<  " vtxnrm1 "<< nrm1.x << " "<< nrm1.y << " "<< nrm1.z << "\n";
-                
+
+                if(pt_model_buffer->num_vnrmls>0)
+                {                 
+                    //if(pt_model_buffer->num_vnrmls)
+                    Vector3 nrm1 = pt_model_buffer->vnormals[vn1-1];
+                    glNormal3f( nrm1.x, nrm1.y, nrm1.z);
+                    //std::cout <<  " vtxnrm1 "<< nrm1.x << " "<< nrm1.y << " "<< nrm1.z << "\n";
+                }
+
                 Vector3 pt1 = pt_model_buffer->points[tri1-1];
                 glVertex3f(pt1.x, pt1.y, pt1.z);
 
@@ -1388,10 +1405,13 @@ void render_loop(void)
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(0.0, 1.0); 
 
-                // calculated face normals 
-                Vector3 nrm2 = pt_model_buffer->vnormals[vn2-1];
-                glNormal3f( nrm2.x, nrm2.y, nrm2.z);
-                //std::cout <<  " vtxnrm2 "<< nrm2.x << " "<< nrm2.y << " "<< nrm2.z << "\n";
+                if(pt_model_buffer->num_vnrmls>0)
+                { 
+                    // calculated face normals 
+                    Vector3 nrm2 = pt_model_buffer->vnormals[vn2-1];
+                    glNormal3f( nrm2.x, nrm2.y, nrm2.z);
+                    //std::cout <<  " vtxnrm2 "<< nrm2.x << " "<< nrm2.y << " "<< nrm2.z << "\n";
+                }
 
                 Vector3 pt2 = pt_model_buffer->points[tri2-1];
                 glVertex3f(pt2.x, pt2.y, pt2.z);
@@ -1408,10 +1428,13 @@ void render_loop(void)
                 //glTexCoord2f(uv.x, uv.y);
                 glTexCoord2f(1.0, 0.0);       
 
-                // calculated face normals
-                Vector3 nrm3 = pt_model_buffer->vnormals[vn3-1];
-                glNormal3f( nrm3.x, nrm3.y, nrm3.z);
-                //std::cout <<  " vtxnrm3 "<< nrm3.x << " "<< nrm3.y << " "<< nrm3.z << "\n";
+                if(pt_model_buffer->num_vnrmls>0)
+                { 
+                    // calculated face normals
+                    Vector3 nrm3 = pt_model_buffer->vnormals[vn3-1];
+                    glNormal3f( nrm3.x, nrm3.y, nrm3.z);
+                    //std::cout <<  " vtxnrm3 "<< nrm3.x << " "<< nrm3.y << " "<< nrm3.z << "\n";
+                }
                 
                 Vector3 pt3 = pt_model_buffer->points[tri3-1];
                 glVertex3f(pt3.x, pt3.y, pt3.z);

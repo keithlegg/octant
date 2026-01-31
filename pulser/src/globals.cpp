@@ -202,7 +202,7 @@ void cncglobals::show_params( void )
 
     //--------------------------
     std::cout << " ## machine params " << "\n";  
-    //std::cout << " linear_unit : " << (*this).linear_unit << "\n";  
+    std::cout << " linear_unit :     " << linear_unit << "\n";  
 
     std::cout << " ## machine travel size in 3D  " << "\n";  
     
@@ -525,11 +525,8 @@ void cncglobals::load_cfg_file( void )
                         {   
 
                             std::string buffer;
-                            //std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
                             buffer = tokenized.at(1);
                             std::cout << "PYTHON NEEDS SETTING OBJ DEBUG         \n";
-
-
                             //obj_pycore = buffer;  
                         }
 
@@ -634,8 +631,12 @@ void cncglobals::load_cfg_file( void )
                         if (tokenized.at(0).find("LINEAR_UNIT") != std::string::npos )                            
                         {  
                             std::string buffer;
-                            //std::cout << "DEBUG parsing LINEAR_UNIT " << tokenized.at(1) << "\n";
                             buffer = tokenized.at(1);
+                            if(buffer=="inch")
+                            {
+                                std::cout << "DEBUG parsing LINEAR_UNIT " << buffer << "\n";
+                            }
+
                             //std::cout << "DEBUG parsing LINEAR_UNIT " << linear_unit << "\n";
 
                         }

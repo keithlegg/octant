@@ -134,7 +134,7 @@ void obj_model::show(void)
 
 /***************************************/
 
-
+//DEBUG NOT DONE YET 
 void obj_model::show_geom(void)
 {
     int i;
@@ -144,8 +144,8 @@ void obj_model::show_geom(void)
     //std::cout << "\n# point indices  ---------------- %d \n", (*this).num_pts);
     for (i=0;i<num_pts;i++)
     {
-        std::cout << " pt idx "<< i  << " is :";
-        //std::cout << points[i].x << " " << points[i].y << " "<< points[i].z ; 
+        std::cout << " pt idx "<< i  << " is : ";
+        std::cout << points[i].x << " " << points[i].y << " "<< points[i].z ; 
         
         std::cout << "\n";
     }

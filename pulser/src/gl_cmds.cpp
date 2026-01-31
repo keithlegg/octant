@@ -397,7 +397,14 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="test")
     {
-
+        Vector3 p1 = Vector3(0,0,0);
+        Vector3 p2 = Vector3(1,0,0);
+        Vector3 p3 = Vector3(-1,0,0);
+        
+        pt_model_buffer->add_triangle(&p1, &p2, &p3);
+                         
+        //void obj_model::add_triangle(Vector3 pt1, Vector3 pt2, Vector3 pt3)
+    
     }
 
     //------------------
