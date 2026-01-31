@@ -3,13 +3,39 @@ import os
 import sys
 
 
+import rtree 
+import networkx 
+import numpy as np
+
+from pathlib import Path
+
+
 from pygfx import NUMPY_IS_LOADED, SCIPY_IS_LOADED, GEOJSON_IS_LOADED, \
                   SHAPELY_IS_LOADED, TRIMESH_IS_LOADED, NETWORKX_IS_LOADED, \
                   SKLEARN_IS_LOADED, MATPLOTLIB_IS_LOADED 
 
+from pygfx.dag_ops import *
+from pygfx.milling_ops import *
+from pygfx.vector_ops import *
 
 
- 
+if GEOJSON_IS_LOADED:
+    from geojson import dump 
+    from geojson import Point as gjpt
+    from geojson import Polygon as gjply
+    from geojson import Feature as gjftr
+    from geojson import LineString as gjln
+    from geojson import FeatureCollection as gjfc
+    from geojson import load as gjload
+
+if SHAPELY_IS_LOADED:
+    from shapely import buffer, BufferCapStyle, BufferJoinStyle
+    from shapely import Point as shp_pt
+    from shapely import Polygon as shp_ply
+    from shapely import MultiPolygon as shp_mltply
+    from shapely import LineString as shp_ln
+
+
 from pygfx.math_ops import  *
 from pygfx.point_ops import *
 from pygfx.obj3d import  *
@@ -181,10 +207,6 @@ def gear_test():
 """
 
 
-
-
-
-
 ##***********************************************************##
 ##***********************************************************##
 ##***********************************************************##
@@ -197,7 +219,6 @@ def triangulate():
     obj.load(PYCORE_OBJ_IN)
     obj.triangulate()
     obj.save(PYCORE_OBJ_OUT)
-
 
 
 def loadkicad():

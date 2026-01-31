@@ -443,13 +443,20 @@ void parse_cmd_text(std::string *buffer)
     //------------------
     if (a1=="mx")
     {
+        //debug - need to toggle this
+        //default on  
         cg.get_machine_xtntx();
     }
 
     //------------------
     if (a1=="extent"||a1=="extents")
     {
-                
+    
+    }
+
+    //------------------
+    if (a1=="bbox")
+    {                
 
         /* CENTROID  
            Vector3 foocntr = pt_model_buffer->centroid();
@@ -538,7 +545,7 @@ void parse_cmd_text(std::string *buffer)
     //test port in (quadrature decode) 
     if (a1=="tp_in")
     {
-        if (cg.ENABLE_MOTOR_DRIVE==0)
+        if (cg.ENABLE_MOTOR_DRIVE==1)
         {
             if(tog_testport){
                 tog_testport = false;

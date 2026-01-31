@@ -112,7 +112,10 @@ void obj_model::load(char *filepath)
 
     if (!obj_filein.good()){ 
         std::cout << ".obj file \""<< filepath <<"\" appears to be missing." << std::endl;
-        exit (1); // exit if file not found
+        
+        //more polite than exiting the program
+        return void();
+
     }
 
     //check to see if an object was already loaded - offset the point indeces if so 

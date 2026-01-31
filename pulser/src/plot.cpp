@@ -212,7 +212,7 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
 */
 void cnc_plot::import_path_from_obj(std::string filepath)
 {
-    bool debug = true;
+ 
 
     char char_array[100];
 
@@ -222,30 +222,27 @@ void cnc_plot::import_path_from_obj(std::string filepath)
 
     pt_obj2d_loader->load(char_array);
     
-    //DEBUG - put this in object 3d as a class method 
-    if(debug)
+    if(pt_obj2d_loader->num_lines)
     {
-        std::cout << pt_obj2d_loader->num_lines << "\n";
+        uint pcount = 0;
+        for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
+        {
+            int pidx1 = pt_obj2d_loader->lines[x][0];
+            int pidx2 = pt_obj2d_loader->lines[x][0];
+            
+            Vector3 pt1 = pt_obj2d_loader->points[pidx1];
+            Vector3 pt2 = pt_obj2d_loader->points[pidx2];
+
+            //copy the object3d vectors into a toolpath 
+            add_file_vec(&pt1);
+            add_file_vec(&pt2);
+        }
+
+
+        add_prgvec_ply(); 
+        copy_prg_to_toolpath();
+        // update_toolpaths();
     }
-
-    uint pcount = 0;
-    for (uint x = 0;x<pt_obj2d_loader->num_lines;x++)
-    {
-        int pidx1 = pt_obj2d_loader->lines[x][0];
-        int pidx2 = pt_obj2d_loader->lines[x][0];
-        
-        Vector3 pt1 = pt_obj2d_loader->points[pidx1];
-        Vector3 pt2 = pt_obj2d_loader->points[pidx2];
-
-        //copy the object3d vectors into a toolpath 
-        add_file_vec(&pt1);
-        add_file_vec(&pt2);
-    }
-
-
-    add_prgvec_ply(); 
-    copy_prg_to_toolpath();
-    // update_toolpaths();
 }
 
 /***************************************/
