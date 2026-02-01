@@ -1028,6 +1028,9 @@ void parser_cb(unsigned char key, int x, int y)
 //placeholder for future feature we havent invented yet
 float dummy = 0;
 uint top_text_y = 20;
+
+uint debug_txt_y = 400;
+
 void *fontsm = GLUT_BITMAP_8_BY_13;     
 void *font   = GLUT_BITMAP_TIMES_ROMAN_24; 
 
@@ -1190,17 +1193,24 @@ void render_loop(void)
         //-----------------------------------------
         if(debug_onscreen)
         {
+            green_clr;
+            sprintf(s, "sim is running  :%d ", pt_motionplot->running);
+            renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-59  ,(void *)fontsm, s );
+
+            sprintf(s, "sim is done     :%d ", pt_motionplot->finished);
+            renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-48  ,(void *)fontsm, s );
+
             cyan_clr;
             sprintf(s, "simulation time :%f ", pt_motionplot->localsimtime);
-            renderBitmapString( scr_size_x-400, scr_size_y-40  ,(void *)fontsm, s );
+            renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-37  ,(void *)fontsm, s );
             
             yellow_clr;
             sprintf(s, "vec :%d of :%d ", pt_motionplot->vec_idx, pt_motionplot->num_simvecs);
-            renderBitmapString( scr_size_x-400, scr_size_y-27  ,(void *)fontsm, s );
+            renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-26  ,(void *)fontsm, s );
             
             green_clr;
             sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
-            renderBitmapString( scr_size_x-400, scr_size_y-15  ,(void *)fontsm, s );
+            renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-15  ,(void *)fontsm, s );
         }
         //-----------------------------
 

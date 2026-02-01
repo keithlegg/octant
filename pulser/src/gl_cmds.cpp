@@ -380,21 +380,19 @@ void parse_cmd_text(std::string *buffer)
     //run external tools 
     if (a1=="python")
     {
-         
         exe_python(a2);    
         std::string path = "3d_obj/PYCORE.obj";
         load_py_obj(path);
-
     }
 
     //------------------
-    
     if (a1=="m44")
     {
         Matrix4 m44;
         grab_camera_matrix(&m44);
         std::cout << m44;
     }
+    
     //------------------
     //run external tools 
     if (a1=="up"||a1=="update")

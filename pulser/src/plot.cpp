@@ -415,7 +415,7 @@ void cnc_plot::add_motion(std::string name,
     //https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back
 
     motion_prg->emplace_back(foo);
-    num_motion_ids++;
+    //num_motion_ids++;
 
 }
 
@@ -527,7 +527,7 @@ void cnc_plot::show_path_info(void)
 
 void cnc_plot::show_path(void)
 {
-    std::cout << " #"  << num_motion_ids          <<" motion path obj(s) \n"; 
+    //std::cout << " #"  << num_motion_ids          <<" motion path obj(s) \n"; 
     std::cout << " #"  << num_prg_plys            <<" path prg polys     \n"; 
     std::cout << " #"  << num_rpd_plys            <<" path rpd polys     \n";
     std::cout << " #"  << num_disp_ids            <<" display polys     \n";
@@ -934,9 +934,7 @@ void cnc_plot::update_toolpaths(void)
         std::cout << " update_toolpaths called \n";
         std::cout << " num polys " << num_prg_plys << "\n"; 
     } 
-    
-    // toolpath_vecs.clear();
-    // num_toolpath_ids=0;
+
 
     if(finished==true && running==false)
     {
@@ -944,15 +942,35 @@ void cnc_plot::update_toolpaths(void)
             clear_linebuffers(); //clear display geom 
         #endif
         
-        //clear the old data out 
+        //clear the old toolpath data out 
         toolpath_vecs.clear();
         num_toolpath_ids=0;
 
         //CHECK FOR MOTION OBJECTS FIRST 
         //IF NONE THEN BUILD TOOLPATHS FROM PRG VECS
-        if(num_motion_ids)
+        if( motion_prg->size() )
         {
             std::cout << "update_toolpaths - MOTION IDX OBJ EXISTS  " << "\n";
+            
+            //for (uint mp=0;mp<num_motion_ids;mp++)
+            for (uint mp=0;mp<motion_prg->size();mp++)
+            {
+                motion_idx motionobj = motion_prg->at(mp);
+                
+                std::cout << motionobj.name << "\n";
+                
+                // << mp << " " << motionobj.name     << " " 
+                // << motionobj.type     << " "
+                // << motionobj.prog_id  << " "
+                // << motionobj.rapid_in << " "
+                // << motionobj.rapid_out << "\n";
+
+                //if(motionobj.prog_id>=0)
+                //{     
+                //    std::vector<uint> myply = prg_idxs[motionobj.prog_id];
+                //    std::cout << " motion index to prgm polygon of "<< myply.size() << " size\n"; 
+                //}
+            }
         }
         else if(program_vecs.size()>0)
         {
@@ -970,10 +988,7 @@ void cnc_plot::update_toolpaths(void)
                     {
                         std::cout << " update debug " << vid << " "<< seg.x << "\n";
                     }
-
-                      
                 };
-
             }//iterate polygons 
             
             copy_prg_to_toolpath();
