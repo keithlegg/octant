@@ -437,6 +437,7 @@ void cnc_plot::show_mpath(void)
 
         if(debug)
         {
+            std::cout << "---------------------------------------------------\n";
             std::cout << " motion id:" << mp << ": " << motionobj.name     << " " 
                                     << motionobj.type     << " "
                                     << motionobj.rapid_in << " "
@@ -489,6 +490,7 @@ void cnc_plot::show_mpath_info(void)
 
     for (uint mp=0;mp<motion_prg->size();mp++)
     {
+        std::cout << "---------------------------------------------------\n";        
         std::cout << "  motion idxobj  " << motion_prg->at(mp).name      << " " 
                                          << motion_prg->at(mp).type      << " "
                                          << motion_prg->at(mp).rapid_in  << " "
@@ -609,6 +611,25 @@ void cnc_plot::pause(void)
         mtime.stop();
     }
 }
+
+/******************************************/
+//clear motion caches  
+void cnc_plot::clear_motionidx(void)
+{
+
+    if(finished==true && running==false)
+    {
+        // std::vector<motion_idx> motion_prg[MAX_MOTION_NUM]; 
+        motion_prg->clear();
+
+
+    }else
+    {
+        std::cout << "clear_motionidx: cant clear while running  \n"; 
+    }
+
+}
+
 
 /******************************************/
 //clear toolpaths only 
@@ -778,8 +799,8 @@ void cnc_plot::process_vec(uint window_idx)
 void cnc_plot::update_sim(void)
 {
     bool debug = false;
-    
-    //update this to display stats in ogl
+
+    //update the num toolpaths for display in window 
     //DEBUG - need to display number BETWEEN VECS(PTS) 
     num_simvecs = toolpath_vecs.size()-1;
 
@@ -1019,7 +1040,11 @@ void cnc_plot::update_toolpaths(void)
         }//if data exists
       
     }//if program is NOT running or paused
-    
+ 
+
+    //update the num toolpaths for display in window 
+    //DEBUG - need to display number BETWEEN VECS(PTS) 
+    num_simvecs = toolpath_vecs.size()-1;
 }
 
 /******************************************/

@@ -137,7 +137,7 @@ void unload_vec(void)
     std::cout << "# dumping cached vectors \n";  
     
     //stop the runing simulation
-    pt_motionplot->reset();
+    //pt_motionplot->reset();
 
     //---
     pt_motionplot->clear_toolpaths();
@@ -151,6 +151,9 @@ void unload_vec(void)
     {
         pt_motionplot->tp_idxs[x].clear();
     }
+
+    //finally remove motion_idx objects (indices to indeces)
+    pt_motionplot->clear_motionidx();
 
     clear_linebuffers();
 }
@@ -788,6 +791,15 @@ void parse_cmd_text(std::string *buffer)
             //-1 indicates a NULL index  
             // void add_motion(       name,     type,    rapid_in,                     prog_id, rapid_out );
             pt_motionplot->add_motion("mh_cmd", "rapid", pt_motionplot->num_rpd_plys-1, -1,     -1 );
+
+            // rebuild the toolpaths based on cached vectors 
+            // if prg exists with no motion idx, use those (maybe this will go away)
+            // if motion_idx exist they always are used  
+            pt_motionplot->update_toolpaths();
+
+            //auto run the sim 
+            pt_motionplot->run_sim();
+
 
         }
 
