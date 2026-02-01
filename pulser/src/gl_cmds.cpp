@@ -758,6 +758,12 @@ void parse_cmd_text(std::string *buffer)
     //move head (and store as a new program??)
     if (a1=="mh")
     {
+        // this needs to be passed as a callback 
+        // we are doing this just for testing
+        pt_motionplot->clearlast_motionidx();
+        pt_motionplot->clear_rapidvecs();
+
+        //--
 
         if(a2!="" && a3!="" && a4!="")
         {
@@ -767,7 +773,6 @@ void parse_cmd_text(std::string *buffer)
             v12 = std::stof(a3);
             v13 = std::stof(a4);
   
-
             // build the rapid move vector
             Vector3 dest = Vector3(v11, v12, v13); 
             
@@ -799,7 +804,11 @@ void parse_cmd_text(std::string *buffer)
 
             //auto run the sim 
             pt_motionplot->run_sim();
-
+            
+            // clear the motionpath object and rapidmove vectors 
+            // we need to pass this as a function pointer? 
+            // it deletes it before it can run if we do this
+            //pt_motionplot->clearlast_motionidx();
 
         }
 

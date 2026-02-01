@@ -419,6 +419,53 @@ void cnc_plot::add_motion(std::string name,
 
 }
 
+/******************************************/
+
+// std::vector<motion_idx> motion_prg[MAX_MOTION_NUM]; 
+//clear motion caches  
+void cnc_plot::clear_motionidx(void)
+{
+
+    if(finished==true && running==false)
+    {
+        motion_prg->clear();
+    }else
+    {
+        std::cout << "clear_motionidx: cant clear while running  \n"; 
+    }
+
+}
+
+/******************************************/
+//std::vector<motion_idx> motion_prg[];  
+
+//DEBUG not tested 
+void cnc_plot::clearlast_motionidx(void)
+{
+    bool debug = true;
+   
+    if(debug)
+    {  
+       std::cout << "clearlast_motionidx " << " \n";
+    }
+
+    /*
+        // vec.push_back(6);
+        // vec.push_back(-17);
+        // vec.push_back(12);
+        // // Deletes the second element (vec[1])
+        // vec.erase(std::next(vec.begin()));
+    
+        // Deletes the second through third elements (vec[1], vec[2])
+        //vec.erase(std::next(vec.begin(), 1), std::next(vec.begin(), 3));
+    */
+
+    if( motion_prg->size() )
+    {
+        motion_prg->pop_back();
+    }
+
+}
 
 /******************************************/
 //DEBUG NEED TO THINK THIS OUT 
@@ -618,22 +665,18 @@ void cnc_plot::pause(void)
     }
 }
 
-/******************************************/
-//clear motion caches  
-void cnc_plot::clear_motionidx(void)
-{
 
+/******************************************/
+//clear rapidvecs only 
+void cnc_plot::clear_rapidvecs(void)
+{
     if(finished==true && running==false)
     {
-        // std::vector<motion_idx> motion_prg[MAX_MOTION_NUM]; 
-        motion_prg->clear();
-
-
+        rapidmove_vecs.clear();
     }else
     {
-        std::cout << "clear_motionidx: cant clear while running  \n"; 
+        std::cout << "clear_rapidvecs: cant clear while running  \n"; 
     }
-
 }
 
 
@@ -641,17 +684,14 @@ void cnc_plot::clear_motionidx(void)
 //clear toolpaths only 
 void cnc_plot::clear_toolpaths(void)
 {
-
     if(finished==true && running==false)
     {
-        //clear the old data out 
         rapidmove_vecs.clear();
         toolpath_vecs.clear();
     }else
     {
         std::cout << "clear_toolpaths: cant clear while running  \n"; 
     }
-
 }
 
 
@@ -699,6 +739,26 @@ void cnc_plot::stop(void)
 
 
 /******************************************/
+
+/*
+NEED TO ADD A CALLBACK TO RUN WHEN DONE 
+CALLBACK STRUCTURE 
+
+typedef void (*callback_function)(void); // type for conciseness
+
+callback_function disconnectFunc; // variable to store function pointer type
+
+void D::setDisconnectFunc(callback_function pFunc)
+{
+    disconnectFunc = pFunc; // store
+}
+
+void D::disconnected()
+{
+    disconnectFunc(); // call
+    connected = false;
+}
+*/
 
 void cnc_plot::run_sim(void)
 {
@@ -878,8 +938,6 @@ void cnc_plot::update_sim(void)
 /*
     derived from update_toolpaths 
     this is all experimental 
-*/
-
 
 void cnc_plot::bake_motion(void)
 {
@@ -932,6 +990,8 @@ void cnc_plot::bake_motion(void)
     }//if program is NOT running or paused
     
 }
+*/
+
 
 /*
 

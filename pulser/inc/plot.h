@@ -192,10 +192,14 @@ class cnc_plot
 
         //debug these are wip 
         void update_toolpaths(void); //old update tp
-        void bake_motion(void);      //new WIP update tp 
+        //void bake_motion(void);      //new WIP update tp 
 
+        void clearlast_motionidx(void);
         void clear_motionidx(void);
+
         void clear_toolpaths(void);
+        void clear_rapidvecs(void);
+
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);
 
