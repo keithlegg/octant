@@ -1173,21 +1173,21 @@ void cnc_plot::add_dispvec_ply(void)
     - ??
 */
 
-void cnc_plot::init_paths( std::vector<Vector3>* pt_drawvecs)
+void cnc_plot::init_paths( std::vector<Vector3>* pt_anyvecs)
 {
-    for (uint i=0;i<pt_drawvecs->size();i++)
+    for (uint i=0;i<pt_anyvecs->size();i++)
     {   
         //debug - should add a class method to get first and last vec 
         if(i==0)
         {
-            prg_origin = pt_drawvecs->at(i);
+            prg_origin = pt_anyvecs->at(i);
             quill_pos = Vector3(prg_origin.x,
                                 prg_origin.y,
                                 prg_origin.z);
         };
 
-        //if(i==pt_drawvecs->size()-1){prg_end = pt_drawvecs->at(i);}
-        //Vector3 sv  = pt_drawvecs->at(i);
+        //if(i==pt_anyvecs->size()-1){prg_end = pt_anyvecs->at(i);}
+        //Vector3 sv  = pt_anyvecs->at(i);
     } 
 
 }

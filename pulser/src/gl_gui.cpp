@@ -87,7 +87,7 @@ void start_gui()
 
     // we should now have display vectors to process, 
     // this sets up internals like quill_pos, etc  
-    //pt_motionplot->init_paths(&linebuffer1);
+    pt_motionplot->init_paths(&pt_motionplot->toolpath_vecs);
     
     pt_motionplot->retract_height = cg.retract_height;
     pt_motionplot->work_height    = cg.work_height;
