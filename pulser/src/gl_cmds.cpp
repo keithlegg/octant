@@ -147,9 +147,12 @@ void unload_vec(void)
     //pt_motionplot->num_prg_plys = 0;
     pt_motionplot->num_rpd_plys = 0;
 
+    //seems like a dumb way to do this
     for(uint x=0;x<MAX_NUM_PLY;x++)
     {
         pt_motionplot->tp_idxs[x].clear();
+        pt_motionplot->prg_idxs[x].clear();
+        pt_motionplot->rpd_idxs[x].clear();
     }
 
     //finally remove motion_idx objects (indices to indeces)
@@ -809,6 +812,8 @@ void parse_cmd_text(std::string *buffer)
             // we need to pass this as a function pointer? 
             // it deletes it before it can run if we do this
             //pt_motionplot->clearlast_motionidx();
+
+            pt_motionplot->copy_rpd_to_toolpath();
 
         }
 

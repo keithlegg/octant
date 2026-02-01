@@ -165,11 +165,6 @@ class cnc_plot
         void import_path_from_obj(std::string filepath);
 
         //##########################//
-
-        // motion path interface backend
-        void copy_prg_to_toolpath(void);
-    
-
         //add single vector to NON INDEXED 
         void add_file_vec(Vector3* nv);
 
@@ -178,10 +173,13 @@ class cnc_plot
         void add_prg_vec(Vector3* nv); 
         void add_rapid_vec(Vector3* nv);
 
+
+        // motion path interface backend
+        void copy_prg_to_toolpath(void);
+        void copy_rpd_to_toolpath(void);
+
         //this gets called post file load - but its not done  
         void init_paths( std::vector<Vector3>* pt_drawvecs);   
-        //void mov_fv_to_pv(void); // move file vec to program vec , clear file vec
-
 
         void add_motion(std::string name, std::string type, 
                         int prog_id, int rapid_in, int rapid_out); 

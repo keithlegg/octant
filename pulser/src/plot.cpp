@@ -1150,10 +1150,46 @@ void cnc_plot::copy_prg_to_toolpath(void)
             }
         }
     }
-
-
 }
 
+/******************************************/
+//DEBUG - NOT TESTED 
+void cnc_plot::copy_rpd_to_toolpath(void)
+{
+   
+    bool debug = true;
+    
+    uint num_rpd_exist = rapidmove_vecs.size();
+
+    if (num_rpd_exist<=1)
+    {
+        std::cout << "copy_rpd_to_toolpath: need at least two vectors for a line\n";
+    }
+
+    //------------
+    if (num_rpd_exist>1)
+    {   
+        toolpath_vecs = rapidmove_vecs;  
+
+        // not sure this works in C++
+        //toolpath_vecs = rapidmove_vecs; 
+
+        // do this instead for now   
+        for (uint i=0;i<rapidmove_vecs.size();i++)
+        {
+            toolpath_vecs[i]==rapidmove_vecs[i];
+        }
+
+        for (uint i=0;i<num_rpd_plys;i++)
+        {
+            for (uint ii=0;ii<rpd_idxs[i].size();ii++)
+            {
+                tp_idxs[ii] = rpd_idxs[ii]; 
+                num_toolpath_ids++;           
+            }
+        }
+    }
+}
 
 /******************************************/
 /*
@@ -1184,7 +1220,7 @@ void cnc_plot::add_prgvec_ply(void)
     // incoming data is in file buffer - copy it to program buffer with index 
     if (loaded_file_vecs.size()==1)
     {
-        std::cout << "WARNING mov_fv_to_pv - need at least two points for a line."<<"\n";
+        std::cout << "WARNING add_prgvec_ply - need at least two points for a line."<<"\n";
     }   
 
     if (loaded_file_vecs.size()>1)
@@ -1194,7 +1230,7 @@ void cnc_plot::add_prgvec_ply(void)
             Vector3 tmpv = loaded_file_vecs.at(p);
             if(debug)
             {
-                std::cout << "mov_fv_to_pv file vec data "<< tmpv.x << " "<< tmpv.y << " "<< tmpv.z << "\n";
+                std::cout << "add_prgvec_ply file vec data "<< tmpv.x << " "<< tmpv.y << " "<< tmpv.z << "\n";
             }
             add_prg_vec(&tmpv);
         }
@@ -1205,7 +1241,7 @@ void cnc_plot::add_prgvec_ply(void)
     //------------
     if(debug)
     {
-        std::cout << "add_prgvec_ply_tp reindex "<< num_prg_exist << "\n";
+        std::cout << "add_prgvec_ply reindex "<< num_prg_exist << "\n";
     }
  
     for (uint i=0;i<num_filevecs;i++)
@@ -1247,7 +1283,7 @@ void cnc_plot::add_dispvec_ply(void)
             Vector3 tmpv = loaded_file_vecs.at(p);
             if(debug)
             {
-                std::cout << "mov_fv_to_pv file vec data "<< tmpv.x << " "<< tmpv.y << " "<< tmpv.z << "\n";
+                std::cout << "add_dispvec_ply file vec data "<< tmpv.x << " "<< tmpv.y << " "<< tmpv.z << "\n";
             }
             add_disp_vec(&tmpv);
         }
