@@ -1,9 +1,4 @@
 
----
-
-motion_idx objects , rapid_in , rapid_out 
-
----
 smoother pulsing with no breaks bewteen vectors 
 control the pulses/speed based on distance in space 
 make speed based on "feedrate" 

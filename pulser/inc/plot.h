@@ -82,7 +82,7 @@ class motion_idx
     public:
         motion_idx(){}
         motion_idx(std::string nam, std::string typ, 
-                   int progid, int rapidin, int rapidout)
+                   int rapidin, int progid, int rapidout)
         {
             name      = nam;
             type      = typ;
@@ -118,7 +118,6 @@ class cnc_plot
         {
             timediv    = 1; //speed == simtime divisions == 1 second/divs
             vec_idx    = 0;
-            num_prg_plys   = 0;
             num_rpd_plys   = 0;
 
             running    = false;
@@ -267,10 +266,7 @@ class cnc_plot
         std::vector<Vector3> program_vecs;          
         std::vector<uint> prg_idxs[MAX_NUM_PLY]; // index to program vecs
         uint num_prg_plys;
-
-
         //--------------------------//     
-        uint num_motion_ids;
         std::vector<motion_idx> motion_prg[MAX_MOTION_NUM];  // "fk" style links to motion vecs
 
         //--------------------------//    

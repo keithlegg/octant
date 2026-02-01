@@ -403,7 +403,7 @@ void cnc_plot::add_motion(std::string name,
     if(debug)
     {
         std::cout << "add_motion: name "<< name << " type "
-                  << type <<" prgid " << prog_id << " ri " << rapid_in << " ro "
+                  << type << " ri " << rapid_in <<" prgid " << prog_id <<  " ro "
                   << rapid_out << "\n";
     }
     
@@ -437,23 +437,12 @@ void cnc_plot::show_mpath(void)
 
         if(debug)
         {
-            std::cout << " motion " << mp << " " << motionobj.name     << " " 
+            std::cout << " motion id:" << mp << ": " << motionobj.name     << " " 
                                     << motionobj.type     << " "
-                                    << motionobj.prog_id  << " "
                                     << motionobj.rapid_in << " "
+                                    << motionobj.prog_id  << " "
                                     << motionobj.rapid_out << "\n";
         }//debug 
-
-        //-------------------------------//
-        if(motionobj.prog_id>=0)
-        {     
-              
-            std::vector<uint> myply = prg_idxs[motionobj.prog_id];
-            std::cout << " motion index to prgm polygon of "<< myply.size() << " size\n"; 
-            //std::cout << " prog : obj id " <<  prgid   << "\n";   
-            //std::cout << program_vecs[prgid].x  <<"\n";
-
-        }
 
         //-------------------------------//
         // // // cache of toolpath component vectors 
@@ -466,6 +455,17 @@ void cnc_plot::show_mpath(void)
               
             std::vector<uint> myply = rpd_idxs[motionobj.rapid_in];
             std::cout << " motion index ["<<motionobj.rapid_in<<"] :(rapid in) polygon of "<< myply.size() << " size\n"; 
+        }
+
+        //-------------------------------//
+        if(motionobj.prog_id>=0)
+        {     
+              
+            std::vector<uint> myply = prg_idxs[motionobj.prog_id];
+            std::cout << " motion index to prgm polygon of "<< myply.size() << " size\n"; 
+            //std::cout << " prog : obj id " <<  prgid   << "\n";   
+            //std::cout << program_vecs[prgid].x  <<"\n";
+
         }
 
         //-------------------------------//
@@ -485,14 +485,14 @@ void cnc_plot::show_mpath(void)
 //DEBUG NEED TO THINK THIS OUT 
 void cnc_plot::show_mpath_info(void)
 {
-      std::cout << " we have "<< motion_prg->size() << " motion idx objects \n";
+    std::cout << " we have "<< motion_prg->size() << " motion idx objects \n";
 
     for (uint mp=0;mp<motion_prg->size();mp++)
     {
         std::cout << "  motion idxobj  " << motion_prg->at(mp).name      << " " 
                                          << motion_prg->at(mp).type      << " "
-                                         << motion_prg->at(mp).prog_id   << " "
                                          << motion_prg->at(mp).rapid_in  << " "
+                                         << motion_prg->at(mp).prog_id   << " "
                                          << motion_prg->at(mp).rapid_out << "\n";
     }
 }
@@ -519,7 +519,7 @@ void cnc_plot::show_path_info(void)
     std::cout << "pathinfo: num path polygons: "<< num_prg_plys << "\n";
     for (uint pi=0;pi<num_prg_plys;pi++)
     {
-        std::cout << "poly "<<pi <<" num pts :"<< tp_idxs[0].size() << "\n";        
+        std::cout << "poly "<<pi <<" num pts :"<< tp_idxs[pi].size() << "\n";        
     }    
 }
 
@@ -527,7 +527,9 @@ void cnc_plot::show_path_info(void)
 
 void cnc_plot::show_path(void)
 {
-    //std::cout << " #"  << num_motion_ids          <<" motion path obj(s) \n"; 
+    
+
+    std::cout << " #"  << motion_prg->size()       <<" motion path obj(s) \n"; 
     std::cout << " #"  << num_prg_plys            <<" path prg polys     \n"; 
     std::cout << " #"  << num_rpd_plys            <<" path rpd polys     \n";
     std::cout << " #"  << num_disp_ids            <<" display polys     \n";
@@ -584,6 +586,7 @@ void cnc_plot::showply(uint pidx)
 
 /******************************************/
 // sequence of line geometries used as a toolpath(s) 
+//consider showing by index and motion_idx??
 void cnc_plot::showgeom(void)
 {
     std::cout << "\n #"<< rapidmove_vecs.size() <<" rapid vecs \n";
@@ -723,10 +726,6 @@ void cnc_plot::process_vec(uint window_idx)
         std::cout << " called prcess vec [" << offset.x << ", " << offset.y << ", "<< offset.z<< "]\n";
     }
 
-
-    
-
-            
     if(veclen!=0)
     {
 
@@ -783,7 +782,6 @@ void cnc_plot::update_sim(void)
     //update this to display stats in ogl
     //DEBUG - need to display number BETWEEN VECS(PTS) 
     num_simvecs = toolpath_vecs.size()-1;
-
 
     if (mtime.tm_running)
     {
@@ -956,14 +954,39 @@ void cnc_plot::update_toolpaths(void)
             for (uint mp=0;mp<motion_prg->size();mp++)
             {
                 motion_idx motionobj = motion_prg->at(mp);
+
+                // std::cout << "motion id is "<< mp << "\n";                
+                // std::cout << motionobj.name << "\n";
                 
-                std::cout << motionobj.name << "\n";
+                //scan for rapid_in (index to an index of rapid move vectors)
+                //reconstruct the vectors, if any
+                if(motionobj.rapid_in>=0)
+                {
+                    //std::cout << "rapid in found\n";
+                    std::vector<uint> rp_ids = rpd_idxs[motionobj.rapid_in];
+                    for(uint rv=0;rv<rp_ids.size();rv++)
+                    {
+                        //std::cout << rapidmove_vecs[rv].x << " "<< rapidmove_vecs[rv].y<<" "<< rapidmove_vecs[rv].z <<"\n";
+                        Vector3 rapvec = Vector3(rapidmove_vecs[rv].x, rapidmove_vecs[rv].y, rapidmove_vecs[rv].z );
+                        
+                        toolpath_vecs.push_back(rapvec);
+
+                    }
+
+
+                }
+
+                //scan for program
+                if(motionobj.prog_id>=0)
+                {
+                    std::cout << "rapid in found\n";
+                }
                 
-                // << mp << " " << motionobj.name     << " " 
-                // << motionobj.type     << " "
-                // << motionobj.prog_id  << " "
-                // << motionobj.rapid_in << " "
-                // << motionobj.rapid_out << "\n";
+                //scan for rapid_out                
+                if(motionobj.rapid_out>=0)
+                {
+                    std::cout << "rapid in found\n";
+                }
 
                 //if(motionobj.prog_id>=0)
                 //{     
