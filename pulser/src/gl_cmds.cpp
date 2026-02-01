@@ -813,7 +813,9 @@ void parse_cmd_text(std::string *buffer)
             // it deletes it before it can run if we do this
             //pt_motionplot->clearlast_motionidx();
 
-            pt_motionplot->copy_rpd_to_toolpath();
+            // seems to have a serious bug - wild random points appear 
+            // even with out the bug, copy_rpd_to_toolpath is a direct copy and a terrible design 
+            //pt_motionplot->copy_rpd_to_toolpath();
 
         }
 

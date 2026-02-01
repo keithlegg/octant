@@ -187,6 +187,7 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
         
         add_prgvec_ply(); 
         copy_prg_to_toolpath();
+
     }//square prim
 
     //-----------//
@@ -686,8 +687,13 @@ void cnc_plot::clear_toolpaths(void)
 {
     if(finished==true && running==false)
     {
-        rapidmove_vecs.clear();
+        //rapidmove_vecs.clear();
         toolpath_vecs.clear();
+        
+        tp_idxs->clear();
+
+        //std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpath vecs
+
     }else
     {
         std::cout << "clear_toolpaths: cant clear while running  \n"; 
@@ -998,10 +1004,15 @@ void cnc_plot::bake_motion(void)
     This rebuilds the main tool path (program to run)
     Can be setup and called as much as needed.
 
+    if no motion_idx object exists, 
+    just use prg_vectors 
+
+    this is buggy and probably wrong 
+
+
 
     program_vecs   - vectors loaded from a file 
     rapidmove_vecs - a path to move the head up, over, and back down 
-
     toolpath_vecs  - dynamically built path for head to move - gets rebuilt each time    
 
 */
@@ -1114,32 +1125,32 @@ void cnc_plot::update_toolpaths(void)
 }
 
 /******************************************/
-//DEBUG - NOT TESTED 
+//DEBUG -  - THIS IS A DIRECT COPY AND DESTRUCTIVE 
 void cnc_plot::copy_prg_to_toolpath(void)
 {
    
-    bool debug = true;
-    
+    //bool debug = true;
+
     uint num_prg_exist = program_vecs.size();
 
     if (num_prg_exist<=1)
     {
+        clear_toolpaths();
+
         std::cout << "copy_prg_to_toolpath: need at least two vectors for a line\n";
     }
 
     //------------
     if (num_prg_exist>1)
     {   
-        toolpath_vecs = program_vecs;  
 
-        // not sure this works in C++
-        //toolpath_vecs = program_vecs; 
-
-        // do this instead for now   
+        toolpath_vecs = program_vecs;
+        /* 
+        // copy prg to toolpath  
         for (uint i=0;i<program_vecs.size();i++)
         {
             toolpath_vecs[i]==program_vecs[i];
-        }
+        }*/
 
         for (uint i=0;i<num_prg_plys;i++)
         {
@@ -1153,7 +1164,8 @@ void cnc_plot::copy_prg_to_toolpath(void)
 }
 
 /******************************************/
-//DEBUG - NOT TESTED 
+//DEBUG - THIS IS A DIRECT COPY AND DESTRUCTIVE 
+
 void cnc_plot::copy_rpd_to_toolpath(void)
 {
    
@@ -1163,22 +1175,20 @@ void cnc_plot::copy_rpd_to_toolpath(void)
 
     if (num_rpd_exist<=1)
     {
+        clear_toolpaths();
         std::cout << "copy_rpd_to_toolpath: need at least two vectors for a line\n";
     }
 
     //------------
     if (num_rpd_exist>1)
     {   
-        toolpath_vecs = rapidmove_vecs;  
-
-        // not sure this works in C++
-        //toolpath_vecs = rapidmove_vecs; 
-
-        // do this instead for now   
+        toolpath_vecs = rapidmove_vecs;
+        /*
+        // copy rpf to toolpath   
         for (uint i=0;i<rapidmove_vecs.size();i++)
         {
             toolpath_vecs[i]==rapidmove_vecs[i];
-        }
+        }*/
 
         for (uint i=0;i<num_rpd_plys;i++)
         {
