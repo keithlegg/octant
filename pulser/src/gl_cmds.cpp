@@ -768,29 +768,29 @@ void parse_cmd_text(std::string *buffer)
             v13 = std::stof(a4);
   
 
-            //build the rapid move vector
+            // build the rapid move vector
             Vector3 dest = Vector3(v11, v12, v13); 
             
-            //get a count of existing rapid vectors (globally)
+            // get a count of existing rapid vectors (globally)
             uint num_rpd_vecs = pt_motionplot->rapidmove_vecs.size();
             // num_rpd_plys  - will tell us the number of polygons           
 
-            //add two more rapid move vectors, (we still need to update the index)  
+            // add two more rapid move vectors, (we still need to update the motion index)  
             pt_motionplot->add_rapid_vec( &pt_motionplot->quill_pos );
             pt_motionplot->add_rapid_vec( &dest );
 
-            //add new index to the two rapid vectors we just made 
-            //indexed from existing num (original count)
+            // add new index to the two rapid vectors we just made 
+            // indexed from existing num (original count)
             std::vector<uint> newply;
             newply.push_back(num_rpd_vecs+1);
             newply.push_back(num_rpd_vecs+2);            
             pt_motionplot->rpd_idxs[ pt_motionplot->num_rpd_plys] = newply;
             pt_motionplot->num_rpd_plys++;
 
-            //finally , set the top level "motion index object" that stores links to other indices 
-            //-1 indicates a NULL index  
-            // void add_motion(       name,     type,    rapid_in,                     prog_id, rapid_out );
-            pt_motionplot->add_motion("mh_cmd", "rapid", pt_motionplot->num_rpd_plys-1, -1,     -1 );
+            // finally , set the top level "motion index object" that stores links to other indices 
+            // -1 indicates a NULL index  
+            // args for  add_motion(  name    , type   , rapid_in id                  , prog_id, rapid_out );
+            pt_motionplot->add_motion("mh_cmd", "rapid", pt_motionplot->num_rpd_plys-1, -1     , -1 );
 
             // rebuild the toolpaths based on cached vectors 
             // if prg exists with no motion idx, use those (maybe this will go away)

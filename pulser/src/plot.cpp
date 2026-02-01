@@ -530,18 +530,24 @@ void cnc_plot::show_path_info(void)
 void cnc_plot::show_path(void)
 {
     
+    std::cout << " ---------------------------------------------------     \n"; 
+    std::cout << " ## polygons                                             \n"; 
 
     std::cout << " #"  << motion_prg->size()       <<" motion path obj(s) \n"; 
-    std::cout << " #"  << num_prg_plys            <<" path prg polys     \n"; 
-    std::cout << " #"  << num_rpd_plys            <<" path rpd polys     \n";
-    std::cout << " #"  << num_disp_ids            <<" display polys     \n";
+    std::cout << " #"  << num_prg_plys            <<" path prg polys      \n"; 
+    std::cout << " #"  << num_rpd_plys            <<" path rpd polys      \n";
+    std::cout << " #"  << num_disp_ids            <<" display polys       \n";
 
-    std::cout << "  ---------------------------------------------------  \n"; 
-    std::cout << " #"  << disp_vecs.size()        <<" display vecs       \n"; 
-    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs     \n";   
+    std::cout << " ---------------------------------------------------     \n"; 
+    std::cout << " ## raw vector data                                      \n"; 
+
     std::cout << " #"  << program_vecs.size()     <<" program vecs  # " << num_prg_plys <<" ids \n";    
     std::cout << " #"  << rapidmove_vecs.size()   <<" rapid vecs    # " << num_rpd_plys <<" ids \n";  
     std::cout << " #"  << toolpath_vecs.size()    <<" toolpath vecs # " << num_toolpath_ids <<" ids \n";    
+
+
+    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs     \n"; 
+    std::cout << " #"  << disp_vecs.size()        <<" display vecs       \n"; 
 
     #if DO_BUILD_GUI == true    
         std::cout << " #"  << linebuffer1.size()  <<" render1 vecs \n";   
