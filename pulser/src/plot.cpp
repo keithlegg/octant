@@ -147,20 +147,18 @@ void cnc_plot::bbox3d(void)
         {
             for (uint ii=0;ii<tp_idxs[i].size();ii++)
             {
-
                 uint tpi = tp_idxs[i][ii];
                 tvec  = toolpath_vecs[tpi];
 
-            }
+                if (tvec.x<bb_min_x) { bb_min_x=tvec.x; }
+                if (tvec.x>bb_max_x) { bb_max_x=tvec.x; }
+                if (tvec.y<bb_min_y) { bb_min_y=tvec.y; }
+                if (tvec.y>bb_max_y) { bb_max_y=tvec.y; }
+                if (tvec.z<bb_min_z) { bb_min_z=tvec.z; }
+                if (tvec.z>bb_max_z) { bb_max_z=tvec.z; }  
 
-            if (tvec.x<bb_min_x) { bb_min_x=tvec.x; }
-            if (tvec.x>bb_max_x) { bb_max_x=tvec.x; }
-            if (tvec.x<bb_min_y) { bb_min_y=tvec.y; }
-            if (tvec.x>bb_max_y) { bb_max_y=tvec.y; }
-            if (tvec.x<bb_min_z) { bb_min_z=tvec.z; }
-            if (tvec.x>bb_max_z) { bb_max_z=tvec.z; }            
-                    
-        }            
+            }//iterate each polygon by point
+        }//iterate tp polygon            
      
 
         if (debug)
