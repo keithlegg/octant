@@ -89,6 +89,9 @@ extern cnc_plot* pt_motionplot;
 extern obj_model* pt_model_buffer;
 
 
+//extern float view_coefficient;
+
+
 std::string a1,a2,a3,a4,a5,a6,a7,a8,a9,a10;
 float v11,v12,v13,v21,v22,v23 = 0;
 
@@ -134,16 +137,16 @@ void reload_paths(void)
 /***************************************/
 void unload_vec(void)
 {
-    std::cout << "# dumping cached vectors \n";  
+    std::cout << "# clearing all motion data \n";  
     
     //stop the runing simulation
     //pt_motionplot->reset();
 
     //---
     pt_motionplot->clear_toolpaths();
-    pt_motionplot->rapidmove_vecs.clear();
-    pt_motionplot->program_vecs.clear();
-    
+    pt_motionplot->clear_rapidvecs();
+    pt_motionplot->clear_prgvecs();
+
     //pt_motionplot->num_prg_plys = 0;
     pt_motionplot->num_rpd_plys = 0;
 
@@ -155,8 +158,14 @@ void unload_vec(void)
         pt_motionplot->rpd_idxs[x].clear();
     }
 
+     pt_motionplot->num_rpd_plys     = 0;
+     pt_motionplot->num_prg_plys     = 0;
+     pt_motionplot->num_toolpath_ids = 0;
+     pt_motionplot->num_disp_ids     = 0;
+
     //finally remove motion_idx objects (indices to indeces)
-    pt_motionplot->clear_motionidx();
+    //NOT WORKING YET 
+    //pt_motionplot->clear_motionidx();
 
     clear_linebuffers();
 }
@@ -345,7 +354,21 @@ void parse_cmd_text(std::string *buffer)
     }    
     
     /**********************************************************************/
-
+    /*
+    //experiment to zoom orthographic
+    //it did not work - it changes speed of scrolling
+    //putting a pin in it and will circle back 
+    if(a1=="vm")
+    {
+        std::cout << "cam zoom is " << view_coefficient << "\n";
+        if(a2!="")
+        {
+            v11 = std::stof(a2);
+            std::cout << "new zoom is " << v11 << "\n";            
+            view_coefficient = v11;
+        }
+    }
+    */
 
     if(a1=="prim")
     {
@@ -916,6 +939,19 @@ void parse_cmd_text(std::string *buffer)
     */
     /////////////////////////////////////////
 
+    //--------------
+    if (a1=="cp")
+    {
+        /* 
+        v11 = std::stof(a2);
+        v12 = std::stof(a3);
+        v13 = std::stof(a4);        
+
+        cam_posx = v11;  
+        cam_posy = v12;
+        cam_posz = v13;
+        */
+    }
 
 
     //--------------

@@ -127,6 +127,11 @@ class cnc_plot
             prg_origin = Vector3(0,0,0);
             prg_end    = Vector3(0,0,0);
 
+            num_rpd_plys     = 0;
+            num_prg_plys     = 0;
+            num_toolpath_ids = 0;
+            num_disp_ids     = 0;
+
             //vec1.reserve(30);  //  how does reserve work ??
             //vec2.resize(30);   // 
 
@@ -197,6 +202,8 @@ class cnc_plot
 
         void clear_toolpaths(void);
         void clear_rapidvecs(void);
+        void clear_prgvecs(void);
+
 
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);

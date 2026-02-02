@@ -152,8 +152,16 @@ float cam_posx = 0; // camera location
 float cam_posy = 0;
 float cam_posz = 0;
 
+//float cam_zoom = 0; 
+//float cam_zoom = 0;
+//float cam_zoom = 0;
+    
+float orthzoom = 100;
 
-float coefficient         = 0.005f;  
+
+//speed of movement 
+float view_coefficient    = 0.005f;  
+
 float mouse_orbit_speed   = 2.1f;
 
 
@@ -404,14 +412,69 @@ void tweak_matrix( void )
 */
 
 /***************************************/
+// jeeze, just trying to zoom my orthographic view here 
+// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix.html
 
+/*
+// Set the OpenGL perspective projection matrix
+void glFrustum( 
+    const float &b, const float &t, const float &l, const float &r, 
+    const float &n, const float &f, 
+    Matrix44f &M) 
+{ 
+    // Set OpenGL perspective projection matrix
+    M[0][0] = 2 * n / (r - l); 
+    M[0][1] = 0; 
+    M[0][2] = 0; 
+    M[0][3] = 0; 
+ 
+    M[1][0] = 0; 
+    M[1][1] = 2 * n / (t - b); 
+    M[1][2] = 0; 
+    M[1][3] = 0; 
+ 
+    M[2][0] = (r + l) / (r - l); 
+    M[2][1] = (t + b) / (t - b); 
+    M[2][2] = -(f + n) / (f - n); 
+    M[2][3] = -1; 
+ 
+    M[3][0] = 0; 
+    M[3][1] = 0; 
+    M[3][2] = -2 * f * n / (f - n); 
+    M[3][3] = 0; 
+} 
+
+
+void multPointMatrix(const Vec3f &in, Vec3f &out, the Matrix44f &M) 
+{ 
+    // out = in * Mproj;
+    out.x   = in.x * M[0][0] + in.y * M[1][0] + in.z * M[2][0] + M[3][0]; // in.z = 1 assumed
+    out.y   = in.x * M[0][1] + in.y * M[1][1] + in.z * M[2][1] + M[3][1]; 
+    out.z   = in.x * M[0][2] + in.y * M[1][2] + in.z * M[2][2]
+
+ + M[3][2]; 
+    float w = in.x * M[0][3] + in.y * M[1][3] + in.z * M[2][3] + M[3][3]; 
+ 
+    // Normalize if w is different than 1 (convert from homogeneous to Cartesian coordinates)
+    if (w != 1) { 
+        out.x /= w; 
+        out.y /= w; 
+        out.z /= w; 
+    } 
+} 
+
+
+*/
+
+
+
+/***************************************/
 void set_view_ortho(void)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();                   
 
     //gluOrtho2D(scr_size_x, scr_size_y, -1, 1 ); //(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top);
-    float orthzoom = 200;
     //glOrtho( -scr_size_x/orthzoom, scr_size_x/orthzoom, -scr_size_y/orthzoom, scr_size_y/orthzoom, -1, 1 );
     
     glOrtho( -scr_size_x/orthzoom, scr_size_x/orthzoom, -scr_size_y/orthzoom, scr_size_y/orthzoom, -10, 10 );
@@ -419,12 +482,12 @@ void set_view_ortho(void)
 }
 
 
-//text demo 
+//used for onscreen text, maybe more? 
 void setOrthographicProjection() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-       gluOrtho2D(0, scr_size_x, 0, scr_size_y);
+    gluOrtho2D(0, scr_size_x, 0, scr_size_y);
     glScalef(1, -1, 1);
     glTranslatef(0, -scr_size_y, 0);
     glMatrixMode(GL_MODELVIEW);
@@ -513,15 +576,15 @@ void octant_mouse_button(int button, int state, int x, int y)
 
         if (button == 3)
         {
-            //if (orbit_dist < -1.5){
             orbit_dist+=.1;  
-            //printf("# orbit dist %f \n", orbit_dist );                                 
-            //}
+            orthzoom+=10;
+            std::cout << orthzoom << "fucker\n";
+
         }
         if (button == 4){
-            //if (orbit_dist>0){ 
                 orbit_dist-=.1; 
-            //}
+                orthzoom-=10;
+            std::cout << orthzoom << "fucker\n";                
         }
 
         //std::cout << " zooming " << orbit_dist << "\n";
@@ -558,47 +621,47 @@ void octant_mouse_button(int button, int state, int x, int y)
 
 void octant_mouse_motion(int x, int y)
 {
+    // DEBUG - the problem is that on side scrolling this resets back to the middle of the screen 
+    // we need to cache the position between transactions to scroll beyond the center 
+    // I.E.  - dont reset to the center each time 
+
     // take offset from center of screen to get "X,Y delta"
     float center_y = (float)scr_size_y/2;
     float center_x = (float)scr_size_x/2;
 
-
     if(mouseLeftDown)
     { 
-
         switch (VIEW_MODE) 
         { 
 
             // orthographic side  (key 2)
             case 1: 
                 view_ismoving = true;
-                cam_posz = -(center_x-x) * coefficient; 
-                cam_posy = -(center_y-y) * coefficient; 
+                cam_posz = -(center_x-x) * view_coefficient; 
+                cam_posy = -(center_y-y) * view_coefficient; 
             break; 
         
             // orthographic top   (key shift 2)
             case 2:  
                 view_ismoving = true;
-                cam_posx = (center_x-x) * coefficient; 
-                cam_posz = (center_y-y) * coefficient;  
+                cam_posx = (center_x-x) * view_coefficient; 
+                cam_posz = (center_y-y) * view_coefficient;  
             break; 
         
             // orthographic front  (key 3)
             case 3:  
                 view_ismoving = true;
-                cam_posx = (center_x-x)  * coefficient; 
-                cam_posy = -(center_y-y) * coefficient; 
+                cam_posx = (center_x-x)  * view_coefficient; 
+                cam_posy = -(center_y-y) * view_coefficient; 
             break; 
-        
 
             default:  
                     view_ismoving = true;
                     
-                    orbit_x += (x-mouseX) * coefficient; 
-                    orbit_y += (y-mouseY) * coefficient; 
+                    orbit_x += (x-mouseX) * view_coefficient; 
+                    orbit_y += (y-mouseY) * view_coefficient; 
                     mouseX = x;
                     mouseY = y;
-                    //printf("# mouse motion %d %d %f %f \n", x,y, orbit_x, orbit_y );
             break;
         }
     }
@@ -609,10 +672,6 @@ void octant_mouse_motion(int x, int y)
         mouseY = y;
     }
 
-    /**************/
-   
-
-     
 
 }
 

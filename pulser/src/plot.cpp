@@ -429,7 +429,9 @@ void cnc_plot::clear_motionidx(void)
 
     if(finished==true && running==false)
     {
-        motion_prg->clear();
+        //need to clear all other constituent vectors?
+        //motion_prg->clear();
+
     }else
     {
         std::cout << "clear_motionidx: cant clear while running  \n"; 
@@ -666,6 +668,20 @@ void cnc_plot::pause(void)
     }
 }
 
+/******************************************/
+//clear program vecs only 
+void cnc_plot::clear_prgvecs(void)
+{
+    if(finished==true && running==false)
+    {
+        program_vecs.clear();
+        prg_idxs->clear(); 
+    }else
+    {
+        std::cout << "clear_prgvecs: cant clear while running  \n"; 
+    }
+}
+
 
 /******************************************/
 //clear rapidvecs only 
@@ -674,6 +690,7 @@ void cnc_plot::clear_rapidvecs(void)
     if(finished==true && running==false)
     {
         rapidmove_vecs.clear();
+        rpd_idxs->clear();
     }else
     {
         std::cout << "clear_rapidvecs: cant clear while running  \n"; 
@@ -689,7 +706,6 @@ void cnc_plot::clear_toolpaths(void)
     {
         //rapidmove_vecs.clear();
         toolpath_vecs.clear();
-        
         tp_idxs->clear();
 
         //std::vector<uint> tp_idxs[MAX_NUM_PLY]; // index to toolpath vecs

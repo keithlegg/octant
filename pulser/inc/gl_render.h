@@ -21,6 +21,7 @@ void animate(void);
 void grab_camera_matrix( Matrix4 *pt_mmm );
 void set_view_ortho(void);
 void setOrthographicProjection();
+
 void resetPerspectiveProjection();
 void renderBitmapString(float, float, void *, const char *);
 
