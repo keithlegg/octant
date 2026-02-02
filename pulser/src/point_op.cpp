@@ -743,8 +743,6 @@ float polygon_ops::triangle_mean_z(Vector3 p1, Vector3 p2, Vector3 p3)
 /***************************************/
 //DEBUG NOT FULLY TESTED  
 /*
-    WIP test of python code mapping to C++, inheritance, etc 
-    equivalent of python -> polygon_ops.calc_3d_bbox()
     
     this sets the intenal attribs (bb_min_x, bb_max_x ), etc   
 */

@@ -492,6 +492,28 @@ void parse_cmd_text(std::string *buffer)
     
     }
 
+
+
+    //------------------
+    if (a1=="tpbbox")
+    {    
+    
+        pt_motionplot->refresh();
+        
+         
+        //  BBOX (WIP)
+        pt_model_buffer->add_locator(pt_motionplot->t_maxx);
+        pt_model_buffer->add_locator(pt_motionplot->t_minx);
+        pt_model_buffer->add_locator(pt_motionplot->t_maxy);
+        pt_model_buffer->add_locator(pt_motionplot->t_miny);
+
+        pt_model_buffer->add_locator(pt_motionplot->b_maxx);
+        pt_model_buffer->add_locator(pt_motionplot->b_minx);
+        pt_model_buffer->add_locator(pt_motionplot->b_maxy);
+        pt_model_buffer->add_locator(pt_motionplot->b_miny);
+        
+    }
+
     //------------------
     if (a1=="bbox")
     {                
@@ -634,7 +656,7 @@ void parse_cmd_text(std::string *buffer)
             reload_obj();
         }
 
-        if(a2=="paths"||a2=="path"||a2=="vec")
+        if(a2=="paths"||a2=="path"||a2=="vec"||a2=="cfg")
         {    
             reload_paths();
         }          

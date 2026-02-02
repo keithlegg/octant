@@ -138,6 +138,13 @@ class cnc_plot
         };
         
         ~cnc_plot(){};
+        
+
+        //--------------------------// 
+        
+        void refresh(void);
+        void bbox3d(void);
+        void bbox3d_pts(void);
 
         //--------------------------// 
         //debugging tools 
@@ -189,17 +196,13 @@ class cnc_plot
         void add_motion(std::string name, std::string type, 
                         int prog_id, int rapid_in, int rapid_out); 
 
+        void update_toolpaths(void);  
+
         void add_prgvec_ply(void);
         void add_dispvec_ply(void);
-   
-
-        //debug these are wip 
-        void update_toolpaths(void); //old update tp
-        //void bake_motion(void);      //new WIP update tp 
 
         void clearlast_motionidx(void);
         void clear_motionidx(void);
-
         void clear_toolpaths(void);
         void clear_rapidvecs(void);
         void clear_prgvecs(void);
@@ -230,24 +233,47 @@ class cnc_plot
                             uint numdivy,
                             uint numdivz);
         
+        //--------------------------// 
+        //time attributes 
+
         double localsimtime;
+        double timediv;
 
         // index to the current vector processed while running 
         uint vec_idx;
         uint num_simvecs;
-
-        double timediv;
-        
-        // calculated values - length of travel for vectors
-        float rapid_dist;
-        float program_dist;     
-
+    
         //--------------------------// 
+        //--------------------------// 
+        // calculated values - length of travel for vectors
+        
+        //float rapid_dist;
+        //float program_dist;     
+
+        float bb_min_x;
+        float bb_max_x;
+        float bb_min_y;
+        float bb_max_y;
+        float bb_min_z;
+        float bb_max_z;
+
+        Vector3 t_maxx; 
+        Vector3 t_minx; 
+        Vector3 t_maxy; 
+        Vector3 t_miny; 
+        Vector3 b_maxx; 
+        Vector3 b_minx; 
+        Vector3 b_maxy; 
+        Vector3 b_miny; 
+    
         Vector3 quill_pos;
         Vector3 prg_origin;
         Vector3 prg_end;
 
-        //--------------------------//     
+        //--------------------------// 
+        //--------------------------//   
+        //simulation state variables   
+
         bool running;
         bool finished;
 
@@ -262,8 +288,6 @@ class cnc_plot
         //--------------------------// 
         // data for the actual pulsing out the parport 
         std::vector<Vector3> pulsetrain;
-        //pulse train indeces (experiment not used?) 
-        //std::vector<uint> pt_idxs[MAX_NUM_PLY];
 
         //--------------------------//         
         // cache of toolpath component vectors 
