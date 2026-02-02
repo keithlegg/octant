@@ -83,12 +83,15 @@ GLfloat emis_half[]   = { .5, .5 , .5, 0};
 GLfloat emis_text[]   = { .8, .8 , .9, 0};
 GLfloat emis_points[] = { 0 , .6 , .2, 0};
 GLfloat emis_off[]    = { 0 , 0  ,  0, 0};
-GLfloat emis_teal[]   = { 0 , 1. , 1., 0};
+
 GLfloat emis_red[]    = { 1., 0  ,  0, 0};
 GLfloat emis_purple[] = { 1., 0  , 1., 0};
 GLfloat emis_green[]  = { 0 , 1. ,  0, 0};
 GLfloat emis_blue[]   = { 0 , 0  , 1., 0};
 GLfloat emis_lines[]  = { .5, 0  , .5, 0};
+GLfloat emis_yellow[]   = { 0 , 1. , 1., 0};
+GLfloat emis_cyan[]   = { 0 , 1. , 1., 0};
+
 GLfloat clr_yellow[]  = { 1., 1. ,  0, 0};
 GLfloat clr_green[]   = { 0 , 1. ,  0, 0};
 GLfloat clr_blue[]    = { 0 , 0  , 1., 0};

@@ -116,16 +116,19 @@ GLfloat vertices[100];
 
 
 extern GLfloat clr_linez[]   ;
+
 extern GLfloat emis_full[]   ;
 extern GLfloat emis_half[]   ;
 extern GLfloat emis_text[]   ;
 extern GLfloat emis_points[] ;
 extern GLfloat emis_off[]    ;
-extern GLfloat emis_teal[]   ;
 extern GLfloat emis_red[]    ;
 extern GLfloat emis_green[]  ;
 extern GLfloat emis_blue[]   ;
+extern GLfloat emis_yellow[] ;
+extern GLfloat emis_cyan[]   ;
 extern GLfloat emis_lines[]  ;
+
 extern GLfloat clr_yellow[]  ;
 extern GLfloat clr_green[]   ;
 extern GLfloat clr_blue[]    ;
@@ -1128,8 +1131,10 @@ void render_loop(void)
     //draw locator when idle 
     if(!pt_motionplot->running)
     {
+        glMaterialfv(GL_FRONT, GL_EMISSION, emis_blue);  
         loc_idle_clr;
     }else{
+        glMaterialfv(GL_FRONT, GL_EMISSION, emis_red);  
         loc_active_clr;
     }
     draw_locator(&motionplot.quill_pos, .5);   
@@ -1226,11 +1231,13 @@ void render_loop(void)
  
         if(!cg.ENABLE_MOTOR_DRIVE)
         {
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_red);             
             enabled_txt_clr;
             renderBitmapString( enable_txt_x , top_text_y  ,(void *)font, "DISABLED" ); 
         }
         else
         {
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_green); 
             enabled_txt_clr2;
             renderBitmapString( enable_txt_x , top_text_y  ,(void *)font, "ENABLED" ); 
         }
@@ -1240,11 +1247,13 @@ void render_loop(void)
         //PROBABLY NOT WHAT YOU WANT - CONSIDER THREADS AND A MORE COMPLEX SEMAPHORE 
         if(!pt_mtime->tm_running)
         {
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_red); 
             red_clr;
             renderBitmapString( estop_txt_x , top_text_y  ,(void *)font, "ESTOP" ); 
         }
         else
         {
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_green);             
             green_clr;
             renderBitmapString( estop_txt_x , top_text_y  ,(void *)font, "ESTOP" ); 
         }
@@ -1252,22 +1261,27 @@ void render_loop(void)
         //-----------------------------------------
         if(debug_onscreen)
         {
+            
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_green); 
             green_clr;
             sprintf(s, "sim is running  :%d ", pt_motionplot->running);
             renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-59  ,(void *)fontsm, s );
 
             sprintf(s, "sim is done     :%d ", pt_motionplot->finished);
             renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-48  ,(void *)fontsm, s );
-
+            
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_cyan); 
             cyan_clr;
             sprintf(s, "simulation time :%f ", pt_motionplot->localsimtime);
             renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-37  ,(void *)fontsm, s );
-            
+
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_yellow);             
             yellow_clr;
             sprintf(s, "vec :%d of :%d ", pt_motionplot->vec_idx, pt_motionplot->num_simvecs);
             renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-26  ,(void *)fontsm, s );
-            
+
             green_clr;
+            glMaterialfv(GL_FRONT, GL_EMISSION, emis_green);            
             sprintf(s, "camera X:%f Y:%f Z:%f", cam_posx, cam_posy, cam_posz);
             renderBitmapString( scr_size_x-debug_txt_y, scr_size_y-15  ,(void *)fontsm, s );
         }
