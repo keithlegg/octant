@@ -424,18 +424,26 @@ def test_slicer2():
     p = kam.batch_slicer( '../pulser/3d_obj/', 'head_vn.obj', [0,1], scan_axis ='z')
 
 
-test_slicer2()
+
 
 
 ##-------------------------##
 
 def its_alive(): 
     vflo = vectorflow()
-    vflo.load_geojson('images/out/0.json')
+    vflo.load_geojson('images/out/4.json')
+    vflo.gl_move_center()
     vflo.cvt_grpoly_obj3d()
+    vflo.rotate_pts(rot=[90,0,0])
+
     vflo.save('l0.obj', as_lines=True)
     #vflo.export_geojson_lines('foo.json')
  
+
+its_alive()
+
+
+
 # vflo = vectorflow()
 # vflo.load('objects/monkey.obj')
 # vflo.save('flatball.obj', as_lines=True)

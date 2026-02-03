@@ -48,10 +48,9 @@
 
 
 */
-     
-
 /*****************************************************************************/
-/*************************************************************/
+
+
 
 #include <unistd.h> //sleep()
 #include <sys/io.h> //outb() ioperm()
@@ -134,89 +133,6 @@ void cnc_plot::toolpath_extents(void)
 }
 
 
-/***************************************/
-/*
-    DEBUG NOT DONE 
-    
-    generate primitive shapes and make into pts to use 
-
-    Args:
-    
-        shape:
-            0 - circle 
-            1 - square
-
-*/
-
-
-void cnc_plot::prim_shape(uint shape, uint axis, float size)
-{
-
-    obj_model* pt_obj2d_loader  = new obj_model;
-    pt_obj2d_loader->reset();
-    
-    std::vector<Vector3> output_pts;
-    output_pts.reserve( 400 );      
-     
-
-    uint divs      = 8;
-    float ox,oy,oz = 0;
-
-    //-----------//
-
-    if(shape==0)
-    {
-        // calc_circle args = (numdiv axis x_orig y_orig dia )
-        //DEBUG convert origin to Vector3*
-        if(axis==0){ pt_obj2d_loader->calc_circle(&output_pts, divs, 0, ox, oy, size); }
-        if(axis==1){ pt_obj2d_loader->calc_circle(&output_pts, divs, 1, ox, oy, size); }
-        if(axis==2){ pt_obj2d_loader->calc_circle(&output_pts, divs, 2, ox, oy, size); }                
-
-        for (uint v=0;v<output_pts.size();v++)
-        {
-            Vector3 pt = output_pts[v];
-            add_file_vec(&pt);
-        }
-        
-        add_prgvec_ply(); 
-        copy_prg_to_toolpath();
-    
-    }//circle prim 
-
-
-    //-----------//
-    if(shape==1)
-    {
-        Vector3 orig = Vector3(0,0,0);
-        
-        // calc_square args = (origin,  dia )
-        if(axis==0){ pt_obj2d_loader->calc_square(&output_pts, &orig, 0, size); }
-        if(axis==1){ pt_obj2d_loader->calc_square(&output_pts, &orig, 1, size); }
-        if(axis==2){ pt_obj2d_loader->calc_square(&output_pts, &orig, 2, size); }  
-     
-        for (uint v=0;v<output_pts.size();v++)
-        {
-            Vector3 pt = output_pts[v];
-            add_file_vec(&pt);
-        }
-        
-        add_prgvec_ply(); 
-        copy_prg_to_toolpath();
-
-    }//square prim
-
-    //-----------//
-
-    // void point_ops::calc_line( pt2d *out_coords, int *pt1, int *pt2, int *num)
-
-    //-----------//
-      
-    // int point_ops::get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y, 
-    //     float p2_x, float p2_y, float p3_x, float p3_y, float *i_x, float *i_y)
-
- 
-
-}
 
 
 
@@ -571,6 +487,8 @@ void cnc_plot::show_mpath_info(void)
 
 
 /******************************************/
+
+// private member function 
 void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 {
     for (uint vidx=0;vidx<pt_vec->size();vidx++)
@@ -580,7 +498,7 @@ void cnc_plot::show_vecs(std::vector<Vector3>* pt_vec)
 }
 
 /******************************************/
-//show pathinfo 
+// show pathinfo 
 void cnc_plot::show_path_info(void)
 {
     std::cout << "pathinfo: num path polygons: "<< num_prg_plys << "\n";
@@ -598,10 +516,10 @@ void cnc_plot::show_path(void)
     std::cout << " ---------------------------------------------------     \n"; 
     std::cout << " ## polygons                                             \n"; 
 
-    std::cout << " #"  << motion_prg->size()       <<" motion path obj(s) \n"; 
-    std::cout << " #"  << num_prg_plys            <<" path prg polys      \n"; 
-    std::cout << " #"  << num_rpd_plys            <<" path rpd polys      \n";
-    std::cout << " #"  << num_disp_ids            <<" display polys       \n";
+    std::cout << " #"  << motion_prg->size()      <<" motion path obj(s)   \n"; 
+    std::cout << " #"  << num_prg_plys            <<" path prg polys       \n"; 
+    std::cout << " #"  << num_rpd_plys            <<" path rpd polys       \n";
+    std::cout << " #"  << num_disp_ids            <<" display polys        \n";
 
     std::cout << " ---------------------------------------------------     \n"; 
     std::cout << " ## raw vector data                                      \n"; 
@@ -611,12 +529,12 @@ void cnc_plot::show_path(void)
     std::cout << " #"  << toolpath_vecs.size()    <<" toolpath vecs # " << num_toolpath_ids <<" ids \n";    
 
 
-    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs     \n"; 
-    std::cout << " #"  << disp_vecs.size()        <<" display vecs       \n"; 
+    std::cout << " #"  << loaded_file_vecs.size() <<" file vecs            \n"; 
+    std::cout << " #"  << disp_vecs.size()        <<" display vecs         \n"; 
 
     #if DO_BUILD_GUI == true    
-        std::cout << " #"  << linebuffer1.size()  <<" render1 vecs \n";   
-        std::cout << " #"  << linebuffer2.size()  <<" render2 vecs \n"; 
+        std::cout << " #"  << linebuffer1.size()  <<" render1 vecs         \n";   
+        std::cout << " #"  << linebuffer2.size()  <<" render2 vecs         \n"; 
     #endif   
 
 }
@@ -971,189 +889,7 @@ void cnc_plot::update_sim(void)
 }
 
 
-/******************************************/
-/*
-    derived from update_toolpaths 
-    this is all experimental 
 
-void cnc_plot::bake_motion(void)
-{
-
-    
-    bool debug = false;
-    
-    if(debug)
-    {
-        std::cout << " num polys " << num_prg_plys << "\n"; 
-    } 
-    
-    if(finished==true && running==false)
-    {
-        #if DO_BUILD_GUI == true
-            clear_linebuffers(); //clear display geom 
-        #endif
-        //clear the old data out 
-        toolpath_vecs.clear();
-
-        //---- 
-        if(program_vecs.size()>0)
-        {
-            //iterate all polygons     
-            for (uint pl=0;pl<num_prg_plys;pl++)
-            {
-
-                //add each vec3 for the polygon 
-                for (uint vid=0;vid<tp_idxs[pl].size();vid++)
-                {
-                    Vector3 seg = program_vecs[tp_idxs[pl][vid]];
-                    
-                    if(debug)
-                    {
-                        std::cout << " update debug " << vid << " "<< seg.x << "\n";
-                    }
-
-                    toolpath_vecs.push_back(seg);  
-
-                    #if DO_BUILD_GUI == true
-                        add_vec_lbuf2(&seg);
-                    #endif 
-
-                };
-
-            }//iterate polygons 
-
-        }//if data exists
-      
-    }//if program is NOT running or paused
-    
-}
-*/
-
-
-/*
-
-    This rebuilds the main tool path (program to run)
-    Can be setup and called as much as needed.
-
-    if no motion_idx object exists, 
-    just use prg_vectors 
-
-    this is buggy and probably wrong 
-
-
-
-    program_vecs   - vectors loaded from a file 
-    rapidmove_vecs - a path to move the head up, over, and back down 
-    toolpath_vecs  - dynamically built path for head to move - gets rebuilt each time    
-
-*/
-
-void cnc_plot::update_toolpaths(void)
-{
-
-    //DEBUG _ NOT EVEN CLOSE TO DONE
-    
-    bool debug = true;
-    
-    if(debug)
-    {
-        
-        std::cout << " update_toolpaths called \n";
-        std::cout << " num polys " << num_prg_plys << "\n"; 
-    } 
-
-
-    if(finished==true && running==false)
-    {
-        #if DO_BUILD_GUI == true
-            clear_linebuffers(); //clear display geom 
-        #endif
-        
-        //clear the old toolpath data out 
-        toolpath_vecs.clear();
-        num_toolpath_ids=0;
-
-        //CHECK FOR MOTION OBJECTS FIRST 
-        //IF NONE THEN BUILD TOOLPATHS FROM PRG VECS
-        if( motion_prg->size() )
-        {
-            std::cout << "update_toolpaths - MOTION IDX OBJ EXISTS  " << "\n";
-            
-            //for (uint mp=0;mp<num_motion_ids;mp++)
-            for (uint mp=0;mp<motion_prg->size();mp++)
-            {
-                motion_idx motionobj = motion_prg->at(mp);
-
-                // std::cout << "motion id is "<< mp << "\n";                
-                // std::cout << motionobj.name << "\n";
-                
-                //scan for rapid_in (index to an index of rapid move vectors)
-                //reconstruct the vectors, if any
-                if(motionobj.rapid_in>=0)
-                {
-                    //std::cout << "rapid in found\n";
-                    std::vector<uint> rp_ids = rpd_idxs[motionobj.rapid_in];
-                    for(uint rv=0;rv<rp_ids.size();rv++)
-                    {
-                        //std::cout << rapidmove_vecs[rv].x << " "<< rapidmove_vecs[rv].y<<" "<< rapidmove_vecs[rv].z <<"\n";
-                        Vector3 rapvec = Vector3(rapidmove_vecs[rv].x, rapidmove_vecs[rv].y, rapidmove_vecs[rv].z );
-                        
-                        toolpath_vecs.push_back(rapvec);
-
-                    }
-
-
-                }
-
-                //scan for program
-                if(motionobj.prog_id>=0)
-                {
-                    std::cout << "rapid in found\n";
-                }
-                
-                //scan for rapid_out                
-                if(motionobj.rapid_out>=0)
-                {
-                    std::cout << "rapid in found\n";
-                }
-
-                //if(motionobj.prog_id>=0)
-                //{     
-                //    std::vector<uint> myply = prg_idxs[motionobj.prog_id];
-                //    std::cout << " motion index to prgm polygon of "<< myply.size() << " size\n"; 
-                //}
-            }
-        }
-        else if(program_vecs.size()>0)
-        {
-            std::cout << "update_toolpaths - MOTION IDX OBJ DO NOT EXIST - USE PRG VECS  " << "\n";
-
-            //iterate all polygons     
-            for (uint pl=0;pl<num_prg_plys;pl++)
-            {
-                //add each vec3 for the polygon 
-                for (uint vid=0;vid<prg_idxs[pl].size();vid++)
-                {
-                    Vector3 seg = program_vecs[prg_idxs[pl][vid]];
-                    
-                    if(debug)
-                    {
-                        std::cout << " update debug " << vid << " "<< seg.x << "\n";
-                    }
-                };
-            }//iterate polygons 
-            
-            copy_prg_to_toolpath();
-
-        }//if data exists
-      
-    }//if program is NOT running or paused
- 
-
-    //update the num toolpaths for display in window 
-    //DEBUG - need to display number BETWEEN VECS(PTS) 
-    num_simvecs = toolpath_vecs.size()-1;
-}
 
 /******************************************/
 //DEBUG -  - THIS IS A DIRECT COPY AND DESTRUCTIVE 
@@ -1176,12 +912,6 @@ void cnc_plot::copy_prg_to_toolpath(void)
     {   
 
         toolpath_vecs = program_vecs;
-        /* 
-        // copy prg to toolpath  
-        for (uint i=0;i<program_vecs.size();i++)
-        {
-            toolpath_vecs[i]==program_vecs[i];
-        }*/
 
         for (uint i=0;i<num_prg_plys;i++)
         {
@@ -1214,12 +944,6 @@ void cnc_plot::copy_rpd_to_toolpath(void)
     if (num_rpd_exist>1)
     {   
         toolpath_vecs = rapidmove_vecs;
-        /*
-        // copy rpf to toolpath   
-        for (uint i=0;i<rapidmove_vecs.size();i++)
-        {
-            toolpath_vecs[i]==rapidmove_vecs[i];
-        }*/
 
         for (uint i=0;i<num_rpd_plys;i++)
         {

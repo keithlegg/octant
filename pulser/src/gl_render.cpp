@@ -581,13 +581,14 @@ void octant_mouse_button(int button, int state, int x, int y)
         {
             orbit_dist+=.1;  
             orthzoom+=10;
-            std::cout << orthzoom << "fucker\n";
+            std::cout << orthzoom << "zoom in\n";
 
         }
-        if (button == 4){
-                orbit_dist-=.1; 
-                orthzoom-=10;
-            std::cout << orthzoom << "fucker\n";                
+        if (button == 4)
+        {
+            orbit_dist-=.1; 
+            orthzoom-=10;
+            std::cout << orthzoom << "zoom out\n";                
         }
 
         //std::cout << " zooming " << orbit_dist << "\n";

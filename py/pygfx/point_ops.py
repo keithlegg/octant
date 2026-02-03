@@ -530,7 +530,7 @@ class pop3d(object):
 
                 pids = [new_pids,rejects] 
         
-
+       
         return pids 
 
     ##-------------------------------------------##  

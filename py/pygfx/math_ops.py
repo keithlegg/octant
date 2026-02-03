@@ -2173,7 +2173,17 @@ class matrix44(object):
 
 
         if isinstance(n, tuple) or isinstance(n, list):
-            
+            """
+            #for some crazy reason - we got string data here.
+            #Need to find out how, but lets just fixz that for now 
+            t=[]
+            if type(n[0])==str:
+                t.append==float(n[0])
+                t.append==float(n[1])
+                t.append==float(n[2])                                
+            n=t
+            """ 
+
             # what is the purspose of adding 12,13,14 ?
             outx = self.m[0] * n[0] + self.m[4] * n[1] + self.m[8]  * n[2]     + self.m[12]
             outy = self.m[1] * n[0] + self.m[5] * n[1] + self.m[9]  * n[2]     + self.m[13]

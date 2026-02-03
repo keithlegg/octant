@@ -875,17 +875,25 @@ class polygon_operator(pop3d):
         """
 
         out = []
-
+        
+        #FOR SOME DAMN REASON THESE WERE COMING IN AS STRINGS
         if span is None and ids is None:
             for i,p in enumerate( self.points ):
-                out.append([i,p])  
+                fp = [float(p[0]),
+                      float(p[1]),
+                      float(p[2])]                
+                out.append([i,fp])  
             return out
 
         else:
             pids = self.indexer( span=span, ids=ids)
-
+        
+            #FOR SOME DAMN REASON THESE WERE COMING IN AS STRINGS
             for p in pids:
-                out.append( [p, self.points[p]] )
+                fp = [float(self.points[p][0]),
+                      float(self.points[p][1]),
+                      float(self.points[p][2])]
+                out.append( p,fp  )
             return out      
 
     ##-------------------------------------------##  
@@ -1180,14 +1188,16 @@ class polygon_operator(pop3d):
         rot_matrix = x_matrix * tmp_matr   
        
         ################################################
+        
+        #DEBUG this point group stuff is crap 
+        #im ready to rip it out 
+
         # if points passed in but no point group operate on pts
         if pts is not None and ptgrp is None: 
             if doround:
                 return self.apply_matrix_pts_round(4, pts,  m44=rot_matrix)  
             else:
                 return self.apply_matrix_pts(pts,  m44=rot_matrix) 
-            
-
         # if neither is specified, apply to whole object 
         if pts is None and ptgrp is None:
             ptgrp = self.get_pt_grp()    
@@ -2142,14 +2152,14 @@ class polygon_operator(pop3d):
                 # save as lines
 
                 # DEBUG - THIS IS NORMAL EXPORT 
-                #buf.append('l %s'%plybuf)
+                buf.append('l %s'%plybuf)
 
-                # DEBUG THIS IS A TEST FOR OCTANT 
-                #custom obj line type for octant  
-                for i,pl in enumerate (plybuf):
-                    if i>0:
-                        if (plybuf[i] !=' ' and plybuf[i-1] !=' '):
-                            buf.append('f %s %s'%( plybuf[i-1], plybuf[i]) )
+                # # DEBUG THIS IS A TEST FOR OCTANT 
+                # #custom obj line type for octant  
+                # for i,pl in enumerate (plybuf):
+                #     if i>0:
+                #         if (plybuf[i] !=' ' and plybuf[i-1] !=' '):
+                #             buf.append('f %s %s'%( plybuf[i-1], plybuf[i]) )
 
             else:
                 # save as polygons 

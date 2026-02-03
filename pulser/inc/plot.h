@@ -249,7 +249,11 @@ class cnc_plot
         
         //float rapid_dist;
         //float program_dist;     
+        Vector3 quill_pos;
+        Vector3 prg_origin;
+        Vector3 prg_end;
 
+        //bbox 
         float bb_min_x;
         float bb_max_x;
         float bb_min_y;
@@ -257,6 +261,7 @@ class cnc_plot
         float bb_min_z;
         float bb_max_z;
 
+        //bbox pts 
         Vector3 t_maxx; 
         Vector3 t_minx; 
         Vector3 t_maxy; 
@@ -265,10 +270,8 @@ class cnc_plot
         Vector3 b_minx; 
         Vector3 b_maxy; 
         Vector3 b_miny; 
-    
-        Vector3 quill_pos;
-        Vector3 prg_origin;
-        Vector3 prg_end;
+
+
 
         //--------------------------// 
         //--------------------------//   
