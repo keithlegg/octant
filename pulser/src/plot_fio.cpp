@@ -82,18 +82,16 @@ void cnc_plot::load_motionfile(void)
 void cnc_plot::load_lines(char *filepath)
 {
     //display stats about what we loaded when done 
-    bool showinfo  = false;
+    //bool showinfo  = true;
     
     //debugging tools 
-    bool debug     = false;
+    bool debug     = true;
     bool debugfile = false;
-
 
     uint pt1, pt2, pt3, pt4, ptn, ptn1 = 0;
     int vn1, vn2, vn3, vn4 = 0;
 
-
-    std::cout << "## obj_model::load loading file "<< filepath << "\n";
+    std::cout << "## cnc_plot::load_lines - in file "<< filepath << "\n";
     
     int pofst   = 0; //DEBUG point offset indices to points if geom exists already 
     int line_ct = 0; //idx of text line we are parsing 
@@ -102,16 +100,16 @@ void cnc_plot::load_lines(char *filepath)
 
     if (!obj_filein.good()){ 
         std::cout << ".obj file \""<< filepath <<"\" appears to be missing." << std::endl;
-        //more polite than exiting the program
+        // more polite than exiting the program
         return void();
     }
 
     /*
     //check to see if an object was already loaded - offset the point indeces if so 
     //point offset indices to points - if geom exists already 
-    if (num_pts>0)
+    if (fio_npts>0)
     {
-        pofst = num_pts;
+        pofst = fio_npts;
     }*/
 
     //begin the object load - walk the file parsing it 
@@ -191,26 +189,30 @@ void cnc_plot::load_lines(char *filepath)
                         if (vidx==2){
                             std::cout << "2D point detected!\n"; 
                         }
-
-
-                        /*
+                         
                         //if three points its a proper vertex 
                         if (vidx>=3)
                         {
                             Vector3 vpt = Vector3( xc, yc, zc  );
-                            //std::cout << "vtx 3d "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
+                            if(debug)
+                            {
+                                //std::cout << "vtx 3d "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
+                                std::cout << "numpts:" << fio_npts <<" "<< vpt.x << " "<< vpt.y << " " << vpt.z <<"\n";
 
-                            points[num_pts] = vpt;
-                            num_pts = num_pts+1;
+                            }
+
+                            fio_pts[fio_npts] = vpt;
+                            fio_npts++;
                         
-                            //std::cout << "numpts:" << num_pts <<" "<< vpt.x << " "<< vpt.y << " " << vpt.z <<"\n";                                             
-                        }*/
-
+                                             
+                        } 
 
                     }//end vertex loader 
-                    //std::cout << "NUM PTS LOADED "<< num_pts << "\n";
-                
+                    //std::cout << "NUM PTS LOADED "<< fio_npts << "\n";
+
                     //-----------------------------//
+                    //-----------------------------//
+
                     //  look for f/faces or l/lines
                     if ( tokenized.at(0).find("f") != std::string::npos || 
                          tokenized.at(0).find("l") != std::string::npos)
@@ -226,12 +228,20 @@ void cnc_plot::load_lines(char *filepath)
                         //walk the space delineated tokens per each line
                         for (int a=1;a<tokenized.size();a++)
                         {   
+
+                            // get type  
+                            //if(debug)
+                            //{
+                            //    std::cout << " FOO  " << typeid(tokenized.at(fidx)).name()  << "\n";
+                            //}
+
                             if( tokenized.at(a).size())
                             {
                                 if(debug)
                                 {
                                     std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
                                 }
+
 
                                 //------                                   
                                 //only supports 2,3,4 sided polygons  
@@ -260,7 +270,6 @@ void cnc_plot::load_lines(char *filepath)
                                         pt1 = std::stoi( tokenized.at(a));
                                         if (pofst>0){ pt1 = pt1+pofst;};                                            
                                     }
-
                                 }
 
                                 //------ 
@@ -315,8 +324,7 @@ void cnc_plot::load_lines(char *filepath)
                                 }   
 
                                 //4th vertex is for 4 sided polys 
-                                if(fidx==3)
-                                {
+                                if(fidx==3){
                                     //deal with "/" delineated files                                        
                                     if ( tokenized.at(a).find("/") != std::string::npos )
                                     {
@@ -341,28 +349,15 @@ void cnc_plot::load_lines(char *filepath)
                              
                             fidx++; 
                             }//space delineated line 
+ 
+
                         }//walk the line tokenized by spaces 
 
                         ///////////////////////////////////////////////////
                         ///////////////////////////////////////////////////
-                        
-                        /* 
-                        //if only one face index - its a point  
-                        if (fidx==1)
-                        {
-                        }//end line loader
+ 
 
-                        //---------------//               
-                        //if two face indices - its a line  
-                        if (fidx==2)
-                        {
-                            lines[num_lines].push_back(pt1);
-                            lines[num_lines].push_back(pt2);                          
-                            num_lines++;                    
-                        }//end line loader
-                        */ 
-                        //---------------//
-                        
+                         
                         //N number of points loader - faces and line geom 
                         if (fidx>4)
                         {
@@ -383,8 +378,8 @@ void cnc_plot::load_lines(char *filepath)
                             //but we dont know how many indices, lets walk it again to find out 
                             
                             std::vector<uint> tmp_line_id;
-                            
-                            /*  
+
+
                             //DEBUG starting at 2 is a bad hack it skips the "l" and the " " (space)
                             for (int a=2;a<tokenized.size();a++)
                             {   
@@ -392,17 +387,16 @@ void cnc_plot::load_lines(char *filepath)
                                 tmp_line_id.push_back(ptn);
                                 //std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
                             }
-                            std::cout << " new line idx:"<< num_lines << " size:" << tmp_line_id.size() << "\n";
-                            lines[num_lines] = tmp_line_id;
-                            num_lines++;
-                            */
+                            
+                            // std::cout << " new line idx:"<< numlines << " size:" << tmp_line_id.size() << "\n";
+                            // lines[numlines] = tmp_line_id;
+                            // numlines++;
 
                         }//end N sides loader 
                           
                     }//end face loader
 
-                    //-----------------------------//
-                    //-----------------------------//
+
                 }//line is not commented out
                 line_ct++;
 

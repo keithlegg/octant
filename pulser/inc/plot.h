@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "Vectors.h"
 
+#define MAX_PTBUFFER 100000
 #define MAX_NUM_PLY 100000
 #define MAX_MOTION_NUM 100000
 #define MAX_DISP_VECTORS 100000
@@ -132,6 +133,8 @@ class cnc_plot
             num_toolpath_ids = 0;
             num_disp_ids     = 0;
 
+            fio_npts =0;
+
             //vec1.reserve(30);  //  how does reserve work ??
             //vec2.resize(30);   // 
 
@@ -174,7 +177,9 @@ class cnc_plot
 
         void prim_shape(uint shape, uint axis, float size);
         //void copy_prg_to_dispvec(void);
+        
         void import_path_from_obj(std::string filepath);
+        void load_tp_from_obj(std::string filepath);
 
         //##########################//
         //add single vector to NON INDEXED 
@@ -217,8 +222,13 @@ class cnc_plot
 
         //--------------------------//   
         // file operations  NOT DONE 
-
+ 
+        //obj loader based of obj_geom 
+        uint fio_npts;  
+        Vector3* fio_pts     = new Vector3[MAX_PTBUFFER];    
         void load_lines(char *filepath); //modified obj loader
+
+        //not even started yet 
         void save_motionfile(void);
         void load_motionfile(void);
 

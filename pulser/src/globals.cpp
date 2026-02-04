@@ -468,7 +468,11 @@ void cncglobals::load_cfg_file( void )
                             buffer = tokenized.at(1);
                             std::cout << "DEBUG LOAD 3D OBJECT PATH OBJECT  \n";
                             
-                            pt_motionplot->import_path_from_obj( buffer );
+                            //experimental tool that uses embedded obj as loader
+                            //pt_motionplot->import_path_from_obj( buffer );                            
+
+                            //native line geom loader - copied from obj 
+                            pt_motionplot->load_tp_from_obj( buffer );
 
                         }
 

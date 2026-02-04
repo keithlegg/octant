@@ -138,19 +138,31 @@ void cnc_plot::toolpath_extents(void)
 
 /***************************************/
 
+void cnc_plot::load_tp_from_obj(std::string filepath)
+{
+    char char_array[100];
+    strcpy( char_array, filepath.c_str() ); 
+    
+    load_lines( char_array );
+
+ 
+}
+
+/***************************************/
 /*
-   DEBUG NOT DONE 
+   experimental obj loader - replaced by newer 
    use a "throw away" obj_model to do geometric calculations 
    load a model from disk (l type obj ) and convert it to toolpaths
 
 */
 void cnc_plot::import_path_from_obj(std::string filepath)
 {
+
     char char_array[100];
 
     obj_model* pt_obj2d_loader  = new obj_model;
     pt_obj2d_loader->reset();
-    strcpy(char_array, filepath.c_str()); 
+    strcpy( char_array, filepath.c_str() ); 
 
     pt_obj2d_loader->load(char_array);
     
