@@ -109,7 +109,7 @@ from pygfx.doc_ops import *
 #from unit_tests.ut_matrix import *
 
 
-GLOBAL_PROJ = '/FIX/ME'
+GLOBAL_PROJ = os.getcwd()
 
 
 ##---------------------------------
@@ -431,13 +431,15 @@ def test_slicer2():
 
 def its_alive(): 
     vflo = vectorflow()
-    vflo.load_geojson('images/out/4.json')
-    vflo.gl_move_center()
+    #vflo.load_geojson('images/out/4.json')
+    vflo.load_geojson('new.json')
+    #vflo.gl_move_center()
+    #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
+
     vflo.cvt_grpoly_obj3d()
     vflo.rotate_pts(rot=[90,0,0])
-
     vflo.save('l0.obj', as_lines=True)
-    #vflo.export_geojson_lines('foo.json')
+
  
 
 its_alive()

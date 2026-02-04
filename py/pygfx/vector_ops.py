@@ -777,20 +777,9 @@ class vectorflow(object3d):
 
             cell_width  = cell.getattrib('width')
             cell_height = cell.getattrib('height')
-       
-            
+                   
             #BBOX center - not quite accurate, use the projected center below
             cen = cell.getattrib('centroid') 
-            #print('##########', cen, e1m,e2m,e3m,e4m)
-            
-            #DEBUG - THIS IS BROKEN 
-            # tmp = vec2() 
-            # try:
-            #     cen = tmp.intersect_2d_from_3D([e1m,e3m], [e2m,e4m])
-            # except: 
-            #     print('\n## WARNING - build_tesselation_test2 , intersection failed... bad edge attrs in cell?')
-            #     print('## EDGES ARE ',e1m,e2m,e3m,e4m)
-
 
             ########################################
 
@@ -1334,8 +1323,6 @@ class vectorflow(object3d):
         sc_m33[4]  = amty
         sc_m33[8]  = amtz    
 
-        #for ply in self.gr_polys:
-        #    print(ply[0])
         for ply in self.gr_sort:
             ply[4] = sc_m33.batch_mult_pts(ply[4])
         

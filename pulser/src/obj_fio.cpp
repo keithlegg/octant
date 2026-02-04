@@ -136,10 +136,6 @@ void obj_model::load(char *filepath)
 
             std::vector<std::string>  tokenized = tokenizer(line, *" ");
 
-            std::string coords_str; // string that verts get copied to 
-            std::string nrmls_str;  // string that verts get copied to 
-            std::string fidx_str;   // string that faces get copied to
-
             //if line is not blank
             if(tokenized.size()>0)
             {
@@ -471,31 +467,38 @@ void obj_model::load(char *filepath)
                        //N number of points loader - faces and line geom 
                        if (fidx>4)
                        {
-                            if(poly_is_linetype)
+                            //std::cout << " PARSING NEW LINE "<<fidx<<"\n";
+                            
+                            if(debug)
                             {
-                                std::cout << "obj_model.load line type!!\n";
-                            }else{
-                                std::cout << "obj_model.load face type!!\n";
+                                if(poly_is_linetype)
+                                {
+                                    std::cout << "obj_model.load line type!!\n";
+                                }else{
+                                    std::cout << "obj_model.load face type!!\n";
+                                }
                             } 
 
                             //if we made it here, 
                             //we know what type of geom we are looking for 
                             //but we dont know how many indices, lets walk it again to find out 
+                            
+                            std::vector<uint> tmp_line_id;
+
 
                             //DEBUG starting at 2 is a bad hack it skips the "l" and the " " (space)
-                            for (int a=3;a<tokenized.size();a++)
+                            for (int a=2;a<tokenized.size();a++)
                             {   
-                                //debug add better error checking 
-                                //if( tokenized.at(a)[0] ) {}
-
                                 ptn  = std::stoi( tokenized.at(a) );
-                                ptn1 = std::stoi( tokenized.at(a-1) );
-
-                                lines[num_lines].push_back(ptn);
-                                lines[num_lines].push_back(ptn1);
-                                num_lines++;
-
+                                tmp_line_id.push_back(ptn);
+                                //std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
                             }
+                            
+                            std::cout << " new line idx:"<< num_lines << " size:" << tmp_line_id.size() << "\n";
+
+                            lines[num_lines] = tmp_line_id;
+                            num_lines++;
+
                         }//end N sides loader 
                           
                     }//end face loader

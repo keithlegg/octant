@@ -218,6 +218,7 @@ class cnc_plot
         //--------------------------//   
         // file operations  NOT DONE 
 
+        void load_lines(char *filepath); //modified obj loader
         void save_motionfile(void);
         void load_motionfile(void);
 
