@@ -190,7 +190,7 @@ class cnc_plot
         void add_prg_vec(Vector3* nv); 
         void add_rapid_vec(Vector3* nv);
 
-
+        //--------------------------//  
         // motion path interface backend
         void copy_prg_to_toolpath(void);
         void copy_rpd_to_toolpath(void);
@@ -212,11 +212,12 @@ class cnc_plot
         void clear_rapidvecs(void);
         void clear_prgvecs(void);
 
-
         // del_motion   (std::string name, Vector3 start, Vector3 end);
         // link_motions (std::string name, Vector3 start, Vector3 end);
 
         // end motion interface 
+        //--------------------------//  
+        //top 10 tasty toolpath geometry hacks I know 
 
         void toolpath_extents(void);
 

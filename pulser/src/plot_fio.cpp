@@ -193,18 +193,15 @@ void cnc_plot::load_lines(char *filepath)
                         //if three points its a proper vertex 
                         if (vidx>=3)
                         {
-                            Vector3 vpt = Vector3( xc, yc, zc  );
+                            Vector3 vpt = Vector3( xc, yc, zc );
                             if(debug)
                             {
                                 //std::cout << "vtx 3d "<< vpt.x << " "<< vpt.y <<" "<<vpt.z<<"\n";
                                 std::cout << "numpts:" << fio_npts <<" "<< vpt.x << " "<< vpt.y << " " << vpt.z <<"\n";
-
                             }
 
                             fio_pts[fio_npts] = vpt;
                             fio_npts++;
-                        
-                                             
                         } 
 
                     }//end vertex loader 
@@ -239,7 +236,7 @@ void cnc_plot::load_lines(char *filepath)
                             {
                                 if(debug)
                                 {
-                                    std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
+                                    //std::cout << " pofst " << pofst <<" line " << line_ct << " idx:" << a << " tokenized : " << tokenized.at(a) <<"\n"; // <- vertex line 
                                 }
 
 
@@ -355,9 +352,7 @@ void cnc_plot::load_lines(char *filepath)
 
                         ///////////////////////////////////////////////////
                         ///////////////////////////////////////////////////
- 
-
-                         
+                     
                         //N number of points loader - faces and line geom 
                         if (fidx>4)
                         {
@@ -365,20 +360,20 @@ void cnc_plot::load_lines(char *filepath)
                             
                             if(debug)
                             {
-                                if(poly_is_linetype)
-                                {
-                                    std::cout << "obj_model.load line type!!\n";
-                                }else{
-                                    std::cout << "obj_model.load face type!!\n";
-                                }
+                                //if(poly_is_linetype)
+                                //{
+                                //    std::cout << "obj_model.load line type!!\n";
+                                //}else{
+                                //    std::cout << "obj_model.load face type!!\n";
+                                //}
                             } 
 
                             //if we made it here, 
                             //we know what type of geom we are looking for 
                             //but we dont know how many indices, lets walk it again to find out 
                             
+                            //container to store the indices on this line only 
                             std::vector<uint> tmp_line_id;
-
 
                             //DEBUG starting at 2 is a bad hack it skips the "l" and the " " (space)
                             for (int a=2;a<tokenized.size();a++)
@@ -388,9 +383,31 @@ void cnc_plot::load_lines(char *filepath)
                                 //std::vector<uint>* lines   = new std::vector<uint>[MAX_NUM_FACES];     // 2 sided faces 
                             }
                             
-                            // std::cout << " new line idx:"<< numlines << " size:" << tmp_line_id.size() << "\n";
-                            // lines[numlines] = tmp_line_id;
-                            // numlines++;
+                            //we now have points and indices, lets build some paths 
+
+                            //std::cout << " new line idx:"<<  " size:" << tmp_line_id.size() << "\n";
+                            for (uint p=0;p<tmp_line_id.size();p++)
+                            {
+                                Vector3 tmp = fio_pts[tmp_line_id.at(p)];
+                                //add_rapid_vec( &tmp );
+                                add_prg_vec( &tmp );
+                            }
+                            prg_idxs[num_prg_plys] = tmp_line_id;
+                            num_prg_plys++;
+
+                            update_toolpaths();
+
+                            
+                            //DEBUG COMMOANDS FOR MOTIONIDX INTERFACE - AS IT IS 
+                            //add_prg_vec( &dest );
+                            //add_rapid_vec( &dest ); 
+                            //add_prgvec_ply ( &pt_motionplot->quill_pos );
+                            //num_rpd_plys++;
+                            //num_prg_plys++;
+                            // args for  add_motion(  name    , type   , rapid_in id                  , prog_id, rapid_out );
+                            //add_motion("mh_cmd", "rapid", pt_motionplot->num_rpd_plys-1, -1     , -1 );
+                            // rebuild the toolpaths based on cached vectors 
+                            //update_toolpaths();
 
                         }//end N sides loader 
                           
@@ -398,7 +415,7 @@ void cnc_plot::load_lines(char *filepath)
 
 
                 }//line is not commented out
-                line_ct++;
+                line_ct++;  
 
             }//line not blank
         }//line by line
