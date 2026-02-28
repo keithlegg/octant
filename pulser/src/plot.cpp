@@ -254,6 +254,12 @@ void run_cncplot(double f_x,
 }
 
 /***************************************/
+/*
+    ARGS:
+        double f_x, f_y, f_z  - start 3d point 
+        double s_x, s_y, s_z  - end   3d point 
+        (x,y,z)_divs          - X,Y,Z divisions    
+*/
 
 // experiment in multithreading - so far so good 
 void pulse_thread(double f_x,
@@ -1124,11 +1130,13 @@ void cnc_plot::init_paths( std::vector<Vector3>* pt_anyvecs)
 /******************************************/
 /*
     calc_3d_pulses - translates a 3D vector into 6 electrical signals (step/dir * 3)
+    
+    its basically length of a 3d line / number of divisions =  turned into num pulses 
 
-     ARGS:     
+    ARGS:     
          Vector3 fr_pt
          Vector3 to_pt
-         uint numdivx
+         uint numdivx 
          uint numdivy
          uint numdivz
 */
@@ -1306,7 +1314,7 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
     }
 
     //exception for integer 1 
-    //if only one pulse, put 'r right in the middle of the output 
+    //if only one pulse, put it right in the middle of the output 
     //if my code was better, I suppose it would just automatically do this
     if(num==1)
     {
