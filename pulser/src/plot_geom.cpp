@@ -174,10 +174,11 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
     output_pts.reserve( 400 );      
      
 
-    uint divs      = 8;
+    uint divs      = 20;
     float ox,oy,oz = 0;
 
     //-----------//
+    //circle 
 
     if(shape==0)
     {
@@ -200,6 +201,8 @@ void cnc_plot::prim_shape(uint shape, uint axis, float size)
 
 
     //-----------//
+    //square 
+
     if(shape==1)
     {
         Vector3 orig = Vector3(0,0,0);
