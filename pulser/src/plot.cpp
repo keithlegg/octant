@@ -1124,7 +1124,13 @@ void cnc_plot::init_paths( std::vector<Vector3>* pt_anyvecs)
 /******************************************/
 /*
     calc_3d_pulses - translates a 3D vector into 6 electrical signals (step/dir * 3)
-   
+
+     ARGS:     
+         Vector3 fr_pt
+         Vector3 to_pt
+         uint numdivx
+         uint numdivy
+         uint numdivz
 */
 
 void cnc_plot::calc_3d_pulses(Vector3 fr_pt, 
@@ -1161,7 +1167,8 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
                                  " z "<< delta_z << "\n";
     }
 
-    //2 is a magic number to (all other data is 1 )
+    //2 is a magic number denoting direction (all other data is 1 )
+
     //calc the direction of the vector 
     if (to_pt.x>fr_pt.x){
         xp=2;
@@ -1276,7 +1283,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
 /******************************************/
 //DEBUG - LEGACY CODE TO REWRITE?
 // this OPERATES ON AN ORPHANED PULSETRAIN so keep it out of the class
-// that way it avoids the confusion of the pulsetrain inside the class 
+// pulsetrain being a class member is more confusing 
 
 void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
 {
@@ -1288,23 +1295,22 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
     }
 
     double div = (double)size/(double)num;
-    //double gran = div/num;
 
-    int a;  
-
-    //if zero make all zeros, we want the output to be the same size
+    //if zero fill all pulsetrain with zeros, we want the output to be the same size
     if(num==0)
     {
-        for(a=0;a<size;a++)
+        for(uint a=0;a<size;a++)
         {
             pt_pulsetrain->push_back(0);            
         }
     }
 
-    //exception for integer 1, put the pulse right in the middle of output 
+    //exception for integer 1 
+    //if only one pulse, put 'r right in the middle of the output 
+    //if my code was better, I suppose it would just automatically do this
     if(num==1)
     {
-        for(a=0;a<size;a++)
+        for(uint a=0;a<size;a++)
         {
 
             if( a == size/2)
@@ -1322,7 +1328,7 @@ void gen_pulses(std::vector<int>* pt_pulsetrain, int size, int num)
     // I did a true 3D solution (commented out at bottom) but this is way faster and works as far as I can tell
     if(num>1) 
     {
-        for(a=0;a<size;a++)
+        for(uint a=0;a<size;a++)
         {
             double chunk = fmod(a,div);
             if( chunk < 1)
