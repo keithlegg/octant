@@ -204,6 +204,9 @@ void draw_locator( Vector3* pos, float locsize)
 }
 
 /******************************************/
+
+//DEBUG - ADD OPTION TO MAKE GRID ON Z PLANE INSTEAD OF Y 
+
 //draw a 3D grid on the "floor" and an indicator to show XYZ axis  
 void graticulate( bool *tog_grid, bool *draw_cntrgrid, RGBType *pt_gridcolor, RGBType *pt_gridcolor2 )
 {

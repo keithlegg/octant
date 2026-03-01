@@ -370,6 +370,17 @@ void parse_cmd_text(std::string *buffer)
     }
     */
 
+    //------------------
+    //void send_byte(cncglobals* cg, uint portid, unsigned char byte)
+
+    //send byte test 
+    if(a1=="sb")
+    {
+        parport.send_byte(&cg, 1, 0xff);
+
+    }
+
+    //------------------
     if(a1=="prim")
     {
         

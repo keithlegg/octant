@@ -142,6 +142,18 @@ void start_gui()
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR ); // scale linearly when image smalled than texture
     //glTexImage2D(GL_TEXTURE_2D, 0, 3, imageloaded_bfr->sizeX, imageloaded_bfr->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, imageloaded_bfr->data);
 
+    //--------------------------------//
+    //--------------------------------//
+    //DO PRE_LAUNCH STUFF HERE (FOR TESTING++ )
+    
+    //drop a circle in for testing - so we dont have to type the command each time 
+    pt_motionplot->prim_shape(0, 2, .75);  
+    cg.ENABLE_MOTOR_DRIVE = 1;
+
+    //--------------------------------//
+    //--------------------------------//
+
+
     glutMainLoop();// Start Event Processing Engine   
    
     //DEBUG - polymorphic class type ‘obj_model’ which has non-virtual destructor might cause undefined behavior

@@ -767,7 +767,9 @@ void cnc_plot::run_sim(void)
 
 void cnc_plot::process_vec(uint window_idx)
 {
-    bool debug = true;
+    //warning - printing to screen takes up valuable CPU clicks 
+    bool debug       = false;
+
     float low_thresh = .0001;
     
     //set up the vector to process 

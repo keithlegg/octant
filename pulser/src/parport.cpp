@@ -65,7 +65,8 @@ bool check_ports_available(uint portaddr)
     //probaly related to pulsetrain, et al 
     if (cg.ENABLE_MOTOR_DRIVE==0)
     {
-        std::cout << "*** WARNING MOTORS DISABLED IN CFG ***\n";
+        std::cout << "\n\n*** HEY DUMMY - IT SEGFAULTS IF MTR==0 DEBUG!! ***\n";
+        std::cout << "*** WARNING MOTORS DISABLED IN CFG ***\n\n";
         return false;
     }
 
@@ -218,10 +219,23 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 
 
 /***************************************/
+
+/*
+    Data Register    (Base + 0): 8 output pins (Pins 2-9) sending data, some ports allow this to be bidirectional.
+    Status Register  (Base + 1): 5 input pins (Pins 10, 11, 12, 13, 15) that report printer status to the PC.
+    Bits: Busy       (Bit 7)     Acknowledge (Bit 6), Paper Out (Bit 5), Select (Bit 4), Error (Bit 3).
+    Control Register (Base + 2): 4 output pins (Pins 1, 14, 16, 17) providing control signals.
+
+    Several pins are hardware-inverted (e.g., Strobe, Auto Line Feed, Init, Select Printer).
+
+*/
+
 //DEBUG not done 
 //DEBUG need to work on configurable pin assignments 
-void send_byte(cncglobals* cg, uint portid, unsigned char byte)
-{
+void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
+{   
+    std::cout << "sending byte " << byte << " on port "<< portid << "\n";
+
     if(portid==1){
         #define useport cg->parport1_addr
     }
@@ -230,7 +244,7 @@ void send_byte(cncglobals* cg, uint portid, unsigned char byte)
     }    
 
     check_ports_available(useport);
-    
+         
     //read the byte to get the current state, 
     unsigned char data_read;
     data_read = inb(useport);
@@ -239,7 +253,7 @@ void send_byte(cncglobals* cg, uint portid, unsigned char byte)
     data_read = data_read |= byte;
 
     outb(data_read, useport); 
-    
+     
 
 }
 
