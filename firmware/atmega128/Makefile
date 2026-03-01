@@ -1,12 +1,9 @@
 
-PROJECT=blink
+PROJECT=amistar_io
 
 
 
-
-#SOURCES=src/mcp23s17.c
-
-SOURCES=src/archive/pwm_servo.c
+SOURCES=src/testports.c
 
 
 
