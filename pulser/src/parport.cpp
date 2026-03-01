@@ -235,12 +235,14 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
 {   
     std::cout << "sending byte " << byte << " on port "<< portid << "\n";
-
+    
+    
+    uint useport = 0;
     if(portid==1){
-        #define useport cg->parport1_addr
+        useport = cg->parport1_addr;
     }
     if(portid==2){
-        #define useport cg->parport2_addr
+        useport = cg->parport1_addr;
     }    
 
     check_ports_available(useport);
@@ -250,9 +252,9 @@ void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
     data_read = inb(useport);
 
     //twiddle the pins accordingly     
-    data_read = data_read |= byte;
+    //data_read = data_read |= byte;
 
-    outb(data_read, useport); 
+    outb(byte, useport); 
      
 
 }
@@ -263,12 +265,12 @@ void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
 void cnc_parport::aux_on(cncglobals* cg, uint portid, uint pin)
 {
 
+    uint useport = 0;
     if(portid==1){
-        #define useport cg->parport1_addr
+        useport = cg->parport1_addr;
     }
-
     if(portid==2){
-        #define useport cg->parport2_addr
+        useport = cg->parport1_addr;
     }    
 
     check_ports_available(useport);
@@ -288,13 +290,13 @@ void cnc_parport::aux_on(cncglobals* cg, uint portid, uint pin)
 
 void cnc_parport::aux_off(cncglobals* cg, uint portid, uint pin)
 {
+    uint useport = 0;
     if(portid==1){
-        #define useport cg->parport1_addr
+        useport = cg->parport1_addr;
     }
-
     if(portid==2){
-        #define useport cg->parport2_addr
-    }    
+        useport = cg->parport1_addr;
+    }      
 
     check_ports_available(useport);
 

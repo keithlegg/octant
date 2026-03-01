@@ -376,7 +376,14 @@ void parse_cmd_text(std::string *buffer)
     //send byte test 
     if(a1=="sb")
     {
+
+        parport.send_byte(&cg, 1, 0x00);
         parport.send_byte(&cg, 1, 0xff);
+        parport.send_byte(&cg, 1, 0x00);
+
+        //parport.send_byte(&cg, 2, 0x00);
+        //parport.send_byte(&cg, 2, 0xff);
+        //parport.send_byte(&cg, 2, 0x00);        
 
     }
 
