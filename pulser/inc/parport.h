@@ -60,8 +60,12 @@ class cnc_parport
 
     void test_port_output(cncglobals* cg, int number);
 
-    void aux_on(cncglobals*, uint);
-    void aux_off(cncglobals*, uint);
+    void send_byte(cncglobals* cg, 
+                   uint portid, 
+                   unsigned char byte);
+
+    void aux_on(cncglobals*, uint portid, uint pin);
+    void aux_off(cncglobals*, uint portid, uint pin);
 
     void test_inputs(cncglobals* cg, 
                      unsigned char* data);

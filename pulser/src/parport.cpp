@@ -55,6 +55,8 @@
 extern cncglobals cg;
 
 /***************************************/
+//universal port permissions cheker - use this before trying to do anything 
+
 bool check_ports_available(uint portaddr)
 {
     bool send_it = false;
@@ -215,20 +217,54 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 
 
 
+/***************************************/
+//DEBUG not done 
+//DEBUG need to work on configurable pin assignments 
+void send_byte(cncglobals* cg, uint portid, unsigned char byte)
+{
+    if(portid==1){
+        #define useport cg->parport1_addr
+    }
+    if(portid==2){
+        #define useport cg->parport2_addr
+    }    
+
+    check_ports_available(useport);
+    
+    //read the byte to get the current state, 
+    unsigned char data_read;
+    data_read = inb(useport);
+
+    //twiddle the pins accordingly     
+    data_read = data_read |= byte;
+
+    outb(data_read, useport); 
+    
+
+}
 
 /***************************************/
 //turn auxillary device on  (extruder, spindle motor, etc)
 
-void cnc_parport::aux_on(cncglobals* cg, uint pin)
+void cnc_parport::aux_on(cncglobals* cg, uint portid, uint pin)
 {
-    check_ports_available(cg->parport1_addr);
+
+    if(portid==1){
+        #define useport cg->parport1_addr
+    }
+
+    if(portid==2){
+        #define useport cg->parport2_addr
+    }    
+
+    check_ports_available(useport);
 
     //read the byte to get the current state, 
     //then twiddle the pins accordingly 
     unsigned char data_read;
-    data_read = inb(cg->parport1_addr);
+    data_read = inb(useport);
     data_read = data_read |= (1 << pin);
-    outb(data_read, cg->parport1_addr);            
+    outb(data_read, useport);            
 }
 
 
@@ -236,16 +272,24 @@ void cnc_parport::aux_on(cncglobals* cg, uint pin)
 /***************************************/
 //turn auxillary device off  (extruder, spindle motor, etc)
 
-void cnc_parport::aux_off(cncglobals* cg, uint pin)
+void cnc_parport::aux_off(cncglobals* cg, uint portid, uint pin)
 {
-    check_ports_available(cg->parport1_addr);
+    if(portid==1){
+        #define useport cg->parport1_addr
+    }
+
+    if(portid==2){
+        #define useport cg->parport2_addr
+    }    
+
+    check_ports_available(useport);
 
     //read the byte to get the current state, 
     //then twiddle the pins accordingly 
     unsigned char data_read;
-    data_read = inb(cg->parport1_addr);
+    data_read = inb(useport);
     data_read = data_read &= ~(1 << pin);
-    outb(data_read, cg->parport1_addr);    
+    outb(data_read, useport);    
 
 }
 
