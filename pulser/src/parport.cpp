@@ -241,7 +241,7 @@ void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
         useport = cg->parport1_addr;
     }
     if(portid==2){
-        useport = cg->parport1_addr;
+        useport = cg->parport2_addr;
     }    
 
     check_ports_available(useport);
@@ -276,7 +276,7 @@ void cnc_parport::aux_on(cncglobals* cg, uint portid, uint pin)
         useport = cg->parport1_addr;
     }
     if(portid==2){
-        useport = cg->parport1_addr;
+        useport = cg->parport2_addr;
     }    
 
     check_ports_available(useport);
@@ -301,7 +301,7 @@ void cnc_parport::aux_off(cncglobals* cg, uint portid, uint pin)
         useport = cg->parport1_addr;
     }
     if(portid==2){
-        useport = cg->parport1_addr;
+        useport = cg->parport2_addr;
     }      
 
     check_ports_available(useport);
