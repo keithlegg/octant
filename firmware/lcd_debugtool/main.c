@@ -1,5 +1,6 @@
 /*
-   Keith Legg Jan 7 - 2016
+    created  : Keith Legg Jan 7 - 2016
+    modified : Keith Legg Mar 1 - 2026
 
    //-----------------------------------
    //ORIGINAL ADAFRUIT STUFF:
@@ -44,18 +45,13 @@
    |PORTB |<----- CONFLICTS WITH SPI - BEWARE
    |PORTD |<----- BEWARE
    //-----------------------------------
-
-
 */
-
 
 
 #include <avr/io.h>
 #include <util/delay.h>
 
-//#include "uart.h"
-#include "sram.h"
-#include "nes_ctrlr.h"
+
 #include "ST7735.h"
 
 #include "kernel_splatr.h"
@@ -133,9 +129,17 @@ int main (void)
     ST7735_FillScreen(0x00);
 
 
+    /*
+        pin change LOW ISR on DB25 pin 1 (inverted pin, STROBE)
+
+
+
+    */
+
+
     while(1)
     {
-        debug_parport(0xff);
+        //debug_parport(0xff);
 
     }
 

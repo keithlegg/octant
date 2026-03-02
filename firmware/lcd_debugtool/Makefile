@@ -1,7 +1,7 @@
 
 
 
-SOURCES =  main.c kernel_splatr.c ST7735.c sram.c nes_ctrlr.c uart.c 
+SOURCES =  main.c kernel_splatr.c ST7735.c   
 
 
 #avr-gcc main.c kernel_splatr.c
