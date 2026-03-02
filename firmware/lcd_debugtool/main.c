@@ -49,6 +49,8 @@
 
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include <util/delay.h>
 
 
@@ -56,12 +58,6 @@
 
 #include "kernel_splatr.h"
 
-
-extern volatile uint8_t lastx;
-extern volatile uint8_t lasty;
-extern volatile uint8_t x;
-extern volatile uint8_t y;
-extern volatile uint16_t CRSR_COLOR;
 
 
 /*******************************/
@@ -107,44 +103,77 @@ uint16_t cvt_8x2_to_16(uint8_t msbin, uint8_t lsbin){
 */
 
 
+/*******************************/
+
+//pin change LOW ISR on DB25 pin 1 (inverted pin, STROBE)
+
+void setup_isr(void)
+{
+    //## PD0 == INT0 
+
+    // setup pin change interrupts 
+    DDRD &= ~(1 << DDD0);              // Clear the PD0 pin
+    PORTD |= (1 << PD3);               // turn on the pull-ups
+
+
+    // Interrupt 0 Sense Control
+    //EICRA |= (1 << ISC01); // trigger on falling edge
+    // Interrupt 1 Sense Control
+    //EICRA |= (1 << ISC11); // trigger on falling edge
+    // External Interrupt Mask Register
+    //EIMSK |= (1 << INT0)|(1 << INT1);   // Turns on INT0 and INT1
+    
+    EIMSK |= (1 << INT0);   // Turns on INT0 
+
+    sei();
+}
+ 
 
 /*******************************/
+uint8_t mybyte = 0x00;
 
 int main (void)
 {
 
-
-    DDRA = 0xff; //TOP RIGHT PORT 
-    DDRC = 0xff; //BOT RIGHT PORT
+    DDRA = 0x00; 
+ 
+    DDRC = 0x00; 
+    DDRE = 0x00;
+ 
     DDRG = 0xff; //for SPI/TFT
     DDRB = 0xff; //for SPI
-    DDRF = 0xff; //CONTROL BUS
-    DDRE = 0x00; //INPUT TEST 
+    
+    DDRF = 0x00; //DB25 byte in 
+  
 
-    //SPCR |= (1<<MSTR)|(1<<SPE)|(1<<CPHA)|(1<<CPOL);  // SPI Master, SPI Enable, Trailing edge
     SPCR |= (1<<MSTR)|(1<<SPE);  // SPI Master, SPI Enable
     SPSR |= SPI2X;
    
     ST7735_InitR(INITR_BLACKTAB);  
     ST7735_FillScreen(0x00);
 
-
-    /*
-        pin change LOW ISR on DB25 pin 1 (inverted pin, STROBE)
-
-
-
-    */
-
+    setup_isr(); //ISR is PortD pin0
 
     while(1)
     {
-        //debug_parport(0xff);
-
+        debug_parport(mybyte);
+        _delay_ms(100);  
     }
 
 
 }//main
+
+
+
+ 
+// falling edge pin change ISR  
+ISR (INT0_vect)
+{
+    mybyte = PINF;
+}
+ 
+
+
 
 
 

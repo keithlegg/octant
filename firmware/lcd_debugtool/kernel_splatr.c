@@ -60,19 +60,18 @@ volatile uint8_t byte6 = 0xff;
 
 void debug_parport(uint8_t passbyte)
 {
-    for(uint8_t x=0;x<255;x++)
-    {
-        //draw_byte_box(passbyte  , bb_begin ,        0,  byte_width , byte_height , bit_off_color);
-        draw_byte_box(x, 
-                      bb_begin, 0,  
-                      byte_width, byte_height, 
-                      bit_off_color,
-                      or_off_color);
-        render_8_hex(hex_begin  , 0        , fontsize   ,  x      , CRSR_COLOR);
-        _delay_ms(100);
-    }
+    //for(uint8_t x=0;x<255;x++)
 
+    draw_byte_box(passbyte, 
+                  bb_begin, 0,  
+                  byte_width, byte_height, 
+                  bit_off_color,
+                  or_off_color);
+
+    render_8_hex(hex_begin, 0, fontsize, passbyte, CRSR_COLOR);
+    _delay_ms(100);
 }
+
 
 
 /*******************************/
