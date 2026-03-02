@@ -111,7 +111,13 @@ void start_click(void);
 
 //gfx routines - consider merging with gfx lib?
 void draw_outline_box(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color);
-void draw_byte_box(uint8_t byte, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t offcolor);
+
+void draw_byte_box(uint8_t byte, 
+                   uint8_t x, uint8_t y, 
+                   uint8_t w, uint8_t h, 
+                   uint16_t oncolor,
+                   uint16_t offcolor);
+
 void render_8_hex(uint8_t x, uint8_t y, uint8_t size, uint8_t accumulator, uint16_t color);
 void render_16_hex(uint8_t x, uint8_t y, uint8_t size, uint16_t accumulator, uint16_t color);
 

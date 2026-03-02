@@ -76,14 +76,26 @@ volatile uint8_t byte6 = 0xff;
 
 
 
+//nifty tool to see data on a bus 
 
-void test_byte(uint8_t passbyte)
+void debug_parport(uint8_t passbyte)
 {
-    draw_byte_box(passbyte  , bb_begin ,        0,  byte_width , byte_height , bit_off_color);
-    render_8_hex(hex_begin  , 0        , fontsize   ,  passbyte      , CRSR_COLOR);
+    for(uint8_t x=0;x<255;x++)
+    {
+        //draw_byte_box(passbyte  , bb_begin ,        0,  byte_width , byte_height , bit_off_color);
+        draw_byte_box(x, 
+                      bb_begin, 0,  
+                      byte_width, byte_height, 
+                      bit_off_color,
+                      or_off_color);
+        render_8_hex(hex_begin  , 0        , fontsize   ,  x      , CRSR_COLOR);
+        _delay_ms(100);
+    }
 
 }
 
+
+/*******************************/
 void crsr_up(void){
     if (y>0){
         y-=step_size_y;
@@ -165,7 +177,12 @@ void draw_outline_box(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color
 }
 
 /*******************************/
-void draw_byte_box(uint8_t byte, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t offcolor){
+void draw_byte_box(uint8_t byte, 
+                   uint8_t x, uint8_t y, 
+                   uint8_t w, uint8_t h, 
+                   uint16_t oncolor,
+                   uint16_t offcolor)
+{
   /*
       draw a "byte" onscreen, represented as 8 squares with bits colored on or off 
       ARGS:
@@ -258,7 +275,9 @@ void clear_screen(uint16_t color){
 
 /*******************************/
 
-void bios_l_click(void){
+/*
+void bios_l_click(void)
+{
     if(idx_y==0){ ST7735_FillScreen(0x00);app_one_redraw();cursor_loop();  }
     if(idx_y==1){ ST7735_FillScreen(0x00);sram_test1();   }
     //if(idx_y==2){ ST7735_FillScreen(0x00);sram_test2();   }
@@ -270,6 +289,7 @@ void bios_l_click(void){
     unsigned char a[] = "*** DONE! ***";
     ST7735_DrawString(0, 50, a );   
 }
+*/
 
 /*************/
 
@@ -522,21 +542,20 @@ void app_one_redraw(void){
     
     //////////////////////////////////
 
-    draw_byte_box(byte1     , bb_begin        ,                0,  byte_width , byte_height , bit_off_color);
+    draw_byte_box(byte1     , bb_begin        ,                0,  byte_width , byte_height, 
+                  bit_on_color, bit_off_color);
     render_8_hex(hex_begin  , 0               , fontsize   ,  byte1      , CRSR_COLOR);
     //--------  
-    draw_byte_box(byte2     , bb_begin        , byte_height , byte_width  , byte_height , bit_off_color);
+    draw_byte_box(byte2     , bb_begin        , byte_height , byte_width  , byte_height,
+                  bit_on_color, bit_off_color);
+
     render_8_hex(hex_begin  , byte_height     , fontsize  , byte2       , CRSR_COLOR); 
     //--------  
-    draw_byte_box(byte3     , bb_begin        , (byte_height*2) , byte_width  , byte_height , bit_off_color);
+    draw_byte_box(byte3     , bb_begin        , (byte_height*2) , byte_width  , byte_height, 
+                  bit_on_color, bit_off_color);
+
     render_8_hex(hex_begin  , (byte_height*2) , fontsize  , byte3       , CRSR_COLOR); 
-    //--------
-    // draw_byte_box(byte4     , bb_begin        , (byte_height*3) , byte_width  , byte_height , or_off_color);
-    // render_8_hex(hex_begin  , (byte_height*3) , fontsize  , byte4       , CRSR_COLOR);
-    // //--------
-    // draw_byte_box(byte5     , bb_begin        , (byte_height*4) , byte_width  , byte_height , and_off_color);
-    // render_8_hex(hex_begin  , (byte_height*4) , fontsize  , byte5       , CRSR_COLOR);
-    
+
     //--------    
     //--------
     draw_cursor(CRSR_COLOR); //draw new cursor
@@ -613,6 +632,7 @@ void sram_erase(void){
 
 /*******************************/
 //read back ram and DRAW BYTEBOX!!
+/*
 void sram_walk(void){
     uint16_t a = 0; 
     ST7735_FillScreen(0x00); //clear all black 
@@ -638,6 +658,7 @@ void sram_walk(void){
        _delay_ms(500);
     }
 }
+*/
 
 
 /***********************************************/

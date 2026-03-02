@@ -45,6 +45,7 @@
    |PORTD |<----- BEWARE
    //-----------------------------------
 
+
 */
 
 
@@ -130,17 +131,11 @@ int main (void)
    
     ST7735_InitR(INITR_BLACKTAB);  
     ST7735_FillScreen(0x00);
-    
-    // uint8_t nes_byte;
-    // NES_CTRLR_Init();
 
-    //boot_screen();
-    //draw_cursor(CRSR_COLOR);
-    
-    test_byte(0xff);
 
     while(1)
     {
+        debug_parport(0xff);
 
     }
 

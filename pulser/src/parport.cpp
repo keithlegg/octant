@@ -221,12 +221,12 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 /***************************************/
 
 /*
-    Data Register    (Base + 0): 8 output pins (Pins 2-9) sending data, some ports allow this to be bidirectional.
-    Status Register  (Base + 1): 5 input pins (Pins 10, 11, 12, 13, 15) that report printer status to the PC.
-    Bits: Busy       (Bit 7)     Acknowledge (Bit 6), Paper Out (Bit 5), Select (Bit 4), Error (Bit 3).
-    Control Register (Base + 2): 4 output pins (Pins 1, 14, 16, 17) providing control signals.
+    Data Register    (out/in)(Base + 0): 8 output pins (Pins 2-9) sending data, some ports allow this to be bidirectional.
+    Status Register  (in)    (Base + 1): 5 input pins (Pins 10, 11, 12, 13, 15) that report printer status to the PC.
+    Bits: Busy               (Bit 7)     Acknowledge (Bit 6), Paper Out (Bit 5), Select (Bit 4), Error (Bit 3).
+    Control Register (out)   (Base + 2): 4 output pins (Pins 1, 14, 16, 17) providing control signals.
 
-    Several pins are hardware-inverted (e.g., Strobe, Auto Line Feed, Init, Select Printer).
+    Several pins are hardware-inverted (Strobe, Auto Line Feed, Init, Select Printer) 
 
 */
 
@@ -235,8 +235,7 @@ void cnc_parport::decode_quadrature(cncglobals* cg,
 void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
 {   
     std::cout << "sending byte " << byte << " on port "<< portid << "\n";
-    
-    
+        
     uint useport = 0;
     if(portid==1){
         useport = cg->parport1_addr;
@@ -246,16 +245,23 @@ void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
     }    
 
     check_ports_available(useport);
-         
-    //read the byte to get the current state, 
+    
+    //---------------
+    //put the byte on the data bus 
+
+    //first read the state of the register (so we dont mangle the wrong bits) 
     unsigned char data_read;
     data_read = inb(useport);
 
     //twiddle the pins accordingly     
-    //data_read = data_read |= byte;
+    data_read = data_read |= byte;
 
     outb(byte, useport); 
-     
+
+    //---------------
+    //now set the strobe to show we are done
+    //strobe is active low so pull it down and back up 
+    
 
 }
 

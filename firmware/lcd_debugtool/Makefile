@@ -29,7 +29,7 @@ LOW_FUSE=0xc1
 HIGH_FUSE=0x99
 EXT_FUSE=0xfd
 
-CFLAGS=-mmcu=$(MMCU) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
+CFLAGS=-w -mmcu=$(MMCU) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 
 
 # CC     = gcc
@@ -68,7 +68,7 @@ program_fuses:
 program: $(PROJECT).hex
 	@echo
 	@echo "Downloading..."
-	sudo avrdude -v -p $(PROG_MMCU) -c $(PROGRAMMER) -e \
+	avrdude -v -p $(PROG_MMCU) -c $(PROGRAMMER) -e \
 	-U flash:w:$(PROJECT).hex
 	@echo
 
