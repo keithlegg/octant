@@ -255,13 +255,16 @@ void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
 
     //twiddle the pins accordingly     
     data_read = data_read |= byte;
-
     outb(byte, useport); 
 
     //---------------
     //now set the strobe to show we are done
     //strobe is active low so pull it down and back up 
     
+    //this works - note pin 1 is active low so its inverted 
+    check_ports_available(useport+2);    
+    outb(byte, useport+2); 
+
 
 }
 
