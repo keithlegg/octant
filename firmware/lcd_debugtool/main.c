@@ -56,7 +56,16 @@
 
 #include "ST7735.h"
 
+#include "head_theta_ctrl.h"
 #include "kernel_splatr.h"
+
+
+#define sbi(a, b) (a) |= (1 << (b))
+#define cbi(a, b) (a) &= ~(1 << (b))
+
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 
 
 
-SOURCES =  main.c kernel_splatr.c ST7735.c   
+SOURCES =  main.c head_theta_ctrl.c kernel_splatr.c ST7735.c   
 
 
 #avr-gcc main.c kernel_splatr.c
@@ -16,7 +16,7 @@ SOURCES =  main.c kernel_splatr.c ST7735.c
 
 
 ###################################
-PROJECT=blink
+PROJECT=lcdfirmware
 CC=avr-gcc
 OBJCOPY=avr-objcopy
 MMCU=atmega128
