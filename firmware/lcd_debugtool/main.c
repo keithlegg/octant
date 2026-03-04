@@ -51,8 +51,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+// Define software reference clock for delay duration
+#define F_CPU 16000000 
+#define __DELAY_BACKWARD_COMPATIBLE__
 #include <util/delay.h>
-
 
 #include "ST7735.h"
 
@@ -138,20 +140,19 @@ void setup_isr(void)
 }
  
 
+
+
 /*******************************/
 uint8_t mybyte = 0x00;
 
 int main (void)
 {
 
-    DDRA = 0x00; 
- 
+    DDRA = 0xff; 
     DDRC = 0x00; 
     DDRE = 0x00;
- 
     DDRG = 0xff; //for SPI/TFT
     DDRB = 0xff; //for SPI
-    
     DDRF = 0x00; //DB25 byte in 
   
 
@@ -161,13 +162,19 @@ int main (void)
     ST7735_InitR(INITR_BLACKTAB);  
     ST7735_FillScreen(0x00);
 
+
+    
     setup_isr(); //ISR is PortD pin0
 
     while(1)
     {
-        debug_parport(mybyte);
-        _delay_ms(100);  
+        //debug_parport(mybyte);
+        //_delay_ms(100);  
+        run_steppers();
+
     }
+    
+    
 
 
 }//main
