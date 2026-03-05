@@ -206,6 +206,21 @@ def np_testmult():
 
 
 ##------------------------------------##
+def test_servos(): 
+    vflo = vectorflow()
+ 
+    
+    vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
+    
+    #this is a hack, but it works for now 
+    vflo.insert_gr_sort (vflo.points )
+
+    #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
+    vflo.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(GLOBAL_PROJ, "tomservo") , do3d=True, do_retracts=True)
+
+
+
+##------------------------------------##
 
 
 
