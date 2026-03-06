@@ -1,7 +1,7 @@
 
 
 
-SOURCES =  main.c head_theta_ctrl.c kernel_splatr.c ST7735.c   
+SOURCES = common.h main.c toolchanger.c head_theta_ctrl.c kernel_splatr.c ST7735.c    
 
 
 #avr-gcc main.c kernel_splatr.c

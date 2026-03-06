@@ -1,8 +1,10 @@
 
 #include <avr/io.h>
 
+
 #include "common.h"
-#include "head_theta_ctrl.h"
+
+#include "toolchanger.h"
 
 /*******************************/
 
@@ -33,21 +35,10 @@
 
 */   
 
-
 volatile extern uint8_t MOTOR_ENABLE;
 
 
-
-
-
-
-
-
-
-
-
-
- 
+/*******************************/
 /*******************************/
 //DEBUG move these to common.c when I figure out the damn linker issue 
 //BETTER YET GET RID OF THEM AND FIGURE OUT THE DAMN BUILT IN DELAY FUNCTIONS 
@@ -70,65 +61,37 @@ static void longdelay(uint16_t num)
 }
 
 
+ 
 /*******************************/
 /*******************************/
+ 
 
-void nopy(void)
-{
-	for(uint8_t c=0;c<1;c++)
-    {nop();
-    }
+void set_atc_ports()
+{ 
+    ATC_CTRL_PORT_DDR = 0xff;
+    ATC_CTRL_PORT=0x00;
 }
 
-/*******************************/
-//not exactcly PWM but it works 
-void gen_pulses( volatile uint8_t *port, uint8_t pin, 
-                 uint16_t num, uint16_t del)
-{
 
-    for(uint16_t c=0;c<num;c++)
+/*******************************/
+//inverted! OFF is ON in this world 
+void run_atc_test(void)
+{
+ 
+    uint8_t x=0;
+
+ 
+
+    for(x=0;x<4;x++)
     {
-        sbi(*port, pin );
-        //if(usedelay) delay(del);
-        nopy();
-
-        cbi(*port, pin );
-        //if(usedelay) delay(del); 
-        nopy();
-    } 
+        sbi(ATC_CTRL_PORT, x ); 
+        longdelay(10);
+        
+        cbi(ATC_CTRL_PORT, x ); 
  
-}
 
-
-
-
-/*******************************/
-
-//TA8435H datasheet says clock should be bewteen 10-100Khz   
-//we want these pulses MUCH slower
- 
-void run_head_theta(void)
-{
-    uint16_t freq_adj = 1;
-
-    //one pin needs to be high while the other is pulsing
-    sbi(HEAD_1_CTRL_PORT, 1 );
-    gen_pulses(&HEAD_1_CTRL_PORT, 0,
-               1000, freq_adj);            
+    }
     
-
-    //let things settle, dude        
-    longdelay(10);
-    
-    //------------------------------//
-    //NOW RUN THE OTHER WAY   
-
-    //one pin needs to be high while the other is pulsing
-    sbi(HEAD_1_CTRL_PORT, 0 ); 
-    gen_pulses(&HEAD_1_CTRL_PORT, 1,
-               1000, freq_adj);
-    //let things settle, dude
-    longdelay(10);
 
 } 
  

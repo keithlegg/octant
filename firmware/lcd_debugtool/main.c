@@ -58,14 +58,20 @@
 
 #include "ST7735.h"
 
-#include "head_theta_ctrl.h"
 #include "kernel_splatr.h"
 
 
-#define sbi(a, b) (a) |= (1 << (b))
-#define cbi(a, b) (a) &= ~(1 << (b))
+#include "common.h"
+
+#include "head_theta_ctrl.h"
+#include "toolchanger.h"
 
 
+
+ 
+
+
+volatile extern uint8_t MOTOR_ENABLE = 1;
 
 
 
@@ -166,11 +172,21 @@ int main (void)
     
     setup_isr(); //ISR is PortD pin0
 
+
+    set_atc_ports();
+
+
+
     while(1)
     {
         //debug_parport(mybyte);
         //_delay_ms(100);  
-        run_steppers();
+        
+        //run_head_theta();
+
+        run_atc_test();
+        
+     
 
     }
     

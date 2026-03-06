@@ -371,6 +371,32 @@ void parse_cmd_text(std::string *buffer)
     */
 
     //------------------
+    //test pulsegen for debugging 
+    if(a1=="tp")
+    {
+        if(a2!="")
+        {  
+            v11 = std::stoi(a2);
+            
+            Vector3 v1 = Vector3(0,0,0);
+            Vector3 v2 = Vector3(1,0,0);            
+
+            pt_motionplot->calc_3d_pulses(v1,v2,50,50,50);
+
+            uint ps = pt_motionplot->pulsetrain.size();
+            
+            for(uint f=0;f<ps;f++)
+            {
+                std::cout << pt_motionplot->pulsetrain.at(f) << "\n";
+            } 
+          
+        }
+
+    }
+
+
+
+    //------------------
     //void send_byte(cncglobals* cg, uint portid, unsigned char byte)
 
     //send byte test 

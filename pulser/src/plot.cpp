@@ -1243,15 +1243,16 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
 
+    //experimental feature to damping the motion by ramping up/down pulses
+    uint filter_pre_gradient = 1;
+    uint filter_post_gradient = 1;
+
     //DEBUG ADD THIS BACK LATER -no point in caching pulses if empty 
     //if(num_pul_x>0 && num_pul_y>0 && num_pul_z>0)
     if(1)
     {
         // calc the pulses using a ratio of length to divs. 
         gen_pulses(&calcpt_x, most, num_pul_x);  
-        
-        //the "swap axis" code below breaks things
-        //it works if I do this
         gen_pulses(&calcpt_y, most, num_pul_y);  
         gen_pulses(&calcpt_z, most, num_pul_z);  
 
@@ -1261,29 +1262,23 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
         /*
         //Octant uses Y up (Maya 3d standard), but the CAD world uses Z up 
         if(FAKE_Z_UP_AXIS)
-        {
-            if (debug)
-            { 
-                std::cout << " # WARNING - SWAPPING Z/Y AXES!\n";
-            }
 
-            gen_pulses(&calcpt_z, most, num_pul_y);  
-            gen_pulses(&calcpt_y, most, num_pul_z); 
-
-        }else
-        {
-            gen_pulses(&calcpt_y, most, num_pul_y);  
-            gen_pulses(&calcpt_z, most, num_pul_z);         
-        }
         */
-       
 
-        //------------
-        for(uint a=0;a<most;a++)
-        {
-            pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
-            pulsetrain.push_back(Vector3(0,0,0));
-        } 
+        if(filter_pre_gradient)
+        { 
+            for(uint a=0;a<most;a++)
+            {
+                pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+                pulsetrain.push_back(Vector3(0,0,0));
+            }        
+        }else{
+            for(uint a=0;a<most;a++)
+            {
+                pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+                pulsetrain.push_back(Vector3(0,0,0));
+            } 
+        }
     }
     
 
