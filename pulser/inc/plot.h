@@ -243,8 +243,10 @@ class cnc_plot
                             Vector3 to_pt,
                             uint numdivx,
                             uint numdivy,
-                            uint numdivz);
-        
+                            uint numdivz,
+                            uint fpre,
+                            uint fpost);
+                                    
         //--------------------------// 
         //time attributes 
 

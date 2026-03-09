@@ -220,7 +220,7 @@ void run_cncplot(double f_x,
     //cnc_parport* pport = new cnc_parport;
     //plot->clear_toolpaths();
     
-    plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs);
+    plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
     
     //----
 
@@ -1147,8 +1147,14 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
                               Vector3 to_pt,
                               uint numdivx,
                               uint numdivy,
-                              uint numdivz)
+                              uint numdivz,
+                              uint fpre,
+                              uint fpost)
 {
+
+    //experimental feature to damping the motion by ramping up/down pulses
+    //uint filter_pre_gradient  = 1;
+    //uint filter_post_gradient = 1;
 
     pulsetrain.clear();
 
@@ -1243,9 +1249,7 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
     std::vector<int> calcpt_y;
     std::vector<int> calcpt_z;
 
-    //experimental feature to damping the motion by ramping up/down pulses
-    uint filter_pre_gradient = 1;
-    uint filter_post_gradient = 1;
+
 
     //DEBUG ADD THIS BACK LATER -no point in caching pulses if empty 
     //if(num_pul_x>0 && num_pul_y>0 && num_pul_z>0)
@@ -1264,14 +1268,24 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
         if(FAKE_Z_UP_AXIS)
 
         */
+        
 
-        if(filter_pre_gradient)
+        uint coef = 1;
+
+        if(fpre)
         { 
             for(uint a=0;a<most;a++)
             {
-                pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
-                pulsetrain.push_back(Vector3(0,0,0));
-            }        
+                //front end taper
+                coef=a;
+                if (fmod(most,coef)<=1)
+                {
+                    pulsetrain.push_back(Vector3(0,0,0));
+                }else{
+                    pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+                }  
+            }   
+
         }else{
             for(uint a=0;a<most;a++)
             {

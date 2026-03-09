@@ -182,10 +182,15 @@ int main (void)
         //debug_parport(mybyte);
         //_delay_ms(100);  
         
-        //run_head_theta();
+        for(uint8_t x=0;x<4;x++)
+        {
+            run_head_theta();
+        }
+        for(uint8_t x=0;x<4;x++)
+        {
+            run_atc_test();            
+        }
 
-        run_atc_test();
-        
      
 
     }

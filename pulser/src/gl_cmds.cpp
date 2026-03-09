@@ -52,7 +52,9 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+
 #include <cmath>
+
 #include <unistd.h>  
 
 #include "parport.h"
@@ -371,6 +373,7 @@ void parse_cmd_text(std::string *buffer)
     */
 
     //------------------
+    /*
     //test pulsegen for debugging 
     if(a1=="tp")
     {
@@ -381,20 +384,56 @@ void parse_cmd_text(std::string *buffer)
             Vector3 v1 = Vector3(0,0,0);
             Vector3 v2 = Vector3(1,0,0);            
 
-            pt_motionplot->calc_3d_pulses(v1,v2,50,50,50);
+            pt_motionplot->calc_3d_pulses(v1,v2,v11,v11,v11);
 
             uint ps = pt_motionplot->pulsetrain.size();
-            
-            for(uint f=0;f<ps;f++)
+            uint f=0;
+            uint coef = 1;
+
+            //skip direction flag (first element)
+            for(f=0;f<ps;f++)
             {
-                std::cout << pt_motionplot->pulsetrain.at(f) << "\n";
+
+                //think of 3 squarewaves bitmasked on each other ... this is close 
+                //higher div == higher freq 
+                //std::cout << fmod(f,coef) << " - "<< fmod(f,coef/2) << " - "<< fmod(f,coef/4)<< "\n";
+                
+
+             
+                //front end taper
+                coef=f;
+                if (fmod(ps,coef)<=1)
+                {
+                    std::cout << 0 << "\n";
+                }else{
+                    std::cout << 1 << "\n";
+                }  
+
+
+                 
+                //tail end taper
+                coef=ps-(f+1);
+                if (fmod(f,coef)==0)
+                {
+                    std::cout << 0 << "\n";
+                }else{
+                    std::cout << 1 << "\n";
+                } 
+
+                //std::cout << coef << " "<< fmod(ps,coef)<< "\n";
+
+                //std::cout << pt_motionplot->pulsetrain.at(f) << "\n";
             } 
+             
+
+            std::cout << "total size of pulsetrain " << ps << "\n";
+
           
         }
 
     }
 
-
+   */
 
     //------------------
     //void send_byte(cncglobals* cg, uint portid, unsigned char byte)
