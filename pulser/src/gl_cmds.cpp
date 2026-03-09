@@ -372,8 +372,11 @@ void parse_cmd_text(std::string *buffer)
     }
     */
 
+
+
+
     //------------------
-    /*
+     
     //test pulsegen for debugging 
     if(a1=="tp")
     {
@@ -384,7 +387,8 @@ void parse_cmd_text(std::string *buffer)
             Vector3 v1 = Vector3(0,0,0);
             Vector3 v2 = Vector3(1,0,0);            
 
-            pt_motionplot->calc_3d_pulses(v1,v2,v11,v11,v11);
+            //pt_motionplot->calc_3d_pulses(v1,v2,v11,v11,v11);
+            pt_motionplot->calc_3d_pulses(v1,v2,v11,v11,v11, 0, 1);
 
             uint ps = pt_motionplot->pulsetrain.size();
             uint f=0;
@@ -392,14 +396,7 @@ void parse_cmd_text(std::string *buffer)
 
             //skip direction flag (first element)
             for(f=0;f<ps;f++)
-            {
-
-                //think of 3 squarewaves bitmasked on each other ... this is close 
-                //higher div == higher freq 
-                //std::cout << fmod(f,coef) << " - "<< fmod(f,coef/2) << " - "<< fmod(f,coef/4)<< "\n";
-                
-
-             
+            {   /*
                 //front end taper
                 coef=f;
                 if (fmod(ps,coef)<=1)
@@ -408,9 +405,6 @@ void parse_cmd_text(std::string *buffer)
                 }else{
                     std::cout << 1 << "\n";
                 }  
-
-
-                 
                 //tail end taper
                 coef=ps-(f+1);
                 if (fmod(f,coef)==0)
@@ -419,10 +413,10 @@ void parse_cmd_text(std::string *buffer)
                 }else{
                     std::cout << 1 << "\n";
                 } 
-
                 //std::cout << coef << " "<< fmod(ps,coef)<< "\n";
-
                 //std::cout << pt_motionplot->pulsetrain.at(f) << "\n";
+                */
+                std::cout << pt_motionplot->pulsetrain.at(f) << "\n";  
             } 
              
 
@@ -433,8 +427,7 @@ void parse_cmd_text(std::string *buffer)
 
     }
 
-   */
-
+   
     //------------------
     //void send_byte(cncglobals* cg, uint portid, unsigned char byte)
 
@@ -992,7 +985,7 @@ void parse_cmd_text(std::string *buffer)
         }
 
         //non threaded - older 
-        run_cncplot( v11, v12, v13, v21, v22, v23, numx, numy, numz);
+        run_cncplot( 0, 0, v11, v12, v13, v21, v22, v23, numx, numy, numz);
 
         //threaded - it seems to work
         //pulse_thread( v11, v12, v13, v21, v22, v23, numx, numy, numz);

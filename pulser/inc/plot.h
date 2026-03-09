@@ -43,7 +43,9 @@
 
 //----------------------------//
 
-void pulse_thread(double f_x,
+void pulse_thread(uint pnum,
+                  uint tnum,
+                  double f_x,
                   double f_y,
                   double f_z,
                   double s_x,
@@ -54,7 +56,9 @@ void pulse_thread(double f_x,
                  uint z_divs);  
 
 //----------------------------//
-void run_cncplot(double f_x,
+void run_cncplot(uint pnum,
+                 uint tnum, 
+                 double f_x,
                  double f_y,
                  double f_z,
                  double s_x,
@@ -237,7 +241,7 @@ class cnc_plot
         //--------------------------//  
         // simulation backend 
 
-        void process_vec(uint vec_idx);
+        void process_vec(uint vec_idx, uint total_vecs);
 
         void calc_3d_pulses(Vector3 fr_pt, 
                             Vector3 to_pt,

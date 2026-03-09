@@ -198,7 +198,9 @@ void cnc_plot::import_path_from_obj(std::string filepath)
 cnc_plot* plot     = new cnc_plot;
 //cnc_parport* pport = new cnc_parport;
 
-void run_cncplot(double f_x,
+void run_cncplot(uint pnum,
+                 uint tnum,
+                 double f_x,
                  double f_y,
                  double f_z,
                  double s_x,
@@ -214,16 +216,36 @@ void run_cncplot(double f_x,
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
 
-    //----
+    //-----------------//
     //I was creating new objects each time. Debug ?  
     //cnc_plot* plot     = new cnc_plot;
     //cnc_parport* pport = new cnc_parport;
     //plot->clear_toolpaths();
-    
-    plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
-    
-    //----
 
+
+    //-----------------//   
+    //std::cout << "pre post " << pnum << " " << tnum <<"\n"; 
+
+    //pre fade
+    if(pnum<=1 && tnum>1)
+    { 
+        plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
+        //std::cout << "pre fade\n";
+    }
+
+    //post fade
+    else if(pnum==tnum)
+    { 
+        plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
+        //std::cout << "post fade\n";        
+    }
+
+    else
+    {
+        plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
+        //std::cout << "no fade\n";        
+    }
+    //-----------------//
 
     if(DEBUG == true)
     {
@@ -256,13 +278,18 @@ void run_cncplot(double f_x,
 /***************************************/
 /*
     ARGS:
+        pnum (process number) - which vec in the chain 
+        tnum (total number)   - how big is the chain 
+
         double f_x, f_y, f_z  - start 3d point 
         double s_x, s_y, s_z  - end   3d point 
         (x,y,z)_divs          - X,Y,Z divisions    
 */
 
 // experiment in multithreading - so far so good 
-void pulse_thread(double f_x,
+void pulse_thread(uint pnum,
+                  uint tnum,
+                  double f_x,
                   double f_y,
                   double f_z,
                   double s_x,
@@ -274,7 +301,7 @@ void pulse_thread(double f_x,
 {
     
 
-    std::thread pgen_thread(run_cncplot, f_x, f_y, f_z, s_x, s_y, s_z, x_divs, y_divs, z_divs);
+    std::thread pgen_thread(run_cncplot, pnum, tnum, f_x, f_y, f_z, s_x, s_y, s_z, x_divs, y_divs, z_divs);
 
     //pgen_thread.detach();  
     pgen_thread.join(); 
@@ -765,7 +792,7 @@ void cnc_plot::run_sim(void)
 /******************************************/
 //called from update_sim()
 
-void cnc_plot::process_vec(uint window_idx)
+void cnc_plot::process_vec(uint window_idx, uint total_vecs)
 {
     //warning - printing to screen takes up valuable CPU clicks 
     bool debug       = false;
@@ -818,7 +845,7 @@ void cnc_plot::process_vec(uint window_idx)
                 std::cout << " num calc      " << numx << " " << numy << " " << numz << "\n";
             }
 
-            pulse_thread(s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
+            pulse_thread(window_idx, total_vecs, s_p.x, s_p.y, s_p.z, e_p.x, e_p.y, e_p.z, numx, numy, numz ); 
         }else{
             std::cout << "vector length too low, skipping \n";
         }
@@ -879,7 +906,7 @@ void cnc_plot::update_sim(void)
             //DEBUG MUTEX LOCK  
             mtx_p.lock();
 
-            process_vec(vec_idx);
+            process_vec(vec_idx, toolpath_vecs.size()-2);
 
             //iterate the stack of vectors to process
             if (vec_idx<toolpath_vecs.size()-2)
@@ -1141,6 +1168,12 @@ void cnc_plot::init_paths( std::vector<Vector3>* pt_anyvecs)
          uint numdivx 
          uint numdivy
          uint numdivz
+
+        (ramping up/down , only pre or post, not both.)
+
+        fpre  - ramp pulses from front of pt 
+        fpost - ramp the pulses on end of pt          
+ 
 */
 
 void cnc_plot::calc_3d_pulses(Vector3 fr_pt, 
@@ -1285,7 +1318,20 @@ void cnc_plot::calc_3d_pulses(Vector3 fr_pt,
                     pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
                 }  
             }   
-
+        }
+        else if(fpost)
+        {
+            for(uint a=0;a<most;a++)
+            {
+                //front end taper
+                coef=most-(a+1);
+                if (fmod(a,coef)<=1)
+                {
+                    pulsetrain.push_back(Vector3(0,0,0));
+                }else{
+                    pulsetrain.push_back(Vector3(calcpt_x.at(a), calcpt_y.at(a), calcpt_z.at(a)));
+                }  
+            }   
         }else{
             for(uint a=0;a<most;a++)
             {

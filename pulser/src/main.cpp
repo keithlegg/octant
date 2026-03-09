@@ -57,7 +57,7 @@ extern cncglobals cg;
         int a7    = atoi(argv[8]);
         
         //debug - just use same number of divs for X,Y,Z          
-        run_cncplot( a1, a2, a3, a4, a5, a6, a7, a7, a7 );
+        run_cncplot( 0, 0, a1, a2, a3, a4, a5, a6, a7, a7, a7 );
 
     }
      
