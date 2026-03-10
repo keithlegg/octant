@@ -212,6 +212,7 @@ void run_cncplot(uint pnum,
 {
 
     bool DEBUG = false; 
+    bool DEBUG2 = true; 
 
     Vector3 s_p = Vector3(f_x , f_y ,f_z );
     Vector3 e_p = Vector3(s_x , s_y ,s_z );
@@ -232,25 +233,25 @@ void run_cncplot(uint pnum,
         if(pnum<=1 && tnum>1)
         { 
             plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
-            std::cout << "pre fade\n";
+            if(DEBUG2) std::cout << "pre fade\n";
         }
 
         //post fade
         else if(pnum==tnum)
         { 
             plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
-            std::cout << "post fade\n";        
+            if(DEBUG2) std::cout << "post fade\n";        
         }
 
         else
         {
             plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
-            std::cout << "no fade\n";        
+            if(DEBUG2) std::cout << "no fade\n";        
         }
     }else
     {
         plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
-        std::cout << "no fade\n";     
+        if(DEBUG2) std::cout << "no fade\n";     
     }
 
     //-----------------//
