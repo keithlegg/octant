@@ -225,26 +225,34 @@ void run_cncplot(uint pnum,
 
     //-----------------//   
     //std::cout << "pre post " << pnum << " " << tnum <<"\n"; 
+    
+    if(cg.DAMPEN_PWM)
+    {
+        //pre fade
+        if(pnum<=1 && tnum>1)
+        { 
+            plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
+            std::cout << "pre fade\n";
+        }
 
-    //pre fade
-    if(pnum<=1 && tnum>1)
-    { 
-        plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
-        //std::cout << "pre fade\n";
-    }
+        //post fade
+        else if(pnum==tnum)
+        { 
+            plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
+            std::cout << "post fade\n";        
+        }
 
-    //post fade
-    else if(pnum==tnum)
-    { 
-        plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 1, 0);
-        //std::cout << "post fade\n";        
-    }
-
-    else
+        else
+        {
+            plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
+            std::cout << "no fade\n";        
+        }
+    }else
     {
         plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
-        //std::cout << "no fade\n";        
+        std::cout << "no fade\n";     
     }
+
     //-----------------//
 
     if(DEBUG == true)

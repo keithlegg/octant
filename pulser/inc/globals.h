@@ -16,7 +16,6 @@
 */
 #define DO_BUILD_GUI true
 
-
 //**********************************//
 
 //#define DISABLE_PARPOR
@@ -52,6 +51,7 @@ class cncglobals
             active_filepath        = "";
             linear_unit            = "mm"; //"mm" or "inch" 
 
+            DAMPEN_PWM             = true;
             GLOBAL_DEBUG           = true;
             ENABLE_LIMIT_SWITCHES  = false;
             ENABLE_MOTOR_DRIVE     = 1;
@@ -82,6 +82,8 @@ class cncglobals
         bool GLOBAL_DEBUG;
         //bool DEBUG_PARAMS;
         bool ENABLE_LIMIT_SWITCHES;
+        bool DAMPEN_PWM;
+        
 
         //----------
         //std::vector<std::string> obj_vecpaths;

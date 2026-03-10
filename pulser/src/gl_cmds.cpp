@@ -942,6 +942,21 @@ void parse_cmd_text(std::string *buffer)
         }
 
     }
+    
+    /////////////////////////////////////////
+    //toggle PWM dampening  
+    if (a1=="tdamp")
+    {
+        if(cg.DAMPEN_PWM==false)
+        {
+            std::cout << "PWM dampening ON\n";
+            cg.DAMPEN_PWM=true;
+        }else{
+            std::cout << "PWM dampening OFF\n";            
+            cg.DAMPEN_PWM=false;
+        }
+    }
+
 
     /////////////////////////////////////////
     //freerun  
