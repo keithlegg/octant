@@ -229,6 +229,8 @@ void run_cncplot(uint pnum,
     
     if(cg.DAMPEN_PWM)
     {
+        /* THIS CRAP DOESNT WORK - DISABLING 
+
         //pre fade
         if(pnum<=1 && tnum>1)
         { 
@@ -248,6 +250,8 @@ void run_cncplot(uint pnum,
             plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);
             if(DEBUG2) std::cout << "no fade\n";        
         }
+        */
+        
     }else
     {
         plot->calc_3d_pulses(s_p, e_p, x_divs, y_divs, z_divs, 0, 0);

@@ -51,7 +51,7 @@ class cncglobals
             active_filepath        = "";
             linear_unit            = "mm"; //"mm" or "inch" 
 
-            DAMPEN_PWM             = true;
+            DAMPEN_PWM             = false;
             GLOBAL_DEBUG           = true;
             ENABLE_LIMIT_SWITCHES  = false;
             ENABLE_MOTOR_DRIVE     = 1;
