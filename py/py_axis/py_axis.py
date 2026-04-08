@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+
+"""
+Inspired by this:
+
+https://github.com/kentavv/linuxcnc_vxi11
+"""
+
 import sys
 import time
 import datetime
@@ -7,13 +14,12 @@ import datetime
 import linuxcnc
 #import vxi11
 
-
+"""
 if len(sys.argv) != 1 + 3*3:
-  print 'usage: {0:s} <xs> <xe> <xd>  <ys> <ye> <yd>  <zs> <ze> <zd>'.format(sys.argv[0])
+  print('usage: {0:s} <xs> <xe> <xd>  <ys> <ye> <yd>  <zs> <ze> <zd>'.format(sys.argv[0]))
   sys.exit(1)
-
 args = map(float, sys.argv[1:])
-
+"""
 
 
 cnc_s = linuxcnc.stat()
@@ -31,23 +37,26 @@ def ok_for_mdi27():
 
 def verify_ok_for_mdi():
   if not ok_for_mdi27():
-    print 'Not ready for MDI commands'
+    print('Not ready for MDI commands')
     sys.exit(1)
 
+
 verify_ok_for_mdi()
+
 
 cnc_c.mode(linuxcnc.MODE_MDI)
 cnc_c.wait_complete()
 
+
 def move_to(x, y, z):
   cmd = 'G1 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
-  print 'Command,' + cmd
+  print('Command, %s'%cmd)
   verify_ok_for_mdi()
 
   cnc_c.mdi(cmd)
   rv = cnc_c.wait_complete(60)
   if rv != 1:
-    print 'MDI command timed out'
+    print('MDI command timed out')
     sys.exit(1)
 
 
@@ -70,7 +79,7 @@ def sample():
   return rv
 """
 
-
+"""
 # generate grid points in a zig-zag rectalinear pattern, helper function
 # s: vector of start positions for each axis
 # d: vector of step size for each axis
@@ -125,3 +134,6 @@ for pp in grid_pts:
   dt = str(datetime.datetime.now())
   print 'Result,' + ','.join(map(str, [dt, x, y, z] + rv))
   sys.stdout.flush()
+"""
+
+
