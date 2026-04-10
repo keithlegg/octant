@@ -502,7 +502,7 @@ def its_alive():
     #vflo.gl_move_center()
     #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
 
-    vflo.export_poly_rawpts(0,'foo')
+    vflo.export_poly_rawpts(0,'foo.path')
 
     #vflo.cvt_grpoly_obj3d()
     #vflo.rotate_pts(rot=[90,0,0])
@@ -515,7 +515,7 @@ def its_alive():
 
  
 
-its_alive()
+#its_alive()
 
 
 

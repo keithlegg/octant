@@ -11,6 +11,7 @@ import sys
 import time
 import datetime
 
+"""
 import linuxcnc
 
 
@@ -39,8 +40,6 @@ def verify_ok_for_mdi():
 
 
 verify_ok_for_mdi()
-
-
 cnc_c.mode(linuxcnc.MODE_MDI) 
 cnc_c.wait_complete()
 
@@ -55,11 +54,36 @@ def move_to(x, y, z):
   if rv != 1:
     print('MDI command timed out')
     sys.exit(1)
+"""
+
+def clean_num(instr):
+    out = instr 
+    out = out.replace('(','')
+    out = out.replace(')','')
+    out = out.replace(' ','')
+    out = out.replace(',','')
+
+    return float(out)
+
+
+def run_prog(filename):
+    f = open( filename,"r", encoding='utf-8')
+    contents = f.readlines()
+    for x in contents:
+        tok = x.split(" ")
+        xc = clean_num(tok[0]) 
+        yc = clean_num(tok[1])
+        zc = clean_num(tok[2])
+
+        #move_to(xc,yc,zc)
+        print(xc,yc,zc)
+
+ 
 
 
 
-move_to(-1,1,1)
-move_to(1,0,0)
-move_to(0,1,0)
+
+run_prog("foo.path")
+ 
 
 
