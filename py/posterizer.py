@@ -499,10 +499,17 @@ def its_alive():
     vflo = vectorflow()
     #vflo.load_geojson('images/out/4.json')
     vflo.load_geojson('new.json')
-    #vflo.gl_move_center()
+    
+    vflo.gl_move_center()
+    vflo.gl_scale(.1)    
+
     #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
 
-    vflo.export_poly_rawpts(0,'foo.path')
+    #vflo.export_poly_rawpts(0,'foo.path')
+
+    vflo.export_all_rawpts('foo.path')
+
+
 
     #vflo.cvt_grpoly_obj3d()
     #vflo.rotate_pts(rot=[90,0,0])
@@ -511,11 +518,9 @@ def its_alive():
 
     #vflo.export_extents_ngc(GLOBAL_PROJ,'new')
 
-
-
  
 
-#its_alive()
+its_alive()
 
 
 

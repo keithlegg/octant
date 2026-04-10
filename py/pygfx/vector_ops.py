@@ -418,6 +418,17 @@ class vectorflow(object3d):
             xx.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(folder,name), do_laser=True, do3d=False, do_retracts=False) 
 
     ##-------------------------------##
+    def export_all_rawpts(self, filename):
+        print('## EXPORTING file %s'%filename)
+        
+        f = open(filename,"w");
+
+        for ply in self.gr_sort:
+            for l in ply[4]:
+                f.write("%s\n"%str(l) )
+
+
+
     def export_poly_rawpts(self, fid, filename):
         """export a single polygon for playing with  
         """
