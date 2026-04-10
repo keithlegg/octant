@@ -11,7 +11,7 @@ import sys
 import time
 import datetime
 
-"""
+ 
 import linuxcnc
 
 
@@ -25,10 +25,10 @@ def ok_for_mdi27():
   cnc_s.poll()
   homed = True
 
-  #THIS NEEDS WORK - LOOK UP PROPER KEYS 
-  for axis in cnc_s.axis:
-      #homed = homed and ((not axis['enabled']) or (axis['homed'] != 0))
-      print(axis)
+  # #THIS NEEDS WORK - LOOK UP PROPER KEYS 
+  # for axis in cnc_s.axis:
+  #     #homed = homed and ((not axis['enabled']) or (axis['homed'] != 0))
+  #     print(axis)
 
   return not cnc_s.estop and cnc_s.enabled and homed and (cnc_s.interp_state == linuxcnc.INTERP_IDLE)
 
@@ -54,7 +54,8 @@ def move_to(x, y, z):
   if rv != 1:
     print('MDI command timed out')
     sys.exit(1)
-"""
+
+
 
 def clean_num(instr):
     out = instr 
@@ -75,8 +76,8 @@ def run_prog(filename):
         yc = clean_num(tok[1])
         zc = clean_num(tok[2])
 
-        #move_to(xc,yc,zc)
-        print(xc,yc,zc)
+        move_to(xc,yc,zc)
+        #print(xc,yc,zc)
 
  
 
