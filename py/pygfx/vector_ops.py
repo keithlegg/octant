@@ -421,14 +421,13 @@ class vectorflow(object3d):
     def export_poly_rawpts(self, fid, filename):
         """export a single polygon for playing with  
         """
-        
-        outfile =[] 
-        outfile.append(self.gr_sort[fid][4])           
-
         print('## EXPORTING file %s'%filename)
-        with open(filename, 'w') as f:
-            for l in outfile:
-                f.write("%s\n" % l)
+        
+        f = open(filename,"w");
+        for l in self.gr_sort[fid][4]:
+            if l:
+                f.write("%s\n"%str(l) )
+ 
 
     ##-------------------------------##
     def polysize_info(self):
