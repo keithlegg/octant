@@ -427,8 +427,7 @@ class vectorflow(object3d):
             for l in ply[4]:
                 f.write("%s\n"%str(l) )
 
-
-
+    ##-------------------------------##
     def export_poly_rawpts(self, fid, filename):
         """export a single polygon for playing with  
         """
