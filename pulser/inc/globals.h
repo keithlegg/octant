@@ -13,6 +13,22 @@
    if you do this, remove:
        all files prefixed with "gl_XXX"
        parse_cmds.cpp
+
+   there is a python script to do this for you. 
+   run:
+
+    Usage:
+    
+       #FOR NO GUI - set the define below 
+       --> #define DO_BUILD_GUI false 
+       --> ./setupbuild.py nogui
+
+
+       #FOR GUI - set the define below 
+       --> #define DO_BUILD_GUI true   
+       --> ./setupbuild.py gui
+
+
 */
 #define DO_BUILD_GUI true
 

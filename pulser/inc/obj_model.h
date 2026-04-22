@@ -29,11 +29,11 @@
 
 
 /*
-   The temrinology is confusing 
+   The terminology is confusing 
 
    obj_model.points should really be called vertex/verteces 
 
-   I added a point location later , (pt_locs) - this is an indexed point (or 1 dimensional indexed vert)
+   I added a point location later, (pt_locs) - this is an indexed point (or 1 dimensional indexed vert)
 
 */
 

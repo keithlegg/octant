@@ -70,6 +70,10 @@
     #include "gl_setup.h"
 #endif 
 
+#if DO_BUILD_GUI == false
+    #include "obj_model.h"
+#endif 
+
 
 
 
