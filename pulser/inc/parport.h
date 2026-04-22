@@ -64,6 +64,10 @@ class cnc_parport
                    uint portid, 
                    unsigned char byte);
 
+    void bincmd(cncglobals* cg, 
+                uint portid, 
+                std::string cmdname);
+
     void aux_on(cncglobals*, uint portid, uint pin);
     void aux_off(cncglobals*, uint portid, uint pin);
 

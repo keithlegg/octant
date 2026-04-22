@@ -375,7 +375,51 @@ void parse_cmd_text(std::string *buffer)
 
 
 
+    //-------------------------------------------
+    //-------------------------------------------
+
+    //send binary command to control board 
+    if(a1=="bin")
+    {
+        // void bincmd(cncglobals* cg, 
+        //     uint portid, 
+        //     unsigned char* cmdname);
+      
+        parport.bincmd(&cg, 1, a2);    
+        
+    }
+
     //------------------
+    //void send_byte(cncglobals* cg, uint portid, unsigned char byte)
+
+    //send byte test 
+    if(a1=="sb")
+    {
+
+        //https://stackoverflow.com/questions/505021/get-bytes-from-stdstring-in-c
+        //unsigned char buffer[mystring.length()];
+        //memcpy(buffer, mystring.data(), mystring.length());
+        //
+        //std::vector<char> bytes(myString.begin(), myString.end());
+        //bytes.push_back(a2);
+        //char *c = &bytes[0];         
+
+        unsigned char b[1];
+        memcpy(b, a2.data(), 1);
+
+        parport.send_byte(&cg, 1, *b);
+        //parport.send_byte(&cg, 1, 0xff);
+        //parport.send_byte(&cg, 1, 0x00);
+         
+
+        parport.send_byte(&cg, 2, *b);
+        //parport.send_byte(&cg, 2, 0xff);
+        //parport.send_byte(&cg, 2, 0x00);        
+
+    }
+
+    //-------------------------------------------
+    //-------------------------------------------
      
     //test pulsegen for debugging 
     if(a1=="tp")
@@ -427,24 +471,6 @@ void parse_cmd_text(std::string *buffer)
 
     }
 
-   
-    //------------------
-    //void send_byte(cncglobals* cg, uint portid, unsigned char byte)
-
-    //send byte test 
-    if(a1=="sb")
-    {
-        /*
-        parport.send_byte(&cg, 1, 0x00);
-        parport.send_byte(&cg, 1, 0xff);
-        parport.send_byte(&cg, 1, 0x00);
-        */
-
-        parport.send_byte(&cg, 2, 0x00);
-        parport.send_byte(&cg, 2, 0xff);
-        parport.send_byte(&cg, 2, 0x00);        
-
-    }
 
     //------------------
     if(a1=="prim")

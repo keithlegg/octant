@@ -268,6 +268,35 @@ void cnc_parport::send_byte(cncglobals* cg, uint portid, unsigned char byte)
 
 }
 
+
+/***************************************/
+
+void cnc_parport::bincmd(cncglobals* cg, 
+                         uint portid, 
+                         std::string cmdname)
+{
+
+    //-----------
+    if(cmdname=="test")
+    {
+        std::cout << "bincmd " << cmdname << "\n";   
+        send_byte(cg, 2, 0xff);
+    }
+    
+    //-----------
+    // if(cmdname=="test")
+    // {
+    //     std::cout << "bincmd " << cmdname << "\n";        
+    // }
+
+    //-----------
+
+    //-----------
+
+
+}
+
+
 /***************************************/
 //turn auxillary device on  (extruder, spindle motor, etc)
 
@@ -374,6 +403,8 @@ void cnc_parport::read_limits(cncglobals* cg, Vector3* pt_limit_switch_data)
 
 
 }
+
+
 
 
 
