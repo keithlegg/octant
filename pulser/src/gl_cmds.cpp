@@ -407,14 +407,21 @@ void parse_cmd_text(std::string *buffer)
         unsigned char b[1];
         memcpy(b, a2.data(), 1);
 
-        parport.send_byte(&cg, 1, *b);
-        //parport.send_byte(&cg, 1, 0xff);
-        //parport.send_byte(&cg, 1, 0x00);
-         
+        if(a3=="1")
+        {
+            parport.send_byte(&cg, 1, *b);
+            //parport.send_byte(&cg, 1, 0xff);
+            //parport.send_byte(&cg, 1, 0x00);
+        }
 
-        parport.send_byte(&cg, 2, *b);
-        //parport.send_byte(&cg, 2, 0xff);
-        //parport.send_byte(&cg, 2, 0x00);        
+        else if(a3=="2")
+        {
+            parport.send_byte(&cg, 2, *b);
+            //parport.send_byte(&cg, 2, 0xff);
+            //parport.send_byte(&cg, 2, 0x00);        
+        }else{
+            std::cout << "only works on ports 1 or 2 \n";
+        }
 
     }
 
