@@ -404,23 +404,35 @@ void parse_cmd_text(std::string *buffer)
         //bytes.push_back(a2);
         //char *c = &bytes[0];         
 
-        unsigned char b[1];
-        memcpy(b, a2.data(), 1);
+        //unsigned char b[1];
+        //memcpy(b, a2.data(), 1);
+        
+
+        std::vector<char> hex_array;
+        //int hex_len;
+
+        hex_array = hex_2_bytes(a2);
+
+        std::ios_base::fmtflags f( std::cout.flags() );  
+
+        //show what we got 
+        std::cout << "sending single byte " << std::hex << hex_array[0] << "\n";
+        std::cout.flags(f);
+
+
 
         if(a3=="1")
         {
-            parport.send_byte(&cg, 1, *b);
-            //parport.send_byte(&cg, 1, 0xff);
-            //parport.send_byte(&cg, 1, 0x00);
+            parport.send_byte(&cg, 1, hex_array[0]);
         }
 
         else if(a3=="2")
         {
-            parport.send_byte(&cg, 2, *b);
-            //parport.send_byte(&cg, 2, 0xff);
-            //parport.send_byte(&cg, 2, 0x00);        
-        }else{
-            std::cout << "only works on ports 1 or 2 \n";
+            parport.send_byte(&cg, 2, hex_array[0]);
+        }
+
+        else{
+            std::cout << "only works on parports 1 or 2 \n";
         }
 
     }

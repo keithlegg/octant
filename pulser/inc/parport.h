@@ -47,6 +47,9 @@ class cnc_bitmasks
 
 bool check_ports_available(uint portaddr);
 
+std::vector<char> hex_2_bytes(const std::string& hex);
+ 
+
 
 //handle the IO to the parports 
 class cnc_parport
