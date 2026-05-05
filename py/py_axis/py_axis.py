@@ -15,6 +15,10 @@ import datetime
 import linuxcnc
 
 
+
+showcmd = True
+
+
 cnc_s = linuxcnc.stat()
 cnc_c = linuxcnc.command()
 
@@ -46,7 +50,8 @@ cnc_c.wait_complete()
 
 def move_to(x, y, z):
   cmd = 'G1 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
-  print('Command, %s'%cmd)
+  if showcmd:
+      print('CMD: %s'%cmd)
   verify_ok_for_mdi()
 
   cnc_c.mdi(cmd)
@@ -62,8 +67,8 @@ def digi_out(pin, val):
       cmd = 'M64 P%s'%pin
   if val==1:
       cmd = 'M65 P%s'%pin
-
-  print('Command, %s'%cmd)
+  if showcmd:
+      print('CMD: %s'%cmd)
   verify_ok_for_mdi()
 
   cnc_c.mdi(cmd)
@@ -98,10 +103,17 @@ def run_prog(filename):
  
 
 
-digi_out(0, 1)
-digi_out(1, 1)
-digi_out(2, 1)
-digi_out(3, 1)
+for a in range(20):
+  digi_out(0, 0)
+  digi_out(1, 0)
+  digi_out(2, 0)
+  digi_out(3, 0)
+
+
+  digi_out(0, 1)
+  digi_out(1, 1)
+  digi_out(2, 1)
+  digi_out(3, 1)
 
 
 #run_prog("foo.path")
