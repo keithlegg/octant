@@ -56,6 +56,22 @@ def move_to(x, y, z):
     sys.exit(1)
 
 
+def digi_out(pin, val):
+  
+  if val==0:
+      cmd = 'M64 P%s'%pin
+  if val==1:
+      cmd = 'M65 P%s'%pin
+
+  print('Command, %s'%cmd)
+  verify_ok_for_mdi()
+
+  cnc_c.mdi(cmd)
+  rv = cnc_c.wait_complete(60)
+  if rv != 1:
+    print('MDI command timed out')
+    sys.exit(1)
+
 
 def clean_num(instr):
     out = instr 
@@ -82,9 +98,13 @@ def run_prog(filename):
  
 
 
+digi_out(0, 1)
+digi_out(1, 1)
+digi_out(2, 1)
+digi_out(3, 1)
 
 
-run_prog("foo.path")
+#run_prog("foo.path")
  
 
 
