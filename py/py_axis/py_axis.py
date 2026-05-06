@@ -14,13 +14,12 @@ import datetime
  
 import linuxcnc
 
-
-
 showcmd = True
 
 
-cnc_s = linuxcnc.stat()
-cnc_c = linuxcnc.command()
+##--##--##--##--##--##--##--## 
+##--##--##--##--##--##--##--## 
+
 
 
 # to calculate homed, we iterate over the axes, finding those that are present on this machine,
@@ -43,10 +42,19 @@ def verify_ok_for_mdi():
     sys.exit(1)
 
 
-verify_ok_for_mdi()
-cnc_c.mode(linuxcnc.MODE_MDI) 
-cnc_c.wait_complete()
 
+def clean_num(instr):
+    out = instr 
+    out = out.replace('(','')
+    out = out.replace(')','')
+    out = out.replace(' ','')
+    out = out.replace(',','')
+
+    return float(out)
+
+
+##--##--##--##--##--##--##--## 
+##--##--##--##--##--##--##--## 
 
 def move_to(x, y, z):
   cmd = 'G1 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
@@ -78,17 +86,16 @@ def digi_out(pin, val):
     sys.exit(1)
 
 
-def clean_num(instr):
-    out = instr 
-    out = out.replace('(','')
-    out = out.replace(')','')
-    out = out.replace(' ','')
-    out = out.replace(',','')
-
-    return float(out)
 
 
-def run_prog(filename):
+##--##--##--##--##--##--##--## 
+##--##--##--##--##--##--##--## 
+
+"""
+lets assume each polygon is a text file of coordinates
+a "program" is a folder of polyugons 
+"""
+def run_poly(filename):
     f = open( filename,"r", encoding='utf-8')
     contents = f.readlines()
     for x in contents:
@@ -96,27 +103,34 @@ def run_prog(filename):
         xc = clean_num(tok[0]) 
         yc = clean_num(tok[1])
         zc = clean_num(tok[2])
-
         move_to(xc,yc,zc)
-        #print(xc,yc,zc)
 
- 
-
-
-for a in range(20):
-  digi_out(0, 0)
-  digi_out(1, 0)
-  digi_out(2, 0)
-  digi_out(3, 0)
+        if showcmd:
+            print(xc,yc,zc)
 
 
-  digi_out(0, 1)
-  digi_out(1, 1)
-  digi_out(2, 1)
-  digi_out(3, 1)
+
+cnc_s = linuxcnc.stat()
+cnc_c = linuxcnc.command()
+
+verify_ok_for_mdi()
+cnc_c.mode(linuxcnc.MODE_MDI) 
+cnc_c.wait_complete()
 
 
-#run_prog("foo.path")
+def test_digi(iters):
+  for a in range(iters):
+    digi_out(0, 0)
+    digi_out(1, 0)
+    digi_out(2, 0)
+    digi_out(3, 0)
+    digi_out(0, 1)
+    digi_out(1, 1)
+    digi_out(2, 1)
+    digi_out(3, 1)
+
+
+#run_poly("foo.path")
  
 
 
