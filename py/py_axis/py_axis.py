@@ -59,6 +59,19 @@ def clean_num(instr):
 ##--##--##--##--##--##--##--## 
 ##--##--##--##--##--##--##--## 
 
+def rpd_move_to(x, y, z):
+  cmd = 'G0 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
+  if showcmd:
+      print('CMD: %s'%cmd)
+  verify_ok_for_mdi()
+
+  cnc_c.mdi(cmd)
+  rv = cnc_c.wait_complete(60)
+  if rv != 1:
+    print('MDI command timed out')
+    sys.exit(1)
+
+
 def move_to(x, y, z):
   cmd = 'G1 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
   if showcmd:
@@ -101,12 +114,16 @@ a "program" is a folder of polygons
 def run_poly(filename):
     f = open( filename,"r", encoding='utf-8')
     contents = f.readlines()
-    for x in contents:
+    for i,x in enumerate(contents):
         tok = x.split(" ")
         xc = clean_num(tok[0]) 
         yc = clean_num(tok[1])
         zc = clean_num(tok[2])
-        move_to(xc,yc,zc)
+        
+        if i==0:
+            rpd_move_to(xc,yc,zc)
+        else:  
+            move_to(xc,yc,zc)
 
         if showcmd:
             print(xc,yc,zc)
@@ -115,7 +132,8 @@ def run_poly(filename):
 def run_project(folder):
     polyfiles = [f for f in listdir(folder) if isfile(join(folder, f))]
      
-    for f in polyfiles:
+    for i,f in enumerate(polyfiles):
+        print("###### NEW POLYGON %s"%i)  
         run_poly("%s/%s"%(folder,f))
 
 
