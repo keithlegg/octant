@@ -181,6 +181,9 @@ def move_to(x, y, z):
 ##-------------------------##
 
 def build_vec_proj(filepath, infilename): 
+    
+    RAWPTS = False 
+
     vflo = vectorflow()
     #vflo.load_geojson('images/out/4.json')
     vflo.load_geojson(filepath+'/'+infilename)
@@ -190,15 +193,26 @@ def build_vec_proj(filepath, infilename):
     
     basename = "%s"%(infilename.split('.')[0])
 
-    #convert all the polys to plain text files
-    vflo.export_all_rawpts(filepath, infilename)
+    if RAWPTS:
+        #convert all the polys to plain text files
+        vflo.export_all_rawpts(filepath, infilename)
 
-    extntfile = filepath+'/'+basename+'_proj/extents.txt'
-    extents = vflo.get_extents_poly()
-    vflo.export_ptarray_rawpts(extents, extntfile)
+        extntfile = filepath+'/'+basename+'_proj/extents.txt'
+        extents = vflo.get_extents_poly()
+        vflo.export_ptarray_rawpts(extents, extntfile)
 
+    else:
+        pass
+        #vflo.export_ngc(0,0,)
 
-
+        ## def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False, do_retracts=True, do_laser=False, laserpwm=400,  do_gpio=False):
+        ##     """ rh         - retract height  
+        ##         ch         - cut height 
+        ##         cdpi       - cut depth per iteration 
+        ##         cmax       - cut depth max 
+        ##         filename 
+        ##         do3d=False
+        ##     """
 
 
     #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
@@ -212,7 +226,26 @@ def build_vec_proj(filepath, infilename):
 
  
 
-build_vec_proj(GLOBAL_PROJ, 'new.json')
+#build_vec_proj(GLOBAL_PROJ, 'new.json')
+
+
+
+
+##------------------------------------##
+def test_servos(): 
+    vflo = vectorflow()
+    vflo.fr = 100 #set fast feed rate
+    
+    vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
+    
+    #this is a hack, but it works for now 
+    vflo.insert_gr_sort (vflo.points )
+
+    #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
+    vflo.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(GLOBAL_PROJ, "tomservo") , do3d=True, do_retracts=True)
+
+
+test_servos()
 
 
 """
@@ -293,18 +326,7 @@ def np_testmult():
 
 
 
-##------------------------------------##
-def test_servos(): 
-    vflo = vectorflow()
- 
-    
-    vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
-    
-    #this is a hack, but it works for now 
-    vflo.insert_gr_sort (vflo.points )
 
-    #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
-    vflo.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(GLOBAL_PROJ, "tomservo") , do3d=True, do_retracts=True)
 
 
 

@@ -84,8 +84,9 @@ class vectorflow(object3d):
 
         self.omit_ids      = [] #list of feature ids to NOT export (but leave in)
 
-        self.rh = 1            # retract height 
-        self.ch = .1           # cut height (top, start of cut)
+        self.fr   = 30         # feed rate
+        self.rh   = 1          # retract height 
+        self.ch   = .1         # cut height (top, start of cut)
         self.cdpi = .01        # cut depth per iteration on Z axis
         self.cmax = 1          # maximum cut depth on Z axis 
 
@@ -947,7 +948,8 @@ class vectorflow(object3d):
         self._sort()
 
     ##-------------------------------##   
-    def _set_cam_properties(self, rh, ch, cdpi, cmax):
+    def _set_cam_properties(self, fr, rh, ch, cdpi, cmax):
+        self.fr = fr 
         self.rh = rh           
         self.ch = ch            
         self.cdpi = cdpi       
@@ -1440,16 +1442,16 @@ class vectorflow(object3d):
         self.outfile.append('(linear scale set to %s of internal coordinates)'%self.vf_gl_scale )
         self.outfile.append('  ')
 
-        self.outfile.append('g20')                  #inches for unit 
+        self.outfile.append('G20')                  #inches for unit 
         
         ##-----------------------------------------##
 
         #move to origin  
-        self.outfile.append('g0 x%s y%s z%s f30'% ( self.hp[0], self.hp[1], self.rh) )   #rapid move to 0 
+        self.outfile.append('G0 x%s y%s z%s f%s'% ( self.hp[0], self.hp[1], self.rh, self.fr) )   #rapid move to 0 
         self.ngc_to_obj.append( ( self.hp[0], self.hp[1], self.rh) ) 
 
         if do_retracts:
-            self.outfile.append('g0z%s'% ( self.rh ) )  #retract in between cuts
+            self.outfile.append('G0z%s'% ( self.rh ) )  #retract in between cuts
    
         ##-----------------------------------------##
         self.outfile.append('  ')
@@ -1497,17 +1499,22 @@ class vectorflow(object3d):
                 pt1 = gr_poly[0]
 
                 ## first point with/without retracts 
+                self.outfile.append( '\n')
+
                 if do_retracts:
                     self.outfile.append( 'G0' )
                     #move to first point RH 
                     self.outfile.append('x%s y%s z%s'% (  pt1[0] , pt1[1], self.rh ) )               
                     self.ngc_to_obj.append( ( pt1[0], pt1[1], self.rh ) )             
-                    self.outfile.append( 'G1' )
+                    self.outfile.append( 'G1 F%s' % self.fr )
                 else:
                     self.outfile.append( 'G0' )
                     self.outfile.append('x%s y%s z%s'% (  pt1[0] , pt1[1], pt1[2]) )               
                     self.ngc_to_obj.append( ( pt1[0], pt1[1], pt1[2] ) )             
-                    self.outfile.append( 'G1' )
+                    self.outfile.append( 'G1 F%s' % self.fr )
+                    
+
+
 
                 ## iterate points in polygon 
                 for i,pt in enumerate(gr_poly):
@@ -1515,14 +1522,16 @@ class vectorflow(object3d):
                     self.ngc_to_obj.append( (pt[0], pt[1],  pt[2]) )                   
 
                 if do_retracts:
+                    self.outfile.append( '\n')                    
                     self.outfile.append( 'G0' )
                     gpt=gr_poly[0]
 
                     self.ngc_to_obj.append( (gpt[0], gpt[1], self.rh)  )
                     self.outfile.append( 'x%s y%s z%s'%( gpt[0], gpt[1], self.rh) )
-
+                
+                    self.outfile.append( '\n')
                     # retract in between cuts
-                    self.outfile.append('g0z%s'% ( self.rh ) )  
+                    self.outfile.append('G0z%s'% ( self.rh ) )  
 
 
                 self.outfile.append('  ')
