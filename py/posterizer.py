@@ -520,7 +520,7 @@ def its_alive():
 
  
 
-#its_alive()
+its_alive()
 
 
 

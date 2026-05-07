@@ -116,7 +116,7 @@ def run_project(folder):
     polyfiles = [f for f in listdir(folder) if isfile(join(folder, f))]
      
     for f in polyfiles:
-        run_poly(f)
+        run_poly("%s/%s"%(folder,f))
 
 
 
@@ -142,5 +142,7 @@ def test_digi(iters):
 
 #run_poly("foo.path")
  
+run_project('foo_proj')
+
 
 
