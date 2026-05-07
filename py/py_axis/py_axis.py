@@ -14,6 +14,9 @@ import datetime
  
 import linuxcnc
 
+from os import listdir
+from os.path import isfile, join
+
 showcmd = True
 
 
@@ -93,7 +96,7 @@ def digi_out(pin, val):
 
 """
 lets assume each polygon is a text file of coordinates
-a "program" is a folder of polyugons 
+a "program" is a folder of polygons 
 """
 def run_poly(filename):
     f = open( filename,"r", encoding='utf-8')
@@ -107,6 +110,13 @@ def run_poly(filename):
 
         if showcmd:
             print(xc,yc,zc)
+
+
+def run_project(folder):
+    polyfiles = [f for f in listdir(folder) if isfile(join(folder, f))]
+     
+    for f in polyfiles:
+        run_poly(f)
 
 
 

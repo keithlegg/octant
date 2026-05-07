@@ -507,7 +507,7 @@ def its_alive():
 
     #vflo.export_poly_rawpts(0,'foo.path')
 
-    vflo.export_all_rawpts('foo.path')
+    vflo.export_all_rawpts(GLOBAL_PROJ, 'foo.path', 'myfolder')
 
 
 
@@ -520,7 +520,7 @@ def its_alive():
 
  
 
-its_alive()
+#its_alive()
 
 
 
