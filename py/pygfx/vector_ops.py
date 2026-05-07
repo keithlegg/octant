@@ -419,34 +419,36 @@ class vectorflow(object3d):
 
 
     ##-------------------------------##
-    def export_all_rawpts(self, filepath, filename, newfolder=False):
+    def export_all_rawpts(self, filepath, filename ):
         """
             USAGE:
-                filepath   - a json file to chop up 
+                filepath   - path to a json file to chop up 
                 filename   - a json file in that path 
-                (optional) - break into multiple files and put in a folder 
         """
-        
+
         basename = "%s"%(filename.split('.')[0])
         projname = "%s_proj"%(filename.split('.')[0])
         
-        #if a path is passed - use that as a name         
-        if newfolder:
-            print('## EXPORTING PROJECT %s'%filename)
-            if not os.path.exists(newfolder):
-                os.makedirs(projname)
-            for i,ply in enumerate(self.gr_sort):
-                f = open("%s/%s/%s_%s.txt"%(filepath,projname,basename,i),"w");
-                for l in ply[4]:
-                    f.write("%s\n"%str(l) )
+        newfolder=filepath+'/'+basename
+ 
+        print('## EXPORTING PROJECT %s'%filename)
+        if not os.path.exists(newfolder):
+            os.makedirs(projname)
+        for i,ply in enumerate(self.gr_sort):
+            f = open("%s/%s/%s_%s.txt"%(filepath,projname,basename,i),"w");
+            for l in ply[4]:
+                f.write("%s\n"%str(l) )
 
-        else:
-            print('## EXPORTING SINGLE FILE %s'%filename)
-            #just put all in a big old file, probably not useful 
-            f = open(filepath+filename,"w");
-            for ply in self.gr_sort:
-                for l in ply[4]:
-                    f.write("%s\n"%str(l) )
+    ##-------------------------------##
+    def export_ptarray_rawpts(self, points, filename):
+        """export a single polygon from point array  
+        """
+        print('## EXPORTING array as polyfile %s'%filename)
+        
+        f = open(filename,"w");
+        for l in points:
+            if l:
+                f.write("%s\n"%str(l) )
 
     ##-------------------------------##
     def export_poly_rawpts(self, fid, filename):

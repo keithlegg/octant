@@ -495,22 +495,29 @@ def test_slicer2():
 
 ##-------------------------##
 
-def its_alive(): 
+def build_vec_proj(filepath, infilename): 
     vflo = vectorflow()
     #vflo.load_geojson('images/out/4.json')
-    vflo.load_geojson('new.json')
+    vflo.load_geojson(filepath+'/'+infilename)
     
     vflo.gl_move_center()
-    vflo.gl_scale(.1)    
+    #vflo.gl_scale(.1)    
+    
+    basename = "%s"%(infilename.split('.')[0])
+
+    #convert all the polys to plain text files
+    vflo.export_all_rawpts(filepath, infilename)
+
+    extntfile = filepath+'/'+basename+'_proj/extents.txt'
+    extents = vflo.get_extents_poly()
+    vflo.export_ptarray_rawpts(extents, extntfile)
+
+
+
+
 
     #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
-
     #vflo.export_poly_rawpts(0,'foo.path')
-
-    vflo.export_all_rawpts(GLOBAL_PROJ, 'foo.path', 'myfolder')
-
-
-
     #vflo.cvt_grpoly_obj3d()
     #vflo.rotate_pts(rot=[90,0,0])
     #vflo.save('l0.obj', as_lines=True)
@@ -520,7 +527,7 @@ def its_alive():
 
  
 
-its_alive()
+build_vec_proj(GLOBAL_PROJ, 'new.json')
 
 
 
