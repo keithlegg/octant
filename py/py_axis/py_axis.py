@@ -88,9 +88,13 @@ def move_to(x, y, z):
 def digi_out(pin, val):
   
   if val==0:
-      cmd = 'M64 P%s'%pin
-  if val==1:
       cmd = 'M65 P%s'%pin
+      #cmd = 'M63 P%s'%pin
+
+  if val==1:
+      cmd = 'M64 P%s'%pin
+      #cmd = 'M62 P%s'%pin
+
   if showcmd:
       print('CMD: %s'%cmd)
   verify_ok_for_mdi()
@@ -121,8 +125,10 @@ def run_poly(filename):
         zc = clean_num(tok[2])
         
         if i==0:
+            digi_out(1,0)
             rpd_move_to(xc,yc,zc)
         else:  
+            digi_out(1,1)
             move_to(xc,yc,zc)
 
         if showcmd:
