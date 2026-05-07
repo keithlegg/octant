@@ -19,6 +19,7 @@ from os.path import isfile, join
 
 showcmd = True
 
+TIMEOUT = 200
 
 ##--##--##--##--##--##--##--## 
 ##--##--##--##--##--##--##--## 
@@ -58,52 +59,42 @@ def clean_num(instr):
 
 ##--##--##--##--##--##--##--## 
 ##--##--##--##--##--##--##--## 
+def _runcmd(cmd):
+    verify_ok_for_mdi()
+
+    cnc_c.mdi(cmd)
+    rv = cnc_c.wait_complete(TIMEOUT)
+    if rv != 1:
+      print('MDI command timed out')
+      sys.exit(1)
+
+
+
 
 def rpd_move_to(x, y, z):
-  cmd = 'G0 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
-  if showcmd:
-      print('CMD: %s'%cmd)
-  verify_ok_for_mdi()
-
-  cnc_c.mdi(cmd)
-  rv = cnc_c.wait_complete(60)
-  if rv != 1:
-    print('MDI command timed out')
-    sys.exit(1)
-
+    cmd = 'G0 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
+    if showcmd:
+        print('CMD: %s'%cmd)
+    _runcmd(cmd)
 
 def move_to(x, y, z):
-  cmd = 'G1 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
-  if showcmd:
-      print('CMD: %s'%cmd)
-  verify_ok_for_mdi()
-
-  cnc_c.mdi(cmd)
-  rv = cnc_c.wait_complete(60)
-  if rv != 1:
-    print('MDI command timed out')
-    sys.exit(1)
+    cmd = 'G1 G54 X{0:f} Y{1:f} Z{2:f} f5'.format(x, y, z)
+    if showcmd:
+        print('CMD: %s'%cmd)
+    _runcmd(cmd)
 
 
 def digi_out(pin, val):
-  
-  if val==0:
-      cmd = 'M65 P%s'%pin
-      #cmd = 'M63 P%s'%pin
+    if val==0:
+        cmd = 'M65 P%s'%pin
+        #cmd = 'M63 P%s'%pin
+    if val==1:
+        cmd = 'M64 P%s'%pin
+        #cmd = 'M62 P%s'%pin
 
-  if val==1:
-      cmd = 'M64 P%s'%pin
-      #cmd = 'M62 P%s'%pin
-
-  if showcmd:
-      print('CMD: %s'%cmd)
-  verify_ok_for_mdi()
-
-  cnc_c.mdi(cmd)
-  rv = cnc_c.wait_complete(60)
-  if rv != 1:
-    print('MDI command timed out')
-    sys.exit(1)
+    if showcmd:
+        print('CMD: %s'%cmd)
+    _runcmd(cmd)
 
 
 
@@ -125,15 +116,11 @@ def run_poly(filename):
         zc = clean_num(tok[2])
         
         if i==0:
-            digi_out(1,0)
+            digi_out(1,1)
             rpd_move_to(xc,yc,zc)
         else:  
-            digi_out(1,1)
+            digi_out(1,0)
             move_to(xc,yc,zc)
-
-        if showcmd:
-            print(xc,yc,zc)
-
 
 def run_project(folder):
     polyfiles = [f for f in listdir(folder) if isfile(join(folder, f))]
@@ -164,9 +151,11 @@ def test_digi(iters):
     digi_out(3, 1)
 
 
-#run_poly("foo.path")
+###########################
+
+run_poly("../new_proj/extents.txt")
  
-run_project('foo_proj')
+#run_project('../new_proj')
 
 
 

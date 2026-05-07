@@ -178,6 +178,43 @@ def move_to(x, y, z):
 
 
 
+##-------------------------##
+
+def build_vec_proj(filepath, infilename): 
+    vflo = vectorflow()
+    #vflo.load_geojson('images/out/4.json')
+    vflo.load_geojson(filepath+'/'+infilename)
+    
+    vflo.gl_move_center()
+    vflo.gl_scale(.5)    
+    
+    basename = "%s"%(infilename.split('.')[0])
+
+    #convert all the polys to plain text files
+    vflo.export_all_rawpts(filepath, infilename)
+
+    extntfile = filepath+'/'+basename+'_proj/extents.txt'
+    extents = vflo.get_extents_poly()
+    vflo.export_ptarray_rawpts(extents, extntfile)
+
+
+
+
+
+    #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
+    #vflo.export_poly_rawpts(0,'foo.path')
+    #vflo.cvt_grpoly_obj3d()
+    #vflo.rotate_pts(rot=[90,0,0])
+    #vflo.save('l0.obj', as_lines=True)
+
+
+    #vflo.export_extents_ngc(GLOBAL_PROJ,'new')
+
+ 
+
+build_vec_proj(GLOBAL_PROJ, 'new.json')
+
+
 """
 start  = (2 ,  0, 0)
 ctrl1  = (.5,  .5, 0)
@@ -493,41 +530,7 @@ def test_slicer2():
 
 
 
-##-------------------------##
 
-def build_vec_proj(filepath, infilename): 
-    vflo = vectorflow()
-    #vflo.load_geojson('images/out/4.json')
-    vflo.load_geojson(filepath+'/'+infilename)
-    
-    vflo.gl_move_center()
-    #vflo.gl_scale(.1)    
-    
-    basename = "%s"%(infilename.split('.')[0])
-
-    #convert all the polys to plain text files
-    vflo.export_all_rawpts(filepath, infilename)
-
-    extntfile = filepath+'/'+basename+'_proj/extents.txt'
-    extents = vflo.get_extents_poly()
-    vflo.export_ptarray_rawpts(extents, extntfile)
-
-
-
-
-
-    #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
-    #vflo.export_poly_rawpts(0,'foo.path')
-    #vflo.cvt_grpoly_obj3d()
-    #vflo.rotate_pts(rot=[90,0,0])
-    #vflo.save('l0.obj', as_lines=True)
-
-
-    #vflo.export_extents_ngc(GLOBAL_PROJ,'new')
-
- 
-
-build_vec_proj(GLOBAL_PROJ, 'new.json')
 
 
 
