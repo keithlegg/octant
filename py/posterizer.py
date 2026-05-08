@@ -239,16 +239,29 @@ def export_json_ngc(filepath, infilename, outfilename):
     
     vflo.gl_move_center()
     vflo.gl_scale(.5)   
+    
+    #DOH! I forgot about do_gpio which does the same thing
+    #this is better anyway 
+    vflo.precut.append('(precut)')
+    vflo.precut.append('G65 P0')
+
+    vflo.postcut.append('(postcut)')    
+    vflo.postcut.append('G64 P0')
 
     #vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
     #this is a hack, but it works for now 
     #vflo.insert_gr_sort (vflo.points )
 
     #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
-    vflo.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(filepath, outfilename) , do3d=True, do_retracts=True)
+    vflo.export_ngc(1, 0, .1, 2, 
+                    '%s/%s.ngc'%(filepath, outfilename), 
+                    do_precut=True,
+                    do_postcut=True,
+                    do3d=True, 
+                    do_retracts=False)
 
 
-#export_json_ngc(GLOBAL_PROJ, "new.json", "test_servoz")
+export_json_ngc(GLOBAL_PROJ, "new.json", "test_servoz")
 
 
 

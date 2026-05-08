@@ -89,6 +89,10 @@ class vectorflow(object3d):
         self.ch   = .1         # cut height (top, start of cut)
         self.cdpi = .01        # cut depth per iteration on Z axis
         self.cmax = 1          # maximum cut depth on Z axis 
+        self.laserpwm = 400    # laser power
+
+        self.precut    = []    # GCODES to insert BEFORE laser power
+        self.postcut   = []    # GCODES to insert AFTER laser power
 
         self.hp = (0,0,self.rh) # home position 
 
@@ -1428,13 +1432,18 @@ class vectorflow(object3d):
         return out
 
     ##-------------------------------##
-    def _calculate_paths3d(self, do_laser=False, do_retracts=True, doround=True):
+    def _calculate_paths3d(self, do_laser=False, 
+                                 do_retracts=True,
+                                 do_postcut=False,
+                                 do_precut=False,                                  
+                                 doround=True):
         """ 
             takes gr_sort buffer and makes an executable gcode file with retracts on Z for each polygon
            
             format of self.gr_sort = [[id, centroid, extents, len, points ]] 
 
         """
+
         pl = 6 #numeric rounding places 
         lastpt = (0,0,0)
 
@@ -1446,13 +1455,16 @@ class vectorflow(object3d):
         
         ##-----------------------------------------##
 
+        if do_precut:
+            for pc in self.precut:
+                self.outfile.append( pc )
         #move to origin  
         self.outfile.append('G0 x%s y%s z%s f%s'% ( self.hp[0], self.hp[1], self.rh, self.fr) )   #rapid move to 0 
         self.ngc_to_obj.append( ( self.hp[0], self.hp[1], self.rh) ) 
 
         if do_retracts:
             self.outfile.append('G0z%s'% ( self.rh ) )  #retract in between cuts
-   
+
         ##-----------------------------------------##
         self.outfile.append('  ')
         self.outfile.append('(exporting filled polygons )')
@@ -1500,21 +1512,28 @@ class vectorflow(object3d):
 
                 ## first point with/without retracts 
                 self.outfile.append( '\n')
+            
+
+
+                if do_precut:
+                    for pc in self.precut:
+                        self.outfile.append( pc )                        
 
                 if do_retracts:
                     self.outfile.append( 'G0' )
                     #move to first point RH 
                     self.outfile.append('x%s y%s z%s'% (  pt1[0] , pt1[1], self.rh ) )               
                     self.ngc_to_obj.append( ( pt1[0], pt1[1], self.rh ) )             
-                    self.outfile.append( 'G1 F%s' % self.fr )
                 else:
                     self.outfile.append( 'G0' )
                     self.outfile.append('x%s y%s z%s'% (  pt1[0] , pt1[1], pt1[2]) )               
                     self.ngc_to_obj.append( ( pt1[0], pt1[1], pt1[2] ) )             
-                    self.outfile.append( 'G1 F%s' % self.fr )
-                    
 
-
+                if do_postcut:
+                    for pc in self.postcut:
+                        self.outfile.append( pc )
+                
+                self.outfile.append( 'G1 F%s' % self.fr )
 
                 ## iterate points in polygon 
                 for i,pt in enumerate(gr_poly):
@@ -1533,7 +1552,6 @@ class vectorflow(object3d):
                     # retract in between cuts
                     self.outfile.append('G0z%s'% ( self.rh ) )  
 
-
                 self.outfile.append('  ')
 
         ##-----------------------------------------##        
@@ -1544,7 +1562,11 @@ class vectorflow(object3d):
         self.outfile.append('m2') #program end
 
     ##-------------------------------##
-    def _calculate_paths2d(self, do_retracts=True, laserpwm=300, do_laser=False, do_gpio=False):
+    def _calculate_paths2d(self, do_retracts=True, 
+                                 do_laser=False, 
+                                 do_gpio=False,
+                                 do_postcut=False, 
+                                 do_precut=False):
         """ 
             SIMPLE SAUCE CAM PROGRAM 
 
@@ -1693,11 +1715,15 @@ class vectorflow(object3d):
                 if do_gpio is not False:
                     #self.outfile.append('M64 P%s'% ( do_gpio ) ) #pen up/ pen down 
                     self.outfile.append('M65 P%s'% ( do_gpio ) ) #pen up/ pen down 
+                #welp - this is another do_gpio I guess 
+                if do_precut:
+                    for pc in self.precut:
+                        self.outfile.append( pc )
 
                 ##draw the polygons   
                 if do_laser:
                     #laser on
-                    self.outfile.append( 'M3 S%s'%laserpwm )
+                    self.outfile.append( 'M3 S%s'%self.laserpwm )
 
                 self.outfile.append( 'G1' )
                 for i,pt in enumerate(gr_poly):
@@ -1901,9 +1927,6 @@ class vectorflow(object3d):
             xtn = s[2] 
             width = abs(xtn[2]-xtn[0])
             height = abs(xtn[3]-xtn[1])
-
-            
-            #print('######################## ', len(s[4]) )
 
 
             #fancy filtering based on polygons 
@@ -2375,7 +2398,13 @@ class vectorflow(object3d):
         print("loaded %s polygons from %s "%(plyidx, inputfile)) 
 
     ##-------------------------------##
-    def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False, do_retracts=True, do_laser=False, laserpwm=400,  do_gpio=False):
+    def export_ngc(self, rh, ch, cdpi, cmax, filename, 
+                         do3d=False, 
+                         do_retracts=True, 
+                         do_laser=False, 
+                         do_gpio=False,
+                         do_postcut=False,
+                         do_precut=False): 
         """ rh         - retract height  
             ch         - cut height 
             cdpi       - cut depth per iteration 
@@ -2396,10 +2425,17 @@ class vectorflow(object3d):
 
         if do3d==True:
             print("## WARNING ## 3D export is not working yet")
-            self._calculate_paths3d(do_laser=do_laser, do_retracts=do_retracts)
+            self._calculate_paths3d(do_laser=do_laser, 
+                                    do_retracts=do_retracts, 
+                                    do_postcut=do_postcut, 
+                                    do_precut=do_precut)
         else:
-            self._calculate_paths2d(do_laser=do_laser, do_retracts=do_retracts,laserpwm=laserpwm, do_gpio=do_gpio)
-        
+            self._calculate_paths2d(do_laser=do_laser, 
+                                    do_retracts=do_retracts, 
+                                    do_gpio=do_gpio,
+                                    do_postcut=do_postcut, 
+                                    do_precut=do_precut)
+
         print("gr_sort buffer has %s polys in it. "%(len(self.gr_sort)))
         fobj = open( filename,"w") #encoding='utf-8'
         for line in self.outfile: 
