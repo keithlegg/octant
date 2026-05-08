@@ -230,6 +230,27 @@ def build_vec_proj(filepath, infilename):
 
 
 
+##------------------------------------##
+def export_json_ngc(filepath, infilename, outfilename):  
+    vflo = vectorflow()
+    vflo.fr = 100 #set fast feed rate
+
+    vflo.load_geojson(filepath+'/'+infilename)
+    
+    vflo.gl_move_center()
+    vflo.gl_scale(.5)   
+
+    #vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
+    #this is a hack, but it works for now 
+    #vflo.insert_gr_sort (vflo.points )
+
+    #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
+    vflo.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(filepath, outfilename) , do3d=True, do_retracts=True)
+
+
+#export_json_ngc(GLOBAL_PROJ, "new.json", "test_servoz")
+
+
 
 ##------------------------------------##
 def test_servos(): 
@@ -245,7 +266,7 @@ def test_servos():
     vflo.export_ngc(1, 0, .1, 2, '%s/%s.ngc'%(GLOBAL_PROJ, "tomservo") , do3d=True, do_retracts=True)
 
 
-test_servos()
+#test_servos()
 
 
 """
