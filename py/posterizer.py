@@ -193,14 +193,27 @@ def export_json_ngc(filepath, infilename, outfilename):
     
     vflo.gl_move_center()
     vflo.gl_scale(.5)   
-    
-    #DOH! I forgot about do_gpio which does the same thing
-    #this is better anyway 
+
+
+    #first gcodes ---------------------- 
+    #vflo.firstgc.append('XXX ')
+
+    #precut gcodes ---------------------- 
     vflo.precut.append('(precut)')
     vflo.precut.append('M65 P0')
 
+    vflo.precut.append('M64 P1')
+    vflo.precut.append('G4 P.5')
+    vflo.precut.append('M65 P1')
+
+    #postcut gcodes ---------------------- 
     vflo.postcut.append('(postcut)')    
     vflo.postcut.append('M64 P0')
+
+    #eof gcodes ---------------------- 
+    vflo.finalgc.append('M65 P0')
+    vflo.finalgc.append('M65 P1')
+
 
     #vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
     #this is a hack, but it works for now 

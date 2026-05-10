@@ -93,6 +93,9 @@ class vectorflow(object3d):
 
         self.precut    = []    # GCODES to insert BEFORE laser power
         self.postcut   = []    # GCODES to insert AFTER laser power
+        self.firstgc   = []    # GCODES to insert START OF FILE
+        self.finalgc   = []    # GCODES to insert END OF FILE
+
 
         self.hp = (0,0,self.rh) # home position 
 
@@ -1449,8 +1452,14 @@ class vectorflow(object3d):
 
         self.outfile.append('( exported with _calculate_paths3d )')
         self.outfile.append('(linear scale set to %s of internal coordinates)'%self.vf_gl_scale )
-        self.outfile.append('  ')
 
+        self.outfile.append('  ')
+        self.outfile.append('( first gcode inserts )  ') 
+        for strt in self.firstgc:
+            self.outfile.append( strt )
+
+
+        self.outfile.append('  ')  
         self.outfile.append('G20')                  #inches for unit 
         
         ##-----------------------------------------##
@@ -1557,8 +1566,16 @@ class vectorflow(object3d):
         ##-----------------------------------------##        
         # self.outfile.append('(exporting segments )')
 
+        self.outfile.append('  ')  
+        self.outfile.append('( final gcode inserts )  ') 
+        for fin in self.finalgc:
+            self.outfile.append( fin )
+
+ 
+
         ##-----------------------------------------##
         # rapid move at end 
+        self.outfile.append('  ') 
         self.outfile.append('m2') #program end
 
     ##-------------------------------##
