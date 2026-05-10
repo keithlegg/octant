@@ -1094,11 +1094,21 @@ def test_streamline(folder, bands, name, dopass='all', whichiter=2):
     #adbe.sample_script('test.wrf')
     #adbe.load_json('%s/images/out/%s.json'%(folder, 'voronoi2'))
 
-    #infile, outfolder, outname, numbands=4, dopass='all', invbmp=False, invpo=False
+    # #infile, outfolder, outname, numbands=4, dopass='all', invbmp=False, invpo=False
+    # adbe.oldrun(whichiter,
+    #             '%s/images/in/%s'%(folder,name),
+    #             '%s/images/out'%folder,
+    #             'smithz',
+    #             numbands=bands,
+    #             dopass=dopass,
+    #             invbmp = True, 
+    #             invpo = False
+    #             )
+
     adbe.oldrun(whichiter,
-                '%s/images/in/%s'%(folder,name),
-                '%s/images/out'%folder,
-                'smithz',
+                '%s/%s'%(folder,name),
+                '%s/'%folder,
+                'carnew',
                 numbands=bands,
                 dopass=dopass,
                 invbmp = True, 

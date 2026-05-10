@@ -177,12 +177,52 @@ def move_to(x, y, z):
 
 
 
+##-------------------------##
+
+
+#test_streamline(GLOBAL_PROJ, 6,'car.jpg' , dopass='all') 
+
+
+
+##------------------------------------##
+def export_json_ngc(filepath, infilename, outfilename):  
+    vflo = vectorflow()
+    vflo.fr = 100 #set fast feed rate
+
+    vflo.load_geojson(filepath+'/'+infilename)
+    
+    vflo.gl_move_center()
+    vflo.gl_scale(.5)   
+    
+    #DOH! I forgot about do_gpio which does the same thing
+    #this is better anyway 
+    vflo.precut.append('(precut)')
+    vflo.precut.append('M65 P0')
+
+    vflo.postcut.append('(postcut)')    
+    vflo.postcut.append('M64 P0')
+
+    #vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
+    #this is a hack, but it works for now 
+    #vflo.insert_gr_sort (vflo.points )
+
+    #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
+    vflo.export_ngc(1, 0, .1, 2, 
+                    '%s/%s.ngc'%(filepath, outfilename), 
+                    do_precut=True,
+                    do_postcut=True,
+                    do3d=True, 
+                    do_retracts=False)
+
+
+export_json_ngc(GLOBAL_PROJ, "new.json", "test_servoz")
+
 
 ##-------------------------##
 
 def build_vec_proj(filepath, infilename): 
     
-    RAWPTS = False 
+    RAWPTS = True 
 
     vflo = vectorflow()
     #vflo.load_geojson('images/out/4.json')
@@ -201,19 +241,6 @@ def build_vec_proj(filepath, infilename):
         extents = vflo.get_extents_poly()
         vflo.export_ptarray_rawpts(extents, extntfile)
 
-    else:
-        pass
-        #vflo.export_ngc(0,0,)
-
-        ## def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False, do_retracts=True, do_laser=False, laserpwm=400,  do_gpio=False):
-        ##     """ rh         - retract height  
-        ##         ch         - cut height 
-        ##         cdpi       - cut depth per iteration 
-        ##         cmax       - cut depth max 
-        ##         filename 
-        ##         do3d=False
-        ##     """
-
 
     #vflo.export_geojson_polygon(GLOBAL_PROJ,'centered')
     #vflo.export_poly_rawpts(0,'foo.path')
@@ -227,43 +254,6 @@ def build_vec_proj(filepath, infilename):
  
 
 #build_vec_proj(GLOBAL_PROJ, 'new.json')
-
-
-
-##------------------------------------##
-def export_json_ngc(filepath, infilename, outfilename):  
-    vflo = vectorflow()
-    vflo.fr = 100 #set fast feed rate
-
-    vflo.load_geojson(filepath+'/'+infilename)
-    
-    vflo.gl_move_center()
-    vflo.gl_scale(.5)   
-    
-    #DOH! I forgot about do_gpio which does the same thing
-    #this is better anyway 
-    vflo.precut.append('(precut)')
-    vflo.precut.append('G65 P0')
-
-    vflo.postcut.append('(postcut)')    
-    vflo.postcut.append('G64 P0')
-
-    #vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
-    #this is a hack, but it works for now 
-    #vflo.insert_gr_sort (vflo.points )
-
-    #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
-    vflo.export_ngc(1, 0, .1, 2, 
-                    '%s/%s.ngc'%(filepath, outfilename), 
-                    do_precut=True,
-                    do_postcut=True,
-                    do3d=True, 
-                    do_retracts=False)
-
-
-export_json_ngc(GLOBAL_PROJ, "new.json", "test_servoz")
-
-
 
 ##------------------------------------##
 def test_servos(): 
@@ -316,7 +306,7 @@ obj.vec_connect_pts(pts=curvepts, draw_obj='rect_2d', axis='x', width=.01)
 
 
 
-#test_streamline(GLOBAL_PROJ, 6,'spring.jpg' , dopass='all') 
+
 
 
 
@@ -881,6 +871,9 @@ run firstpass -> common bands on each region in color
 
 
 """
+
+
+
 
 
 
