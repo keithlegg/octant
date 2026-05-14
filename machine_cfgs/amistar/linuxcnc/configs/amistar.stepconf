@@ -30,18 +30,18 @@
   <property type="bool" name="halui" value="False"/>
   <property type="eval" name="halui_list" value="[]"/>
   <property type="string" name="ioaddr" value="0"/>
-  <property type="string" name="ioaddr2" value="0"/>
+  <property type="string" name="ioaddr2" value="1"/>
   <property type="string" name="ioaddr3" value="2"/>
   <property type="bool" name="ladderconnect" value="True"/>
   <property type="int" name="ladderhaltype" value="0"/>
   <property type="string" name="laddername" value="custom.clp"/>
-  <property type="float" name="latency" value="15000.0"/>
+  <property type="float" name="latency" value="47530.0"/>
   <property type="eval" name="lparport" value="['0', '1', '2']"/>
   <property type="string" name="machinename" value="amistar"/>
   <property type="bool" name="manualtoolchange" value="True"/>
   <property type="eval" name="md5sums" value="[]"/>
   <property type="bool" name="modbus" value="False"/>
-  <property type="int" name="number_pports" value="1"/>
+  <property type="int" name="number_pports" value="2"/>
   <property type="int" name="ohmiccontact" value="0"/>
   <property type="int" name="period" value="25000"/>
   <property type="string" name="pin1" value="estop-out"/>
@@ -81,54 +81,54 @@
   <property type="int" name="pp2_direction" value="0"/>
   <property type="string" name="pp2_pin1" value="unused-output"/>
   <property type="string" name="pp2_pin10_in" value="unused-input"/>
-  <property type="int" name="pp2_pin10_in_inv" value="0"/>
+  <property type="bool" name="pp2_pin10_in_inv" value="False"/>
   <property type="string" name="pp2_pin11_in" value="unused-input"/>
-  <property type="int" name="pp2_pin11_in_inv" value="0"/>
+  <property type="bool" name="pp2_pin11_in_inv" value="False"/>
   <property type="string" name="pp2_pin12_in" value="unused-input"/>
-  <property type="int" name="pp2_pin12_in_inv" value="0"/>
+  <property type="bool" name="pp2_pin12_in_inv" value="False"/>
   <property type="string" name="pp2_pin13_in" value="unused-input"/>
-  <property type="int" name="pp2_pin13_in_inv" value="0"/>
+  <property type="bool" name="pp2_pin13_in_inv" value="False"/>
   <property type="string" name="pp2_pin14" value="unused-output"/>
-  <property type="int" name="pp2_pin14inv" value="0"/>
+  <property type="bool" name="pp2_pin14inv" value="False"/>
   <property type="string" name="pp2_pin15_in" value="unused-input"/>
-  <property type="int" name="pp2_pin15_in_inv" value="0"/>
+  <property type="bool" name="pp2_pin15_in_inv" value="False"/>
   <property type="string" name="pp2_pin16" value="unused-output"/>
-  <property type="int" name="pp2_pin16inv" value="0"/>
+  <property type="bool" name="pp2_pin16inv" value="False"/>
   <property type="string" name="pp2_pin17" value="unused-output"/>
-  <property type="int" name="pp2_pin17inv" value="0"/>
-  <property type="int" name="pp2_pin1inv" value="0"/>
-  <property type="string" name="pp2_pin2" value="unused-output"/>
+  <property type="bool" name="pp2_pin17inv" value="False"/>
+  <property type="bool" name="pp2_pin1inv" value="False"/>
+  <property type="string" name="pp2_pin2" value="dout-00"/>
   <property type="string" name="pp2_pin2_in" value="unused-input"/>
-  <property type="int" name="pp2_pin2_in_inv" value="0"/>
-  <property type="int" name="pp2_pin2inv" value="0"/>
-  <property type="string" name="pp2_pin3" value="unused-output"/>
+  <property type="bool" name="pp2_pin2_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin2inv" value="False"/>
+  <property type="string" name="pp2_pin3" value="dout-01"/>
   <property type="string" name="pp2_pin3_in" value="unused-input"/>
-  <property type="int" name="pp2_pin3_in_inv" value="0"/>
-  <property type="int" name="pp2_pin3inv" value="0"/>
-  <property type="string" name="pp2_pin4" value="unused-output"/>
+  <property type="bool" name="pp2_pin3_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin3inv" value="False"/>
+  <property type="string" name="pp2_pin4" value="dout-02"/>
   <property type="string" name="pp2_pin4_in" value="unused-input"/>
-  <property type="int" name="pp2_pin4_in_inv" value="0"/>
-  <property type="int" name="pp2_pin4inv" value="0"/>
-  <property type="string" name="pp2_pin5" value="unused-output"/>
+  <property type="bool" name="pp2_pin4_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin4inv" value="False"/>
+  <property type="string" name="pp2_pin5" value="dout-03"/>
   <property type="string" name="pp2_pin5_in" value="unused-input"/>
-  <property type="int" name="pp2_pin5_in_inv" value="0"/>
-  <property type="int" name="pp2_pin5inv" value="0"/>
+  <property type="bool" name="pp2_pin5_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin5inv" value="False"/>
   <property type="string" name="pp2_pin6" value="unused-output"/>
   <property type="string" name="pp2_pin6_in" value="unused-input"/>
-  <property type="int" name="pp2_pin6_in_inv" value="0"/>
-  <property type="int" name="pp2_pin6inv" value="0"/>
+  <property type="bool" name="pp2_pin6_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin6inv" value="False"/>
   <property type="string" name="pp2_pin7" value="unused-output"/>
   <property type="string" name="pp2_pin7_in" value="unused-input"/>
-  <property type="int" name="pp2_pin7_in_inv" value="0"/>
-  <property type="int" name="pp2_pin7inv" value="0"/>
+  <property type="bool" name="pp2_pin7_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin7inv" value="False"/>
   <property type="string" name="pp2_pin8" value="unused-output"/>
   <property type="string" name="pp2_pin8_in" value="unused-input"/>
-  <property type="int" name="pp2_pin8_in_inv" value="0"/>
-  <property type="int" name="pp2_pin8inv" value="0"/>
+  <property type="bool" name="pp2_pin8_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin8inv" value="False"/>
   <property type="string" name="pp2_pin9" value="unused-output"/>
   <property type="string" name="pp2_pin9_in" value="unused-input"/>
-  <property type="int" name="pp2_pin9_in_inv" value="0"/>
-  <property type="int" name="pp2_pin9inv" value="0"/>
+  <property type="bool" name="pp2_pin9_in_inv" value="False"/>
+  <property type="bool" name="pp2_pin9inv" value="False"/>
   <property type="int" name="pp3_direction" value="0"/>
   <property type="bool" name="pyvcp" value="False"/>
   <property type="bool" name="pyvcpconnect" value="True"/>
@@ -204,30 +204,30 @@
   <property type="float" name="xhomesw" value="0.0"/>
   <property type="float" name="xhomevel" value="0.05"/>
   <property type="int" name="xlatchdir" value="0"/>
-  <property type="float" name="xleadscrew" value="100.0"/>
-  <property type="float" name="xmaxacc" value="20.0"/>
+  <property type="float" name="xleadscrew" value="20.0"/>
+  <property type="float" name="xmaxacc" value="60.0"/>
   <property type="float" name="xmaxlim" value="20.0"/>
-  <property type="float" name="xmaxvel" value="1.0"/>
-  <property type="float" name="xmicrostep" value="2.0"/>
+  <property type="float" name="xmaxvel" value="100.0"/>
+  <property type="float" name="xmicrostep" value="1.0"/>
   <property type="float" name="xminlim" value="-20.0"/>
   <property type="float" name="xpulleyden" value="1.0"/>
   <property type="float" name="xpulleynum" value="1.0"/>
-  <property type="float" name="xscale" value="40000.0"/>
-  <property type="float" name="xsteprev" value="200.0"/>
+  <property type="float" name="xscale" value="2000.0"/>
+  <property type="float" name="xsteprev" value="100.0"/>
   <property type="float" name="yhomepos" value="0.0"/>
   <property type="float" name="yhomesw" value="0.0"/>
   <property type="float" name="yhomevel" value="0.05"/>
   <property type="int" name="ylatchdir" value="0"/>
-  <property type="float" name="yleadscrew" value="50.0"/>
-  <property type="float" name="ymaxacc" value="30.0"/>
+  <property type="float" name="yleadscrew" value="20.0"/>
+  <property type="float" name="ymaxacc" value="60.0"/>
   <property type="float" name="ymaxlim" value="20.0"/>
-  <property type="float" name="ymaxvel" value="1.0"/>
+  <property type="float" name="ymaxvel" value="100.0"/>
   <property type="float" name="ymicrostep" value="2.0"/>
   <property type="float" name="yminlim" value="-20.0"/>
   <property type="float" name="ypulleyden" value="1.0"/>
   <property type="float" name="ypulleynum" value="1.0"/>
-  <property type="float" name="yscale" value="60000.0"/>
-  <property type="float" name="ysteprev" value="600.0"/>
+  <property type="float" name="yscale" value="4000.0"/>
+  <property type="float" name="ysteprev" value="100.0"/>
   <property type="float" name="zhomepos" value="0.0"/>
   <property type="float" name="zhomesw" value="0.0"/>
   <property type="float" name="zhomevel" value="0.05"/>
