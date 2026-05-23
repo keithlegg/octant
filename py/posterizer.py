@@ -180,19 +180,27 @@ def move_to(x, y, z):
 ##-------------------------##
 
 
-#test_streamline(GLOBAL_PROJ, 6,'car.jpg' , dopass='all') 
+#test_streamline(GLOBAL_PROJ, 2,'ball.jpg' , dopass='all') 
 
 
 
 ##------------------------------------##
-def export_json_ngc(filepath, infilename, outfilename):  
+def export_json_ngc(filepath, infilename):  
     vflo = vectorflow()
     vflo.fr = 100 #set fast feed rate
+    
+    basename = infilename.split('.')[0]
 
     vflo.load_geojson(filepath+'/'+infilename)
     
     vflo.gl_move_center()
-    vflo.gl_scale(.5)   
+    vflo.gl_scale(.25)   
+    
+
+    print('before %s'%len(vflo.gr_sort))
+    #vflo.gr_sort = vflo.filter_by_bbox(2, 2, underover='smaller')
+    #vflo.gr_sort = vflo.filter_by_bbox(2, 2 )
+    print('after %s'%len(vflo.gr_sort))
 
 
     #first gcodes ---------------------- 
@@ -202,10 +210,6 @@ def export_json_ngc(filepath, infilename, outfilename):
     vflo.precut.append('(precut)')
     vflo.precut.append('M65 P0')
 
-    vflo.precut.append('M64 P1')
-    vflo.precut.append('G4 P.5')
-    vflo.precut.append('M65 P1')
-
     #postcut gcodes ---------------------- 
     vflo.postcut.append('(postcut)')    
     vflo.postcut.append('M64 P0')
@@ -213,22 +217,28 @@ def export_json_ngc(filepath, infilename, outfilename):
     #eof gcodes ---------------------- 
     vflo.finalgc.append('M65 P0')
     vflo.finalgc.append('M65 P1')
+    vflo.finalgc.append('M65 P2')
+    vflo.finalgc.append('M65 P3')
+
 
 
     #vflo.prim_circle(pos=(0,0,1),axis='z', dia=.75,spokes=30)
     #this is a hack, but it works for now 
     #vflo.insert_gr_sort (vflo.points )
+    
+    #def export_extents_ngc(self, folder, name, scale=None, type='laser_ngc'):
+    vflo.export_extents_ngc(filepath, '%s'%basename)
 
     #def export_ngc(self, rh, ch, cdpi, cmax, filename, do3d=False):
     vflo.export_ngc(1, 0, .1, 2, 
-                    '%s/%s.ngc'%(filepath, outfilename), 
+                    '%s/%s.ngc'%(filepath,basename), 
                     do_precut=True,
                     do_postcut=True,
                     do3d=True, 
                     do_retracts=False)
 
 
-export_json_ngc(GLOBAL_PROJ, "new.json", "test_servoz")
+export_json_ngc(GLOBAL_PROJ, "0.json")
 
 
 ##-------------------------##

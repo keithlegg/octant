@@ -17,8 +17,6 @@
 #ifndef _ST7735H_
 #define _ST7735H_
 
-// extern const char Font[]PROGMEM; 
-
 // some flags for ST7735_InitR()
 enum initRFlags{
   none,
@@ -45,6 +43,10 @@ void ST7735_InitB(void);
 void ST7735_InitR(enum initRFlags option);
 
 
+void spiwrite(uint8_t c);
+void writecommand(uint16_t c);
+
+
 //------------ST7735_DrawPixel------------
 // Color the pixel at the given coordinates with the given color.
 // Requires 13 bytes of transmission
@@ -57,15 +59,6 @@ void ST7735_InitR(enum initRFlags option);
 //        color 16-bit color, which can be produced by ST7735_Color565()
 // Output: none
 void ST7735_DrawPixel(uint16_t x, uint16_t y, uint16_t color);
-
-
-
-
-//------------ST7735_DrawLine------------
-void ST7735_DrawLine(uint8_t x0, uint8_t x1, uint8_t y0, uint8_t y1, uint16_t color);
-
-
-
 
 //------------ST7735_DrawFastVLine------------
 // Draw a vertical line at the given coordinates with the given height and color.
@@ -110,11 +103,6 @@ void ST7735_FillScreen(uint16_t color);
 // Output: none
 void ST7735_FillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color);
 
-//------------ST7735_LineRect------------
-//keith was here
-void ST7735_LineRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color);
-
-
 
 //------------ST7735_Color565------------
 // Pass 8-bit (each) R,G,B and get back 16-bit packed color.
@@ -153,15 +141,6 @@ uint16_t ST7735_SwapColor(uint16_t x) ;
 // Must be less than or equal to 128 pixels wide by 160 pixels high
 void ST7735_DrawBitmap(uint8_t x, uint8_t y, const uint16_t *image, uint8_t w, uint8_t h);
 
-
-
-//************************************************************************************
-//************************************************************************************
-//------------ST7735_DrawHexCharS------------
-//Subset of text rendering just for displaying hex chars
-void ST7735_DrawHexCharS(uint8_t x, uint8_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size);
-
-
 //------------ST7735_DrawCharS------------
 // Simple character draw function.  This is the same function from
 // Adafruit_GFX.c but adapted for this processor.  However, each call
@@ -177,9 +156,7 @@ void ST7735_DrawHexCharS(uint8_t x, uint8_t y, char c, int16_t textColor, int16_
 //        bgColor   16-bit color of the background
 //        size      number of pixels per character pixel (e.g. size==2 prints each pixel of font as 2x2 square)
 // Output: none
-
-
-//void ST7735_DrawCharS(uint8_t x, uint8_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size);
+void ST7735_DrawCharS(uint8_t x, uint8_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size);
 
 //------------ST7735_DrawChar------------
 // Advanced character draw function.  This is similar to the function
@@ -194,10 +171,7 @@ void ST7735_DrawHexCharS(uint8_t x, uint8_t y, char c, int16_t textColor, int16_
 //        bgColor   16-bit color of the background
 //        size      number of pixels per character pixel (e.g. size==2 prints each pixel of font as 2x2 square)
 // Output: none
-
-
-// void ST7735_DrawChar(uint8_t x, uint8_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size);
-
+void ST7735_DrawChar(uint8_t x, uint8_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size);
 
 //------------ST7735_DrawString------------
 // String draw function.
@@ -209,21 +183,8 @@ void ST7735_DrawHexCharS(uint8_t x, uint8_t y, char c, int16_t textColor, int16_
 //        textColor 16-bit color of the characters
 // bgColor is Black and size is 1
 // Output: number of characters printed
+uint16_t ST7735_DrawString(uint8_t x, uint8_t y, char *pt, int16_t textColor);;
 
-// uint16_t ST7735_DrawString(uint8_t x, uint8_t y, char *pt, int16_t textColor);;
-
-
-// *************** ST7735_OutChar ********************
-// Output one character to the LCD
-// Position determined by ST7735_SetCursor command
-// Color set by ST7735_SetTextColor
-// Inputs: 8-bit ASCII character
-// Outputs: none
-
-//void ST7735_OutChar(char ch);
-
-//************************************************************************************
-//************************************************************************************
 
 
 //********ST7735_SetCursor*****************
@@ -242,8 +203,7 @@ void ST7735_SetCursor(uint16_t newX, uint16_t newY);
 // Input: 32-bit number to be transferred
 // Output: none
 // Variable format 1-10 digits with no space before or after
-
-// void ST7735_OutUDec(uint8_t n);
+void ST7735_OutUDec(uint8_t n);
 
 
 //------------ST7735_SetRotation------------
@@ -368,6 +328,14 @@ void ST7735_PlotNextErase(void);
 //        ST7735_PlotdBfs(mag[i++]);
 //        ST7735_PlotNext();
 //    }   // called 128 times
+
+// *************** ST7735_OutChar ********************
+// Output one character to the LCD
+// Position determined by ST7735_SetCursor command
+// Color set by ST7735_SetTextColor
+// Inputs: 8-bit ASCII character
+// Outputs: none
+void ST7735_OutChar(char ch);
 
 //********ST7735_OutString*****************
 // Print a string of characters to the ST7735 LCD.
