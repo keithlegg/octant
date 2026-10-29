@@ -1,4 +1,4 @@
-TARGET   = homer
+TARGET   = ams_rotate_head
 
 INCDIR   = .
 SRCDIR   = .

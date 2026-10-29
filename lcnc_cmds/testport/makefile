@@ -1,4 +1,4 @@
-TARGET   = homer
+TARGET   = testport
 
 INCDIR   = .
 SRCDIR   = .

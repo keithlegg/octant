@@ -1,28 +1,22 @@
 #this is not done - I am thinking about the simplest possible build system 
 
 
+SUBDIRS = testport rotate_head home_axis
+TOPTARGETS = all clean
 
-SUBDIRS = testport home_axis 
+$(TOPTARGETS): $(SUBDIRS)
 
-SUBDIRSCLEAN=$(addsuffix clean,$(SUBDIRS))
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
 
+.PHONY: $(SUBDIRS) $(TOPTARGETS)
 
+#SUBDIRS := $(wildcard */.)
+#all: $(SUBDIRS)
+#$(SUBDIRS):
+#		$(MAKE) -C $@
+#.PHONY: all $(SUBDIRS)
 
-
-all:
-	# debug - work in progress
-	# run "make build" to build all commands 
  
 
-build:
-	$(MAKE) -C testport  
-
-
-clean: $(SUBDIRSCLEAN)
-
-clean_curdir:
-	#rm -fv *.o *~ core .depend .*.cmd *.ko *.mod.c
-	$(MAKE) clean 
-
-%clean: %
-	$(MAKE) -C $< -f $(PWD)/makefile clean_curdir
+ 
