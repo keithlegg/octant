@@ -16,8 +16,7 @@ UNAME := $(shell uname)
 
 
 # compiling flags  
-#CFLAGS   = -I$(INCDIR) -Wall   
-CFLAGS   = -I$(INCDIR) -w  
+CFLAGS   = -I$(INCDIR) -Wall  
 
 LINKER   = g++
 
@@ -25,13 +24,15 @@ LINKER   = g++
 
 #Linux
 ifeq ($(UNAME), Linux)
-	LFLAGS   = -g -Wall -lglut -lGL -lGLU -lX11  -lm -lz 
+	#LFLAGS   = -g -Wall -lglut -lGL -lGLU -lX11  -lm -lz 
+	LFLAGS   = -g -Wall -lX11  -lm -lz 
+
 endif
 
 #OSX
-ifeq ($(UNAME), Darwin)
-	LFLAGS   = -Wall -lm -lz -framework Glut -framework OpenGL
-endif
+#ifeq ($(UNAME), Darwin)
+# LFLAGS   = -Wall -lm -lz -framework Glut -framework OpenGL
+#endif
 
 
 
