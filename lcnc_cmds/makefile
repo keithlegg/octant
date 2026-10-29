@@ -1,72 +1,28 @@
-TARGET   = homer
-
-INCDIR   = inc
-SRCDIR   = src
-OBJDIR   = obj
-BINDIR   = bin
-
-
-#CC       = g++ -D_ISLINUX 
-CC       = g++ 
-
-
-#detect the OS (linux or OSX, dont care about windows)
-UNAME := $(shell uname)
+#this is not done - I am thinking about the simplest possible build system 
 
 
 
-# compiling flags  
-CFLAGS   = -I$(INCDIR) -Wall  
+SUBDIRS = testport home_axis 
 
-LINKER   = g++
-
-# linking flags 
-
-#Linux
-ifeq ($(UNAME), Linux)
-	#LFLAGS   = -g -Wall -lglut -lGL -lGLU -lX11  -lm -lz 
-	LFLAGS   = -g -Wall -lX11  -lm -lz 
-
-endif
-
-#OSX
-#ifeq ($(UNAME), Darwin)
-# LFLAGS   = -Wall -lm -lz -framework Glut -framework OpenGL
-#endif
+SUBDIRSCLEAN=$(addsuffix clean,$(SUBDIRS))
 
 
 
-SOURCES  := $(wildcard $(SRCDIR)/*.c)
 
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-rm       = rm -f
+all:
+	# debug - work in progress
+	# run "make build" to build all commands 
+ 
 
-
-$(TARGET): $(OBJECTS)
-	@$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
-	@echo "Linking complete!"
-
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "Compiled "$<" successfully!"
+build:
+	$(MAKE) -C testport  
 
 
-.PHONY: cleanimg
-cleanimg:
-	@$(rm) *.bmp
-	@echo "image cleanup done"
+clean: $(SUBDIRSCLEAN)
 
+clean_curdir:
+	#rm -fv *.o *~ core .depend .*.cmd *.ko *.mod.c
+	$(MAKE) clean 
 
-.PHONY: clean
-clean:
-	@$(rm) $(TARGET)
-	@$(rm) $(OBJECTS)
-	@echo "cleanup done"
-
-
-.PHONY: remove
-remove: clean
-	@$(rm) $(BINDIR)/$(TARGET)
-	@$(rm) $(OBJDIR)/*.o
-	@echo "Executable removed!"
-	 
+%clean: %
+	$(MAKE) -C $< -f $(PWD)/makefile clean_curdir
