@@ -202,7 +202,7 @@ void SPI_Init(void)
    CTRL_DDR = 0xff;  //software controlled SPI/CS lines on PORTE
 
    SPCR |= (1<<MSTR)|(1<<SPE);  // SPI Master, SPI Enable
-   //SPSR |= SPI2X;
+   SPSR |= SPI2X;
 
 }
 
