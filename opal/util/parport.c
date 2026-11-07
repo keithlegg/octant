@@ -54,6 +54,12 @@
     #try reading data from it 
     # cat /dev/parport0
 
+
+    #############
+    #set the executable to run without root permsission
+
+    sudo setcap cap_sys_rawio+ep testport
+    
     #############
 
     #more crap to try 

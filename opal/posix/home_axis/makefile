@@ -1,4 +1,4 @@
-TARGET   = homer
+TARGET   = home_axis
 
 INCDIR   = .
 SRCDIR   = .

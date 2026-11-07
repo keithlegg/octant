@@ -1,4 +1,4 @@
-TARGET   = ams_rotate_head
+TARGET   = rotate_head
 
 INCDIR   = .
 SRCDIR   = .
