@@ -156,18 +156,20 @@ void send_byte_allbits(void)
 
 }
 
+
+
+
 /***********************/
 
 
-int main(void) 
+int main(int argc, char *argv[]) 
 {
-    
-    
-    //flash_byte();
-    
-    //flash_ctrl();
-    
-    send_byte_allbits();
+        
+    // flash_byte();
+    // flash_ctrl();
+    // send_byte_allbits();
+
+    set_byte(atoi(argv[1]));
 
 
     return 0;
