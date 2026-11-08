@@ -54,9 +54,16 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "src/ST7735.h"
+
 
 #include <avr/pgmspace.h>
+
+
+#include "src/ST7735.h"
+
+#include "src/hio_util.h"
+#include "src/serial.h"
+#include "src/actuator.h"
 
 // UART STUFF
 #define FOSC 16000000UL
@@ -85,6 +92,9 @@ uint8_t buf1_lsb = 0;
 uint8_t buf1_msb = 0;
 uint8_t buf2_lsb = 0;
 uint8_t buf2_msb = 0;
+
+
+uint16_t buf1_16 = 0;
 
 /***********************************************/
 //I never did figure out char mapping but it uses this:
@@ -202,7 +212,7 @@ void SPI_Init(void)
    CTRL_DDR = 0xff;  //software controlled SPI/CS lines on PORTE
 
    SPCR |= (1<<MSTR)|(1<<SPE);  // SPI Master, SPI Enable
-   SPSR |= SPI2X;
+   //SPSR |= SPI2X;
 
 }
 
@@ -323,23 +333,64 @@ void ST7735_DrawBitmapSRAM(uint8_t x, uint8_t y, uint16_t start, uint8_t w, uint
 
 /***********************************************/
 
+void test_tx(void)
+{
+    UART_transmit(0xaa); 
+}
 
-int main (void)
+
+void test_rx(void)
+{
+    /*
+    //DECALRE THIS OUTSIDE OF LOOP
+    //    unsigned char inout ;
+    inout = UART_receive();  
+    if(inout==0xaa)
+    {
+        blink_led();    
+    }*/
+}
+
+void test_lcd(void)
+{
+
+    scribe_byte2_astext(0xf0f0);
+    _delay_ms(300); 
+}
+
+void init_lcd(void)
 {
     SPI_Init();
-
     ST7735_InitR(INITR_BLACKTAB);  
     ST7735_FillScreen(0); //clear screen black 
-   
-    uint16_t foo = 0xaaaa;
- 
-    while(1)
-    { 
-        scribe_byte2_astext(foo);
+}
 
-        _delay_ms(300); 
+/***********************************************/
+int main (void)
+{
 
-    }//while 1
+    init_ob_led();
+    
+    UART_Init(MYUBRR);
+
+    init_transceiver();
+    
+    init_lcd();
+
+    //set_txmode();
+    set_rxmode();
+    unsigned char inout;
+    
+    while (1)
+    {
+        /*  
+        inout = UART_receive();  
+        scribe_byte_astext(inout);
+        _delay_ms(100);         
+        */
+
+        test_lcd();
+    }
 
 }//main
 
