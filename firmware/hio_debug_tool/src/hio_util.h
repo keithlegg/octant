@@ -31,6 +31,8 @@
 /*******************/
 void init_transceiver(void);
 void init_ob_led(void);
+void init_pp_dbus(void);
+
 
 void set_rxmode(void);
 void set_txmode(void);

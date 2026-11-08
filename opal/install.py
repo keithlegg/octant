@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
+
 import os 
 import shutil
 import subprocess
 
+from pathlib import Path
 
 
 
@@ -11,9 +13,17 @@ import subprocess
 
 CMD_PATH = '/home/keith/linuxcnc/nc_files'
 
-CMD_FILES = ['testport','rotate_head','home_axis']
+CMD_FILES = ['testport', 'test_coms', 'rotate_head', 'home_axis']
 
 
+folder_path = Path("path/to/your/folder")
+
+# Check if it exists AND is a directory
+if folder_path.is_dir():
+    print("Install location exists.")
+else:
+    print("Install location '%s' does not exist."%CMD_PATH)
+    exit()
 
 print('installing binaries to : %s'%CMD_PATH )
 

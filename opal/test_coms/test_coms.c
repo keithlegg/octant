@@ -1,5 +1,8 @@
+
 #include <stdio.h>
+
 #include <unistd.h> //sleep()
+
 #include <sys/io.h> //outb() ioperm()
 
 
@@ -21,13 +24,8 @@
 
 
 /*
-// to compile                 :  gcc -O parport.c -o parport
-// after compiling, set suid  :  chmod +s parport   
-// copy to /usr/sbin/         :  sudo cp parport /usr/sbin/
 
-
-
-//HELP 
+    HELP 
 
     #There are 3 commands that are going to let you know that the Linux kernel has found your Parallel Port.
     sudo lspci -nnv
@@ -53,6 +51,11 @@
     # echo "Test string" > /dev/parport0
     #try reading data from it 
     # cat /dev/parport0
+
+    #############
+    #set the executable to run without root permsission
+
+    sudo setcap cap_sys_rawio+ep testport
 
     #############
 
@@ -81,21 +84,15 @@
 
 */
 
+/***********************/
 
-
-int main(void) 
+void flash_byte(void)
 {
     if(ioperm(LPT1,1,1))
     { 
         fprintf(stderr, "Couldn't open parallel port"), exit(1);
     }
 
-    // if (ioperm(LPT1,1,1) == -1) //set LPT permissions
-    // {
-    //     printf("cant open port!\n");
-    //     return -1;
-    // } 
-
     outb(255,LPT1);  //set all pins hi
     sleep(1); 
     outb(0,LPT1);    //set all pins lo
@@ -103,7 +100,72 @@ int main(void)
 
     outb(255,LPT1);  //set all pins hi
     sleep(1); 
-    outb(0,LPT1);    //set all pins lo
+    outb(0,LPT1);    //set all pins lo  
+}
+
+
+/***********************/
+
+void set_byte(uint byte)
+{
+    if(ioperm(LPT1,1,1))
+    { 
+        fprintf(stderr, "Couldn't open parallel port"), exit(1);
+    }
+
+    outb(byte,LPT1);  
+}
+
+
+/***********************/
+//+1 is input , +2 is control lines output  
+
+void flash_ctrl(void)
+{
+
+    if(ioperm(LPT1+2,1,1))
+    { 
+        fprintf(stderr, "Couldn't open parallel port"), exit(1);
+    }
+
+    outb(0xff,LPT1+2);  //set all pins hi
+    sleep(1); 
+    outb(0,LPT1+2);    //set all pins lo
+    sleep(1); 
+
+    outb(0xff,LPT1+2);  //set all pins hi
+    sleep(1); 
+    outb(0,LPT1+2);    //set all pins lo  
+}
+
+
+/***********************/
+void send_byte_allbits(void)
+{
+    uint a = 0;
+    for(a=0;a<256;a++)
+    {
+        set_byte(a);
+        usleep(100000);
+    }
+
+}
+
+
+
+
+/***********************/
+
+
+int main(int argc, char *argv[]) 
+{
+        
+    // flash_byte();
+    // flash_ctrl();
+    // send_byte_allbits();
+
+    set_byte(atoi(argv[1]));
+
 
     return 0;
 }

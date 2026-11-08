@@ -24,13 +24,8 @@
 
 
 /*
-// to compile                 :  gcc -O parport.c -o parport
-// after compiling, set suid  :  chmod +s parport   
-// copy to /usr/sbin/         :  sudo cp parport /usr/sbin/
 
-
-
-//HELP 
+    HELP 
 
     #There are 3 commands that are going to let you know that the Linux kernel has found your Parallel Port.
     sudo lspci -nnv

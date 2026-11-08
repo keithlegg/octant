@@ -1,4 +1,27 @@
-defaults for atmega2560
+
+
+
+##########################
+#BOARD PINOUTS
+
+#LCD SCREEN 
+
+BUILT IN LED
+
+
+D52 PB1 SCK
+D51 PB2 MOSI 
+D53 PB0 CS
+
+ 
+
+
+
+
+
+
+
+
 
 
 
@@ -57,36 +80,6 @@ sudo avrdude -V -c usbtiny -p m2560 -U lfuse:r:-:h -U hfuse:r:-:h
  
 
 
-#################################
-#SLOW PROGRAMMING (untested)
-
-:\AVR>avrdude -p attiny13 -P usb -c usbtiny -tuF
- 
-avrdude: initialization failed, rc=-1
-avrdude: AVR device initialized and ready to accept instructions
- 
-Reading | ################################################## | 100% 0.00s
- 
-avrdude: Device signature = 0x000000
-avrdude: Yikes! Invalid device signature.
-avrdude: Expected signature for ATtiny13 is 1E 90 07
-avrdude> sck 1000
->>> sck 1000
-avrdude: Setting SCK period to 250 usec
-avrdude> e
->>> e
-avrdude: erasing chip
-avrdude> sck 10
->>> sck 10
-avrdude: Setting SCK period to 10 usec
-avrdude> quit
->>> quit
- 
-avrdude done. Thank you.
-
-However, there is a missing instruction in this article. Indeed, these instructions erased the chip but didn’t fix the fuses, so now it’s blank but the fuses are still wrong!
-In order to reprogram the fuses, you need to use the ‘-B250’ in the command line:
-avrdude -p attiny13 -P usb -c usbtiny -U lfuse:w:0x6A:m -U hfuse:w:0xFF:m -B250
 
 
 

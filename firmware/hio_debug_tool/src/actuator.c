@@ -15,7 +15,8 @@ uint8_t idx_to_byte(uint8_t idx){
 
 /***********************************************/
 
-void invert_on(void){
+void invert_on(void)
+{
     int a=0;
     for(a=0;a<8;a++){
        PORTL = idx_to_byte(a);
@@ -31,7 +32,8 @@ void invert_on(void){
 
 /***********************************************/
 
-void test_ports(void){
+void test_ports(void)
+{
     int a=0;
     for(a=0;a<8;a++){
        PORTL = idx_to_byte(a);
