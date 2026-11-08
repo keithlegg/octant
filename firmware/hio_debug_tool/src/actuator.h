@@ -3,11 +3,11 @@
 
 
 
-uint8_t idx_to_byte(uint8_t idx);
 
 
 
-void invert_on(void);
+
+
 
 void test_ports(void);
 

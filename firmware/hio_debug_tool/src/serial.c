@@ -1,6 +1,5 @@
 #include <avr/io.h>
 
-#define F_CPU 16000000UL //AVR Clock Speed in MHZ
 #define FOSC 16000000    // Clock Speed
 
 //UART STUFF

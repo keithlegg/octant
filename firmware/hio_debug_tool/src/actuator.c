@@ -1,4 +1,7 @@
 
+
+#include "hio_util.h"
+
 #include <avr/io.h>
 
 #include <util/delay.h>
@@ -6,27 +9,6 @@
 
 #include "actuator.h"
 
-
-/***********************************************/
-uint8_t idx_to_byte(uint8_t idx){
-    return (1 << idx);
-} 
-
-
-/***********************************************/
-
-void invert_on(void)
-{
-    int a=0;
-    for(a=0;a<8;a++){
-       PORTL = idx_to_byte(a);
-       _delay_ms(100);
-    }
-    for(a=0;a<8;a++){
-       PORTC = idx_to_byte(a);
-       _delay_ms(100);
-    }       
-}
 
 
 

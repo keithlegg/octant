@@ -50,7 +50,7 @@
 
 */
 
-#define F_CPU 16000000UL
+#include "src/hio_util.h"
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -61,14 +61,11 @@
 
 #include "src/ST7735.h"
 
-#include "src/hio_util.h"
+
 #include "src/serial.h"
 #include "src/actuator.h"
 
-// UART STUFF
-#define FOSC 16000000UL
-#define BAUD 57600
-#define MYUBRR FOSC/16/BAUD-1
+
 
 #define BIT_ON 0x30 //ascii 1
 #define BIT_OFF 0x31 //ascii 0

@@ -2,11 +2,36 @@
 #define _UTILH_
 
 
+#include <avr/io.h>
+
+
+
 /*******************/
-//set up the software control lines for TFT LCD/SPI and ALS171 transciever chip (serial) 
- 
-//arduino mega pins D2,D3 control the TFT screen 
-//arduino mega pins D4,D5 control the TFT screen
+
+#define __DELAY_BACKWARD_COMPATIBLE__
+
+#define F_CPU 16000000UL //AVR Clock Speed in MHZ
+#define FOSC 16000000    // Clock Speed
+
+
+/*******************/
+//chip initialization stuff 
+
+void init_transceiver(void);
+void init_ob_led(void);
+void init_pp_dbus(void);
+
+
+void set_rxmode(void);
+void set_txmode(void);
+
+
+/*******************/
+// experimental differential serial transceiver stuff 
+
+// set up the software control lines for TFT LCD/SPI and ALS171 transciever chip (serial) 
+// arduino mega pins D2,D3 control the TFT screen 
+// arduino mega pins D4,D5 control the TFT screen
 
 
 #define XVR_DDR_CTRL_1 DDRG  
@@ -29,18 +54,19 @@
 
 
 /*******************/
-void init_transceiver(void);
-void init_ob_led(void);
-void init_pp_dbus(void);
 
 
-void set_rxmode(void);
-void set_txmode(void);
+uint8_t idx_to_byte(uint8_t idx);
 
 void blink_led(void);
 
 
 void test_pins(void);
+
+
+
+
+
 
 
 

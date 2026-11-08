@@ -1,7 +1,8 @@
 
 
 
-SOURCES = src/hio_util.c main.c src/ST7735.c src/actuator.c src/serial.c
+
+SOURCES = src/theta_ctrl.c src/hio_util.c src/ST7735.c src/actuator.c src/serial.c main.c
 
  
 

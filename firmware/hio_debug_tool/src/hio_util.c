@@ -1,12 +1,12 @@
+
+#include "hio_util.h"
+
 #include <avr/io.h>
 
-
-#define F_CPU 16000000UL //AVR Clock Speed in MHZ
-#define FOSC 16000000    // Clock Speed
 #include <util/delay.h>
 
  
-#include "hio_util.h"
+
 
 
 
@@ -33,6 +33,13 @@
     #1 bit strobe line        (pport pin 1)
     PF7    (A7,D61) 
 */
+
+
+
+/***********************************************/
+uint8_t idx_to_byte(uint8_t idx){
+    return (1 << idx);
+} 
 
 
 
