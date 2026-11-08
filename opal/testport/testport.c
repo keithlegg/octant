@@ -110,6 +110,19 @@ void flash_byte(void)
 
 
 /***********************/
+
+void set_byte(uint byte)
+{
+    if(ioperm(LPT1,1,1))
+    { 
+        fprintf(stderr, "Couldn't open parallel port"), exit(1);
+    }
+
+    outb(byte,LPT1);  
+}
+
+
+/***********************/
 //+1 is input , +2 is control lines output  
 
 void flash_ctrl(void)
@@ -131,13 +144,30 @@ void flash_ctrl(void)
 }
 
 
+/***********************/
+void send_byte_allbits(void)
+{
+    uint a = 0;
+    for(a=0;a<256;a++)
+    {
+        set_byte(a);
+        usleep(100000);
+    }
+
+}
+
+/***********************/
+
+
 int main(void) 
 {
     
     
     //flash_byte();
     
-    flash_ctrl();
+    //flash_ctrl();
+    
+    send_byte_allbits();
 
 
     return 0;
