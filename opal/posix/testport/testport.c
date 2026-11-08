@@ -1,5 +1,8 @@
+
 #include <stdio.h>
+
 #include <unistd.h> //sleep()
+
 #include <sys/io.h> //outb() ioperm()
 
 
@@ -55,6 +58,11 @@
     # cat /dev/parport0
 
     #############
+    #set the executable to run without root permsission
+
+    sudo setcap cap_sys_rawio+ep testport
+
+    #############
 
     #more crap to try 
 
@@ -85,6 +93,11 @@
 
 void flash_byte(void)
 {
+    if(ioperm(LPT1,1,1))
+    { 
+        fprintf(stderr, "Couldn't open parallel port"), exit(1);
+    }
+
     outb(255,LPT1);  //set all pins hi
     sleep(1); 
     outb(0,LPT1);    //set all pins lo
@@ -97,28 +110,35 @@ void flash_byte(void)
 
 
 /***********************/
-void flash_word(void)
+//+1 is input , +2 is control lines output  
+
+void flash_ctrl(void)
 {
-    outw(255,LPT1);  //set all pins hi
+
+    if(ioperm(LPT1+2,1,1))
+    { 
+        fprintf(stderr, "Couldn't open parallel port"), exit(1);
+    }
+
+    outb(0xff,LPT1+2);  //set all pins hi
     sleep(1); 
-    outw(0,LPT1);    //set all pins lo
+    outb(0,LPT1+2);    //set all pins lo
     sleep(1); 
 
-    outw(255,LPT1);  //set all pins hi
+    outb(0xff,LPT1+2);  //set all pins hi
     sleep(1); 
-    outw(0,LPT1);    //set all pins lo  
+    outb(0,LPT1+2);    //set all pins lo  
 }
 
 
 int main(void) 
 {
-    if(ioperm(LPT1,1,1))
-    { 
-        fprintf(stderr, "Couldn't open parallel port"), exit(1);
-    }
-
     
-    flash_byte();
+    
+    //flash_byte();
+    
+    flash_ctrl();
+
 
     return 0;
 }
