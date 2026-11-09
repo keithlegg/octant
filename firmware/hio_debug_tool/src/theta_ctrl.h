@@ -43,7 +43,7 @@
 #define MOTOR_ENCODER_INPUT 1  //ard D22
 
 
-void setup_ports(void);
+void setup__theta_ports(void);
 
 
 uint8_t read_encoder(void);

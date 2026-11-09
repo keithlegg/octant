@@ -51,7 +51,7 @@ const uint16_t delval = 200;
 
 
 /*******************************/
-void setup_ports(void)
+void setup__theta_ports(void)
 {
     TEST_LED_DDR    = 0xff;
 
@@ -182,39 +182,6 @@ void run_stepper_ccw(uint16_t num_pulses)
     }
 }
 
-
-/*******************************/
-/*
-int main (void)
-{
-    setup_ports();
-    
-    uint8_t enc_val = 0;
-    
-    uint16_t num_pulses = 100;
-    uint16_t long_pause = 1000;    
-
-
-    while(1)
-    {
-        home_stepper_cw();
-        _delay_ms(long_pause);
-                 
-        run_stepper_ccw(num_pulses);
-        _delay_ms(long_pause);
-        
-
-        
-        home_stepper_ccw();
-        _delay_ms(long_pause);
-
-        run_stepper_cw(num_pulses);
-        _delay_ms(long_pause);
-    }  
-
-} 
-*/
-/*******************************/
 
 
 

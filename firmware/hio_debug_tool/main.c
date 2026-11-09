@@ -66,11 +66,7 @@
 #define BIT_ON 0x30 //ascii 1
 #define BIT_OFF 0x31 //ascii 0
 
-//-------------------
-//SPI stuff 
-
-#define CTRL_DDR DDRE    
-#define SPI_DDR DDRB     
+ 
 
 
 #include <util/delay.h>
@@ -195,19 +191,6 @@ uint16_t cvt_8x2_to_16(uint8_t msbin, uint8_t lsbin){
 
 
 
-/************************************************/
-
-void SPI_Init(void)
-{
-   //hardware SPI lines
-   SPI_DDR  = 0xff;  //hardware SPI lines on PORTB
-   //software chip select lines (TFT_CS , DC) 
-   CTRL_DDR = 0xff;  //software controlled SPI/CS lines on PORTE
-
-   SPCR |= (1<<MSTR)|(1<<SPE);  // SPI Master, SPI Enable
-   //SPSR |= SPI2X;
-
-}
 
 
 /***********************************************/
@@ -239,7 +222,7 @@ void test_lcd(void)
 
 void init_lcd(void)
 {
-    SPI_Init();
+    lcd_spi_init();
     ST7735_InitR(INITR_BLACKTAB);  
     ST7735_FillScreen(0); //clear screen black 
 }
@@ -254,7 +237,7 @@ void init_lcd(void)
 
 int theta_test (void)
 {
-    setup_ports();
+    setup__theta_ports();
     
     uint8_t enc_val = 0;
     
@@ -270,8 +253,6 @@ int theta_test (void)
         run_stepper_ccw(num_pulses);
         _delay_ms(long_pause);
         
-
-        
         home_stepper_ccw();
         _delay_ms(long_pause);
 
@@ -281,6 +262,18 @@ int theta_test (void)
 
 } 
 
+/***********************************************/
+void show_bits_on_bus(void)
+{
+    //ST7735_FillScreen(0); //clear screen black 
+    cursor_x = 0;
+    cursor_y = 0;
+
+    scribe_byte_astext(PINK);
+    //scribe_byte2_astext(PINK);
+
+    //_delay_ms(300); 
+}
 
 /***********************************************/
 int main (void)
@@ -296,20 +289,10 @@ int main (void)
     //init_transceiver();
     //set_txmode();
     //set_rxmode();
-
-    unsigned char inout;
     
     while (1)
     {
-
-        //ST7735_FillScreen(0); //clear screen black 
-        cursor_x = 0;
-        cursor_y = 0;
-
-        scribe_byte2_astext(PINK);
-        //_delay_ms(300); 
-    
-
+        show_bits_on_bus();
 
     }
 
