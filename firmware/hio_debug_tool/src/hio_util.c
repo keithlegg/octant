@@ -36,12 +36,30 @@
 
 
 
+
+
+
+
 /***********************************************/
 uint8_t idx_to_byte(uint8_t idx){
     return (1 << idx);
 } 
 
 
+
+/***********************************************/
+void test_ports(void)
+{
+    int a=0;
+    for(a=0;a<8;a++){
+       PORTL = idx_to_byte(a);
+       _delay_ms(100);
+    }
+    for(a=0;a<8;a++){
+       PORTC = idx_to_byte(a);
+       _delay_ms(100);
+    }       
+}
 
 //*******************************************//
 //data bus init  

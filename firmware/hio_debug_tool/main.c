@@ -1,9 +1,5 @@
+
 /*
-   Keith Legg 
-   created  - Jan 7 - 2016
-   modified - May 22, 2026 
-
-
    any function that begins with "scribe" draws on the LCD screen
    any function that begins with "read/write" operates on SRAM
    any function that begins with "send" sends data over UART
@@ -254,6 +250,37 @@ void init_lcd(void)
         scribe_byte_astext(inout);
         _delay_ms(100);         
         */
+
+
+int theta_test (void)
+{
+    setup_ports();
+    
+    uint8_t enc_val = 0;
+    
+    uint16_t num_pulses = 100;
+    uint16_t long_pause = 1000;    
+
+
+    while(1)
+    {
+        home_stepper_cw();
+        _delay_ms(long_pause);
+                 
+        run_stepper_ccw(num_pulses);
+        _delay_ms(long_pause);
+        
+
+        
+        home_stepper_ccw();
+        _delay_ms(long_pause);
+
+        run_stepper_cw(num_pulses);
+        _delay_ms(long_pause);
+    }  
+
+} 
+
 
 /***********************************************/
 int main (void)

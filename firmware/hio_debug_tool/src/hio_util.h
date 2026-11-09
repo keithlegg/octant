@@ -58,9 +58,10 @@ void set_txmode(void);
 
 uint8_t idx_to_byte(uint8_t idx);
 
+
 void blink_led(void);
 
-
+void test_ports(void);
 void test_pins(void);
 
 

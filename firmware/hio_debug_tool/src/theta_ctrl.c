@@ -1,9 +1,13 @@
 
 
 
+#include "hio_util.h"
+
 #include <avr/io.h>
 #include <util/delay.h>
 
+
+#include "theta_ctrl.h"
 
 
 /*******************************/
@@ -36,30 +40,9 @@
 
 
 
-#define sbi(a, b) (a) |= (1 << (b))
-#define cbi(a, b) (a) &= ~(1 << (b))
 
 
-//built in led is PORTB7
-#define TEST_LED_DDR DDRB
-#define TEST_LED_PORT PORTB
 
-//encoder is on same port as outputs 
-#define MOTOR_ENCODER_IN_DDR DDRA
-#define MOTOR_ENCODER_IN_PORT PINA
-
-#define MOTOR_PULSE_DDR DDRA
-#define MOTOR_PULSE_PORT PORTA
-
-//------------
-
-
-//each direction gets its own pin 
-//assume same port 
-#define MOTOR_PULSE_PIN_CW 3   //ard D25
-#define MOTOR_PULSE_PIN_CCW 5  //ard D27
-
-#define MOTOR_ENCODER_INPUT 1  //ard D22
 
 
 

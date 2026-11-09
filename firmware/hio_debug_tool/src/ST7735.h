@@ -374,4 +374,14 @@ void Output_On(void);
 // Output: none
 void Output_Color(uint16_t newColor);
 
+
+
+
+
+
+
+
+
+
+
 #endif
