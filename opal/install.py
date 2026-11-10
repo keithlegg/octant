@@ -13,10 +13,13 @@ from pathlib import Path
 
 CMD_PATH = '/home/keith/linuxcnc/nc_files'
 
-CMD_FILES = ['testport', 'test_coms', 'rotate_head', 'home_axis']
+#CMD_FILES = ['testport', 'test_coms', 'rotate_head', 'home_axis']
 
 
-folder_path = Path("path/to/your/folder")
+CMD_FILES = ['testport', 'pumpctrl' ]
+
+
+folder_path = Path(CMD_PATH)
 
 # Check if it exists AND is a directory
 if folder_path.is_dir():
