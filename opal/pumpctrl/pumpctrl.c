@@ -61,31 +61,33 @@
 
 /***********************/
 
+//flash a single pin on bus leaving the state of other pins untouched 
+//always leave the pump pin low when done 
+//this avoids unnecessary pumping and messy spills!  
+
 
 void run_pump(int delay)
 {
- 
+    uint pump_pin = 2;
 
     if(ioperm(useport,1,1))
     { 
         fprintf(stderr, "Couldn't open parallel port"), exit(1);
     }
 
-
-
     //first read the state of the register (so we dont mangle the wrong bits) 
     unsigned char data_read;
     data_read = inb(useport);
 
-    //twiddle the pins accordingly     
-    data_read = data_read |= byte;
-    outb(byte, useport); 
+    // flash the pin on 
+    data_read |= (1 << pump_pin);
+    outb(data_read, useport); 
     usleep(delay); 
 
-    // //twiddle the pins accordingly     
-    // data_read = data_read |= byte;
-    // outb(byte, useport); 
-    // usleep(delay); 
+    
+    // make sure to turn it off or pump will keep running 
+    data_read &= ~(1 << pump_pin);     
+    outb(data_read, useport); 
  
 
 }
