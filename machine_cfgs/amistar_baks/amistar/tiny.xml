@@ -1,0 +1,37 @@
+
+
+<pyvcp>
+
+
+    <label text="test commands"/>
+
+    <button>
+        <text>"ALL OFF"</text>
+
+        <bg>"#cc1100"</bg>
+        <activebackground>"#ee2200"</activebackground>
+        
+        <halpin>"all_off"</halpin>
+    </button>
+
+
+    <button>
+        <text>"pulse pump"</text>
+        
+        <bg>"#329ea8"</bg>
+        <activebackground>"#80d1d9"</activebackground>
+
+        <halpin>"m102_pump"</halpin>
+    </button>
+
+    <button>
+        <text>"head up"</text>
+        <halpin>"m101_send_2"</halpin>
+    </button>
+
+    <button>
+        <text>"head dwn"</text>
+        <halpin>"m101_send_4"</halpin>
+    </button>
+
+</pyvcp>

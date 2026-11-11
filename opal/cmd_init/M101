@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#halcmd setp parport.0.pin-14-out True
-#eog /home/keith/linuxcnc/nc_files/e.png &
+#calls testport to experiment with
 
 /home/keith/linuxcnc/nc_files/testport $1
 

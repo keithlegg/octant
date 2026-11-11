@@ -23,7 +23,8 @@ CMD_FILES = ['testport', 'pumpctrl' ]
 MCODE_SOURCE = 'cmd_init'
 
 
-MCODE_FILES = ['M101']
+MCODE_FILES = ['M101', 'M102']
+
 
 
  
@@ -41,6 +42,8 @@ else:
 
 print('installing binaries to : %s'%CMD_PATH )
 
+
+
 ##---------------
 # remove old files if they exist
 for file in CMD_FILES:
@@ -51,6 +54,8 @@ for file in CMD_FILES:
     else:
         print(f" ... {file_path} does not exist.")
     
+
+
 
 ##---------------
 #copy the binaries to the path 

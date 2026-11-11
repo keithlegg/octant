@@ -1,0 +1,35 @@
+
+
+
+
+#net estop-out       => foo
+
+
+
+
+#### net <signal-name> <pin-name> <opt-direction> <opt-pin-name>signal-name
+
+
+#net keithsignal pyvcp.aaakeith => pyvcp.keithled  
+
+# how to wire atcon to a button 
+#net keithsignal2  pyvcp.aaakeith2 => atconn.dout.11  
+#net keithsignal2  pyvcp.aaakeith2 => pyvcp.keithled2 
+#net dout-00 <= atconn.dout.10
+
+
+net mcode_btn1 pyvcp.all_off     => halui.mdi-command-13
+
+net mcode_btn2 pyvcp.m101_send_2 => halui.mdi-command-14
+
+net mcode_btn3 pyvcp.m101_send_4 => halui.mdi-command-15
+
+net mcode_btn4 pyvcp.m102_pump => halui.mdi-command-12
+
+
+   
+
+
+
+
+

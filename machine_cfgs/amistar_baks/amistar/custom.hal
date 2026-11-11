@@ -1,0 +1,18 @@
+# Include your custom HAL commands here
+# This file will not be overwritten when you run stepconf again
+
+
+
+#keith was here 
+# halcmd loadusr pyvcp -c mypanel tiny.xml
+# net <signal-name> <pin-name> <opt-direction> <opt-pin-name>signal-name
+
+#loadusr pyvcp -c mypanel tiny.xml
+
+
+
+#loadusr arduino-connector
+
+#loadusr atconn
+
+
