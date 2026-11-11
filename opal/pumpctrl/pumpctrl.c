@@ -44,10 +44,10 @@
 
 
 
-//#define LPT1 0x0378
-//#define LPT1 0xc010
+//#define useport 0x0378
+//#define useport 0xc010
 
-#define LPT1 0xb010
+#define useport 0xb010
 
 #define HIGH 255
 #define LOW 0
@@ -64,21 +64,29 @@
 
 void run_pump(int delay)
 {
-    if(ioperm(LPT1,1,1))
+ 
+
+    if(ioperm(useport,1,1))
     { 
         fprintf(stderr, "Couldn't open parallel port"), exit(1);
     }
 
-    // although this lets you "PWM" lets just use one pulse so we dont burn up the solenoids
-    int numpulses = 1;
 
-    for(int a=0;a<numpulses;a++)
-    {
-        outb(255,LPT1);  //set all pins hi
-        usleep(delay); 
-        outb(0,LPT1);    //set all pins lo
-        usleep(delay); 
-    }
+
+    //first read the state of the register (so we dont mangle the wrong bits) 
+    unsigned char data_read;
+    data_read = inb(useport);
+
+    //twiddle the pins accordingly     
+    data_read = data_read |= byte;
+    outb(byte, useport); 
+    usleep(delay); 
+
+    // //twiddle the pins accordingly     
+    // data_read = data_read |= byte;
+    // outb(byte, useport); 
+    // usleep(delay); 
+ 
 
 }
 
@@ -87,12 +95,12 @@ void run_pump(int delay)
 
 void set_byte(uint byte)
 {
-    if(ioperm(LPT1,1,1))
+    if(ioperm(useport,1,1))
     { 
         fprintf(stderr, "Couldn't open parallel port"), exit(1);
     }
 
-    outb(byte,LPT1);  
+    outb(byte,useport);  
 }
 
 
