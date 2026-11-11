@@ -1,0 +1,5 @@
+#!/bin/bash
+
+/home/keith/linuxcnc/nc_files/flash_pin $1 
+
+exit 0

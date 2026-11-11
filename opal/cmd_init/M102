@@ -1,5 +1,5 @@
 #!/bin/bash
 
-/home/keith/linuxcnc/nc_files/pumpctrl $1
+/home/keith/linuxcnc/nc_files/set_pin $1 $2
 
 exit 0

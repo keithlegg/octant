@@ -12,7 +12,7 @@ from pathlib import Path
 #source path for shell/python files to link to the executables 
 MCODE_SOURCE = 'cmd_init'
 #name of the scripts to install (copy)
-MCODE_FILES = ['M101', 'M102']
+MCODE_FILES = ['M101', 'M102', 'M103']
 
 #source path for binaries to move over 
 CMD_FILES = ['set_byte', 'set_pin', 'flash_pin' ]
