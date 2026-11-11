@@ -1,4 +1,4 @@
-TARGET   = pumpctrl
+TARGET   = set_byte
 
 INCDIR   = .
 SRCDIR   = .

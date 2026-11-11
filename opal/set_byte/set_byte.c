@@ -2,7 +2,8 @@
 /*
 
 
-    test_coms - future home of a protocol to rue the whirl 
+    set_byte - set 8 bits at a time in one swell foop 
+    
 
     MIT License
 

@@ -1,7 +1,7 @@
 /*************************************************************/
 /*
 
-    pumpctrl - take liquids in one place and get them to another.
+   set a single pin without chaning the other pins on the bus
 
     
     MIT License
@@ -39,7 +39,7 @@
 #include <sys/io.h> //outb() ioperm()
 
 
-#include "pumpctrl.h"
+#include "flash_pin.h"
 
 
 
@@ -66,9 +66,8 @@
 //this avoids unnecessary pumping and messy spills!  
 
 
-void run_pump(int delay)
+void set_single_pin(int pin, int delay)
 {
-    uint pump_pin = 2;
 
     if(ioperm(useport,1,1))
     { 
@@ -80,29 +79,16 @@ void run_pump(int delay)
     data_read = inb(useport);
 
     // flash the pin on 
-    data_read |= (1 << pump_pin);
+    data_read |= (1 << pin);
     outb(data_read, useport); 
     usleep(delay); 
 
     
     // make sure to turn it off or pump will keep running 
-    data_read &= ~(1 << pump_pin);     
+    data_read &= ~(1 << pin);     
     outb(data_read, useport); 
  
 
-}
-
-
-/***********************/
-
-void set_byte(uint byte)
-{
-    if(ioperm(useport,1,1))
-    { 
-        fprintf(stderr, "Couldn't open parallel port"), exit(1);
-    }
-
-    outb(byte,useport);  
 }
 
 
@@ -112,12 +98,7 @@ void set_byte(uint byte)
 
 int main(int argc, char *argv[]) 
 {
-
-
-    //set_byte(atoi(argv[1]));
-    run_pump(300000);
-
-
+    set_single_pin(atoi(argv[1])-1, 100000 );
     return 0;
 }
 

@@ -9,21 +9,19 @@ from pathlib import Path
 
 
 
+#source path for shell/python files to link to the executables 
+MCODE_SOURCE = 'cmd_init'
+#name of the scripts to install (copy)
+MCODE_FILES = ['M101', 'M102']
 
-
-#destination for the executable binaries 
+#source path for binaries to move over 
+CMD_FILES = ['set_byte', 'set_pin', 'flash_pin' ]
+#name of the binaries to install (copy) 
 CMD_PATH = '/home/keith/linuxcnc/nc_files'
 
-#CMD_FILES = ['testport', 'test_coms', 'rotate_head', 'home_axis']
-
-#the binaries to move over 
-CMD_FILES = ['testport', 'pumpctrl' ]
-
-#the shell/python files to link to the executables 
-MCODE_SOURCE = 'cmd_init'
 
 
-MCODE_FILES = ['M101', 'M102']
+
 
 
 
@@ -34,7 +32,6 @@ MCODE_FILES = ['M101', 'M102']
 dest_path = Path(CMD_PATH)
 
 if dest_path.is_dir():
-    #print("Install location %s exists."%CMD_PATH)
     pass
 else:
     print("Install location '%s' does not exist."%CMD_PATH)
@@ -64,7 +61,7 @@ for cmd in CMD_FILES:
     print(' ... installing %s binary '%cmd)
     shutil.copy('%s/%s'%(cmd,cmd), CMD_PATH)
 
-    #set the capability operation (so you dont need sudo to access parport)
+    # set the capability operation (so you dont need sudo to access parport)
     result = subprocess.run(['setcap','cap_sys_rawio+ep', '%s/%s'%(CMD_PATH,cmd)])
 
  
@@ -81,7 +78,5 @@ for mf in MCODE_FILES:
 
     shutil.copy(src_file, CMD_PATH)
 
-    #set the capability operation (so you dont need sudo to access parport)
-    #result = subprocess.run(['setcap','cap_sys_rawio+ep', '%s/%s'%(CMD_PATH,cmd)])
 
 

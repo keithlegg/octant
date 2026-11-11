@@ -1,4 +1,4 @@
-TARGET   = test_coms
+TARGET   = flash_pin
 
 INCDIR   = .
 SRCDIR   = .

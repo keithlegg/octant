@@ -1,4 +1,4 @@
-TARGET   = testport
+TARGET   = set_pin
 
 INCDIR   = .
 SRCDIR   = .
